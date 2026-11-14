@@ -2858,12 +2858,19 @@
       }).getGuestCatalog();
     }
 
-    // Al regresar a la pestaña activa, comprobar cambios de inmediato
+    // Al regresar a la pestaña activa del panel de administrador, sincronizar de inmediato
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && isGuestMode) {
-        refreshGuestCatalogSilently();
+      if (!document.hidden && savedPwd) {
+        loadApks();
       }
     });
+
+    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador
+    setInterval(() => {
+      if (savedPwd) {
+        loadApks();
+      }
+    }, 25000);
 
     function enterGuestMode() {
       isGuestMode = true;
