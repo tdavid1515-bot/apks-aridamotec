@@ -976,6 +976,42 @@
       cursor: not-allowed;
       transform: none;
     }
+    .btn-restore {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .btn-restore:hover {
+      background: #10b981;
+      border-color: #059669;
+      color: #fff;
+    }
+    .btn-restore-all {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #34d399;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .btn-restore-all:hover {
+      background: #10b981;
+      color: #ffffff;
+      border-color: #059669;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-restore-all:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
     .banner-sync-config {
       display: flex;
       align-items: center;
@@ -1343,6 +1379,234 @@
       animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    /* ================= OPTIMIZACIONES MÓVILES (PANTALLAS PEQUEÑAS / CELULARES) ================= */
+    @media (max-width: 600px) {
+      .header-top {
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .brand-logo-img {
+        height: 25px;
+      }
+      .badge-247, .badge-guest {
+        font-size: 8px;
+        padding: 1px 5px;
+      }
+      .brand-subtitle {
+        font-size: 9.5px;
+      }
+      .btn-header {
+        padding: 5px 8px;
+        font-size: 11px;
+        gap: 4px;
+      }
+      .btn-admin-switch {
+        padding: 5px 8px;
+        font-size: 10.5px;
+        gap: 4px;
+      }
+
+      .controls-nav {
+        padding: 4px 10px 8px 10px;
+        gap: 6px;
+      }
+      .search-box {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      .search-input {
+        font-size: 12px;
+        padding: 7px 28px 7px 32px;
+      }
+      .tabs-group {
+        width: 100%;
+        order: 2;
+        gap: 2px;
+        padding: 2px;
+      }
+      .tab-button {
+        flex: 1;
+        font-size: 9.5px;
+        padding: 6px 2px;
+        gap: 3px;
+      }
+      .tab-pill {
+        font-size: 8.5px;
+        padding: 1px 4px;
+      }
+      .sort-row {
+        order: 3;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+      }
+      .sort-label {
+        font-size: 10px;
+        flex-shrink: 0;
+      }
+      .sort-select {
+        flex: 1;
+        font-size: 10px;
+        padding: 4px 6px;
+      }
+
+      .banner-status {
+        padding: 7px 10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+      .banner-sync-config {
+        width: 100%;
+        justify-content: space-between;
+        font-size: 10px;
+        gap: 4px;
+      }
+      .sync-config-label {
+        font-size: 10px;
+      }
+      .sync-config-select {
+        font-size: 9.5px;
+        padding: 2px 4px;
+      }
+      .sync-cloud-tag {
+        font-size: 9px;
+        padding: 1px 5px;
+      }
+      .banner-status-right {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      #statusInfo {
+        font-size: 10px;
+      }
+      .btn-empty-trash, .btn-restore-all {
+        font-size: 9.5px;
+        padding: 3px 7px;
+        gap: 3px;
+      }
+      .guest-live-status {
+        font-size: 10px;
+        padding: 3px 8px;
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .cards-grid {
+        gap: 10px;
+      }
+      .apk-card {
+        padding: 10px 12px;
+        border-radius: 12px;
+        gap: 8px;
+      }
+      .apk-title {
+        font-size: 13.5px;
+        line-height: 1.25;
+      }
+      .badge-status {
+        font-size: 8px;
+        padding: 2px 5px;
+      }
+      .apk-filename {
+        font-size: 9.5px;
+        margin-top: 2px;
+      }
+      .browsy-box {
+        padding: 6px 10px;
+        margin-top: 6px;
+        border-radius: 9px;
+      }
+      .browsy-label {
+        font-size: 8px;
+      }
+      .browsy-code-val {
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+      .browsy-pending {
+        font-size: 10.5px;
+      }
+      .btn-card-copy {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+      .btn-card-gen {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+      .card-footer-actions {
+        gap: 5px;
+      }
+      .btn-whatsapp {
+        font-size: 10.5px;
+        padding: 7px 4px;
+        border-radius: 7px;
+      }
+      .sub-buttons-row {
+        gap: 4px;
+      }
+      .btn-sub-action {
+        font-size: 9.5px;
+        padding: 5px 2px;
+        border-radius: 6px;
+        gap: 2px;
+      }
+
+      /* Creador WhatsApp */
+      .wa-toolbar {
+        padding: 6px 8px;
+        gap: 6px;
+      }
+      .wa-toggle-label {
+        font-size: 10px;
+      }
+      .btn-wa-action {
+        font-size: 9px;
+        padding: 3px 6px;
+      }
+      .wa-counter {
+        font-size: 9px;
+        padding: 2px 5px;
+      }
+      .wa-card {
+        padding: 8px 10px;
+        border-radius: 10px;
+        gap: 6px;
+      }
+      .wa-item-title {
+        font-size: 12px;
+      }
+      .wa-item-desc-input {
+        font-size: 10.5px;
+        padding: 4px 6px;
+      }
+      .wa-btn-regen-ai {
+        font-size: 9px;
+        padding: 3px 6px;
+      }
+      .wa-preview-container {
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+      .wa-chat-bubble {
+        font-size: 10.5px;
+        line-height: 1.35;
+        padding: 8px 10px;
+      }
+      .wa-btn-copy-full, .wa-btn-send-chat {
+        font-size: 10.5px;
+        padding: 7px 4px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1529,6 +1793,9 @@
           <span class="guest-live-text">Sincronización automática activa con Repositorio GitHub</span>
         </div>
         <div class="banner-status-right">
+          <button id="restoreAllBtn" class="btn-restore-all" onclick="confirmRestoreAll()" style="display:none;" title="Restaurar todas las aplicaciones al catálogo">
+            ♻️ Restaurar Todas (<span id="restoreAllCount">0</span>)
+          </button>
           <button id="emptyTrashBtn" class="btn-empty-trash" onclick="confirmEmptyTrash()" style="display:none;" title="Eliminar definitivamente todas las aplicaciones de la papelera">
             🗑️ Vaciar Papelera (<span id="emptyTrashCount">0</span>)
           </button>
@@ -1662,6 +1929,12 @@
         },
         emptyTrash(pwd) {
           this._call(GAS_URL + '?action=emptyTrash&pwd=' + encodeURIComponent(pwd));
+        },
+        restoreApk(pwd, fileId) {
+          this._call(GAS_URL + '?action=restore&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
+        },
+        restoreAllDeleted(pwd) {
+          this._call(GAS_URL + '?action=restoreAll&pwd=' + encodeURIComponent(pwd));
         },
         deletePermanently(pwd, fileId) {
           this._call(GAS_URL + '?action=deletePermanent&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
@@ -2106,6 +2379,9 @@
               </a>
 
               ${isDel ? `
+                <button class="btn-sub-action btn-restore" onclick="restoreSingleApk('${it.driveFileId}', '${escapeJs(cleanName)}')">
+                  ♻️ Restaurar
+                </button>
                 <button class="btn-sub-action btn-del-danger" onclick="deletePermanent('${it.driveFileId}', '${escapeJs(cleanName)}')">
                   🗑️ Borrar
                 </button>
@@ -2219,16 +2495,79 @@
     }
 
     function updateEmptyTrashBtn() {
-      const btn = document.getElementById('emptyTrashBtn');
-      const countSpan = document.getElementById('emptyTrashCount');
-      if (!btn) return;
+      const emptyBtn = document.getElementById('emptyTrashBtn');
+      const restoreBtn = document.getElementById('restoreAllBtn');
+      const emptyCountSpan = document.getElementById('emptyTrashCount');
+      const restoreCountSpan = document.getElementById('restoreAllCount');
       const count = (apksData && apksData.deleted) ? apksData.deleted.length : 0;
-      if (countSpan) countSpan.textContent = count;
+      if (emptyCountSpan) emptyCountSpan.textContent = count;
+      if (restoreCountSpan) restoreCountSpan.textContent = count;
       if (!isGuestMode && activeTab === 'deleted' && count > 0) {
-        btn.style.display = 'inline-flex';
+        if (emptyBtn) emptyBtn.style.display = 'inline-flex';
+        if (restoreBtn) restoreBtn.style.display = 'inline-flex';
       } else {
-        btn.style.display = 'none';
+        if (emptyBtn) emptyBtn.style.display = 'none';
+        if (restoreBtn) restoreBtn.style.display = 'none';
       }
+    }
+
+    function restoreSingleApk(driveId, name) {
+      showToast('Restaurando "' + name + '" al catálogo...');
+      const gas = getGas();
+      if (!gas) { showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('¡"' + name + '" restaurada al catálogo exitosamente!');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al restaurar', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .restoreApk(savedPwd, driveId);
+    }
+
+    function confirmRestoreAll() {
+      const count = (apksData && apksData.deleted) ? apksData.deleted.length : 0;
+      if (count === 0) {
+        showToast('No hay aplicaciones en papelera para restaurar.');
+        return;
+      }
+      if (!confirm('¿Deseas restaurar todas las ' + count + ' aplicaciones de la papelera nuevamente al catálogo activo?')) {
+        return;
+      }
+      const btn = document.getElementById('restoreAllBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Restaurando...';
+      }
+      showToast('Restaurando ' + count + ' aplicaciones...');
+      const gas = getGas();
+      if (!gas) {
+        if (btn) btn.disabled = false;
+        showToast('Servicio no disponible', true);
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '♻️ Restaurar Todas (<span id="restoreAllCount">0</span>)';
+          }
+          if (res && res.success) {
+            showToast('¡Se restauraron ' + res.count + ' aplicaciones al catálogo!');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al restaurar aplicaciones', true);
+          }
+        })
+        .withFailureHandler(e => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '♻️ Restaurar Todas (<span id="restoreAllCount">' + count + '</span>)';
+          }
+          showToast('Error: ' + (e.message || e), true);
+        })
+        .restoreAllDeleted(savedPwd);
     }
 
     function confirmEmptyTrash() {
@@ -2854,6 +3193,8 @@
     window.closeQrModal = closeQrModal;
     window.generateCode = generateCode;
     window.deletePermanent = deletePermanent;
+    window.restoreSingleApk = restoreSingleApk;
+    window.confirmRestoreAll = confirmRestoreAll;
     window.confirmEmptyTrash = confirmEmptyTrash;
     window.updateEmptyTrashBtn = updateEmptyTrashBtn;
     window.handleIntervalChange = handleIntervalChange;
