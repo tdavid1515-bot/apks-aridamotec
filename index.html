@@ -843,7 +843,7 @@
 
     function getCatalogSignature(list) {
       if (!list || !list.length) return '';
-      return list.map(x => (x.cleanName || '') + '|' + (x.browsyCode || '') + '|' + (x.directDownloadUrl || '')).join(';;');
+      return list.map(x => (x.cleanName || '') + '|' + (x.browsyCode || '') + '|' + (x.directDownloadUrl || '') + '|' + (x.aiDescription || '')).join(';;');
     }
 
     function loadCatalog(isManual = false) {

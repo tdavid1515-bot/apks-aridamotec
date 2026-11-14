@@ -1054,8 +1054,8 @@
       letter-spacing: 0.3px;
     }
 
-    /* ESTADO MODO INVITADO SINCRONIZACIÓN EN VIVO */
-    .guest-live-status {
+    /* ESTADO MODO ADMIN Y MODO INVITADO SINCRONIZACIÓN EN VIVO */
+    .admin-live-status, .guest-live-status {
       display: inline-flex;
       align-items: center;
       gap: 7px;
@@ -1068,7 +1068,7 @@
       color: #34d399;
       user-select: none;
     }
-    .guest-live-dot {
+    .admin-live-dot, .guest-live-dot {
       color: #10b981;
       font-size: 13px;
       line-height: 1;
@@ -1078,6 +1078,98 @@
     @keyframes pulseDot {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    /* CAJA DE EDICIÓN DE DESCRIPCIÓN (MODO ADMIN) */
+    .admin-desc-box {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .admin-desc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-desc-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.2px;
+    }
+    .btn-ai-mini {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(0, 229, 255, 0.25));
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      color: #c084fc;
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ai-mini:hover {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(0, 229, 255, 0.4));
+      color: #ffffff;
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+    }
+    .admin-desc-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: #090e1a;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      color: #f1f5f9;
+      font-size: 11.5px;
+      line-height: 1.4;
+      padding: 6px 8px;
+      resize: vertical;
+      min-height: 48px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .admin-desc-textarea:focus {
+      border-color: #00e5ff;
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.3);
+    }
+    .admin-desc-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 24px;
+    }
+    .admin-desc-status {
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .btn-save-desc {
+      background: #0284c7;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #ffffff;
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .btn-save-desc:hover:not(:disabled) {
+      background: #0369a1;
+      border-color: #38bdf8;
+      box-shadow: 0 0 8px rgba(2, 132, 199, 0.5);
+    }
+    .btn-save-desc:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     /* GRILLA DE TARJETAS */
@@ -1772,22 +1864,9 @@
     <!-- VISTA CATÁLOGO / PAPELERA -->
     <div id="catalogSection">
       <div class="banner-status">
-        <div class="banner-sync-config admin-only">
-          <label for="syncIntervalSelect" class="sync-config-label">⏰ Auto-sincronización:</label>
-          <select id="syncIntervalSelect" class="sync-config-select" onchange="handleIntervalChange(this.value)">
-            <option value="5">Cada 5 minutos (Mínimo)</option>
-            <option value="10">Cada 10 minutos</option>
-            <option value="15">Cada 15 minutos</option>
-            <option value="30">Cada 30 minutos</option>
-            <option value="60">Cada 1 hora</option>
-            <option value="360">Cada 6 horas</option>
-            <option value="720">Cada 12 horas</option>
-          </select>
-          <span class="sync-cloud-tag">☁️ Nube 24/7</span>
-        </div>
-        <div id="guestLiveStatus" class="guest-live-status" style="display:none;">
-          <span class="guest-live-dot">●</span>
-          <span class="guest-live-text">Sincronización automática activa con Repositorio GitHub</span>
+        <div class="admin-live-status">
+          <span class="admin-live-dot">●</span>
+          <span class="admin-live-text">Sincronizado con GitHub</span>
         </div>
         <div class="banner-status-right">
           <button id="restoreAllBtn" class="btn-restore-all" onclick="confirmRestoreAll()" style="display:none;" title="Restaurar todas las aplicaciones al catálogo">
@@ -1935,6 +2014,9 @@
         },
         deletePermanently(pwd, fileId) {
           this._call(GAS_URL + '?action=deletePermanent&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
+        },
+        updateApkDescription(pwd, fileId, desc) {
+          this._call(GAS_URL + '?action=updateDesc&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&desc=' + encodeURIComponent(desc));
         },
         generateCodeForSingleApk(pwd, fileId) {
           this._call(GAS_URL + '?action=generateCode&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
@@ -2122,18 +2204,34 @@
       document.getElementById('loginScreen').style.display = 'flex';
     }
 
-    function loadApks() {
-      document.getElementById('statusInfo').textContent = 'Consultando aplicaciones...';
+    function loadApks(silent = false) {
+      if (!silent) {
+        document.getElementById('statusInfo').textContent = 'Consultando aplicaciones...';
+      }
       const gas = getGas();
-      if (!gas) return;
+      if (!gas || !savedPwd) return;
       gas.withSuccessHandler(res => {
           if (res && res.success) {
+            const isEditing = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT');
+            if (silent && isEditing) {
+              apksData = {
+                active: (res.active || []).map(normalizeApkItem),
+                deleted: (res.deleted || []).map(normalizeApkItem)
+              };
+              const cAct = document.getElementById('countActive');
+              if (cAct) cAct.textContent = apksData.active.length;
+              const cDel = document.getElementById('countDeleted');
+              if (cDel) cDel.textContent = apksData.deleted.length;
+              return;
+            }
             renderApp(res);
-          } else {
+          } else if (!silent) {
             showToast(res ? res.error : 'Error al cargar', true);
           }
         })
-        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .withFailureHandler(e => {
+          if (!silent) showToast('Error: ' + (e.message || e), true);
+        })
         .getApksList(savedPwd);
     }
 
@@ -2155,8 +2253,6 @@
       isGuestMode = false;
       document.body.classList.remove('guest-mode');
       stopGuestAutoRefresh();
-      const gLive = document.getElementById('guestLiveStatus'); if (gLive) gLive.style.display = 'none';
-      const bSync = document.querySelector('.banner-sync-config'); if (bSync) bSync.style.display = 'flex';
 
       if (!res) res = { active: [], deleted: [], total: 0 };
       apksData = {
@@ -2170,10 +2266,6 @@
       if (cDel) cDel.textContent = apksData.deleted.length;
       const sInfo = document.getElementById('statusInfo');
       if (sInfo) sInfo.textContent = 'Total: ' + (res.total || (apksData.active.length + apksData.deleted.length)) + ' aplicaciones registradas';
-
-      if (res.currentInterval && document.getElementById('syncIntervalSelect')) {
-        document.getElementById('syncIntervalSelect').value = String(res.currentInterval);
-      }
 
       initWaData();
       updateEmptyTrashBtn();
@@ -2355,6 +2447,22 @@
                 <button class="btn-card-gen" onclick="generateCode('${it.driveFileId}')">⚡ Generar</button>
               `}
             </div>
+
+            <div class="admin-desc-box">
+              <div class="admin-desc-header">
+                <span class="admin-desc-label">📝 ¿Para qué sirve? (Clientes):</span>
+                <button type="button" class="btn-ai-mini" onclick="regenAdminAiDesc('${it.driveFileId}', '${escapeJs(cleanName)}', event)" title="Sugerir descripción con Inteligencia Artificial">
+                  ✨ IA
+                </button>
+              </div>
+              <textarea id="desc_${it.driveFileId}" class="admin-desc-textarea" rows="2" placeholder="Escribe la descripción de la app para los clientes...">${escapeHtml(it.aiDescription || '')}</textarea>
+              <div class="admin-desc-actions">
+                <span id="desc_status_${it.driveFileId}" class="admin-desc-status"></span>
+                <button type="button" id="desc_btn_${it.driveFileId}" class="btn-save-desc" onclick="saveApkDesc('${it.driveFileId}')">
+                  💾 Guardar
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class="card-footer-actions">
@@ -2430,6 +2538,95 @@
 
     function closeQrModal() {
       document.getElementById('qrModal').style.display = 'none';
+    }
+
+    function saveApkDesc(fileId) {
+      const textarea = document.getElementById('desc_' + fileId);
+      const statusEl = document.getElementById('desc_status_' + fileId);
+      const btn = document.getElementById('desc_btn_' + fileId);
+      if (!textarea) return;
+      const newDesc = textarea.value.trim();
+
+      if (statusEl) {
+        statusEl.textContent = 'Guardando...';
+        statusEl.style.color = '#38bdf8';
+      }
+      if (btn) btn.disabled = true;
+
+      const gas = getGas();
+      if (!gas) {
+        if (statusEl) { statusEl.textContent = 'Error de servicio'; statusEl.style.color = '#ef4444'; }
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      gas.withSuccessHandler(res => {
+        if (btn) btn.disabled = false;
+        if (res && res.success) {
+          if (statusEl) {
+            statusEl.textContent = '✓ Guardado';
+            statusEl.style.color = '#34d399';
+            setTimeout(() => { if (statusEl && statusEl.textContent === '✓ Guardado') statusEl.textContent = ''; }, 3500);
+          }
+          showToast('¡Descripción actualizada en tiempo real!');
+          // Actualizar memoria local en apksData
+          const item = [...apksData.active, ...apksData.deleted].find(x => String(x.driveFileId) === String(fileId));
+          if (item) item.aiDescription = newDesc;
+          if (typeof waDescriptions !== 'undefined') {
+            waDescriptions[fileId] = newDesc;
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = 'Error: ' + (res ? res.error : 'Fallo al guardar');
+            statusEl.style.color = '#ef4444';
+          }
+        }
+      })
+      .withFailureHandler(err => {
+        if (btn) btn.disabled = false;
+        if (statusEl) {
+          statusEl.textContent = 'Error de conexión';
+          statusEl.style.color = '#ef4444';
+        }
+      })
+      .updateApkDescription(savedPwd, fileId, newDesc);
+    }
+
+    function regenAdminAiDesc(fileId, cleanName, event) {
+      if (event && event.preventDefault) event.preventDefault();
+      const textarea = document.getElementById('desc_' + fileId);
+      const statusEl = document.getElementById('desc_status_' + fileId);
+      if (!textarea) return;
+
+      if (statusEl) {
+        statusEl.textContent = '✨ Generando con IA...';
+        statusEl.style.color = '#c084fc';
+      }
+
+      const gas = getGas();
+      if (!gas) return;
+
+      gas.withSuccessHandler(res => {
+        if (res && res.success && res.description) {
+          textarea.value = res.description;
+          if (statusEl) {
+            statusEl.textContent = 'Listo. Presiona Guardar.';
+            statusEl.style.color = '#38bdf8';
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = 'No se pudo generar';
+            statusEl.style.color = '#ef4444';
+          }
+        }
+      })
+      .withFailureHandler(err => {
+        if (statusEl) {
+          statusEl.textContent = 'Error de IA';
+          statusEl.style.color = '#ef4444';
+        }
+      })
+      .generateApkDescription(savedPwd, cleanName);
     }
 
     function triggerSync() {
@@ -2858,19 +3055,19 @@
       }).getGuestCatalog();
     }
 
-    // Al regresar a la pestaña activa del panel de administrador, sincronizar de inmediato
+    // Al regresar a la pestaña activa del panel de administrador, sincronizar silenciosamente de inmediato
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && savedPwd) {
-        loadApks();
+        loadApks(true);
       }
     });
 
-    // Auto-actualización periódica en segundo plano cada 2 minutos para administrador
+    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador
     setInterval(() => {
-      if (savedPwd) {
-        loadApks();
+      if (savedPwd && !document.hidden) {
+        loadApks(true);
       }
-    }, 120000);
+    }, 25000);
 
     function enterGuestMode() {
       isGuestMode = true;
@@ -3202,6 +3399,8 @@
     window.confirmEmptyTrash = confirmEmptyTrash;
     window.updateEmptyTrashBtn = updateEmptyTrashBtn;
     window.handleIntervalChange = handleIntervalChange;
+    window.saveApkDesc = saveApkDesc;
+    window.regenAdminAiDesc = regenAdminAiDesc;
     window.waSelectAll = waSelectAll;
     window.waDeselectAll = waDeselectAll;
     window.toggleWaSelection = toggleWaSelection;
