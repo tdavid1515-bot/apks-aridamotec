@@ -2865,12 +2865,12 @@
       }
     });
 
-    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador
+    // Auto-actualización periódica en segundo plano cada 2 minutos para administrador
     setInterval(() => {
       if (savedPwd) {
         loadApks();
       }
-    }, 25000);
+    }, 120000);
 
     function enterGuestMode() {
       isGuestMode = true;
