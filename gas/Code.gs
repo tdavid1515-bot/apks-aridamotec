@@ -946,7 +946,7 @@ function overlaySheetMetadata(items) {
 
 function getGuestCatalog() {
   try {
-    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
+    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
     const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
     if (resp.getResponseCode() === 200) {
       const parsed = JSON.parse(resp.getContentText());
@@ -1494,7 +1494,7 @@ function getApksList(password) {
     return { success: false, error: 'Contraseña incorrecta' };
   }
   try {
-    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
+    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
     const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
     if (resp.getResponseCode() === 200) {
       const parsed = JSON.parse(resp.getContentText());
@@ -1678,7 +1678,7 @@ function updateApkDescription(password, fileId, newDescription, fileName) {
   if (!updated) {
     let catItem = null;
     try {
-      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
+      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
       const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
       if (resp.getResponseCode() === 200) {
         const parsed = JSON.parse(resp.getContentText());
@@ -2152,7 +2152,7 @@ function updateApkCategory(password, fileId, newCategory, fileName) {
   if (!updated) {
     let catItem = null;
     try {
-      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
+      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
       const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
       if (resp.getResponseCode() === 200) {
         const parsed = JSON.parse(resp.getContentText());

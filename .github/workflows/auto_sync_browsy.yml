@@ -11,8 +11,8 @@ on:
       - 'version.json'
   workflow_dispatch:
   schedule:
-    # Chequeo programado cada 15 minutos para detectar automáticamente inclusiones o borrados en GitHub Releases
-    - cron: '*/15 * * * *'
+    # Chequeo programado cada 5 minutos para detectar automáticamente inclusiones o borrados en GitHub Releases
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
@@ -43,11 +43,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          if [ -n "$(git status --porcelain catalog.json version.json index.html admin.html invitado.html)" ]; then
-            git add catalog.json data/catalog.json version.json data/version.json index.html admin.html invitado.html
-            git commit -m "Auto-sync: generación automática de códigos Browsy para nuevas APKs [skip ci]"
+          if [ -n "$(git status --porcelain catalog.json data/catalog.json version.json data/version.json index.html admin.html invitado.html gas/Index.html gas/Admin.html)" ]; then
+            git add catalog.json data/catalog.json version.json data/version.json index.html admin.html invitado.html gas/Index.html gas/Admin.html
+            git commit -m "Auto-sync: sincronización automática de catálogo, códigos Browsy y versión [skip ci]"
             git push origin main
-            echo "✅ Catálogo actualizado y publicado con nuevos códigos Browsy."
+            echo "✅ Catálogo y versión actualizados y publicados en GitHub Pages."
           else
             echo "ℹ️ No se detectaron nuevas APKs ni códigos pendientes."
           fi

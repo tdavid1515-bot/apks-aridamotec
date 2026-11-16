@@ -92,29 +92,87 @@ async function requestBrowsyCode(directUrl) {
 }
 
 async function runSync() {
-  console.log('🔄 Sincronizando catálogo con GitHub Releases tag:', RELEASE_TAG);
-  const releaseUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/tags/${RELEASE_TAG}`;
+  console.log('🔄 Sincronizando catálogo con GitHub Releases...');
+  const releasesUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases?per_page=100`;
   
   const headers = { 'User-Agent': 'ARIDAMOTEC-Sync-Engine' };
   if (process.env.GITHUB_TOKEN) {
     headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
   }
 
-  const res = await fetch(releaseUrl, { headers });
-  if (!res.ok) {
-    throw new Error(`GitHub API error: ${res.status} ${await res.text()}`);
+  let rawAssets = [];
+  try {
+    const res = await fetch(releasesUrl, { headers });
+    if (res.ok) {
+      const releasesData = await res.json();
+      const releases = Array.isArray(releasesData) ? releasesData : [releasesData];
+      for (const rel of releases) {
+        if (rel && Array.isArray(rel.assets)) {
+          rawAssets.push(...rel.assets);
+        }
+      }
+    } else {
+      console.warn(`Aviso: Error listando todos los releases (${res.status}), intentando tag ${RELEASE_TAG}...`);
+      const fallbackUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/tags/${RELEASE_TAG}`;
+      const fbRes = await fetch(fallbackUrl, { headers });
+      if (fbRes.ok) {
+        const fbData = await fbRes.json();
+        rawAssets = fbData.assets || [];
+      }
+    }
+  } catch (errRel) {
+    console.error('Error consultando GitHub Releases:', errRel.message);
   }
 
-  const releaseData = await res.json();
-  const rawAssets = releaseData.assets || [];
-  
-  // Filtrar solo APKs del catálogo (excluyendo el instalador propio de la app)
-  const apkAssets = rawAssets.filter(a => {
+  // Deduplicar assets por nombre
+  const assetMap = new Map();
+  for (const a of rawAssets) {
+    if (a && a.name) {
+      const lower = a.name.toLowerCase();
+      if (!assetMap.has(lower)) {
+        assetMap.set(lower, a);
+      }
+    }
+  }
+  const allUniqueAssets = Array.from(assetMap.values());
+
+  // Extraer posibles APKs de la propia app Android TV tanto de Releases como del repo local
+  let latestTvName = null;
+  let latestTvUrl = null;
+  let latestTvCreatedAt = null;
+
+  for (const a of allUniqueAssets) {
+    const m = (a.name || '').match(/ARIDAMOTEC_TV_(\d+\.\d+\.\d+)\.apk/i);
+    if (m) {
+      latestTvName = m[1];
+      latestTvUrl = a.browser_download_url;
+      latestTvCreatedAt = a.created_at;
+    }
+  }
+
+  try {
+    const rootFiles = fs.readdirSync(__dirname);
+    const localTvApks = rootFiles.filter(f => f.startsWith('ARIDAMOTEC_TV_') && f.endsWith('.apk')).sort();
+    if (localTvApks.length > 0) {
+      const localLatest = localTvApks[localTvApks.length - 1];
+      const mLocal = localLatest.match(/ARIDAMOTEC_TV_(\d+\.\d+\.\d+)\.apk/i);
+      if (mLocal) {
+        // Si no había en release o si el local es igual o superior
+        if (!latestTvName || localLatest >= (latestTvName || '')) {
+          latestTvName = mLocal[1];
+          latestTvUrl = `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/${localLatest}`;
+        }
+      }
+    }
+  } catch (eLocal) {}
+
+  // Filtrar solo APKs del catálogo de contenidos (excluyendo el instalador propio de la app)
+  const apkAssets = allUniqueAssets.filter(a => {
     const fn = (a.name || '').toLowerCase();
     return (fn.endsWith('.apk') || fn.endsWith('.xapk')) && !fn.startsWith('aridamotec_tv');
   });
 
-  console.log(`📦 Encontrados ${apkAssets.length} archivos APK en GitHub Release.`);
+  console.log(`📦 Encontrados ${apkAssets.length} archivos APK de catálogo en GitHub Release.`);
 
   const catalogFile = path.join(__dirname, 'catalog.json');
   let currentCatalog = [];
@@ -214,40 +272,32 @@ async function runSync() {
 
   // Sincronizar automáticamente version.json si hay un nuevo instalador oficial de la app
   try {
-    const rootFiles = fs.readdirSync(__dirname);
-    const tvApks = rootFiles.filter(f => f.startsWith('ARIDAMOTEC_TV_') && f.endsWith('.apk'));
-    if (tvApks.length > 0) {
-      tvApks.sort();
-      const latestApk = tvApks[tvApks.length - 1];
-      const match = latestApk.match(/ARIDAMOTEC_TV_(\d+\.\d+\.\d+)\.apk/i);
-      if (match) {
-        const vName = match[1];
-        const verPath = path.join(__dirname, 'version.json');
-        let currentVer = {};
-        if (fs.existsSync(verPath)) {
-          try { currentVer = JSON.parse(fs.readFileSync(verPath, 'utf8')); } catch (e) {}
-        }
-        let vCode = currentVer.latestVersionCode || 7;
-        if (currentVer.latestVersionName && currentVer.latestVersionName !== vName) {
-          vCode = (currentVer.latestVersionCode || 7) + 1;
-        }
-        const versionData = {
-          success: true,
-          latestVersionCode: vCode,
-          latestVersionName: vName,
-          downloadUrl: `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/${latestApk}`,
-          changelog: currentVer.changelog || "Actualización oficial automática con mejoras de rendimiento, catálogo y foco D-Pad.",
-          minSupportedVersionCode: 1,
-          mandatory: false,
-          updatedAt: new Date().toISOString()
-        };
-        fs.writeFileSync(verPath, JSON.stringify(versionData, null, 2), 'utf8');
-        const dataVerPath = path.join(__dirname, 'data', 'version.json');
-        if (fs.existsSync(path.dirname(dataVerPath))) {
-          fs.writeFileSync(dataVerPath, JSON.stringify(versionData, null, 2), 'utf8');
-        }
-        console.log(`📡 version.json sincronizado para OTA: v${vName} (código ${vCode})`);
+    if (latestTvName) {
+      const verPath = path.join(__dirname, 'version.json');
+      let currentVer = {};
+      if (fs.existsSync(verPath)) {
+        try { currentVer = JSON.parse(fs.readFileSync(verPath, 'utf8')); } catch (e) {}
       }
+      let vCode = currentVer.latestVersionCode || 7;
+      if (currentVer.latestVersionName && currentVer.latestVersionName !== latestTvName) {
+        vCode = (currentVer.latestVersionCode || 7) + 1;
+      }
+      const versionData = {
+        success: true,
+        latestVersionCode: vCode,
+        latestVersionName: latestTvName,
+        downloadUrl: latestTvUrl || `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/ARIDAMOTEC_TV_${latestTvName}.apk`,
+        changelog: currentVer.changelog || "Actualización oficial automática con mejoras de rendimiento, catálogo y foco D-Pad.",
+        minSupportedVersionCode: 1,
+        mandatory: false,
+        updatedAt: latestTvCreatedAt || new Date().toISOString()
+      };
+      fs.writeFileSync(verPath, JSON.stringify(versionData, null, 2), 'utf8');
+      const dataVerPath = path.join(__dirname, 'data', 'version.json');
+      if (fs.existsSync(path.dirname(dataVerPath))) {
+        fs.writeFileSync(dataVerPath, JSON.stringify(versionData, null, 2), 'utf8');
+      }
+      console.log(`📡 version.json sincronizado para OTA: v${latestTvName} (código ${vCode})`);
     }
   } catch (eVer) {
     console.error('Error sincronizando version.json:', eVer.message);
