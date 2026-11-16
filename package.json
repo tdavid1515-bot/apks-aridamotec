@@ -1,0 +1,25 @@
+{
+  "name": "gestion-apks-aridamotec",
+  "version": "1.0.0",
+  "description": "Sistema gestor de APKs de Google Drive con generación de códigos Browsy para Android TV",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "sync": "node sync_catalog.js",
+    "build": "node build.js",
+    "generate": "node generate_initial_codes.js"
+  },
+  "keywords": [
+    "android-tv",
+    "google-tv",
+    "browsy",
+    "google-drive",
+    "apk-manager"
+  ],
+  "author": "ARIDAMOTEC",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  }
+}
