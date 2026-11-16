@@ -2,7 +2,13 @@ name: Auto-Sync Catalogo y Codigos Browsy
 
 on:
   release:
-    types: [published, created, edited]
+    types: [published, created, edited, deleted]
+  push:
+    branches:
+      - main
+    paths:
+      - '**.apk'
+      - 'version.json'
   workflow_dispatch:
   schedule:
     # Chequeo programado cada 15 minutos para detectar automáticamente inclusiones o borrados en GitHub Releases
@@ -37,8 +43,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          if [ -n "$(git status --porcelain catalog.json index.html admin.html invitado.html)" ]; then
-            git add catalog.json data/catalog.json index.html admin.html invitado.html
+          if [ -n "$(git status --porcelain catalog.json version.json index.html admin.html invitado.html)" ]; then
+            git add catalog.json data/catalog.json version.json data/version.json index.html admin.html invitado.html
             git commit -m "Auto-sync: generación automática de códigos Browsy para nuevas APKs [skip ci]"
             git push origin main
             echo "✅ Catálogo actualizado y publicado con nuevos códigos Browsy."

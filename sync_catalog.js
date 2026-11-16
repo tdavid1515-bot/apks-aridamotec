@@ -211,6 +211,47 @@ async function runSync() {
   } catch (errBuild) {
     console.error('Error ejecutando build.js:', errBuild.message);
   }
+
+  // Sincronizar automáticamente version.json si hay un nuevo instalador oficial de la app
+  try {
+    const rootFiles = fs.readdirSync(__dirname);
+    const tvApks = rootFiles.filter(f => f.startsWith('ARIDAMOTEC_TV_') && f.endsWith('.apk'));
+    if (tvApks.length > 0) {
+      tvApks.sort();
+      const latestApk = tvApks[tvApks.length - 1];
+      const match = latestApk.match(/ARIDAMOTEC_TV_(\d+\.\d+\.\d+)\.apk/i);
+      if (match) {
+        const vName = match[1];
+        const verPath = path.join(__dirname, 'version.json');
+        let currentVer = {};
+        if (fs.existsSync(verPath)) {
+          try { currentVer = JSON.parse(fs.readFileSync(verPath, 'utf8')); } catch (e) {}
+        }
+        let vCode = currentVer.latestVersionCode || 7;
+        if (currentVer.latestVersionName && currentVer.latestVersionName !== vName) {
+          vCode = (currentVer.latestVersionCode || 7) + 1;
+        }
+        const versionData = {
+          success: true,
+          latestVersionCode: vCode,
+          latestVersionName: vName,
+          downloadUrl: `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/${latestApk}`,
+          changelog: currentVer.changelog || "Actualización oficial automática con mejoras de rendimiento, catálogo y foco D-Pad.",
+          minSupportedVersionCode: 1,
+          mandatory: false,
+          updatedAt: new Date().toISOString()
+        };
+        fs.writeFileSync(verPath, JSON.stringify(versionData, null, 2), 'utf8');
+        const dataVerPath = path.join(__dirname, 'data', 'version.json');
+        if (fs.existsSync(path.dirname(dataVerPath))) {
+          fs.writeFileSync(dataVerPath, JSON.stringify(versionData, null, 2), 'utf8');
+        }
+        console.log(`📡 version.json sincronizado para OTA: v${vName} (código ${vCode})`);
+      }
+    }
+  } catch (eVer) {
+    console.error('Error sincronizando version.json:', eVer.message);
+  }
 }
 
 runSync().catch(err => {

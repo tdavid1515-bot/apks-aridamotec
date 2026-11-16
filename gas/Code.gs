@@ -2094,12 +2094,24 @@ function deleteMac(password, mac) {
 
 
 function getLatestTvAppInfo() {
+  try {
+    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/version.json?t=' + Date.now();
+    const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    if (resp.getResponseCode() === 200) {
+      const parsed = JSON.parse(resp.getContentText());
+      if (parsed && parsed.latestVersionCode) {
+        return parsed;
+      }
+    }
+  } catch (eVer) {
+    Logger.log('Error leyendo version.json dinámico en GitHub: ' + eVer);
+  }
   return {
     success: true,
-    latestVersionCode: CONFIG.TV_APP_VERSION_CODE || 4,
-    latestVersionName: CONFIG.TV_APP_VERSION || '1.3.0',
-    downloadUrl: CONFIG.TV_APP_DOWNLOAD_URL || ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/v' + (CONFIG.TV_APP_VERSION || '1.3.0') + '/ARIDAMOTEC_TV_' + (CONFIG.TV_APP_VERSION || '1.3.0') + '.apk'),
-    changelog: CONFIG.TV_APP_CHANGELOG || 'Corrección de selección y foco en categorías y tarjetas, motor dual OTA y activación por MAC.',
+    latestVersionCode: CONFIG.TV_APP_VERSION_CODE || 7,
+    latestVersionName: CONFIG.TV_APP_VERSION || '1.3.3',
+    downloadUrl: CONFIG.TV_APP_DOWNLOAD_URL || ('https://tdavid1515-bot.github.io/' + CONFIG.GITHUB_REPO + '/ARIDAMOTEC_TV_' + (CONFIG.TV_APP_VERSION || '1.3.3') + '.apk'),
+    changelog: CONFIG.TV_APP_CHANGELOG || 'Mejoras de rendimiento y estabilidad.',
     minSupportedVersionCode: 1,
     mandatory: false
   };
