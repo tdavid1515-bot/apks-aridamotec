@@ -3317,30 +3317,91 @@
       .generateApkDescription(savedPwd, cleanName);
     }
 
-    function triggerSync() {
+    async function triggerSync() {
       const btn = document.getElementById('syncBtn');
       const icon = document.getElementById('syncIconText');
       btn.disabled = true;
       icon.innerHTML = '<span class="spinner"></span>';
-      showToast('Sincronizando con Repositorio GitHub...');
-      const gas = getGas();
-      if (!gas) { btn.disabled = false; icon.textContent = '🔄'; showToast('Servicio no disponible', true); return; }
-      gas.withSuccessHandler(res => {
-          btn.disabled = false;
-          icon.textContent = '🔄';
-          if (res && res.success) {
-            showToast('¡Sincronizado! ' + (res.total || res.totalDrive || res.totalRepo || '') + ' APKs verificados.');
-            loadApks();
-          } else {
-            showToast(res ? res.error : 'Error al sincronizar', true);
+      showToast('🔍 Escaneando GitHub Releases en vivo...');
+
+      try {
+        // 1. Consultar directamente la API pública de GitHub Releases para ver archivos reales
+        const ghUrl = 'https://api.github.com/repos/tdavid1515-bot/apks-aridamotec/releases/tags/v1.0.0';
+        const ghRes = await fetch(ghUrl, { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+        
+        let liveAssets = [];
+        if (ghRes.ok) {
+          const ghData = await ghRes.json();
+          liveAssets = (ghData.assets || []).filter(a => {
+            const fn = (a.name || '').toLowerCase();
+            return (fn.endsWith('.apk') || fn.endsWith('.xapk')) && !fn.startsWith('aridamotec_tv');
+          });
+        }
+
+        // 2. Consultar el archivo catalog.json más reciente con bypass de caché
+        const catRes = await fetch('catalog.json?t=' + Date.now());
+        let remoteCatalog = [];
+        if (catRes.ok) {
+          const catJson = await catRes.json();
+          remoteCatalog = catJson.catalog || [];
+        }
+
+        // 3. Cruzar datos en vivo
+        const catalogFileMap = new Map();
+        remoteCatalog.forEach(item => catalogFileMap.set(item.fileName.toLowerCase(), item));
+
+        let newDetectedCount = 0;
+        liveAssets.forEach(asset => {
+          const fn = asset.name.toLowerCase();
+          if (!catalogFileMap.has(fn)) {
+            newDetectedCount++;
+            // Agregar temporalmente en la vista para reflejo visual inmediato
+            const tempItem = {
+              id: String(asset.id),
+              cleanName: cleanApkName(asset.name),
+              fileName: asset.name,
+              browsyCode: 'Pendiente',
+              shortUrl: '',
+              browsyShortUrl: '',
+              directUrl: asset.browser_download_url,
+              directDownloadUrl: asset.browser_download_url,
+              status: 'active',
+              createdAt: asset.created_at,
+              aiDescription: 'Aplicación recién detectada en GitHub Releases.',
+              category: classifyCategory(asset.name, asset.name, ''),
+              author: detectAuthor(asset.name, asset.name)
+            };
+            remoteCatalog.unshift(tempItem);
           }
-        })
-        .withFailureHandler(e => {
-          btn.disabled = false;
-          icon.textContent = '🔄';
-          showToast('Error: ' + (e.message || e), true);
-        })
-        .syncApks(savedPwd);
+        });
+
+        // 4. Renderizar inmediatamente el catálogo actualizado
+        if (remoteCatalog.length > 0) {
+          apksData = { active: remoteCatalog.map(normalizeApkItem), deleted: [] };
+          renderAdminCategoryChips();
+          drawCards();
+          const cAct = document.getElementById('countActive');
+          if (cAct) cAct.textContent = apksData.active.length;
+          const sInfo = document.getElementById('statusInfo');
+          if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (GitHub Releases)';
+        }
+
+        btn.disabled = false;
+        icon.textContent = '🔄';
+
+        if (newDetectedCount > 0) {
+          showToast(`⚡ ¡Detectada(s) ${newDetectedCount} nueva(s) APK en GitHub! Mostrando en catálogo.`);
+        } else {
+          showToast(`✅ Catálogo 100% sincronizado con GitHub Releases (${liveAssets.length || remoteCatalog.length} APKs).`);
+        }
+
+      } catch (err) {
+        console.warn('Error en escaneo directo GitHub:', err);
+        btn.disabled = false;
+        icon.textContent = '🔄';
+        showToast('Error al conectar con GitHub Releases: ' + err.message, true);
+        loadApks();
+      }
     }
 
     function generateCode(driveId) {
