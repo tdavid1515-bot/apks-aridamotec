@@ -303,9 +303,9 @@
     }
 
     .header-top {
-      max-width: 900px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 10px 14px;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -375,22 +375,22 @@
 
     /* FILA DE BÚSQUEDA Y PESTAÑAS (ANCLADA) */
     .controls-nav {
-      max-width: 960px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 6px 14px 10px 14px;
+      padding: 10px 24px 14px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px 14px;
+      gap: 12px 18px;
       position: relative;
     }
 
     .search-box {
       position: relative;
-      flex: 1 1 240px;
-      min-width: 180px;
-      max-width: 100%;
+      flex: 1 1 260px;
+      min-width: 200px;
+      max-width: 380px;
     }
     body.guest-mode .search-box {
       flex: 1 1 540px;
@@ -490,10 +490,11 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 10px 0 4px;
-      margin-top: 8px;
+      padding: 0 24px 10px;
       scrollbar-width: thin;
       scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+      max-width: 1400px;
+      margin: 0 auto;
     }
     .categories-bar::-webkit-scrollbar {
       height: 4px;
@@ -753,14 +754,14 @@
     .sort-row {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
       width: auto;
       flex-shrink: 0;
-      margin: 0;
+      margin-left: auto;
     }
     .sort-label {
-      font-size: 10.5px;
-      font-weight: 800;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--accent-cyan);
       white-space: nowrap;
       text-transform: uppercase;
@@ -768,16 +769,13 @@
       flex-shrink: 0;
     }
     .sort-select {
-      width: auto;
-      min-width: 135px;
-      max-width: 160px;
-      padding: 6px 8px;
-      background: #0c1220;
-      border: 1px solid var(--border-cyan);
+      background: #0a0f1d;
+      border: 1px solid rgba(0, 229, 255, 0.22);
       border-radius: 8px;
+      padding: 7px 12px;
       color: #fff;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 600;
       outline: none;
       cursor: pointer;
       flex-shrink: 0;
@@ -1181,13 +1179,13 @@
     /* ================= CONTENIDO PRINCIPAL ================= */
     main {
       flex: 1;
-      max-width: 900px;
+      max-width: 1400px;
       width: 100%;
       margin: 0 auto;
-      padding: 12px 14px 28px 14px;
+      padding: 20px 24px 60px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
 
     /* BANNER DE ESTADO */
@@ -1195,14 +1193,16 @@
       background: linear-gradient(90deg, rgba(255, 107, 0, 0.08) 0%, rgba(0, 229, 255, 0.06) 100%);
       border: 1px solid rgba(0, 229, 255, 0.15);
       border-radius: 12px;
-      padding: 9px 14px;
-      font-size: 11px;
+      padding: 10px 18px;
+      font-size: 12px;
       color: #cbd5e1;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
+      max-width: 1400px;
+      margin: 0 auto 12px;
     }
     .banner-status strong { color: var(--accent-cyan); }
     .banner-status-right {
@@ -1433,32 +1433,33 @@
     /* GRILLA DE TARJETAS */
     .cards-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
     }
-    @media(min-width: 580px) {
-      .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    }
-    @media(min-width: 860px) {
-      .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media(max-width: 600px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
     }
 
     /* TARJETA DE APK */
     .apk-card {
-      background: linear-gradient(180deg, #10182b 0%, #0a0f1d 100%);
-      border: 1px solid var(--border-cyan);
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 229, 255, 0.14);
       border-radius: 16px;
-      padding: 14px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      gap: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
     }
     .apk-card:hover {
+      background: var(--bg-card-hover);
       border-color: rgba(0, 229, 255, 0.4);
-      box-shadow: 0 6px 20px rgba(0, 229, 255, 0.1);
+      box-shadow: 0 6px 24px rgba(0, 229, 255, 0.12);
     }
 
     .card-head {
@@ -2071,9 +2072,6 @@
       </div>
 
       <div id="adminHeaderBtns" class="header-btns">
-        <a href="https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk" target="_blank" class="btn-header" style="text-decoration:none; background:rgba(0,210,255,0.12); border-color:rgba(0,210,255,0.4); color:#00d2ff;" title="Descargar instalador APK TV v1.3.0 (Build 4)">
-          📺 App TV v1.3.0
-        </a>
         <a href="index.html" target="_blank" class="btn-header" style="text-decoration:none;" title="Abrir Catálogo de Clientes en nueva pestaña">
           👁️ Catálogo Clientes
         </a>
@@ -3930,30 +3928,50 @@
       if (!savedPwd) return;
       if (isManual) showToast('Consultando dispositivos...');
       const gas = getGas();
-      if (!gas) return;
 
       try {
-        const handler = gas.withSuccessHandler(res => {
+        if (gas && typeof gas.withSuccessHandler === 'function') {
+          const handler = gas.withSuccessHandler(res => {
+            if (res && res.success) {
+              devicesData = res.devices || [];
+              updateDeviceStats();
+              renderDevices();
+              if (isManual) showToast('Lista de dispositivos actualizada (' + devicesData.length + ')');
+            } else {
+              if (isManual) showToast(res ? res.error : 'Error al cargar dispositivos', true);
+            }
+          }).withFailureHandler(err => {
+            if (isManual) showToast('Error al conectar: ' + (err.message || err), true);
+          });
+
+          if (handler && typeof handler.getMacList === 'function') {
+            handler.getMacList(savedPwd);
+            return;
+          } else if (handler && typeof handler.getMacDevicesList === 'function') {
+            handler.getMacDevicesList(savedPwd);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Error loadDevices via gas handler:', err);
+      }
+
+      // Fallback seguro universal vía fetch
+      fetch(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(savedPwd))
+        .then(r => r.json())
+        .then(res => {
           if (res && res.success) {
             devicesData = res.devices || [];
             updateDeviceStats();
             renderDevices();
             if (isManual) showToast('Lista de dispositivos actualizada (' + devicesData.length + ')');
-          } else {
-            if (isManual) showToast(res ? res.error : 'Error al cargar dispositivos', true);
+          } else if (isManual) {
+            showToast(res ? res.error : 'Error al cargar dispositivos', true);
           }
-        }).withFailureHandler(err => {
+        })
+        .catch(err => {
           if (isManual) showToast('Error al conectar: ' + (err.message || err), true);
         });
-
-        if (typeof handler.getMacList === 'function') {
-          handler.getMacList(savedPwd);
-        } else if (typeof handler.getMacDevicesList === 'function') {
-          handler.getMacDevicesList(savedPwd);
-        }
-      } catch (err) {
-        console.warn('Error loadDevices:', err);
-      }
     }
 
     function updateDeviceStats() {
@@ -4054,26 +4072,35 @@
       if (!savedPwd) return;
       showToast((newStatus === 'ACTIVO' ? 'Activando' : 'Bloqueando') + ' dispositivo ' + mac + '...');
       const gas = getGas();
-      if (!gas) return;
+
+      const onResult = (res) => {
+        if (res && res.success) {
+          showToast('Dispositivo ' + mac + ' actualizado a ' + newStatus);
+          loadDevices();
+        } else {
+          showToast(res ? res.error : 'Error al actualizar estado', true);
+        }
+      };
 
       try {
-        const handler = gas.withSuccessHandler(res => {
-          if (res && res.success) {
-            showToast('Dispositivo ' + mac + ' actualizado a ' + newStatus);
-            loadDevices();
-          } else {
-            showToast(res ? res.error : 'Error al actualizar estado', true);
+        if (gas && typeof gas.withSuccessHandler === 'function') {
+          const handler = gas.withSuccessHandler(onResult).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+          if (handler && typeof handler.toggleMac === 'function') {
+            handler.toggleMac(savedPwd, mac, newStatus);
+            return;
+          } else if (handler && typeof handler.toggleMacStatus === 'function') {
+            handler.toggleMacStatus(savedPwd, mac, newStatus);
+            return;
           }
-        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
-
-        if (typeof handler.toggleMac === 'function') {
-          handler.toggleMac(savedPwd, mac, newStatus);
-        } else if (typeof handler.toggleMacStatus === 'function') {
-          handler.toggleMacStatus(savedPwd, mac, newStatus);
         }
       } catch (e) {
-        console.warn('Error toggleDeviceStatus:', e);
+        console.warn('Error toggleDeviceStatus via gas:', e);
       }
+
+      fetch(GAS_URL + '?action=toggleMac&pwd=' + encodeURIComponent(savedPwd) + '&mac=' + encodeURIComponent(mac) + '&status=' + encodeURIComponent(newStatus))
+        .then(r => r.json())
+        .then(onResult)
+        .catch(err => showToast('Error: ' + (err.message || err), true));
     }
 
     function openNewDeviceModal() {
@@ -4117,27 +4144,41 @@
 
       showToast('Guardando dispositivo...');
       const gas = getGas();
-      if (!gas) return;
+
+      const onSaveResult = (res) => {
+        if (res && res.success) {
+          showToast('Dispositivo ' + mac + ' guardado exitosamente');
+          closeDeviceModal();
+          loadDevices();
+        } else {
+          showToast(res ? res.error : 'Error al guardar dispositivo', true);
+        }
+      };
 
       try {
-        const handler = gas.withSuccessHandler(res => {
-          if (res && res.success) {
-            showToast('Dispositivo ' + mac + ' guardado exitosamente');
-            closeDeviceModal();
-            loadDevices();
-          } else {
-            showToast(res ? res.error : 'Error al guardar dispositivo', true);
+        if (gas && typeof gas.withSuccessHandler === 'function') {
+          const handler = gas.withSuccessHandler(onSaveResult).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+          if (handler && typeof handler.saveMac === 'function') {
+            handler.saveMac(savedPwd, { mac, client, model, status, notes });
+            return;
+          } else if (handler && typeof handler.saveOrUpdateMac === 'function') {
+            handler.saveOrUpdateMac(savedPwd, { mac, client, model, status, notes });
+            return;
           }
-        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
-
-        if (typeof handler.saveMac === 'function') {
-          handler.saveMac(savedPwd, { mac, client, model, status, notes });
-        } else if (typeof handler.saveOrUpdateMac === 'function') {
-          handler.saveOrUpdateMac(savedPwd, { mac, client, model, status, notes });
         }
       } catch (e) {
-        console.warn('Error submitSaveDevice:', e);
+        console.warn('Error submitSaveDevice via gas:', e);
       }
+
+      const q = '&mac=' + encodeURIComponent(mac) +
+                '&client=' + encodeURIComponent(client) +
+                '&model=' + encodeURIComponent(model) +
+                '&status=' + encodeURIComponent(status) +
+                '&notes=' + encodeURIComponent(notes);
+      fetch(GAS_URL + '?action=saveMac&pwd=' + encodeURIComponent(savedPwd) + q)
+        .then(r => r.json())
+        .then(onSaveResult)
+        .catch(err => showToast('Error: ' + (err.message || err), true));
     }
 
     function confirmDeleteDevice(mac) {
@@ -4146,26 +4187,35 @@
       }
       showToast('Eliminando dispositivo...');
       const gas = getGas();
-      if (!gas) return;
+
+      const onDelResult = (res) => {
+        if (res && res.success) {
+          showToast('Dispositivo ' + mac + ' eliminado.');
+          loadDevices();
+        } else {
+          showToast(res ? res.error : 'Error al eliminar', true);
+        }
+      };
 
       try {
-        const handler = gas.withSuccessHandler(res => {
-          if (res && res.success) {
-            showToast('Dispositivo ' + mac + ' eliminado.');
-            loadDevices();
-          } else {
-            showToast(res ? res.error : 'Error al eliminar', true);
+        if (gas && typeof gas.withSuccessHandler === 'function') {
+          const handler = gas.withSuccessHandler(onDelResult).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+          if (handler && typeof handler.deleteMac === 'function') {
+            handler.deleteMac(savedPwd, mac);
+            return;
+          } else if (handler && typeof handler.deleteMacDevice === 'function') {
+            handler.deleteMacDevice(savedPwd, mac);
+            return;
           }
-        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
-
-        if (typeof handler.deleteMac === 'function') {
-          handler.deleteMac(savedPwd, mac);
-        } else if (typeof handler.deleteMacDevice === 'function') {
-          handler.deleteMacDevice(savedPwd, mac);
         }
       } catch (e) {
-        console.warn('Error confirmDeleteDevice:', e);
+        console.warn('Error confirmDeleteDevice via gas:', e);
       }
+
+      fetch(GAS_URL + '?action=deleteMac&pwd=' + encodeURIComponent(savedPwd) + '&mac=' + encodeURIComponent(mac))
+        .then(r => r.json())
+        .then(onDelResult)
+        .catch(err => showToast('Error: ' + (err.message || err), true));
     }
 
     // Explicit global bindings for iframe sandboxes
