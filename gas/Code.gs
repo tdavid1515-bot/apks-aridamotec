@@ -28,7 +28,7 @@ const CONFIG = {
 
 const SEED_APKS = [
   {
-    "id": "ANIMXL.apk",
+    "id": "753516957",
     "fileName": "ANIMXL.apk",
     "cleanName": "ANIMXL (Anime)",
     "category": "🎬 Películas y Series",
@@ -42,10 +42,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-16T04:58:59Z",
     "updatedAt": "2026-11-16T04:59:06Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/2943"
+    "shortUrl": "https://browsy.app/2943",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ANIMXL.apk"
   },
   {
-    "id": "ATV.LAUNCHER.v0.1.42-pro.apk",
+    "id": "753501528",
     "fileName": "ATV.LAUNCHER.v0.1.42-pro.apk",
     "cleanName": "ATV Launcher Pro",
     "category": "🛠️ Utilitarios",
@@ -61,10 +62,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/7346",
     "editKey": "rCPb9e6uMhHP",
-    "manageUrl": "https://browsy.app/manage?code=7346&key=rCPb9e6uMhHP"
+    "manageUrl": "https://browsy.app/manage?code=7346&key=rCPb9e6uMhHP",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ATV.LAUNCHER.v0.1.42-pro.apk"
   },
   {
-    "id": "BIXPLUS_V2.apk",
+    "id": "753559487",
     "fileName": "BIXPLUS_V2.apk",
     "cleanName": "BixPlus V2 (IPTV)",
     "category": "📺 TV en Vivo",
@@ -80,10 +82,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/4368",
     "editKey": "86qKjauK6FAB",
-    "manageUrl": "https://browsy.app/manage?code=4368&key=86qKjauK6FAB"
+    "manageUrl": "https://browsy.app/manage?code=4368&key=86qKjauK6FAB",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/BIXPLUS_V2.apk"
   },
   {
-    "id": "Browsy_1.5.0_APKPure.xapk",
+    "id": "745633982",
     "fileName": "Browsy_1.5.0_APKPure.xapk",
     "cleanName": "Browsy Links (App TV)",
     "category": "🛠️ Utilitarios",
@@ -97,10 +100,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:53:30Z",
     "updatedAt": "2026-11-13T23:53:32Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/2461"
+    "shortUrl": "https://browsy.app/2461",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.xapk"
   },
   {
-    "id": "ClipBox.apk",
+    "id": "745634088",
     "fileName": "ClipBox.apk",
     "cleanName": "ClipBox (Cine & Series)",
     "category": "🎬 Películas y Series",
@@ -114,10 +118,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:53:32Z",
     "updatedAt": "2026-11-13T23:53:41Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9594"
+    "shortUrl": "https://browsy.app/9594",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ClipBox.apk"
   },
   {
-    "id": "com.wireguard.android-1.0.20260315.apk",
+    "id": "745640371",
     "fileName": "com.wireguard.android-1.0.20260315.apk",
     "cleanName": "WireGuard VPN",
     "category": "🛠️ Utilitarios",
@@ -131,10 +136,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:55:51Z",
     "updatedAt": "2026-11-13T23:56:02Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9813"
+    "shortUrl": "https://browsy.app/9813",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/com.wireguard.android-1.0.20260315.apk"
   },
   {
-    "id": "CricZ.TV.v7.3.apk",
+    "id": "745634574",
     "fileName": "CricZ.TV.v7.3.apk",
     "cleanName": "CricZ TV Deportes",
     "category": "⚽ Deportes",
@@ -148,10 +154,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:53:41Z",
     "updatedAt": "2026-11-13T23:53:45Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9985"
+    "shortUrl": "https://browsy.app/9985",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk"
   },
   {
-    "id": "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
+    "id": "745634804",
     "fileName": "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
     "cleanName": "Downloader by AFTVnews",
     "category": "🛠️ Utilitarios",
@@ -165,10 +172,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:53:45Z",
     "updatedAt": "2026-11-13T23:53:47Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/3959"
+    "shortUrl": "https://browsy.app/3959",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk"
   },
   {
-    "id": "FlyStream.apk",
+    "id": "753529004",
     "fileName": "FlyStream.apk",
     "cleanName": "FlyStream (TV en Vivo)",
     "category": "📺 TV en Vivo",
@@ -184,10 +192,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/5866",
     "editKey": "rCdbKULSZE58",
-    "manageUrl": "https://browsy.app/manage?code=5866&key=rCdbKULSZE58"
+    "manageUrl": "https://browsy.app/manage?code=5866&key=rCdbKULSZE58",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/FlyStream.apk"
   },
   {
-    "id": "GeeSports_.v3.9.apk",
+    "id": "753507081",
     "fileName": "GeeSports_.v3.9.apk",
     "cleanName": "GeeSports Deportes",
     "category": "⚽ Deportes",
@@ -201,10 +210,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-16T04:54:53Z",
     "updatedAt": "2026-11-16T04:54:56Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/4584"
+    "shortUrl": "https://browsy.app/4584",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GeeSports_.v3.9.apk"
   },
   {
-    "id": "LokuraTv.apk",
+    "id": "745635705",
     "fileName": "LokuraTv.apk",
     "cleanName": "LokuraTv Oficial",
     "category": "🛠️ Utilitarios",
@@ -218,10 +228,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:54:06Z",
     "updatedAt": "2026-11-13T23:54:59Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/7827"
+    "shortUrl": "https://browsy.app/7827",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv.apk"
   },
   {
-    "id": "LokuraTv_Pro_Ultra.apk",
+    "id": "745638099",
     "fileName": "LokuraTv_Pro_Ultra.apk",
     "cleanName": "LokuraTv Pro Ultra",
     "category": "🛠️ Utilitarios",
@@ -235,10 +246,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:54:59Z",
     "updatedAt": "2026-11-13T23:55:18Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/7827"
+    "shortUrl": "https://browsy.app/7827",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv_Pro_Ultra.apk"
   },
   {
-    "id": "luma-tv.apk",
+    "id": "745639055",
     "fileName": "luma-tv.apk",
     "cleanName": "Luma TV (Canales)",
     "category": "📺 TV en Vivo",
@@ -252,10 +264,28 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:55:18Z",
     "updatedAt": "2026-11-13T23:55:23Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/2360"
+    "shortUrl": "https://browsy.app/2360",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/luma-tv.apk"
   },
   {
-    "id": "MXL.IPTV.apk",
+    "id": "755470039",
+    "cleanName": "MoviePlus armeabi v7a",
+    "fileName": "MoviePlus.armeabi-v7a.apk",
+    "browsyCode": "7887",
+    "shortUrl": "https://browsy.app/7887",
+    "browsyShortUrl": "https://browsy.app/7887",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus.armeabi-v7a.apk",
+    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus.armeabi-v7a.apk",
+    "editKey": "Bjcns8kDDU79",
+    "manageUrl": "https://browsy.app/manage?code=7887&key=Bjcns8kDDU79",
+    "status": "active",
+    "createdAt": "2026-11-16T15:59:52Z",
+    "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+    "category": "🎬 Películas y Series",
+    "author": "Oficial"
+  },
+  {
+    "id": "753516469",
     "fileName": "MXL.IPTV.apk",
     "cleanName": "MXL IPTV Player",
     "category": "📺 TV en Vivo",
@@ -271,10 +301,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/8524",
     "editKey": "ydBgN8fDqPmY",
-    "manageUrl": "https://browsy.app/manage?code=8524&key=ydBgN8fDqPmY"
+    "manageUrl": "https://browsy.app/manage?code=8524&key=ydBgN8fDqPmY",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.IPTV.apk"
   },
   {
-    "id": "MXL.MOVIES.apk",
+    "id": "753516744",
     "fileName": "MXL.MOVIES.apk",
     "cleanName": "MXL Movies (Cine)",
     "category": "🎬 Películas y Series",
@@ -290,10 +321,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/4225",
     "editKey": "awGbdN5hBKGb",
-    "manageUrl": "https://browsy.app/manage?code=4225&key=awGbdN5hBKGb"
+    "manageUrl": "https://browsy.app/manage?code=4225&key=awGbdN5hBKGb",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.MOVIES.apk"
   },
   {
-    "id": "PLayer_Pro_base.2.apk",
+    "id": "745643533",
     "fileName": "PLayer_Pro_base.2.apk",
     "cleanName": "Player Pro (IPTV)",
     "category": "📺 TV en Vivo",
@@ -307,10 +339,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:57:18Z",
     "updatedAt": "2026-11-13T23:57:26Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/2270"
+    "shortUrl": "https://browsy.app/2270",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PLayer_Pro_base.2.apk"
   },
   {
-    "id": "PlayTV_Premium_20.1.apk",
+    "id": "745643792",
     "fileName": "PlayTV_Premium_20.1.apk",
     "cleanName": "PlayTV Premium 20.1",
     "category": "📺 TV en Vivo",
@@ -324,10 +357,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:57:26Z",
     "updatedAt": "2026-11-13T23:57:42Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/3114"
+    "shortUrl": "https://browsy.app/3114",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PlayTV_Premium_20.1.apk"
   },
   {
-    "id": "PROJJECTIVY.launcher.v4.72.Premium.apk",
+    "id": "745644418",
     "fileName": "PROJJECTIVY.launcher.v4.72.Premium.apk",
     "cleanName": "Projectivy Launcher",
     "category": "🛠️ Utilitarios",
@@ -341,10 +375,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:57:42Z",
     "updatedAt": "2026-11-13T23:57:53Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/7624"
+    "shortUrl": "https://browsy.app/7624",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PROJJECTIVY.launcher.v4.72.Premium.apk"
   },
   {
-    "id": "RBTV.apk",
+    "id": "745644814",
     "fileName": "RBTV.apk",
     "cleanName": "RBTV Canales & Deportes",
     "category": "⚽ Deportes",
@@ -358,10 +393,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:57:53Z",
     "updatedAt": "2026-11-13T23:58:01Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/7812"
+    "shortUrl": "https://browsy.app/7812",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RBTV.apk"
   },
   {
-    "id": "SPORTV_3.9.VIP.apk",
+    "id": "745645044",
     "fileName": "SPORTV_3.9.VIP.apk",
     "cleanName": "SPORTV 3.9 VIP (Deportes)",
     "category": "⚽ Deportes",
@@ -375,10 +411,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:58:01Z",
     "updatedAt": "2026-11-13T23:58:06Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/4065"
+    "shortUrl": "https://browsy.app/4065",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SPORTV_3.9.VIP.apk"
   },
   {
-    "id": "Sportz.X.VERSION.3.2.apk",
+    "id": "745645208",
     "fileName": "Sportz.X.VERSION.3.2.apk",
     "cleanName": "Sportz X Deportes",
     "category": "⚽ Deportes",
@@ -392,10 +429,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:58:06Z",
     "updatedAt": "2026-11-13T23:58:15Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/5280"
+    "shortUrl": "https://browsy.app/5280",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Sportz.X.VERSION.3.2.apk"
   },
   {
-    "id": "Surfshark.apk",
+    "id": "745645628",
     "fileName": "Surfshark.apk",
     "cleanName": "Surfshark VPN",
     "category": "🛠️ Utilitarios",
@@ -409,10 +447,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-13T23:58:15Z",
     "updatedAt": "2026-11-13T23:59:02Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/2915"
+    "shortUrl": "https://browsy.app/2915",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Surfshark.apk"
   },
   {
-    "id": "TizenTube_v2.03_YouTube_arm.apk",
+    "id": "753500137",
     "fileName": "TizenTube_v2.03_YouTube_arm.apk",
     "cleanName": "TizenTube (YouTube arm)",
     "category": "🛠️ Utilitarios",
@@ -426,10 +465,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-16T04:51:31Z",
     "updatedAt": "2026-11-16T05:18:31Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9360"
+    "shortUrl": "https://browsy.app/9360",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm.apk"
   },
   {
-    "id": "TizenTube_v2.03_YouTube_arm64.apk",
+    "id": "753498273",
     "fileName": "TizenTube_v2.03_YouTube_arm64.apk",
     "cleanName": "TizenTube (YouTube arm64)",
     "category": "🛠️ Utilitarios",
@@ -443,10 +483,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-16T04:50:38Z",
     "updatedAt": "2026-11-16T05:18:31Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9360"
+    "shortUrl": "https://browsy.app/9360",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm64.apk"
   },
   {
-    "id": "Tsuzuku.v4.1.4.Android.TV.apk",
+    "id": "753517643",
     "fileName": "Tsuzuku.v4.1.4.Android.TV.apk",
     "cleanName": "Tsuzuku TV (Anime)",
     "category": "🎬 Películas y Series",
@@ -462,10 +503,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/3893",
     "editKey": "U7NsoPTqYkfQ",
-    "manageUrl": "https://browsy.app/manage?code=3893&key=U7NsoPTqYkfQ"
+    "manageUrl": "https://browsy.app/manage?code=3893&key=U7NsoPTqYkfQ",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk"
   },
   {
-    "id": "Watched.apk",
+    "id": "753528905",
     "fileName": "Watched.apk",
     "cleanName": "Watched Media Player",
     "category": "🎬 Películas y Series",
@@ -481,10 +523,11 @@ const SEED_APKS = [
     "status": "active",
     "shortUrl": "https://browsy.app/6015",
     "editKey": "z6HQ2KCpjNZR",
-    "manageUrl": "https://browsy.app/manage?code=6015&key=z6HQ2KCpjNZR"
+    "manageUrl": "https://browsy.app/manage?code=6015&key=z6HQ2KCpjNZR",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Watched.apk"
   },
   {
-    "id": "WiwyXuper.apk",
+    "id": "745652066",
     "fileName": "WiwyXuper.apk",
     "cleanName": "WiwyXuper (TV en Vivo)",
     "category": "📺 TV en Vivo",
@@ -498,10 +541,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-14T00:00:55Z",
     "updatedAt": "2026-11-14T00:01:51Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9290"
+    "shortUrl": "https://browsy.app/9290",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/WiwyXuper.apk"
   },
   {
-    "id": "Wolf.Launcher.0.1.9.apk",
+    "id": "745656986",
     "fileName": "Wolf.Launcher.0.1.9.apk",
     "cleanName": "Wolf Launcher TV",
     "category": "🛠️ Utilitarios",
@@ -515,10 +559,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-14T00:02:53Z",
     "updatedAt": "2026-11-14T00:02:55Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/7242"
+    "shortUrl": "https://browsy.app/7242",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Wolf.Launcher.0.1.9.apk"
   },
   {
-    "id": "XTREMETV.apk",
+    "id": "753545640",
     "fileName": "XTREMETV.apk",
     "cleanName": "XTREMETV (IPTV)",
     "category": "📺 TV en Vivo",
@@ -532,10 +577,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-16T05:11:11Z",
     "updatedAt": "2026-11-16T05:11:17Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/6603"
+    "shortUrl": "https://browsy.app/6603",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XTREMETV.apk"
   },
   {
-    "id": "XUPER.TV.v4.99.20.Android.TV.Original.apk",
+    "id": "745659301",
     "fileName": "XUPER.TV.v4.99.20.Android.TV.Original.apk",
     "cleanName": "Xuper TV v4.99.20 Original",
     "category": "📺 TV en Vivo",
@@ -549,10 +595,11 @@ const SEED_APKS = [
     "createdAt": "2026-11-14T00:03:53Z",
     "updatedAt": "2026-11-16T05:18:31Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/9249"
+    "shortUrl": "https://browsy.app/9249",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XUPER.TV.v4.99.20.Android.TV.Original.apk"
   },
   {
-    "id": "XuperTv-NF-v4.35.1-ModByNF.apk",
+    "id": "747488097",
     "fileName": "XuperTv-NF-v4.35.1-ModByNF.apk",
     "cleanName": "XuperTV NF v4.35 ModByNF",
     "category": "📺 TV en Vivo",
@@ -566,7 +613,8 @@ const SEED_APKS = [
     "createdAt": "2026-11-14T12:53:29Z",
     "updatedAt": "2026-11-14T12:56:25Z",
     "status": "active",
-    "shortUrl": "https://browsy.app/7522"
+    "shortUrl": "https://browsy.app/7522",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XuperTv-NF-v4.35.1-ModByNF.apk"
   }
 ];
 

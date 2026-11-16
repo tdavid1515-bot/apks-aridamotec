@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 31,
-  "total": 31,
+  "count": 32,
+  "total": 32,
   "catalog": [
     {
       "id": "753516957",
@@ -242,6 +242,23 @@
       "status": "active",
       "shortUrl": "https://browsy.app/2360",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/luma-tv.apk"
+    },
+    {
+      "id": "755470039",
+      "cleanName": "MoviePlus armeabi v7a",
+      "fileName": "MoviePlus.armeabi-v7a.apk",
+      "browsyCode": "7887",
+      "shortUrl": "https://browsy.app/7887",
+      "browsyShortUrl": "https://browsy.app/7887",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus.armeabi-v7a.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus.armeabi-v7a.apk",
+      "editKey": "Bjcns8kDDU79",
+      "manageUrl": "https://browsy.app/manage?code=7887&key=Bjcns8kDDU79",
+      "status": "active",
+      "createdAt": "2026-11-16T15:59:52Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "🎬 Películas y Series",
+      "author": "Oficial"
     },
     {
       "id": "753516469",
