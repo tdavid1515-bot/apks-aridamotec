@@ -21,7 +21,9 @@ function cleanApkName(fileName) {
 function detectAuthor(cleanName, fileName) {
   const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const combined = norm(cleanName) + ' ' + norm(fileName);
-  if (combined.includes('modbynf') || combined.includes('xuper')) return 'By NF / Aridamotec Mod';
+  if (combined.includes('modbynf')) return 'ModByNF';
+  if (combined.includes('original')) return 'Oficial';
+  if (combined.includes('xuper')) return 'Xuper Dev';
   if (combined.includes('wolf')) return 'Wolf Dev';
   if (combined.includes('wireguard')) return 'WireGuard LLC';
   if (combined.includes('weather')) return 'Weather XL Dev';

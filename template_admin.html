@@ -805,6 +805,35 @@
       align-items: center;
       gap: 4px;
     }
+    .apk-author-tag.original {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .apk-author-tag.mod {
+      color: #fb923c;
+      background: rgba(251, 146, 60, 0.12);
+      border: 1px solid rgba(251, 146, 60, 0.3);
+    }
+    .badge-new-72h {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.25));
+      border: 1px solid rgba(245, 158, 11, 0.6);
+      color: #fbbf24;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      animation: pulseNewBadge 2s infinite ease-in-out;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    @keyframes pulseNewBadge {
+      0%, 100% { box-shadow: 0 0 4px rgba(245, 158, 11, 0.2); }
+      50% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+    }
     .legal-disclaimer-footer {
       max-width: 1400px;
       margin: 40px auto 20px;
@@ -2452,8 +2481,10 @@
         deletePermanently(pwd, fileId) {
           this._call(GAS_URL + '?action=deletePermanent&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
         },
-        updateApkDescription(pwd, fileId, desc) {
-          this._call(GAS_URL + '?action=updateDesc&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&desc=' + encodeURIComponent(desc));
+        updateApkDescription(pwd, fileId, desc, fileName) {
+          let u = GAS_URL + '?action=updateDesc&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&desc=' + encodeURIComponent(desc);
+          if (fileName) u += '&fileName=' + encodeURIComponent(fileName);
+          this._call(u);
         },
         generateCodeForSingleApk(pwd, fileId) {
           this._call(GAS_URL + '?action=generateCode&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
@@ -2502,8 +2533,10 @@
         deleteMacDevice(pwd, mac) {
           return this.deleteMac(pwd, mac);
         },
-        updateCategory(pwd, fileId, category) {
-          this._call(GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(category));
+        updateCategory(pwd, fileId, category, fileName) {
+          let u = GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(category);
+          if (fileName) u += '&fileName=' + encodeURIComponent(fileName);
+          this._call(u);
         },
         deduplicate(pwd) {
           this._call(GAS_URL + '?action=deduplicate&pwd=' + encodeURIComponent(pwd));
@@ -2734,7 +2767,9 @@
     function detectAuthor(cleanName, fileName) {
       const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
       const combined = norm(cleanName) + ' ' + norm(fileName);
-      if (combined.includes('modbynf') || combined.includes('xuper')) return 'By NF / Aridamotec Mod';
+      if (combined.includes('modbynf')) return 'ModByNF';
+      if (combined.includes('original')) return 'Oficial';
+      if (combined.includes('xuper')) return 'Xuper Dev';
       if (combined.includes('wolf')) return 'Wolf Dev';
       if (combined.includes('wireguard')) return 'WireGuard LLC';
       if (combined.includes('weather')) return 'Weather XL Dev';
@@ -2753,7 +2788,7 @@
       if (combined.includes('luma')) return 'Luma TV';
       if (combined.includes('magis')) return 'Magis Team';
       if (combined.includes('lokura')) return 'Lokura TV Dev';
-      return 'Oficial / Desarrollador';
+      return 'Oficial';
     }
   
     function normalizeApkItem(item) {
@@ -2761,9 +2796,11 @@
       const cleanName = String(item.cleanName || '');
       const fileName = String(item.fileName || '');
       const desc = String(item.aiDescription || '');
+      const assignedId = String(item.id || item.driveFileId || item.fileName || '');
       return {
         ...item,
-        driveFileId: String(item.driveFileId || ''),
+        id: assignedId,
+        driveFileId: assignedId,
         cleanName: cleanName,
         fileName: fileName,
         browsyCode: (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '',
@@ -2771,8 +2808,17 @@
         directDownloadUrl: String(item.directDownloadUrl || ''),
         aiDescription: desc,
         category: item.category || classifyCategory(cleanName, fileName, desc),
-        author: item.author || detectAuthor(cleanName, fileName)
+        author: item.author || detectAuthor(cleanName, fileName),
+        createdAt: item.createdAt || ''
       };
+    }
+
+    function isApkNew(createdAt) {
+      if (!createdAt) return false;
+      const t = new Date(createdAt).getTime();
+      if (isNaN(t)) return false;
+      const diffHours = (Date.now() - t) / (1000 * 60 * 60);
+      return diffHours >= 0 && diffHours <= 72;
     }
 
     function renderApp(res) {
@@ -2997,8 +3043,12 @@
       showToast('Actualizando categoría a ' + newCategory + '...');
 
       const gas = getGas();
+      const allItems = [...(apksData.active || []), ...(apksData.deleted || [])];
+      const targetItem = allItems.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
+      const fileName = targetItem ? targetItem.fileName : '';
+
       const updateLocal = (list) => {
-        const found = list.find(x => String(x.driveFileId) === String(fileId));
+        const found = list.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
         if (found) found.category = newCategory;
       };
       updateLocal(apksData.active);
@@ -3021,13 +3071,13 @@
             showToast('Error de red: ' + (err.message || err), true);
           });
           if (typeof h.updateCategory === 'function') {
-            h.updateCategory(savedPwd, fileId, newCategory);
+            h.updateCategory(savedPwd, fileId, newCategory, fileName);
             return;
           }
         } catch (e) {}
       }
 
-      fetch(GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(savedPwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(newCategory))
+      fetch(GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(savedPwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(newCategory) + (fileName ? ('&fileName=' + encodeURIComponent(fileName)) : ''))
         .then(r => r.json())
         .then(onComplete)
         .catch(err => {
@@ -3114,7 +3164,10 @@
         card.innerHTML = `
           <div>
             <div class="card-head">
-              <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
+              <div class="apk-title" title="${escapeHtml(cleanName)}">
+                ${escapeHtml(cleanName)}
+                ${isApkNew(it.createdAt) ? `<span class="badge-new-72h" title="Cargada hace menos de 3 días">✨ NUEVO</span>` : ''}
+              </div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
                 <span class="badge-status badge-act">Activo</span>
                 <select class="admin-cat-select" onchange="changeApkCategory('${escapeJs(it.driveFileId)}', this.value, event)" title="Reasignar categoría">
@@ -3130,7 +3183,10 @@
             </div>
             <div class="apk-sub-meta">
               <span class="apk-filename" title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</span>
-              <span class="apk-author-tag" title="Autor / Desarrollador">👤 ${escapeHtml(it.author || 'Oficial')}</span>
+              ${it.author && (it.author.toLowerCase().includes('mod') || it.author.toLowerCase().includes('dev') || it.author.toLowerCase().includes('team') || it.author.toLowerCase().includes('corp') || it.author.toLowerCase().includes('project') || it.author.toLowerCase().includes('aftvnews') || it.author.toLowerCase().includes('llc') || it.author.toLowerCase().includes('b.v.')) && !it.author.toLowerCase().includes('oficial') ? 
+                `<span class="apk-author-tag mod" title="APK Modificada">🔧 Mod: ${escapeHtml(it.author.replace(/^(mod\s*by\s*|mod:\s*)/i, ''))}</span>` : 
+                `<span class="apk-author-tag original" title="APK Original Oficial">🛡️ Original</span>`
+              }
             </div>
 
             <div class="browsy-box">
@@ -3235,6 +3291,10 @@
       if (!textarea) return;
       const newDesc = textarea.value.trim();
 
+      const allItems = [...(apksData.active || []), ...(apksData.deleted || [])];
+      const targetItem = allItems.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
+      const fileName = targetItem ? targetItem.fileName : '';
+
       if (statusEl) {
         statusEl.textContent = 'Guardando...';
         statusEl.style.color = '#38bdf8';
@@ -3258,8 +3318,7 @@
           }
           showToast('¡Descripción actualizada en tiempo real!');
           // Actualizar memoria local en apksData
-          const item = [...apksData.active, ...apksData.deleted].find(x => String(x.driveFileId) === String(fileId));
-          if (item) item.aiDescription = newDesc;
+          if (targetItem) targetItem.aiDescription = newDesc;
           if (typeof waDescriptions !== 'undefined') {
             waDescriptions[fileId] = newDesc;
           }
@@ -3277,7 +3336,7 @@
           statusEl.style.color = '#ef4444';
         }
       })
-      .updateApkDescription(savedPwd, fileId, newDesc);
+      .updateApkDescription(savedPwd, fileId, newDesc, fileName);
     }
 
     function regenAdminAiDesc(fileId, cleanName, event) {

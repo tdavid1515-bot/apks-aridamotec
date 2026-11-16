@@ -20,10 +20,10 @@ const CONFIG = {
   SHEET_NAME: 'Control APKs y Códigos Browsy',
   APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
   GEMINI_API_KEY: '',
-  TV_APP_VERSION: '1.3.2',
-  TV_APP_VERSION_CODE: 6,
-  TV_APP_DOWNLOAD_URL: 'https://tdavid1515-bot.github.io/apks-aridamotec/ARIDAMOTEC_TV_1.3.2.apk',
-  TV_APP_CHANGELOG: 'Logos adaptativos en alta resolución, Leanback 16:9, reasignación de categorías en vivo, autor de APKs, descargo legal y foco D-Pad optimizado.'
+  TV_APP_VERSION: '1.3.3',
+  TV_APP_VERSION_CODE: 7,
+  TV_APP_DOWNLOAD_URL: 'https://tdavid1515-bot.github.io/apks-aridamotec/ARIDAMOTEC_TV_1.3.3.apk',
+  TV_APP_CHANGELOG: 'Badge e indicador dinámico de APKs nuevas (< 3 días), filtro minimalista [✨ Nuevas], autor Oficial/Modificado y retención de foco D-Pad anti-jump.'
 };
 
 const SEED_APKS = [
@@ -531,7 +531,7 @@ const SEED_APKS = [
     "fileName": "WiwyXuper.apk",
     "cleanName": "WiwyXuper (TV en Vivo)",
     "category": "📺 TV en Vivo",
-    "author": "By NF / Aridamotec Mod",
+    "author": "ModByNF",
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas.",
     "browsyCode": "9290",
     "browsyShortUrl": "https://browsy.app/9290",
@@ -585,7 +585,7 @@ const SEED_APKS = [
     "fileName": "XUPER.TV.v4.99.20.Android.TV.Original.apk",
     "cleanName": "Xuper TV v4.99.20 Original",
     "category": "📺 TV en Vivo",
-    "author": "By NF / Aridamotec Mod",
+    "author": "Oficial",
     "aiDescription": "Con esta aplicación podrás ver TV en vivo, series, películas y anime que te gustan.",
     "browsyCode": "9249",
     "browsyShortUrl": "https://browsy.app/9249",
@@ -603,7 +603,7 @@ const SEED_APKS = [
     "fileName": "XuperTv-NF-v4.35.1-ModByNF.apk",
     "cleanName": "XuperTV NF v4.35 ModByNF",
     "category": "📺 TV en Vivo",
-    "author": "By NF / Aridamotec Mod",
+    "author": "ModByNF",
     "aiDescription": "Con esta aplicación podrás ver TV en vivo, películas, series y anime con carga ultrarrápida.",
     "browsyCode": "7522",
     "browsyShortUrl": "https://browsy.app/7522",
@@ -646,11 +646,11 @@ function doGet(e) {
     } else if (act === 'deletePermanent') {
       res = deletePermanently(e.parameter.pwd, e.parameter.fileId);
     } else if (act === 'updateCategory') {
-      res = updateApkCategory(e.parameter.pwd, e.parameter.fileId, e.parameter.category);
+      res = updateApkCategory(e.parameter.pwd, e.parameter.fileId, e.parameter.category, e.parameter.fileName);
     } else if (act === 'deduplicate') {
       res = deduplicateSheetRows(e.parameter.pwd);
     } else if (act === 'updateDesc' || act === 'updateDescription') {
-      res = updateApkDescription(e.parameter.pwd, e.parameter.fileId, e.parameter.desc || e.parameter.description);
+      res = updateApkDescription(e.parameter.pwd, e.parameter.fileId, e.parameter.desc || e.parameter.description, e.parameter.fileName);
     } else if (act === 'interval') {
       res = setSyncInterval(e.parameter.pwd, e.parameter.mins);
     } else if (act === 'describe') {
@@ -907,6 +907,43 @@ function resetAdminPassword(resetToken, newPassword) {
 }
 
 // ================= CATÁLOGO SEGURO PARA MODO INVITADO =================
+function overlaySheetMetadata(items) {
+  if (!items || !items.length) return items;
+  try {
+    const sheet = getOrCreateSheet();
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return items;
+
+    const metaMap = new Map();
+    for (let i = 1; i < data.length; i++) {
+      const rowId = String(data[i][0] || '').trim();
+      const rowFile = String(data[i][2] || '').trim().toLowerCase();
+      const rowDesc = String(data[i][11] || '').trim();
+      const rowCat = String(data[i][12] || '').trim();
+      if (rowFile || rowId) {
+        const meta = {};
+        if (rowDesc) meta.aiDescription = rowDesc;
+        if (rowCat) meta.category = rowCat;
+        if (rowFile) metaMap.set(rowFile, meta);
+        if (rowId) metaMap.set(rowId, meta);
+      }
+    }
+
+    items.forEach(it => {
+      const idKey = String(it.id || '');
+      const fnKey = String(it.fileName || '').toLowerCase();
+      const meta = metaMap.get(fnKey) || (idKey ? metaMap.get(idKey) : null);
+      if (meta) {
+        if (meta.aiDescription) it.aiDescription = meta.aiDescription;
+        if (meta.category) it.category = meta.category;
+      }
+    });
+  } catch (eM) {
+    Logger.log('Error superponiendo metadatos de hoja: ' + eM);
+  }
+  return items;
+}
+
 function getGuestCatalog() {
   try {
     const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
@@ -914,13 +951,15 @@ function getGuestCatalog() {
     if (resp.getResponseCode() === 200) {
       const parsed = JSON.parse(resp.getContentText());
       if (parsed && Array.isArray(parsed.catalog)) {
-        return { success: true, count: parsed.catalog.length, total: parsed.catalog.length, catalog: parsed.catalog };
+        const enriched = overlaySheetMetadata(parsed.catalog);
+        return { success: true, count: enriched.length, total: enriched.length, catalog: enriched };
       }
     }
   } catch (err) {
     Logger.log('Error consultando catalog.json en GitHub: ' + err);
   }
-  return { success: true, count: SEED_APKS.length, total: SEED_APKS.length, catalog: SEED_APKS };
+  const enrichedSeed = overlaySheetMetadata(SEED_APKS);
+  return { success: true, count: enrichedSeed.length, total: enrichedSeed.length, catalog: enrichedSeed };
 }
 
 function getOrCreateSheet() {
@@ -1460,13 +1499,15 @@ function getApksList(password) {
     if (resp.getResponseCode() === 200) {
       const parsed = JSON.parse(resp.getContentText());
       if (parsed && Array.isArray(parsed.catalog)) {
-        return { success: true, total: parsed.catalog.length, active: parsed.catalog, deleted: [] };
+        const enriched = overlaySheetMetadata(parsed.catalog);
+        return { success: true, total: enriched.length, active: enriched, deleted: [] };
       }
     }
   } catch (err) {
     Logger.log('Error getApksList desde GitHub: ' + err);
   }
-  return { success: true, total: SEED_APKS.length, active: SEED_APKS, deleted: [] };
+  const enrichedSeed = overlaySheetMetadata(SEED_APKS);
+  return { success: true, total: enrichedSeed.length, active: enrichedSeed, deleted: [] };
 }
 
 function deletePermanently(password, driveFileId) {
@@ -1608,7 +1649,7 @@ function generateCodeForSingleApk(password, driveFileId) {
   return { success: false, error: 'Archivo no encontrado' };
 }
 
-function updateApkDescription(password, fileId, newDescription) {
+function updateApkDescription(password, fileId, newDescription, fileName) {
   if (!verifyAuth(password)) {
     return { success: false, error: 'Acceso no autorizado' };
   }
@@ -1617,18 +1658,69 @@ function updateApkDescription(password, fileId, newDescription) {
   const data = sheet.getDataRange().getValues();
   const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
   const targetId = String(fileId || '').trim();
+  const targetFileName = String(fileName || '').trim().toLowerCase();
   const cleanDesc = String(newDescription || '').trim();
 
   let updated = false;
   for (let i = 1; i < data.length; i++) {
     const rowId = String(data[i][0] || '').trim();
-    const rowFileName = String(data[i][2] || '').trim();
-    if (rowId === targetId || rowFileName.toLowerCase() === targetId.toLowerCase()) {
+    const rowFileName = String(data[i][2] || '').trim().toLowerCase();
+    if ((targetId && (rowId === targetId || rowFileName === targetId.toLowerCase())) ||
+        (targetFileName && rowFileName === targetFileName)) {
       sheet.getRange(i + 1, 12).setValue(cleanDesc);
       sheet.getRange(i + 1, 11).setValue(nowStr);
       updated = true;
       break;
     }
+  }
+
+  // Si no existía la fila en la hoja de cálculo, crearla y persistirla
+  if (!updated) {
+    let catItem = null;
+    try {
+      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
+      const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+      if (resp.getResponseCode() === 200) {
+        const parsed = JSON.parse(resp.getContentText());
+        if (parsed && Array.isArray(parsed.catalog)) {
+          catItem = parsed.catalog.find(x => 
+            (targetId && (String(x.id) === targetId || String(x.fileName).toLowerCase() === targetId.toLowerCase())) ||
+            (targetFileName && String(x.fileName).toLowerCase() === targetFileName)
+          );
+        }
+      }
+    } catch (eCat) {}
+
+    if (!catItem) {
+      catItem = SEED_APKS.find(x => 
+        (targetId && (String(x.id) === targetId || String(x.fileName).toLowerCase() === targetId.toLowerCase())) ||
+        (targetFileName && String(x.fileName).toLowerCase() === targetFileName)
+      );
+    }
+
+    const finalId = targetId || (catItem && catItem.id) || Utilities.getUuid();
+    const finalFile = (catItem && catItem.fileName) || fileName || targetId;
+    const finalClean = (catItem && catItem.cleanName) || cleanApkName(finalFile);
+    const finalCategory = (catItem && catItem.category) || classifyCategory(finalClean, finalFile);
+
+    sheet.appendRow([
+      String(finalId),
+      String(finalClean),
+      String(finalFile),
+      String((catItem && catItem.browsyCode) || ''),
+      String((catItem && (catItem.browsyShortUrl || catItem.shortUrl)) || ''),
+      String((catItem && (catItem.directDownloadUrl || catItem.directUrl)) || ''),
+      (catItem && catItem.size) || 0,
+      (catItem && catItem.sizeFormatted) || '',
+      'active',
+      (catItem && catItem.createdAt) || nowStr,
+      nowStr,
+      cleanDesc,
+      finalCategory,
+      (catItem && catItem.editKey) || '',
+      (catItem && catItem.manageUrl) || ''
+    ]);
+    updated = true;
   }
 
   if (updated) {
@@ -1639,7 +1731,7 @@ function updateApkDescription(password, fileId, newDescription) {
       success: true,
       fileId: fileId,
       description: cleanDesc,
-      message: 'Descripción actualizada correctamente'
+      message: 'Descripción actualizada y persistida correctamente'
     };
   }
 
@@ -2020,7 +2112,7 @@ function getTvAppInfo() {
 // ============================================================================
 // REASIGNACIÓN DE CATEGORÍAS MANUAL Y DEDUPLICACIÓN DE HOJA
 // ============================================================================
-function updateApkCategory(password, fileId, newCategory) {
+function updateApkCategory(password, fileId, newCategory, fileName) {
   if (!verifyAuth(password)) {
     return { success: false, error: 'Acceso no autorizado' };
   }
@@ -2028,18 +2120,69 @@ function updateApkCategory(password, fileId, newCategory) {
   const data = sheet.getDataRange().getValues();
   const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
   const targetId = String(fileId || '').trim();
+  const targetFileName = String(fileName || '').trim().toLowerCase();
   const cleanCat = String(newCategory || '').trim();
 
   let updated = false;
   for (let i = 1; i < data.length; i++) {
     const rowId = String(data[i][0] || '').trim();
-    const rowFileName = String(data[i][2] || '').trim();
-    if (rowId === targetId || rowFileName.toLowerCase() === targetId.toLowerCase()) {
+    const rowFileName = String(data[i][2] || '').trim().toLowerCase();
+    if ((targetId && (rowId === targetId || rowFileName === targetId.toLowerCase())) ||
+        (targetFileName && rowFileName === targetFileName)) {
       sheet.getRange(i + 1, 13).setValue(cleanCat);
       sheet.getRange(i + 1, 11).setValue(nowStr);
       updated = true;
       break;
     }
+  }
+
+  // Si no existía la fila en la hoja de cálculo, crearla y persistirla
+  if (!updated) {
+    let catItem = null;
+    try {
+      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json';
+      const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+      if (resp.getResponseCode() === 200) {
+        const parsed = JSON.parse(resp.getContentText());
+        if (parsed && Array.isArray(parsed.catalog)) {
+          catItem = parsed.catalog.find(x => 
+            (targetId && (String(x.id) === targetId || String(x.fileName).toLowerCase() === targetId.toLowerCase())) ||
+            (targetFileName && String(x.fileName).toLowerCase() === targetFileName)
+          );
+        }
+      }
+    } catch (eCat) {}
+
+    if (!catItem) {
+      catItem = SEED_APKS.find(x => 
+        (targetId && (String(x.id) === targetId || String(x.fileName).toLowerCase() === targetId.toLowerCase())) ||
+        (targetFileName && String(x.fileName).toLowerCase() === targetFileName)
+      );
+    }
+
+    const finalId = targetId || (catItem && catItem.id) || Utilities.getUuid();
+    const finalFile = (catItem && catItem.fileName) || fileName || targetId;
+    const finalClean = (catItem && catItem.cleanName) || cleanApkName(finalFile);
+    const finalDesc = (catItem && catItem.aiDescription) || getSemanticDescription(finalClean, finalFile);
+
+    sheet.appendRow([
+      String(finalId),
+      String(finalClean),
+      String(finalFile),
+      String((catItem && catItem.browsyCode) || ''),
+      String((catItem && (catItem.browsyShortUrl || catItem.shortUrl)) || ''),
+      String((catItem && (catItem.directDownloadUrl || catItem.directUrl)) || ''),
+      (catItem && catItem.size) || 0,
+      (catItem && catItem.sizeFormatted) || '',
+      'active',
+      (catItem && catItem.createdAt) || nowStr,
+      nowStr,
+      finalDesc,
+      cleanCat,
+      (catItem && catItem.editKey) || '',
+      (catItem && catItem.manageUrl) || ''
+    ]);
+    updated = true;
   }
 
   if (updated) {

@@ -705,6 +705,35 @@
       align-items: center;
       gap: 4px;
     }
+    .apk-author-tag.original {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .apk-author-tag.mod {
+      color: #fb923c;
+      background: rgba(251, 146, 60, 0.12);
+      border: 1px solid rgba(251, 146, 60, 0.3);
+    }
+    .badge-new-72h {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.25));
+      border: 1px solid rgba(245, 158, 11, 0.6);
+      color: #fbbf24;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      animation: pulseNewBadge 2s infinite ease-in-out;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    @keyframes pulseNewBadge {
+      0%, 100% { box-shadow: 0 0 4px rgba(245, 158, 11, 0.2); }
+      50% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+    }
     .legal-disclaimer-footer {
       max-width: 1400px;
       margin: 40px auto 20px;
@@ -983,6 +1012,14 @@
       drawCards();
     }
 
+    function isApkNew(createdAt) {
+      if (!createdAt) return false;
+      const t = new Date(createdAt).getTime();
+      if (isNaN(t)) return false;
+      const diffHours = (Date.now() - t) / (1000 * 60 * 60);
+      return diffHours >= 0 && diffHours <= 72;
+    }
+
     function drawCards() {
       const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
       const list = catalogData || [];
@@ -1050,14 +1087,20 @@
         card.innerHTML = `
           <div>
             <div class="card-head">
-              <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
+              <div class="apk-title" title="${escapeHtml(cleanName)}">
+                ${escapeHtml(cleanName)}
+                ${isApkNew(it.createdAt) ? `<span class="badge-new-72h" title="Cargada hace menos de 3 días">✨ NUEVO</span>` : ''}
+              </div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
                 <span class="badge-status badge-act">Disponible</span>
                 <span class="badge-category">${escapeHtml(it.category || 'Aplicación')}</span>
               </div>
             </div>
             <div class="apk-sub-meta">
-              <span class="apk-author-tag" title="Autor / Desarrollador">👤 ${escapeHtml(it.author || 'Oficial')}</span>
+              ${it.author && (it.author.toLowerCase().includes('mod') || it.author.toLowerCase().includes('dev') || it.author.toLowerCase().includes('team') || it.author.toLowerCase().includes('corp') || it.author.toLowerCase().includes('project') || it.author.toLowerCase().includes('aftvnews') || it.author.toLowerCase().includes('llc') || it.author.toLowerCase().includes('b.v.')) && !it.author.toLowerCase().includes('oficial') ? 
+                `<span class="apk-author-tag mod" title="APK Modificada">🔧 Mod: ${escapeHtml(it.author.replace(/^(mod\s*by\s*|mod:\s*)/i, ''))}</span>` : 
+                `<span class="apk-author-tag original" title="APK Original Oficial">🛡️ Original</span>`
+              }
             </div>
 
             <div class="browsy-box">
