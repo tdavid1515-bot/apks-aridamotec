@@ -5,8 +5,8 @@ on:
     types: [published, created, edited]
   workflow_dispatch:
   schedule:
-    # Chequeo programado cada 6 horas por si se subieron assets sin disparar evento de release
-    - cron: '0 */6 * * *'
+    # Chequeo programado cada 15 minutos para detectar automáticamente inclusiones o borrados en GitHub Releases
+    - cron: '*/15 * * * *'
 
 permissions:
   contents: write
