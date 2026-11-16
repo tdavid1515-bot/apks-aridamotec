@@ -475,6 +475,264 @@
       color: #fff;
       box-shadow: 0 0 12px rgba(225, 29, 72, 0.35);
     }
+    .tab-button.active-dev {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.45);
+    }
+    .tab-button.active-dev .tab-pill {
+      background: rgba(0, 0, 0, 0.25);
+      color: #ffffff;
+    }
+
+    /* ================= CATEGORÍAS (IDÉNTICAS A LA APP ANDROID TV) ================= */
+    .categories-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 4px;
+      margin-top: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+    }
+    .categories-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .categories-bar::-webkit-scrollbar-thumb {
+      background: rgba(0, 229, 255, 0.3);
+      border-radius: 4px;
+    }
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .category-chip:hover {
+      background: rgba(0, 229, 255, 0.12);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: #00e5ff;
+    }
+    .category-chip.active {
+      background: #00e5ff;
+      border-color: #00e5ff;
+      color: #0b0f19;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+    .category-chip-count {
+      display: inline-block;
+      padding: 1px 5px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .category-chip.active .category-chip-count {
+      background: rgba(0, 0, 0, 0.25);
+      color: #000;
+    }
+    .badge-category {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.12);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      white-space: nowrap;
+    }
+
+    /* ================= GESTOR DE DISPOSITIVOS / MAC ================= */
+    .device-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .device-stat-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .device-stat-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .device-stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .text-green { color: #10b981 !important; }
+    .text-amber { color: #f59e0b !important; }
+    .text-red { color: #ef4444 !important; }
+
+    .device-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .device-toolbar-left {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-width: 280px;
+    }
+    .device-search-input {
+      flex: 1;
+      padding: 8px 12px;
+      background: rgba(12, 18, 32, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+    .device-filter-select {
+      padding: 8px 12px;
+      background: rgba(12, 18, 32, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+    .device-toolbar-right {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-dev-action {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-dev-action:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .btn-dev-add {
+      background: var(--accent-cyan);
+      color: #0b0f19;
+      border: none;
+      font-weight: 700;
+    }
+    .btn-dev-add:hover {
+      background: #33ebff;
+      color: #000;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+
+    .device-table-container {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+    .device-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12.5px;
+    }
+    .device-table th {
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--accent-cyan);
+      font-size: 11px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+    }
+    .device-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      vertical-align: middle;
+    }
+    .device-table tr:hover td {
+      background: rgba(0, 229, 255, 0.03);
+    }
+    .mac-badge {
+      font-family: monospace;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .status-badge-active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: inline-block;
+    }
+    .status-badge-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: inline-block;
+    }
+    .status-badge-blocked {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      display: inline-block;
+    }
+    .dev-btn-toggle {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .dev-btn-act { background: #10b981; color: #fff; }
+    .dev-btn-block { background: #ef4444; color: #fff; }
+    .dev-btn-edit { background: rgba(255, 255, 255, 0.1); color: #fff; margin-left: 4px; }
+    .dev-btn-del { background: rgba(239, 68, 68, 0.2); color: #ef4444; margin-left: 4px; }
     .tab-pill {
       background: rgba(0, 0, 0, 0.3);
       padding: 1px 6px;
@@ -1813,6 +2071,9 @@
       </div>
 
       <div id="adminHeaderBtns" class="header-btns">
+        <a href="https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk" target="_blank" class="btn-header" style="text-decoration:none; background:rgba(0,210,255,0.12); border-color:rgba(0,210,255,0.4); color:#00d2ff;" title="Descargar instalador APK TV v1.3.0 (Build 4)">
+          📺 App TV v1.3.0
+        </a>
         <a href="index.html" target="_blank" class="btn-header" style="text-decoration:none;" title="Abrir Catálogo de Clientes en nueva pestaña">
           👁️ Catálogo Clientes
         </a>
@@ -1834,6 +2095,9 @@
       <div class="tabs-group admin-only">
         <button onclick="setTab('active')" id="tabActiveBtn" class="tab-button active">
           📱 Catálogo <span id="countActive" class="tab-pill">0</span>
+        </button>
+        <button onclick="setTab('devices')" id="tabDevicesBtn" class="tab-button">
+          🛡️ Dispositivos / MAC <span id="countDevices" class="tab-pill">0</span>
         </button>
         <button onclick="setTab('whatsapp')" id="tabWaBtn" class="tab-button">
           💬 Creador WhatsApp <span id="countWaSelected" class="tab-pill">0</span>
@@ -1857,6 +2121,9 @@
         </select>
       </div>
     </div>
+
+    <!-- Barra de Categorías Dinámicas Admin -->
+    <div id="adminCategoryChips" class="categories-bar"></div>
   </div>
 
   <!-- ================= CONTENIDO PRINCIPAL ================= -->
@@ -1945,7 +2212,113 @@
         </div>
       </div>
     </div>
+
+    <!-- ================= SECCIÓN GESTIÓN DE DISPOSITIVOS / MAC ================= -->
+    <div id="devicesSection" style="display:none;">
+      <!-- Métricas Resumen Dispositivos -->
+      <div class="device-stats-grid">
+        <div class="device-stat-card">
+          <div class="device-stat-title">🖥️ Total Dispositivos</div>
+          <div class="device-stat-value" id="statDevTotal">0</div>
+        </div>
+        <div class="device-stat-card">
+          <div class="device-stat-title">✅ Activos (Autorizados)</div>
+          <div class="device-stat-value text-green" id="statDevActive">0</div>
+        </div>
+        <div class="device-stat-card">
+          <div class="device-stat-title">⏳ Pendientes de Activar</div>
+          <div class="device-stat-value text-amber" id="statDevPending">0</div>
+        </div>
+        <div class="device-stat-card">
+          <div class="device-stat-title">🚫 Bloqueados / Inactivos</div>
+          <div class="device-stat-value text-red" id="statDevBlocked">0</div>
+        </div>
+      </div>
+
+      <!-- Barra de Control de Dispositivos -->
+      <div class="device-toolbar">
+        <div class="device-toolbar-left">
+          <input type="text" id="deviceSearchInput" class="device-search-input" placeholder="Buscar por MAC, Cliente, Equipo o Notas..." oninput="renderDevices()">
+          <select id="deviceStatusFilter" class="device-filter-select" onchange="renderDevices()">
+            <option value="all">Todos los Estados</option>
+            <option value="ACTIVO">✅ Solo Activos</option>
+            <option value="PENDIENTE">⏳ Solo Pendientes</option>
+            <option value="BLOQUEADO">🚫 Solo Bloqueados</option>
+          </select>
+        </div>
+        <div class="device-toolbar-right">
+          <button class="btn-dev-action btn-dev-add" onclick="openNewDeviceModal()">
+            ➕ Registrar Nueva MAC
+          </button>
+          <button class="btn-dev-action" onclick="loadDevices(true)">
+            🔄 Actualizar Lista
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de Dispositivos -->
+      <div class="device-table-container">
+        <table class="device-table">
+          <thead>
+            <tr>
+              <th>DIRECCIÓN MAC / ID</th>
+              <th>CLIENTE / TITULAR</th>
+              <th>EQUIPO / MODELO</th>
+              <th>ESTADO</th>
+              <th>ÚLTIMA CONEXIÓN</th>
+              <th>NOTAS</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="deviceTableBody">
+            <!-- Filas inyectadas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="deviceEmptyState" class="empty-state" style="display:none; padding:30px; text-align:center;">
+        No hay dispositivos registrados en esta vista.
+      </div>
+    </div>
   </main>
+
+  <!-- ================= MODAL DISPOSITIVO MAC ================= -->
+  <div id="deviceModal" class="modal-overlay" onclick="closeDeviceModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width:480px; width:92%;">
+      <button class="modal-close" onclick="closeDeviceModal()">✕</button>
+      <h3 id="deviceModalTitle" style="font-size:16px; font-weight:800; color:var(--accent-cyan); margin-bottom:14px;">🔐 Registrar / Editar Dispositivo MAC</h3>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">DIRECCIÓN MAC (XX:XX:XX:XX:XX:XX):</label>
+          <input type="text" id="devModalMac" placeholder="Ej: B4:82:C5:1A:90:3E" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(0,229,255,0.3); background:#0c1220; color:#00e5ff; font-family:monospace; font-size:15px; font-weight:bold; text-transform:uppercase;">
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">CLIENTE / TITULAR:</label>
+          <input type="text" id="devModalClient" placeholder="Nombre del cliente" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">EQUIPO / MODELO (TV Box / Android TV):</label>
+          <input type="text" id="devModalModel" placeholder="Ej: Xiaomi Mi Box S, X96 Max, Google TV" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">ESTADO DE ACCESO:</label>
+          <select id="devModalStatus" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px;">
+            <option value="ACTIVO">✅ ACTIVO (Permitir acceso a la app)</option>
+            <option value="PENDIENTE">⏳ PENDIENTE (Esperando confirmación)</option>
+            <option value="BLOQUEADO">🚫 BLOQUEADO / DESACTIVADO</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">NOTAS / OBSERVACIONES:</label>
+          <textarea id="devModalNotes" rows="2" placeholder="Ej: Suscripción anual sala, vence Dic 2026" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px; resize:vertical;"></textarea>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+        <button onclick="closeDeviceModal()" style="padding:8px 14px; border-radius:8px; background:rgba(255,255,255,0.1); color:#fff; border:none; cursor:pointer; font-size:12px;">Cancelar</button>
+        <button id="btnSaveDevice" onclick="submitSaveDevice()" style="padding:8px 18px; border-radius:8px; background:var(--accent-cyan); color:#0b0f19; font-weight:bold; border:none; cursor:pointer; font-size:12px;">💾 Guardar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= MODAL QR ================= -->
   <div id="qrModal" class="modal-overlay" onclick="closeQrModal()">
@@ -2035,6 +2408,35 @@
         },
         resetAdminPassword(token, newPwd) {
           this._call(GAS_URL + '?action=recoveryReset&token=' + encodeURIComponent(token) + '&newPwd=' + encodeURIComponent(newPwd));
+        },
+        getMacList(pwd) {
+          this._call(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(pwd));
+        },
+        getMacDevicesList(pwd) {
+          this._call(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(pwd));
+        },
+        saveMac(pwd, data) {
+          let q = '&mac=' + encodeURIComponent(data.mac || '') +
+                  '&client=' + encodeURIComponent(data.client || '') +
+                  '&model=' + encodeURIComponent(data.model || '') +
+                  '&status=' + encodeURIComponent(data.status || '') +
+                  '&notes=' + encodeURIComponent(data.notes || '');
+          this._call(GAS_URL + '?action=saveMac&pwd=' + encodeURIComponent(pwd) + q);
+        },
+        saveOrUpdateMac(pwd, data) {
+          return this.saveMac(pwd, data);
+        },
+        toggleMac(pwd, mac, status) {
+          this._call(GAS_URL + '?action=toggleMac&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac) + '&status=' + encodeURIComponent(status));
+        },
+        toggleMacStatus(pwd, mac, status) {
+          return this.toggleMac(pwd, mac, status);
+        },
+        deleteMac(pwd, mac) {
+          this._call(GAS_URL + '?action=deleteMac&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac));
+        },
+        deleteMacDevice(pwd, mac) {
+          return this.deleteMac(pwd, mac);
         }
       };
     }
@@ -2237,15 +2639,19 @@
 
     function normalizeApkItem(item) {
       if (!item) return {};
+      const cleanName = String(item.cleanName || '');
+      const fileName = String(item.fileName || '');
+      const desc = String(item.aiDescription || '');
       return {
         ...item,
         driveFileId: String(item.driveFileId || ''),
-        cleanName: String(item.cleanName || ''),
-        fileName: String(item.fileName || ''),
+        cleanName: cleanName,
+        fileName: fileName,
         browsyCode: (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '',
         browsyShortUrl: String(item.browsyShortUrl || ''),
         directDownloadUrl: String(item.directDownloadUrl || ''),
-        aiDescription: String(item.aiDescription || '')
+        aiDescription: desc,
+        category: item.category || classifyCategory(cleanName, fileName, desc)
       };
     }
 
@@ -2269,38 +2675,154 @@
 
       initWaData();
       updateEmptyTrashBtn();
+      renderAdminCategoryChips();
+      try { loadDevices(); } catch (e) {}
+
       if (activeTab === 'whatsapp') {
         drawWaList();
+      } else if (activeTab === 'devices') {
+        renderDevices();
       } else {
         drawCards();
       }
     }
 
+    let adminCategory = '⭐ Todas';
+
+    function classifyCategory(cleanName, fileName, desc) {
+      const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const combined = norm(cleanName) + ' ' + norm(fileName) + ' ' + norm(desc);
+
+      const hasAny = (keywords) => keywords.some(k => combined.includes(k));
+
+      if (hasAny([
+        'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
+        'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
+        'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro'
+      ])) {
+        return '📺 TV en Vivo';
+      }
+      if (hasAny([
+        'deport', 'futbol', 'soccer', 'beisbol', 'baseball', 'baloncesto',
+        'boxeo', 'boxing', 'cricz', 'sportv', 'sportz', 'geesports', 'partidos en directo'
+      ])) {
+        return '⚽ Deportes';
+      }
+      if (hasAny([
+        'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
+        'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series'
+      ])) {
+        return '🎬 Películas y Series';
+      }
+      if (hasAny([
+        'musica', 'radio', 'cancion', 'canciones', 'audio', 'spotify',
+        'deezer', 'sonido', 'podcast', 'mp3', 'emisora'
+      ])) {
+        return '🎵 Música';
+      }
+      if (hasAny(['juego', 'juegos', 'game', 'games', 'arcade', 'emulador', 'retro', 'consola'])) {
+        return '🎮 Juegos';
+      }
+      if (hasAny([
+        'utilitar', 'herramienta', 'launcher', 'vpn', 'privacidad', 'segur',
+        'clima', 'weather', 'downloader', 'browsy', 'codigos', 'tizentube', 'youtube', 'wolf',
+        'projjectivy', 'personalizar y acelerar', 'acelerar la pantalla', 'transformar el menu',
+        'navegar seguro', 'descargar e instalar'
+      ])) {
+        return '🛠️ Utilitarios';
+      }
+      if (hasAny(['infantil', 'ninos', 'caricaturas', 'dibujos animados'])) {
+        return '👶 Infantil';
+      }
+      return '🛠️ Utilitarios';
+    }
+
+    function renderAdminCategoryChips() {
+      const container = document.getElementById('adminCategoryChips');
+      if (!container) return;
+
+      const list = apksData.active || [];
+      const counts = { '⭐ Todas': list.length };
+      const order = [
+        '⭐ Todas',
+        '📺 TV en Vivo',
+        '⚽ Deportes',
+        '🎬 Películas y Series',
+        '🛠️ Utilitarios',
+        '🎵 Música',
+        '🎮 Juegos',
+        '👶 Infantil'
+      ];
+
+      list.forEach(item => {
+        const cat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = cat;
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      Object.keys(counts).forEach(cat => {
+        if (!order.includes(cat)) order.push(cat);
+      });
+
+      container.innerHTML = order
+        .filter(cat => (counts[cat] || 0) > 0 || cat === '⭐ Todas')
+        .map(cat => {
+          const isActive = (cat === adminCategory);
+          const count = counts[cat] || 0;
+          return `<button class="category-chip ${isActive ? 'active' : ''}" onclick="selectAdminCategory('${escapeJs(cat)}')">
+            ${escapeHtml(cat)} <span class="category-chip-count">${count}</span>
+          </button>`;
+        }).join('');
+    }
+
+    function selectAdminCategory(cat) {
+      adminCategory = cat;
+      renderAdminCategoryChips();
+      drawCards();
+    }
+
     function setTab(tab) {
       activeTab = tab;
       const bAct = document.getElementById('tabActiveBtn');
+      const bDev = document.getElementById('tabDevicesBtn');
       const bWa = document.getElementById('tabWaBtn');
       const bDel = document.getElementById('tabDeletedBtn');
       const catSec = document.getElementById('catalogSection');
+      const devSec = document.getElementById('devicesSection');
       const waSec = document.getElementById('waSection');
       const sortRow = document.querySelector('.sort-row');
+      const catBar = document.getElementById('adminCategoryChips');
 
       if (bAct) bAct.className = 'tab-button';
+      if (bDev) bDev.className = 'tab-button';
       if (bWa) bWa.className = 'tab-button';
       if (bDel) bDel.className = 'tab-button';
 
       if (tab === 'active') {
         if (bAct) bAct.className = 'tab-button active';
         if (catSec) catSec.style.display = 'block';
+        if (devSec) devSec.style.display = 'none';
         if (waSec) waSec.style.display = 'none';
         if (sortRow) sortRow.style.display = 'inline-flex';
+        if (catBar) catBar.style.display = 'flex';
         updateEmptyTrashBtn();
+        renderAdminCategoryChips();
         drawCards();
+      } else if (tab === 'devices') {
+        if (bDev) bDev.className = 'tab-button active-dev';
+        if (catSec) catSec.style.display = 'none';
+        if (devSec) devSec.style.display = 'block';
+        if (waSec) waSec.style.display = 'none';
+        if (sortRow) sortRow.style.display = 'none';
+        if (catBar) catBar.style.display = 'none';
+        loadDevices();
       } else if (tab === 'whatsapp') {
         if (bWa) bWa.className = 'tab-button active-wa';
         if (catSec) catSec.style.display = 'none';
+        if (devSec) devSec.style.display = 'none';
         if (waSec) waSec.style.display = 'block';
         if (sortRow) sortRow.style.display = 'none';
+        if (catBar) catBar.style.display = 'none';
         updateEmptyTrashBtn();
 
         // Anclar barra de WhatsApp exactamente bajo el header sticky
@@ -2326,8 +2848,10 @@
       } else if (tab === 'deleted') {
         if (bDel) bDel.className = 'tab-button active-del';
         if (catSec) catSec.style.display = 'block';
+        if (devSec) devSec.style.display = 'none';
         if (waSec) waSec.style.display = 'none';
         if (sortRow) sortRow.style.display = 'inline-flex';
+        if (catBar) catBar.style.display = 'none';
         updateEmptyTrashBtn();
         drawCards();
       }
@@ -2361,7 +2885,12 @@
       const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
       const list = activeTab === 'active' ? apksData.active : apksData.deleted;
 
+      const isAll = (adminCategory === '⭐ Todas' || adminCategory.toLowerCase().includes('todas'));
       const filtered = list.filter(item => {
+        const itemCat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = itemCat;
+        if (activeTab === 'active' && !isAll && itemCat !== adminCategory) return false;
+
         const clean = String(item.cleanName || '').toLowerCase();
         const file = String(item.fileName || '').toLowerCase();
         const code = String(item.browsyCode || '').toLowerCase();
@@ -2432,7 +2961,10 @@
           <div>
             <div class="card-head">
               <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
-              <span class="badge-status ${isDel ? 'badge-del' : 'badge-act'}">${isDel ? 'Eliminado' : 'Activo'}</span>
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span class="badge-status ${isDel ? 'badge-del' : 'badge-act'}">${isDel ? 'Eliminado' : 'Activo'}</span>
+                <span class="badge-category">${escapeHtml(it.category || 'Aplicación')}</span>
+              </div>
             </div>
             <div class="apk-filename" title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</div>
 
@@ -3369,6 +3901,273 @@
     }
 
 
+    // ================= CONTROL Y ACTIVACIÓN POR MAC =================
+    let devicesData = [];
+
+    function copyToClipboard(text, msg) {
+      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(msg || 'Copiado al portapapeles')).catch(() => fallbackCopy(text, msg));
+      } else {
+        fallbackCopy(text, msg);
+      }
+    }
+
+    function fallbackCopy(text, msg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(msg || 'Copiado al portapapeles');
+      } catch (e) {
+        showToast('Error al copiar', true);
+      }
+      document.body.removeChild(ta);
+    }
+
+    function loadDevices(isManual) {
+      if (!savedPwd) return;
+      if (isManual) showToast('Consultando dispositivos...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            devicesData = res.devices || [];
+            updateDeviceStats();
+            renderDevices();
+            if (isManual) showToast('Lista de dispositivos actualizada (' + devicesData.length + ')');
+          } else {
+            if (isManual) showToast(res ? res.error : 'Error al cargar dispositivos', true);
+          }
+        }).withFailureHandler(err => {
+          if (isManual) showToast('Error al conectar: ' + (err.message || err), true);
+        });
+
+        if (typeof handler.getMacList === 'function') {
+          handler.getMacList(savedPwd);
+        } else if (typeof handler.getMacDevicesList === 'function') {
+          handler.getMacDevicesList(savedPwd);
+        }
+      } catch (err) {
+        console.warn('Error loadDevices:', err);
+      }
+    }
+
+    function updateDeviceStats() {
+      const total = devicesData.length;
+      let active = 0, pending = 0, blocked = 0;
+      devicesData.forEach(d => {
+        const s = (d.status || '').toUpperCase();
+        if (s === 'ACTIVO' || s === 'ACTIVE') active++;
+        else if (s === 'PENDIENTE') pending++;
+        else blocked++;
+      });
+      const elTot = document.getElementById('statDevTotal');
+      const elAct = document.getElementById('statDevActive');
+      const elPen = document.getElementById('statDevPending');
+      const elBlo = document.getElementById('statDevBlocked');
+      const countDev = document.getElementById('countDevices');
+      if (elTot) elTot.textContent = total;
+      if (elAct) elAct.textContent = active;
+      if (elPen) elPen.textContent = pending;
+      if (elBlo) elBlo.textContent = blocked;
+      if (countDev) countDev.textContent = total;
+    }
+
+    function renderDevices() {
+      const tbody = document.getElementById('deviceTableBody');
+      const empty = document.getElementById('deviceEmptyState');
+      if (!tbody) return;
+
+      const q = (document.getElementById('deviceSearchInput') ? document.getElementById('deviceSearchInput').value : '').toLowerCase().trim();
+      const statusFilter = document.getElementById('deviceStatusFilter') ? document.getElementById('deviceStatusFilter').value : 'all';
+
+      const filtered = devicesData.filter(d => {
+        const s = (d.status || '').toUpperCase();
+        if (statusFilter !== 'all') {
+          if (statusFilter === 'ACTIVO' && s !== 'ACTIVO' && s !== 'ACTIVE') return false;
+          if (statusFilter === 'PENDIENTE' && s !== 'PENDIENTE') return false;
+          if (statusFilter === 'BLOQUEADO' && s !== 'BLOQUEADO' && s !== 'INACTIVO') return false;
+        }
+        if (q) {
+          const mac = (d.mac || '').toLowerCase();
+          const cli = (d.client || '').toLowerCase();
+          const mod = (d.model || '').toLowerCase();
+          const not = (d.notes || '').toLowerCase();
+          return mac.includes(q) || cli.includes(q) || mod.includes(q) || not.includes(q);
+        }
+        return true;
+      });
+
+      tbody.innerHTML = '';
+      if (filtered.length === 0) {
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      filtered.forEach(d => {
+        const s = (d.status || 'PENDIENTE').toUpperCase();
+        const isAct = (s === 'ACTIVO' || s === 'ACTIVE');
+        const isPen = (s === 'PENDIENTE');
+
+        let statusBadge = '';
+        if (isAct) {
+          statusBadge = '<span class="status-badge-active">✅ ACTIVO</span>';
+        } else if (isPen) {
+          statusBadge = '<span class="status-badge-pending">⏳ PENDIENTE</span>';
+        } else {
+          statusBadge = '<span class="status-badge-blocked">🚫 BLOQUEADO</span>';
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="mac-badge">
+              <span>${escapeHtml(d.mac)}</span>
+              <button onclick="copyToClipboard('${escapeJs(d.mac)}', 'MAC copiada')" title="Copiar MAC" style="background:none; border:none; cursor:pointer; font-size:12px; color:var(--accent-cyan); padding:0;">📋</button>
+            </div>
+          </td>
+          <td><strong>${escapeHtml(d.client || 'Sin Asignar')}</strong></td>
+          <td><span style="font-size:12px; color:#cbd5e1;">${escapeHtml(d.model || 'Android TV')}</span></td>
+          <td>${statusBadge}</td>
+          <td><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.lastCheck || d.registerDate || '--')}</span></td>
+          <td><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.notes || '--')}</span></td>
+          <td>
+            ${isAct ? `
+              <button class="dev-btn-toggle dev-btn-block" onclick="toggleDeviceStatus('${escapeJs(d.mac)}', 'BLOQUEADO')">⏸️ Bloquear</button>
+            ` : `
+              <button class="dev-btn-toggle dev-btn-act" onclick="toggleDeviceStatus('${escapeJs(d.mac)}', 'ACTIVO')">✅ Activar</button>
+            `}
+            <button class="dev-btn-toggle dev-btn-edit" onclick="openEditDeviceModal('${escapeJs(d.mac)}')">✏️</button>
+            <button class="dev-btn-toggle dev-btn-del" onclick="confirmDeleteDevice('${escapeJs(d.mac)}')">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleDeviceStatus(mac, newStatus) {
+      if (!savedPwd) return;
+      showToast((newStatus === 'ACTIVO' ? 'Activando' : 'Bloqueando') + ' dispositivo ' + mac + '...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('Dispositivo ' + mac + ' actualizado a ' + newStatus);
+            loadDevices();
+          } else {
+            showToast(res ? res.error : 'Error al actualizar estado', true);
+          }
+        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+
+        if (typeof handler.toggleMac === 'function') {
+          handler.toggleMac(savedPwd, mac, newStatus);
+        } else if (typeof handler.toggleMacStatus === 'function') {
+          handler.toggleMacStatus(savedPwd, mac, newStatus);
+        }
+      } catch (e) {
+        console.warn('Error toggleDeviceStatus:', e);
+      }
+    }
+
+    function openNewDeviceModal() {
+      document.getElementById('deviceModalTitle').textContent = '➕ Registrar Nuevo Dispositivo MAC';
+      document.getElementById('devModalMac').value = '';
+      document.getElementById('devModalMac').disabled = false;
+      document.getElementById('devModalClient').value = '';
+      document.getElementById('devModalModel').value = '';
+      document.getElementById('devModalStatus').value = 'ACTIVO';
+      document.getElementById('devModalNotes').value = '';
+      document.getElementById('deviceModal').style.display = 'flex';
+    }
+
+    function openEditDeviceModal(mac) {
+      const dev = devicesData.find(d => d.mac === mac);
+      if (!dev) return;
+      document.getElementById('deviceModalTitle').textContent = '✏️ Editar Dispositivo MAC';
+      document.getElementById('devModalMac').value = dev.mac;
+      document.getElementById('devModalMac').disabled = true;
+      document.getElementById('devModalClient').value = dev.client || '';
+      document.getElementById('devModalModel').value = dev.model || '';
+      document.getElementById('devModalStatus').value = (dev.status || 'ACTIVO').toUpperCase();
+      document.getElementById('devModalNotes').value = dev.notes || '';
+      document.getElementById('deviceModal').style.display = 'flex';
+    }
+
+    function closeDeviceModal() {
+      document.getElementById('deviceModal').style.display = 'none';
+    }
+
+    function submitSaveDevice() {
+      const mac = document.getElementById('devModalMac').value.trim().toUpperCase();
+      if (!mac) {
+        showToast('Debes ingresar la dirección MAC', true);
+        return;
+      }
+      const client = document.getElementById('devModalClient').value.trim();
+      const model = document.getElementById('devModalModel').value.trim();
+      const status = document.getElementById('devModalStatus').value;
+      const notes = document.getElementById('devModalNotes').value.trim();
+
+      showToast('Guardando dispositivo...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('Dispositivo ' + mac + ' guardado exitosamente');
+            closeDeviceModal();
+            loadDevices();
+          } else {
+            showToast(res ? res.error : 'Error al guardar dispositivo', true);
+          }
+        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+
+        if (typeof handler.saveMac === 'function') {
+          handler.saveMac(savedPwd, { mac, client, model, status, notes });
+        } else if (typeof handler.saveOrUpdateMac === 'function') {
+          handler.saveOrUpdateMac(savedPwd, { mac, client, model, status, notes });
+        }
+      } catch (e) {
+        console.warn('Error submitSaveDevice:', e);
+      }
+    }
+
+    function confirmDeleteDevice(mac) {
+      if (!confirm('¿Estás seguro de que deseas eliminar definitivamente el dispositivo con MAC ' + mac + '?')) {
+        return;
+      }
+      showToast('Eliminando dispositivo...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('Dispositivo ' + mac + ' eliminado.');
+            loadDevices();
+          } else {
+            showToast(res ? res.error : 'Error al eliminar', true);
+          }
+        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+
+        if (typeof handler.deleteMac === 'function') {
+          handler.deleteMac(savedPwd, mac);
+        } else if (typeof handler.deleteMacDevice === 'function') {
+          handler.deleteMacDevice(savedPwd, mac);
+        }
+      } catch (e) {
+        console.warn('Error confirmDeleteDevice:', e);
+      }
+    }
+
     // Explicit global bindings for iframe sandboxes
     window.handleLogin = handleLogin;
     window.handlePwdKey = handlePwdKey;
@@ -3409,6 +4208,17 @@
     window.renderWhatsAppPreview = renderWhatsAppPreview;
     window.copyFullWaMessage = copyFullWaMessage;
     window.openWhatsAppChat = openWhatsAppChat;
+    window.loadDevices = loadDevices;
+    window.renderDevices = renderDevices;
+    window.toggleDeviceStatus = toggleDeviceStatus;
+    window.openNewDeviceModal = openNewDeviceModal;
+    window.openEditDeviceModal = openEditDeviceModal;
+    window.closeDeviceModal = closeDeviceModal;
+    window.submitSaveDevice = submitSaveDevice;
+    window.confirmDeleteDevice = confirmDeleteDevice;
+    window.selectAdminCategory = selectAdminCategory;
+    window.renderAdminCategoryChips = renderAdminCategoryChips;
+    window.copyToClipboard = copyToClipboard;
   </script>
 </body>
 </html>

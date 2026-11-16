@@ -110,6 +110,26 @@
       gap: 8px;
     }
 
+    .btn-download-tv-app {
+      background: linear-gradient(135deg, #00d2ff, #0072ff);
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.35);
+    }
+
+    .btn-download-tv-app:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 210, 255, 0.55);
+    }
+
     .btn-header {
       background: #0d1527;
       border: 1px solid rgba(0, 229, 255, 0.25);
@@ -218,6 +238,73 @@
     }
 
     .sort-select:focus { border-color: var(--accent-cyan); }
+
+    /* ================= CATEGORÍAS (IDÉNTICAS A LA APP ANDROID TV) ================= */
+    .categories-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 4px;
+      margin-top: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+    }
+    .categories-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .categories-bar::-webkit-scrollbar-thumb {
+      background: rgba(0, 229, 255, 0.3);
+      border-radius: 4px;
+    }
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .category-chip:hover {
+      background: rgba(0, 229, 255, 0.12);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: #00e5ff;
+    }
+    .category-chip.active {
+      background: #00e5ff;
+      border-color: #00e5ff;
+      color: #0b0f19;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+    .category-chip-count {
+      display: inline-block;
+      padding: 1px 6px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .category-chip.active .category-chip-count {
+      background: rgba(0, 0, 0, 0.25);
+      color: #000;
+    }
+    .badge-category {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.12);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      white-space: nowrap;
+    }
 
     /* ================= BANNER DE ESTADO ================= */
     .banner-status {
@@ -613,6 +700,9 @@
         </div>
       </div>
       <div class="header-btns">
+        <a href="https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk" target="_blank" class="btn-download-tv-app" title="Descargar instalador oficial para Android TV / TV Box">
+          📺 App Android TV (v1.3.0)
+        </a>
         <button onclick="refreshCatalogManually()" class="btn-header" title="Actualizar catálogo">
           <span id="refreshIcon">🔄</span> Actualizar
         </button>
@@ -637,6 +727,9 @@
         </select>
       </div>
     </div>
+
+    <!-- Barra de Categorías Dinámicas -->
+    <div id="categoryChips" class="categories-bar"></div>
   </div>
 
   <!-- Banner de Estado -->
@@ -745,11 +838,110 @@
       drawCards();
     }
 
+    let currentCategory = '⭐ Todas';
+
+    function classifyCategory(cleanName, fileName, desc) {
+      const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const combined = norm(cleanName) + ' ' + norm(fileName) + ' ' + norm(desc);
+
+      const hasAny = (keywords) => keywords.some(k => combined.includes(k));
+
+      if (hasAny([
+        'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
+        'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
+        'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro'
+      ])) {
+        return '📺 TV en Vivo';
+      }
+      if (hasAny([
+        'deport', 'futbol', 'soccer', 'beisbol', 'baseball', 'baloncesto',
+        'boxeo', 'boxing', 'cricz', 'sportv', 'sportz', 'geesports', 'partidos en directo'
+      ])) {
+        return '⚽ Deportes';
+      }
+      if (hasAny([
+        'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
+        'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series'
+      ])) {
+        return '🎬 Películas y Series';
+      }
+      if (hasAny([
+        'musica', 'radio', 'cancion', 'canciones', 'audio', 'spotify',
+        'deezer', 'sonido', 'podcast', 'mp3', 'emisora'
+      ])) {
+        return '🎵 Música';
+      }
+      if (hasAny(['juego', 'juegos', 'game', 'games', 'arcade', 'emulador', 'retro', 'consola'])) {
+        return '🎮 Juegos';
+      }
+      if (hasAny([
+        'utilitar', 'herramienta', 'launcher', 'vpn', 'privacidad', 'segur',
+        'clima', 'weather', 'downloader', 'browsy', 'codigos', 'tizentube', 'youtube', 'wolf',
+        'projjectivy', 'personalizar y acelerar', 'acelerar la pantalla', 'transformar el menu',
+        'navegar seguro', 'descargar e instalar'
+      ])) {
+        return '🛠️ Utilitarios';
+      }
+      if (hasAny(['infantil', 'ninos', 'caricaturas', 'dibujos animados'])) {
+        return '👶 Infantil';
+      }
+      return '🛠️ Utilitarios';
+    }
+
+    function renderCategoryChips() {
+      const container = document.getElementById('categoryChips');
+      if (!container || !catalogData) return;
+
+      const counts = { '⭐ Todas': catalogData.length };
+      const order = [
+        '⭐ Todas',
+        '📺 TV en Vivo',
+        '⚽ Deportes',
+        '🎬 Películas y Series',
+        '🛠️ Utilitarios',
+        '🎵 Música',
+        '🎮 Juegos',
+        '👶 Infantil'
+      ];
+
+      catalogData.forEach(item => {
+        const cat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = cat;
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      Object.keys(counts).forEach(cat => {
+        if (!order.includes(cat)) order.push(cat);
+      });
+
+      container.innerHTML = order
+        .filter(cat => (counts[cat] || 0) > 0 || cat === '⭐ Todas')
+        .map(cat => {
+          const isActive = (cat === currentCategory);
+          const count = counts[cat] || 0;
+          return `<button class="category-chip ${isActive ? 'active' : ''}" onclick="selectCategory('${escapeJs(cat)}')">
+            ${escapeHtml(cat)} <span class="category-chip-count">${count}</span>
+          </button>`;
+        }).join('');
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      renderCategoryChips();
+      drawCards();
+    }
+
     function drawCards() {
       const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
       const list = catalogData || [];
+      const isAll = (currentCategory === '⭐ Todas' || currentCategory.toLowerCase().includes('todas'));
 
       const filtered = list.filter(item => {
+        const itemCat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = itemCat;
+        const matchesCat = isAll || (itemCat === currentCategory);
+        if (!matchesCat) return false;
+
         const clean = String(item.cleanName || '').toLowerCase();
         const code = String(item.browsyCode || '').toLowerCase();
         const desc = String(item.aiDescription || '').toLowerCase();
@@ -807,7 +999,10 @@
           <div>
             <div class="card-head">
               <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
-              <span class="badge-status badge-act">Disponible</span>
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span class="badge-status badge-act">Disponible</span>
+                <span class="badge-category">${escapeHtml(it.category || 'Aplicación')}</span>
+              </div>
             </div>
 
             <div class="browsy-box">
@@ -862,6 +1057,7 @@
             catalogData = res.catalog || [];
             document.getElementById('statusInfo').textContent = 'Catálogo actualizado';
             document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
+            renderCategoryChips();
             drawCards();
             if (isManual) showToast('¡Catálogo sincronizado exitosamente!');
           } else {
@@ -891,6 +1087,7 @@
               if (getCatalogSignature(fresh) !== getCatalogSignature(catalogData)) {
                 catalogData = fresh;
                 document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
+                renderCategoryChips();
                 drawCards();
                 showToast('Catálogo actualizado automáticamente');
               }

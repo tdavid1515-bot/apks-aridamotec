@@ -1,0 +1,2002 @@
+/**
+ * ============================================================================
+ * ARIDAMOTEC - SISTEMA GESTOR DE APKS Y CÓDIGOS BROWSY (v2.7)
+ * - Repositorio Principal en GitHub Releases (Descarga directa sin restricciones)
+ * - Enlace directo de Códigos Browsy a GitHub Releases v1.0.0
+ * - Sincronización Automática con GitHub Releases API y Hoja de Google Sheets
+ * - Creador de Mensajes WhatsApp con Selección Múltiple y Mini-descripciones IA
+ * - Motor Dual de IA (Gemini Flash + Analizador Semántico Integrado)
+ * - Modo Invitado Seguro y Panel de Administrador con Protección Criptográfica OTP
+ * ============================================================================
+ */
+
+const CONFIG = {
+  GITHUB_OWNER: 'tdavid1515-bot',
+  GITHUB_REPO: 'apks-aridamotec',
+  GITHUB_RELEASE_TAG: 'v1.0.0',
+  GITHUB_API_RELEASE: 'https://api.github.com/repos/tdavid1515-bot/apks-aridamotec/releases/latest',
+  GITHUB_REPO_URL: 'https://github.com/tdavid1515-bot/apks-aridamotec',
+  ADMIN_PASSWORD: 'Ariadna1528.',
+  SHEET_NAME: 'Control APKs y Códigos Browsy',
+  APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
+  GEMINI_API_KEY: '',
+  TV_APP_VERSION: '1.3.0',
+  TV_APP_VERSION_CODE: 4,
+  TV_APP_DOWNLOAD_URL: 'https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk',
+  TV_APP_CHANGELOG: 'Corrección de selección y foco en categorías y tarjetas, motor dual OTA y activación por MAC.'
+};
+
+const SEED_APKS = [
+  {
+    "id": "745632559",
+    "cleanName": "ANDROIDPERUANO 1.0.0",
+    "fileName": "ANDROIDPERUANO_1.0.0.apk",
+    "browsyCode": "1894",
+    "shortUrl": "https://browsy.app/1894",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ANDROIDPERUANO_1.0.0.apk",
+    "editKey": "nwG46eAhZaGa",
+    "manageUrl": "https://browsy.app/manage?code=1894&key=nwG46eAhZaGa",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de los mejores canales de TV en vivo de Perú y Latinoamérica."
+  },
+  {
+    "id": "745633138",
+    "cleanName": "animxl box",
+    "fileName": "animxl-box.apk",
+    "browsyCode": "2943",
+    "shortUrl": "https://browsy.app/2943",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/animxl-box.apk",
+    "editKey": "f9ngAr2LRSJd",
+    "manageUrl": "https://browsy.app/manage?code=2943&key=f9ngAr2LRSJd",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver tus series y películas de anime favoritas en excelente resolución."
+  },
+  {
+    "id": "745633545",
+    "cleanName": "Deportes En Vivo (Sports TV)",
+    "fileName": "app-release.1.apk",
+    "browsyCode": "3305",
+    "shortUrl": "https://browsy.app/3305",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/app-release.1.apk",
+    "editKey": "DLD5eKwFjByE",
+    "manageUrl": "https://browsy.app/manage?code=3305&key=DLD5eKwFjByE",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás acceder a una completa plataforma de entretenimiento y streaming."
+  },
+  {
+    "id": "745633864",
+    "cleanName": "ATV LAUNCHER PRO v0.1.41 pro",
+    "fileName": "ATV.LAUNCHER.PRO.v0.1.41-pro.apk",
+    "browsyCode": "9447",
+    "shortUrl": "https://browsy.app/9447",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ATV.LAUNCHER.PRO.v0.1.41-pro.apk",
+    "editKey": "7tFK9vZAdN6R",
+    "manageUrl": "https://browsy.app/manage?code=9447&key=7tFK9vZAdN6R",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás personalizar y acelerar la pantalla de inicio de tu Android TV sin anuncios."
+  },
+  {
+    "id": "745633982",
+    "cleanName": "Browsy Links (App TV)",
+    "fileName": "Browsy_1.5.0_APKPure.xapk",
+    "browsyCode": "2461",
+    "shortUrl": "https://browsy.app/2461",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.xapk",
+    "editKey": "NL2sNS7o3XEw",
+    "manageUrl": "https://browsy.app/manage?code=2461&key=NL2sNS7o3XEw",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás abrir códigos numéricos directos en tu televisor Android TV o Fire TV."
+  },
+  {
+    "id": "745634088",
+    "cleanName": "ClipBox",
+    "fileName": "ClipBox.apk",
+    "browsyCode": "9594",
+    "shortUrl": "https://browsy.app/9594",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ClipBox.apk",
+    "editKey": "TLVg5xqeCWcN",
+    "manageUrl": "https://browsy.app/manage?code=9594&key=TLVg5xqeCWcN",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver estrenos de cine y series completas en alta calidad y sin cortes comerciales."
+  },
+  {
+    "id": "745640371",
+    "cleanName": "WireGuard VPN",
+    "fileName": "com.wireguard.android-1.0.20260315.apk",
+    "browsyCode": "9813",
+    "shortUrl": "https://browsy.app/9813",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/com.wireguard.android-1.0.20260315.apk",
+    "editKey": "zWATmVrk9LGz",
+    "manageUrl": "https://browsy.app/manage?code=9813&key=zWATmVrk9LGz",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás proteger tu conexión y navegar de forma segura y privada."
+  },
+  {
+    "id": "745634574",
+    "cleanName": "CricZ TV v7.3",
+    "fileName": "CricZ.TV.v7.3.apk",
+    "browsyCode": "9985",
+    "shortUrl": "https://browsy.app/9985",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk",
+    "editKey": "xWuRaDJ7G9v8",
+    "manageUrl": "https://browsy.app/manage?code=9985&key=xWuRaDJ7G9v8",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás seguir eventos deportivos internacionales y partidos en vivo."
+  },
+  {
+    "id": "745634906",
+    "cleanName": "Downloader+ V2",
+    "fileName": "Downloader+_V2.apk",
+    "browsyCode": "3959",
+    "shortUrl": "https://browsy.app/3959",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader%2B_V2.apk",
+    "editKey": "G6YySYu6HPmo",
+    "manageUrl": "https://browsy.app/manage?code=3959&key=G6YySYu6HPmo",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás gestionar descargas directas e instalar apps de forma rápida y segura."
+  },
+  {
+    "id": "745635094",
+    "cleanName": "Downloader ModByNF",
+    "fileName": "Downloader-ModByNF.apk",
+    "browsyCode": "7388",
+    "shortUrl": "https://browsy.app/7388",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader-ModByNF.apk",
+    "editKey": "7FDCu9Po5XQX",
+    "manageUrl": "https://browsy.app/manage?code=7388&key=7FDCu9Po5XQX",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás instalar aplicaciones fácilmente y navegar sin publicidad en tu TV."
+  },
+  {
+    "id": "745634804",
+    "cleanName": "Downloader by AFTVnews 1.5.0 ForGoogleAndroidDevices APKPure",
+    "fileName": "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
+    "browsyCode": "7417",
+    "shortUrl": "https://browsy.app/7417",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
+    "editKey": "3yUMFe2S2JpA",
+    "manageUrl": "https://browsy.app/manage?code=7417&key=3yUMFe2S2JpA",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás descargar e instalar cualquier app o archivo directamente desde internet."
+  },
+  {
+    "id": "745635316",
+    "cleanName": "GeeSports (V3.8)",
+    "fileName": "GeeSports_.V3.8.apk",
+    "browsyCode": "4584",
+    "shortUrl": "https://browsy.app/4584",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GeeSports_.V3.8.apk",
+    "editKey": "Xz5KPUk5qM5Y",
+    "manageUrl": "https://browsy.app/manage?code=4584&key=Xz5KPUk5qM5Y",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver todos los deportes en vivo que te gustan y sus repeticiones."
+  },
+  {
+    "id": "745635503",
+    "cleanName": "Live TV Pro.VIP",
+    "fileName": "Live.TV.Pro.VIP.apk",
+    "browsyCode": "4121",
+    "shortUrl": "https://browsy.app/4121",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Live.TV.Pro.VIP.apk",
+    "editKey": "L6mEKWVcJFG6",
+    "manageUrl": "https://browsy.app/manage?code=4121&key=L6mEKWVcJFG6",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás sintonizar canales de televisión prémium en vivo y deportes mundiales."
+  },
+  {
+    "id": "745635705",
+    "cleanName": "LokuraTv",
+    "fileName": "LokuraTv.apk",
+    "browsyCode": "7827",
+    "shortUrl": "https://browsy.app/7827",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv.apk",
+    "editKey": "gbR3TvcQHxCA",
+    "manageUrl": "https://browsy.app/manage?code=7827&key=gbR3TvcQHxCA",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas."
+  },
+  {
+    "id": "745638099",
+    "cleanName": "LokuraTv Pro Ultra",
+    "fileName": "LokuraTv_Pro_Ultra.apk",
+    "browsyCode": "4175",
+    "shortUrl": "https://browsy.app/4175",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv_Pro_Ultra.apk",
+    "editKey": "4rNb5GPv97nL",
+    "manageUrl": "https://browsy.app/manage?code=4175&key=4rNb5GPv97nL",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas."
+  },
+  {
+    "id": "745639055",
+    "cleanName": "luma tv",
+    "fileName": "luma-tv.apk",
+    "browsyCode": "2360",
+    "shortUrl": "https://browsy.app/2360",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/luma-tv.apk",
+    "editKey": "EP6zddyWM3gY",
+    "manageUrl": "https://browsy.app/manage?code=2360&key=EP6zddyWM3gY",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de televisión latina en vivo, cine y contenido familiar."
+  },
+  {
+    "id": "745639265",
+    "cleanName": "MoviePlus 16.9 Vip ModByNF",
+    "fileName": "MoviePlus-16.9-Vip-ModByNF.apk",
+    "browsyCode": "5287",
+    "shortUrl": "https://browsy.app/5287",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus-16.9-Vip-ModByNF.apk",
+    "editKey": "rySP3ZT86Rzm",
+    "manageUrl": "https://browsy.app/manage?code=5287&key=rySP3ZT86Rzm",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver estrenos de cine y series completas en alta calidad y sin cortes."
+  },
+  {
+    "id": "745641979",
+    "cleanName": "MoviePlusVIP",
+    "fileName": "MoviePlusVIP.apk",
+    "browsyCode": "2282",
+    "shortUrl": "https://browsy.app/2282",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlusVIP.apk",
+    "editKey": "9C95JT6iX28D",
+    "manageUrl": "https://browsy.app/manage?code=2282&key=9C95JT6iX28D",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver estrenos de cine y series completas en alta calidad y sin cortes comerciales."
+  },
+  {
+    "id": "745643264",
+    "cleanName": "movies nogms tvbox (1)",
+    "fileName": "movies-nogms-tvbox.1.apk",
+    "browsyCode": "7610",
+    "shortUrl": "https://browsy.app/7610",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/movies-nogms-tvbox.1.apk",
+    "editKey": "uXyRBWnCr4u2",
+    "manageUrl": "https://browsy.app/manage?code=7610&key=uXyRBWnCr4u2",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás acceder a un amplio catálogo de películas optimizadas para TV Box."
+  },
+  {
+    "id": "745643533",
+    "cleanName": "PLayer Pro (IPTV)",
+    "fileName": "PLayer_Pro_base.2.apk",
+    "browsyCode": "2270",
+    "shortUrl": "https://browsy.app/2270",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PLayer_Pro_base.2.apk",
+    "editKey": "oiRtJ8VWfUK4",
+    "manageUrl": "https://browsy.app/manage?code=2270&key=oiRtJ8VWfUK4",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de televisión en vivo, películas y series con servicio IPTV estable y su propio servidor integrado."
+  },
+  {
+    "id": "745643792",
+    "cleanName": "PlayTV Premium 20.1",
+    "fileName": "PlayTV_Premium_20.1.apk",
+    "browsyCode": "3114",
+    "shortUrl": "https://browsy.app/3114",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PlayTV_Premium_20.1.apk",
+    "editKey": "4AP8k3tDEXix",
+    "manageUrl": "https://browsy.app/manage?code=3114&key=4AP8k3tDEXix",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de una gran variedad de canales en vivo y entretenimiento prémium."
+  },
+  {
+    "id": "745644418",
+    "cleanName": "PROJJECTIVY launcher v4 72 (Premium)",
+    "fileName": "PROJJECTIVY.launcher.v4.72.Premium.apk",
+    "browsyCode": "7624",
+    "shortUrl": "https://browsy.app/7624",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PROJJECTIVY.launcher.v4.72.Premium.apk",
+    "editKey": "2kxM7GfT3vce",
+    "manageUrl": "https://browsy.app/manage?code=7624&key=2kxM7GfT3vce",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás personalizar y acelerar la pantalla de inicio de tu Android TV."
+  },
+  {
+    "id": "745644814",
+    "cleanName": "RBTV",
+    "fileName": "RBTV.apk",
+    "browsyCode": "7812",
+    "shortUrl": "https://browsy.app/7812",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RBTV.apk",
+    "editKey": "77eLUdse4anY",
+    "manageUrl": "https://browsy.app/manage?code=7812&key=77eLUdse4anY",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás sintonizar eventos deportivos en directo como fútbol internacional, béisbol, baloncesto y boxeo."
+  },
+  {
+    "id": "745645044",
+    "cleanName": "SPORTV 3.9.VIP",
+    "fileName": "SPORTV_3.9.VIP.apk",
+    "browsyCode": "4065",
+    "shortUrl": "https://browsy.app/4065",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SPORTV_3.9.VIP.apk",
+    "editKey": "yVKjZF7RmQSC",
+    "manageUrl": "https://browsy.app/manage?code=4065&key=yVKjZF7RmQSC",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás vivir la pasión del fútbol internacional y los mejores canales deportivos."
+  },
+  {
+    "id": "745645208",
+    "cleanName": "Sportz X VERSION 3.2",
+    "fileName": "Sportz.X.VERSION.3.2.apk",
+    "browsyCode": "5280",
+    "shortUrl": "https://browsy.app/5280",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Sportz.X.VERSION.3.2.apk",
+    "editKey": "kc7ZGVA5YY5F",
+    "manageUrl": "https://browsy.app/manage?code=5280&key=kc7ZGVA5YY5F",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás sintonizar transmisiones deportivas de todo el mundo en tiempo real."
+  },
+  {
+    "id": "745645628",
+    "cleanName": "Surfshark",
+    "fileName": "Surfshark.apk",
+    "browsyCode": "2915",
+    "shortUrl": "https://browsy.app/2915",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Surfshark.apk",
+    "editKey": "KdUqYTUsvuxY",
+    "manageUrl": "https://browsy.app/manage?code=2915&key=KdUqYTUsvuxY",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás navegar seguro, proteger tu privacidad y desbloquear contenidos globales."
+  },
+  {
+    "id": "745647352",
+    "cleanName": "TizenTube v2.02 YouTube dark(2)",
+    "fileName": "TizenTube_v2.02_YouTube_dark.2.apk",
+    "browsyCode": "9360",
+    "shortUrl": "https://browsy.app/9360",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.02_YouTube_dark.2.apk",
+    "editKey": "EeRxjrnYodL5",
+    "manageUrl": "https://browsy.app/manage?code=9360&key=EeRxjrnYodL5",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver YouTube en tu televisor con tema oscuro y sin interrupciones."
+  },
+  {
+    "id": "745648319",
+    "cleanName": "MXL TV Box (IPTV)",
+    "fileName": "tv-box.apk",
+    "browsyCode": "2736",
+    "shortUrl": "https://browsy.app/2736",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/tv-box.apk",
+    "editKey": "KJrHvS8NaXbT",
+    "manageUrl": "https://browsy.app/manage?code=2736&key=KJrHvS8NaXbT",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás cargar y sintonizar canales de televisión en vivo mediante listas M3U y protocolos IPTV."
+  },
+  {
+    "id": "745649529",
+    "cleanName": "Weather XL v1.5.7.9 (Premium)",
+    "fileName": "Weather.XL.v1.5.7.9.Premium.apk",
+    "browsyCode": "5215",
+    "shortUrl": "https://browsy.app/5215",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Weather.XL.v1.5.7.9.Premium.apk",
+    "editKey": "g8eS9aoZTrSu",
+    "manageUrl": "https://browsy.app/manage?code=5215&key=g8eS9aoZTrSu",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás consultar el pronóstico del clima con animaciones en pantalla grande."
+  },
+  {
+    "id": "745652066",
+    "cleanName": "WiwyXuper",
+    "fileName": "WiwyXuper.apk",
+    "browsyCode": "9290",
+    "shortUrl": "https://browsy.app/9290",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/WiwyXuper.apk",
+    "editKey": "rKDiHP2ZCfDs",
+    "manageUrl": "https://browsy.app/manage?code=9290&key=rKDiHP2ZCfDs",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas."
+  },
+  {
+    "id": "745654390",
+    "cleanName": "WiwyXuper 4.34.4",
+    "fileName": "WiwyXuper_4.34.4.apk",
+    "browsyCode": "5102",
+    "shortUrl": "https://browsy.app/5102",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/WiwyXuper_4.34.4.apk",
+    "editKey": "rr6HLA5iPa84",
+    "manageUrl": "https://browsy.app/manage?code=5102&key=rr6HLA5iPa84",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de TV en vivo, películas y series con excelente estabilidad."
+  },
+  {
+    "id": "745656986",
+    "cleanName": "Wolf Launcher 0.1.9",
+    "fileName": "Wolf.Launcher.0.1.9.apk",
+    "browsyCode": "7242",
+    "shortUrl": "https://browsy.app/7242",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Wolf.Launcher.0.1.9.apk",
+    "editKey": "VyWmfKiA3yEh",
+    "manageUrl": "https://browsy.app/manage?code=7242&key=VyWmfKiA3yEh",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás transformar el menú de tu TV con un diseño elegante, limpio y veloz."
+  },
+  {
+    "id": "745657114",
+    "cleanName": "XTREMETV",
+    "fileName": "XTREMETV.apk",
+    "browsyCode": "6603",
+    "shortUrl": "https://browsy.app/6603",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XTREMETV.apk",
+    "editKey": "C7SDcs5MdjGZ",
+    "manageUrl": "https://browsy.app/manage?code=6603&key=C7SDcs5MdjGZ",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver televisión prémium, eventos especiales y contenido bajo demanda."
+  },
+  {
+    "id": "745657907",
+    "cleanName": "Xtv 4",
+    "fileName": "Xtv_4.apk",
+    "browsyCode": "7627",
+    "shortUrl": "https://browsy.app/7627",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Xtv_4.apk",
+    "editKey": "fk8mJmaeyE28",
+    "manageUrl": "https://browsy.app/manage?code=7627&key=fk8mJmaeyE28",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de una experiencia completa de televisión en vivo y películas."
+  },
+  {
+    "id": "745659301",
+    "cleanName": "XUPER TV v4.99.20 (Android TV)",
+    "fileName": "XUPER.TV.v4.99.20.Android.TV.apk",
+    "browsyCode": "9249",
+    "shortUrl": "https://browsy.app/9249",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XUPER.TV.v4.99.20.Android.TV.apk",
+    "editKey": "HK57YNoAJPXx",
+    "manageUrl": "https://browsy.app/manage?code=9249&key=HK57YNoAJPXx",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver TV en vivo, series, películas y anime que te gustan."
+  },
+  {
+    "id": "745660489",
+    "cleanName": "XuperTv N0F4C3 v4.35.0 OFICIAL ModByNF",
+    "fileName": "XuperTv-N0F4C3-v4.35.1.0-OFICIAL-ModByNF.apk",
+    "browsyCode": "7522",
+    "shortUrl": "https://browsy.app/7522",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XuperTv-N0F4C3-v4.35.1.0-OFICIAL-ModByNF.apk",
+    "editKey": "Hu6wi5JNpiL2",
+    "manageUrl": "https://browsy.app/manage?code=7522&key=Hu6wi5JNpiL2",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver TV en vivo, películas, series y anime con carga ultrarrápida."
+  },
+  {
+    "id": "745659737",
+    "cleanName": "Xuper AmigOnly TV 2.5",
+    "fileName": "Xuper_AmigOnly_TV_2.5.apk",
+    "browsyCode": "5979",
+    "shortUrl": "https://browsy.app/5979",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Xuper_AmigOnly_TV_2.5.apk",
+    "editKey": "KZN7M3kjok9Q",
+    "manageUrl": "https://browsy.app/manage?code=5979&key=KZN7M3kjok9Q",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás disfrutar de señales exclusivas de TV y entretenimiento en vivo."
+  },
+  {
+    "id": "745660000",
+    "cleanName": "Xuper TV2",
+    "fileName": "Xuper_TV2.apk",
+    "browsyCode": "5109",
+    "shortUrl": "https://browsy.app/5109",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Xuper_TV2.apk",
+    "editKey": "fq4iuA73Piuc",
+    "manageUrl": "https://browsy.app/manage?code=5109&key=fq4iuA73Piuc",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás sintonizar canales de TV nacionales e internacionales con señal estable."
+  },
+  {
+    "id": "745661509",
+    "cleanName": "ZüperTV",
+    "fileName": "ZuperTV.apk",
+    "browsyCode": "5358",
+    "shortUrl": "https://browsy.app/5358",
+    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ZuperTV.apk",
+    "editKey": "GQMBtEP9NEMW",
+    "manageUrl": "https://browsy.app/manage?code=5358&key=GQMBtEP9NEMW",
+    "createdAt": "2026-11-13 20:30:00",
+    "aiDescription": "Con esta aplicación podrás ver canales familiares en vivo, series y películas para todos."
+  }
+];
+
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action) {
+    const act = e.parameter.action;
+    let res = null;
+
+    if (act === 'guest') {
+      res = getGuestCatalog();
+    } else if (act === 'apks') {
+      res = getApksList(e.parameter.pwd);
+    } else if (act === 'scan') {
+      const files = getRepositoryFilesList();
+      res = { count: files.length, files: files };
+    } else if (act === 'sheet') {
+      const sheet = getOrCreateSheet();
+      res = sheet.getDataRange().getValues();
+    } else if (act === 'sync') {
+      res = syncApks(e.parameter.pwd, true);
+    } else if (act === 'emptyTrash') {
+      res = emptyTrash(e.parameter.pwd);
+    } else if (act === 'restore') {
+      res = restoreApk(e.parameter.pwd, e.parameter.fileId);
+    } else if (act === 'restoreAll') {
+      res = restoreAllDeleted(e.parameter.pwd);
+    } else if (act === 'generateCode') {
+      res = generateCodeForSingleApk(e.parameter.pwd, e.parameter.fileId);
+    } else if (act === 'deletePermanent') {
+      res = deletePermanently(e.parameter.pwd, e.parameter.fileId);
+    } else if (act === 'updateDesc' || act === 'updateDescription') {
+      res = updateApkDescription(e.parameter.pwd, e.parameter.fileId, e.parameter.desc || e.parameter.description);
+    } else if (act === 'interval') {
+      res = setSyncInterval(e.parameter.pwd, e.parameter.mins);
+    } else if (act === 'describe') {
+      res = generateApkDescription(e.parameter.pwd, e.parameter.name);
+    } else if (act === 'appVersion' || act === 'checkUpdate' || act === 'ota') {
+      res = getLatestTvAppInfo();
+    } else if (act === 'checkMac') {
+      res = checkDeviceMac(e.parameter.mac, e.parameter.model);
+    } else if (act === 'macList') {
+      res = getMacDevicesList(e.parameter.pwd);
+    } else if (act === 'saveMac') {
+      res = saveOrUpdateMac(e.parameter.pwd, e.parameter);
+    } else if (act === 'toggleMac') {
+      res = toggleMacStatus(e.parameter.pwd, e.parameter.mac, e.parameter.status);
+    } else if (act === 'deleteMac') {
+      res = deleteMacDevice(e.parameter.pwd, e.parameter.mac);
+    } else if (act === 'recoveryRequest') {
+      res = requestPasswordRecovery();
+    } else if (act === 'recoveryVerify') {
+      res = verifyRecoveryCode(e.parameter.otp);
+    } else if (act === 'recoveryReset') {
+      res = resetAdminPassword(e.parameter.token, e.parameter.newPwd);
+    }
+
+    if (res !== null) {
+      return ContentService.createTextOutput(JSON.stringify(res))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+
+  const isModeAdmin = (e && e.parameter && (e.parameter.mode === 'admin' || e.parameter.view === 'admin' || e.parameter.admin !== undefined));
+  const fileToServe = isModeAdmin ? 'Admin' : 'Index';
+
+  return HtmlService.createHtmlOutputFromFile(fileToServe)
+    .setTitle(isModeAdmin ? 'ARIDAMOTEC | Panel de Administración' : 'ARIDAMOTEC | Catálogo Oficial de Aplicaciones')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function getAdminPassword() {
+  try {
+    const props = PropertiesService.getScriptProperties();
+    const custom = props.getProperty('ADMIN_PASSWORD');
+    if (custom && custom.trim() !== '') return custom.trim();
+  } catch (e) {
+    Logger.log('Error leyendo PropertiesService para ADMIN_PASSWORD: ' + e);
+  }
+  return CONFIG.ADMIN_PASSWORD;
+}
+
+function verifyAuth(password) {
+  return password === getAdminPassword();
+}
+
+function getAuthorizedEmail() {
+  try {
+    const props = PropertiesService.getScriptProperties();
+    const custom = props.getProperty('ADMIN_RECOVERY_EMAIL');
+    if (custom && custom.trim() !== '') return custom.trim();
+  } catch (e) {}
+
+  try {
+    const userEmail = Session.getEffectiveUser().getEmail();
+    if (userEmail && userEmail.trim() !== '') return userEmail.trim();
+  } catch (e) {}
+
+  try {
+    const ownerEmail = DriveApp.getRootFolder().getOwner().getEmail();
+    if (ownerEmail && ownerEmail.trim() !== '') return ownerEmail.trim();
+  } catch (e) {}
+
+  return 'administrador@aridamotec.com';
+}
+
+function maskEmail(email) {
+  if (!email || !email.includes('@')) return 'tu***@correo.com';
+  const parts = email.split('@');
+  const user = parts[0];
+  const domain = parts[1];
+  if (user.length <= 2) {
+    return user[0] + '***@' + domain;
+  }
+  const prefix = user.substring(0, Math.min(2, Math.floor(user.length / 2)));
+  const suffix = user.slice(-1);
+  return prefix + '*****' + suffix + '@' + domain;
+}
+
+// ================= RECUPERACIÓN SEGURA DE CONTRASEÑA =================
+function requestPasswordRecovery() {
+  const props = PropertiesService.getScriptProperties();
+  const now = Date.now();
+
+  const lastReq = parseInt(props.getProperty('RECOVERY_LAST_REQ') || '0', 10);
+  if (now - lastReq < 120000) {
+    const waitSec = Math.ceil((120000 - (now - lastReq)) / 1000);
+    return {
+      success: false,
+      error: 'Por seguridad, debes esperar ' + waitSec + ' segundos antes de solicitar otro código.'
+    };
+  }
+
+  const dailyKey = 'RECOVERY_DAILY_' + new Date().toISOString().slice(0, 10);
+  const dailyCount = parseInt(props.getProperty(dailyKey) || '0', 10);
+  if (dailyCount >= 5) {
+    return {
+      success: false,
+      error: 'Has alcanzado el límite máximo diario de solicitudes de recuperación (5). Intenta más tarde.'
+    };
+  }
+
+  const email = getAuthorizedEmail();
+  if (!email) {
+    return { success: false, error: 'No se encontró un correo autorizado configurado.' };
+  }
+
+  const otp = String(Math.floor(100000 + Math.random() * 900000));
+  const expiry = now + (15 * 60 * 1000);
+
+  props.setProperty('RECOVERY_OTP', otp);
+  props.setProperty('RECOVERY_EXPIRY', String(expiry));
+  props.setProperty('RECOVERY_ATTEMPTS', '0');
+  props.setProperty('RECOVERY_LAST_REQ', String(now));
+  props.setProperty(dailyKey, String(dailyCount + 1));
+
+  const subject = '🔐 [ARIDAMOTEC] Código de Recuperación de Administrador: ' + otp;
+  const htmlBody = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 520px; margin: 0 auto; background: #060914; color: #f8fafc; border: 1px solid #00e5ff; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.7);">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: #00e5ff; margin: 0 0 6px 0; font-size: 22px; letter-spacing: 0.5px;">⚡ ARIDAMOTEC SECURITY</h2>
+        <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Gestor de APKs & Códigos Browsy</span>
+      </div>
+
+      <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6; margin: 0 0 18px 0;">
+        Se ha solicitado la <strong>recuperación de la contraseña de Administrador</strong> para la plataforma ARIDAMOTEC.
+      </p>
+
+      <div style="background: rgba(0, 229, 255, 0.08); border: 2px dashed #00e5ff; border-radius: 12px; padding: 20px; text-align: center; margin: 20px 0;">
+        <span style="display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; margin-bottom: 8px;">Tu código de seguridad temporal</span>
+        <span style="display: block; font-size: 38px; font-weight: 800; color: #00e5ff; letter-spacing: 8px; font-family: monospace;">${otp}</span>
+      </div>
+
+      <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 12px 14px; border-radius: 6px; margin-bottom: 20px;">
+        <p style="margin: 0; color: #fcd34d; font-size: 12px; line-height: 1.5;">
+          ⏱️ Este código expira en <strong>15 minutos</strong> y tiene un máximo de <strong>3 intentos</strong> permitidos.
+        </p>
+      </div>
+
+      <p style="color: #64748b; font-size: 11px; line-height: 1.5; margin: 0; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+        🔒 Si no solicitaste este código, puedes ignorar este mensaje con total seguridad. Nadie puede acceder a la administración sin este código de verificación.
+      </p>
+    </div>
+  `;
+
+  let sent = false;
+  try {
+    MailApp.sendEmail({
+      to: email,
+      subject: subject,
+      htmlBody: htmlBody
+    });
+    sent = true;
+  } catch (e1) {
+    Logger.log('MailApp falló, probando GmailApp: ' + e1);
+    try {
+      GmailApp.sendEmail(email, subject, 'Tu código de verificación es: ' + otp, { htmlBody: htmlBody });
+      sent = true;
+    } catch (e2) {
+      Logger.log('GmailApp falló: ' + e2);
+    }
+  }
+
+  if (!sent) {
+    return { success: false, error: 'No se pudo enviar el correo de verificación. Verifica los permisos de tu cuenta de Google.' };
+  }
+
+  return {
+    success: true,
+    maskedEmail: maskEmail(email),
+    message: 'Código de verificación enviado exitosamente a ' + maskEmail(email)
+  };
+}
+
+function verifyRecoveryCode(otpInput) {
+  const props = PropertiesService.getScriptProperties();
+  const storedOtp = props.getProperty('RECOVERY_OTP');
+  const expiry = parseInt(props.getProperty('RECOVERY_EXPIRY') || '0', 10);
+  let attempts = parseInt(props.getProperty('RECOVERY_ATTEMPTS') || '0', 10);
+  const now = Date.now();
+
+  if (!storedOtp || !expiry) {
+    return { success: false, error: 'No hay ninguna solicitud de recuperación activa o ya expiró.' };
+  }
+
+  if (now > expiry) {
+    props.deleteProperty('RECOVERY_OTP');
+    props.deleteProperty('RECOVERY_EXPIRY');
+    props.deleteProperty('RECOVERY_ATTEMPTS');
+    return { success: false, error: 'El código ha expirado (límite de 15 minutos). Solicita uno nuevo.' };
+  }
+
+  attempts++;
+  props.setProperty('RECOVERY_ATTEMPTS', String(attempts));
+
+  if (String(otpInput).trim() !== storedOtp.trim()) {
+    if (attempts >= 3) {
+      props.deleteProperty('RECOVERY_OTP');
+      props.deleteProperty('RECOVERY_EXPIRY');
+      props.deleteProperty('RECOVERY_ATTEMPTS');
+      return { success: false, error: 'Has superado el límite de 3 intentos fallidos. Por seguridad, el código fue invalidado.' };
+    }
+    return { success: false, error: 'Código incorrecto. Te quedan ' + (3 - attempts) + ' intento(s).' };
+  }
+
+  const resetToken = 'RST_' + Utilities.getUuid();
+  props.setProperty('RESET_TOKEN', resetToken);
+  props.setProperty('RESET_TOKEN_EXPIRY', String(now + 600000));
+
+  props.deleteProperty('RECOVERY_OTP');
+  props.deleteProperty('RECOVERY_EXPIRY');
+  props.deleteProperty('RECOVERY_ATTEMPTS');
+
+  const currentPassword = getAdminPassword();
+
+  return {
+    success: true,
+    resetToken: resetToken,
+    currentPassword: currentPassword,
+    message: 'Código verificado con éxito.'
+  };
+}
+
+function resetAdminPassword(resetToken, newPassword) {
+  const props = PropertiesService.getScriptProperties();
+  const storedToken = props.getProperty('RESET_TOKEN');
+  const expiry = parseInt(props.getProperty('RESET_TOKEN_EXPIRY') || '0', 10);
+  const now = Date.now();
+
+  if (!storedToken || !expiry || now > expiry || resetToken !== storedToken) {
+    return { success: false, error: 'Token de restablecimiento inválido o expirado. Inicia el proceso nuevamente.' };
+  }
+
+  if (!newPassword || newPassword.trim().length < 6) {
+    return { success: false, error: 'La nueva contraseña debe tener al menos 6 caracteres.' };
+  }
+
+  props.setProperty('ADMIN_PASSWORD', newPassword.trim());
+  props.deleteProperty('RESET_TOKEN');
+  props.deleteProperty('RESET_TOKEN_EXPIRY');
+
+  return {
+    success: true,
+    message: '¡Contraseña de Administrador actualizada exitosamente!'
+  };
+}
+
+// ================= CATÁLOGO SEGURO PARA MODO INVITADO =================
+function getGuestCatalog() {
+  try {
+    syncApks();
+  } catch (errSync) {
+    Logger.log('Auto-sync silencioso en getGuestCatalog: ' + errSync);
+  }
+
+  let sheet;
+  try {
+    sheet = getOrCreateSheet();
+  } catch (e) {
+    Logger.log('Error abriendo hoja para invitado: ' + e);
+  }
+
+  const catalog = [];
+  const seedByFileName = new Map(SEED_APKS.map(s => [(s.fileName || '').toLowerCase(), s]));
+  const seedById = new Map(SEED_APKS.map(s => [String(s.id), s]));
+
+  if (sheet && sheet.getLastRow() > 1) {
+    const data = sheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const fileId = String(row[0] || '').trim();
+      const fileName = String(row[2] || '').trim();
+      if (!fileId && !fileName) continue;
+
+      const status = String(row[8] || 'Activo').toLowerCase();
+      if (status.includes('eliminad') || status.includes('del')) continue;
+
+      const fnLower = fileName.toLowerCase();
+      const seed = seedByFileName.get(fnLower) || seedById.get(fileId);
+
+      let cleanName = String(row[1] || (seed ? seed.cleanName : 'APK')).trim();
+      if (seed && seed.cleanName && (cleanName === 'app release(1)' || cleanName === 'tv box' || cleanName === 'PLayer Pro base(2)')) {
+        cleanName = seed.cleanName;
+      }
+      let browsyCode = String(row[3] || (seed ? seed.browsyCode : '')).trim();
+      let shortUrl = String(row[4] || (seed ? seed.shortUrl : '') || (browsyCode ? ('https://browsy.site/' + browsyCode) : '')).trim();
+      let directUrl = String(row[5] || (seed ? seed.directUrl : '') || ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(fileName))).trim();
+      const createdAt = String(row[9] || (seed ? seed.createdAt : '')).trim();
+      let aiDescription = String(row[11] || '').trim();
+      if (!aiDescription) {
+        aiDescription = (seed && seed.aiDescription) ? seed.aiDescription : getSemanticDescription(cleanName);
+      }
+
+      catalog.push({
+        cleanName: cleanName,
+        fileName: fileName,
+        browsyCode: browsyCode || 'Pendiente',
+        browsyShortUrl: shortUrl,
+        directDownloadUrl: directUrl,
+        aiDescription: aiDescription,
+        category: classifyApkCategory(cleanName, fileName, aiDescription),
+        createdAt: createdAt
+      });
+    }
+  } else {
+    SEED_APKS.forEach(s => {
+      catalog.push({
+        cleanName: s.cleanName,
+        fileName: s.fileName || s.name || '',
+        browsyCode: String(s.browsyCode || 'Pendiente'),
+        browsyShortUrl: s.shortUrl || (s.browsyCode ? ('https://browsy.site/' + s.browsyCode) : ''),
+        directDownloadUrl: s.directUrl || ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(s.fileName || s.name || '')),
+        aiDescription: s.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.',
+        category: classifyApkCategory(s.cleanName, s.fileName || s.name || '', s.aiDescription || ''),
+        createdAt: s.createdAt || ''
+      });
+    });
+  }
+
+  return {
+    success: true,
+    total: catalog.length,
+    catalog: catalog
+  };
+}
+
+function getOrCreateSheet() {
+  const files = DriveApp.getFilesByName(CONFIG.SHEET_NAME);
+  let spreadsheet;
+
+  if (files.hasNext()) {
+    spreadsheet = SpreadsheetApp.open(files.next());
+  } else {
+    spreadsheet = SpreadsheetApp.create(CONFIG.SHEET_NAME);
+  }
+
+  let sheet = spreadsheet.getSheetByName('APKs');
+  if (!sheet) {
+    sheet = spreadsheet.getActiveSheet();
+    sheet.setName('APKs');
+    sheet.appendRow([
+      'ID Archivo',
+      'Nombre Limpio',
+      'Archivo Original',
+      'Código Browsy',
+      'URL Corta Browsy',
+      'Enlace Descarga Directa',
+      'Clave Edición Browsy',
+      'URL Gestión Browsy',
+      'Estado',
+      'Fecha Creación',
+      'Última Sincronización',
+      'Descripción IA'
+    ]);
+    sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    sheet.setFrozenRows(1);
+  } else {
+    if (sheet.getLastColumn() < 12) {
+      sheet.getRange(1, 12).setValue('Descripción IA').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+  }
+
+  return sheet;
+}
+
+function cleanApkName(rawName) {
+  return rawName
+    .replace(/\.apk$/i, '')
+    .replace(/\.xapk$/i, '')
+    .replace(/[._-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getSemanticDescription(cleanName) {
+  const n = (cleanName || '').toLowerCase();
+  if (n.includes('player') || n.includes('iptv') || n.includes('xtreme') || n.includes('mxl') || n.includes('xuper') || n.includes('zuper') || n.includes('wiwy') || n.includes('xtv') || n.includes('luma') || n.includes('playtv') || n.includes('live tv')) {
+    return 'Con esta aplicación podrás disfrutar de televisión en vivo, películas y series con servicio IPTV estable y su propio servidor integrado.';
+  }
+  if (n.includes('app release') || n.includes('sport') || n.includes('futbol') || n.includes('deporte') || n.includes('cricz') || n.includes('rbtv')) {
+    return 'Con esta aplicación podrás sintonizar eventos deportivos en directo como fútbol internacional, béisbol, baloncesto y boxeo.';
+  }
+  if (n.includes('movie') || n.includes('cine') || n.includes('pelicula') || n.includes('clipbox')) {
+    return 'Con esta aplicación podrás ver estrenos de cine y series completas en alta calidad y sin cortes comerciales.';
+  }
+  if (n.includes('anim') || n.includes('manga') || n.includes('otaku')) {
+    return 'Con esta aplicación podrás ver tus series y películas de anime favoritas en excelente resolución en tu pantalla.';
+  }
+  if (n.includes('launcher') || n.includes('wolf') || n.includes('atv') || n.includes('projjectivy')) {
+    return 'Con esta aplicación podrás personalizar y acelerar la pantalla de inicio de tu Android TV sin anuncios.';
+  }
+  if (n.includes('download') || n.includes('descarga') || n.includes('browsy')) {
+    return 'Con esta aplicación podrás descargar e instalar aplicaciones directamente en tu Android TV mediante códigos o enlaces.';
+  }
+  if (n.includes('vpn') || n.includes('surfshark') || n.includes('wireguard')) {
+    return 'Con esta aplicación podrás navegar con máxima seguridad, privacidad y desbloquear contenidos de otros países.';
+  }
+  if (n.includes('tube') || n.includes('youtube') || n.includes('tizentube')) {
+    return 'Con esta aplicación podrás ver YouTube en tu televisor con tema oscuro y sin publicidad que interrumpa tus videos.';
+  }
+  if (n.includes('weather') || n.includes('clima')) {
+    return 'Con esta aplicación podrás consultar el pronóstico del clima con radares y animaciones en pantalla grande.';
+  }
+  return 'Con esta aplicación podrás disfrutar de televisión en vivo, películas y series con excelente estabilidad en tu TV.';
+}
+
+function generateApkDescription(password, apkName) {
+  if (password !== undefined && !verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const cleanName = cleanApkName(apkName || '');
+  let apiKey = CONFIG.GEMINI_API_KEY || '';
+  try {
+    const propKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+    if (propKey) apiKey = propKey;
+  } catch (e) {}
+
+  if (apiKey) {
+    try {
+      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey;
+      const prompt = 'Eres un experto técnico en aplicaciones para Android TV, Fire TV y servicios de streaming/IPTV para clientes de ARIDAMOTEC. Escribe una mini descripción publicitaria en español para la aplicación "' + cleanName + '". IMPORTANTE: En este ecosistema, nombres como "Player Pro", "TV Box", "XTREME" o archivos compilados son servicios de IPTV (televisión en vivo con servidor integrado, cine y series) o deportes, NO reproductores de música ni archivos genéricos. REGLAS: 1) Longitud de entre 12 y 18 palabras. 2) Debe comenzar estrictamente con la frase "Con esta aplicación podrás...". 3) Explica para qué sirve de forma atractiva y comercial para el cliente. Responde únicamente con la frase, sin comillas ni texto adicional.';
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.2, maxOutputTokens: 60 }
+      };
+      const res = UrlFetchApp.fetch(url, {
+        method: 'post',
+        contentType: 'application/json',
+        payload: JSON.stringify(payload),
+        muteHttpExceptions: true
+      });
+      if (res.getResponseCode() === 200) {
+        const json = JSON.parse(res.getContentText());
+        const text = json.candidates && json.candidates[0] && json.candidates[0].content && json.candidates[0].content.parts && json.candidates[0].content.parts[0] && json.candidates[0].content.parts[0].text;
+        if (text && text.trim()) {
+          let cleanDesc = text.trim().replace(/^["']|["']$/g, '');
+          if (!cleanDesc.toLowerCase().startsWith('con esta aplicaci')) {
+            cleanDesc = 'Con esta aplicación podrás ' + cleanDesc;
+          }
+          return { success: true, description: cleanDesc, source: 'gemini' };
+        }
+      }
+    } catch (err) {
+      Logger.log('Gemini API call fallback: ' + err);
+    }
+  }
+
+  return {
+    success: true,
+    description: getSemanticDescription(cleanName),
+    source: 'semantic_ai'
+  };
+}
+
+function requestBrowsyCode(directUrl) {
+  const url = 'https://browsy.app/api/shorten';
+  const options = {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify({ url: directUrl }),
+    muteHttpExceptions: true,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'application/json, text/plain, */*',
+      'Origin': 'https://browsy.app',
+      'Referer': 'https://browsy.app/'
+    }
+  };
+
+  try {
+    const res = UrlFetchApp.fetch(url, options);
+    const code = res.getResponseCode();
+    const text = res.getContentText();
+    
+    if (code >= 200 && code < 300) {
+      const data = JSON.parse(text);
+      if (data && data.code) {
+        return {
+          code: String(data.code),
+          shortUrl: data.shortUrl || ('https://browsy.app/' + data.code),
+          editKey: data.editKey || '',
+          manageUrl: data.manageUrl || ('https://browsy.app/manage?code=' + data.code + '&key=' + (data.editKey || ''))
+        };
+      }
+    }
+  } catch (err) {
+    Logger.log('Error conectando a Browsy API: ' + err);
+  }
+  return null;
+}
+
+function getRepositoryFilesList(forceRefresh) {
+  const cache = CacheService.getScriptCache();
+  if (!forceRefresh) {
+    try {
+      const cached = cache.get('gh_repo_assets_v1');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (eCache) {
+      Logger.log('CacheService error: ' + eCache);
+    }
+  }
+
+  const items = new Map();
+
+  // 1. Intento primario: API REST de GitHub Releases
+  try {
+    const res = UrlFetchApp.fetch(CONFIG.GITHUB_API_RELEASE, {
+      method: 'get',
+      headers: {
+        'User-Agent': 'ARIDAMOTEC-App',
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      muteHttpExceptions: true
+    });
+
+    if (res.getResponseCode() === 200) {
+      const release = JSON.parse(res.getContentText());
+      if (release.assets && Array.isArray(release.assets)) {
+        release.assets.forEach(asset => {
+          const name = asset.name || '';
+          const lowerName = name.toLowerCase();
+          if (lowerName.startsWith('aridamotec_tv') || lowerName.startsWith('aridamotec-tv') || lowerName.includes('aridamotectv')) return;
+          if (name.toLowerCase().endsWith('.apk') || name.toLowerCase().endsWith('.xapk')) {
+            items.set(name.toLowerCase(), {
+              id: String(asset.id),
+              name: name,
+              downloadUrl: asset.browser_download_url,
+              size: asset.size
+            });
+          }
+        });
+      }
+    } else {
+      Logger.log('GitHub API error status: ' + res.getResponseCode() + ' - usando endpoint HTML expanded_assets');
+    }
+  } catch (errGithub) {
+    Logger.log('GitHub Releases API error: ' + errGithub);
+  }
+
+  // 2. Si la API REST devolvió 403 (Rate Limit) o falló, consultar el endpoint HTML público (sin límite de API)
+  if (items.size === 0) {
+    try {
+      const htmlUrl = 'https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/expanded_assets/' + CONFIG.GITHUB_RELEASE_TAG;
+      const htmlRes = UrlFetchApp.fetch(htmlUrl, {
+        method: 'get',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        },
+        muteHttpExceptions: true
+      });
+      if (htmlRes.getResponseCode() === 200) {
+        const text = htmlRes.getContentText();
+        const prefix = '/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/';
+        const regex = new RegExp(prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^"]+)', 'g');
+        let m;
+        let syntheticId = 745600000;
+        while ((m = regex.exec(text)) !== null) {
+          const decoded = decodeURIComponent(m[1]);
+          const dLower = decoded.toLowerCase();
+          if ((dLower.endsWith('.apk') || dLower.endsWith('.xapk')) && !items.has(dLower)) {
+            items.set(dLower, {
+              id: String(syntheticId++),
+              name: decoded,
+              downloadUrl: 'https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(decoded),
+              size: 0
+            });
+          }
+        }
+      }
+    } catch (errHtml) {
+      Logger.log('GitHub Expanded Assets HTML error: ' + errHtml);
+    }
+  }
+
+  // Si se obtuvieron archivos reales de GitHub, cachear por 60 segundos
+  if (items.size > 0) {
+    const list = Array.from(items.values());
+    try {
+      cache.put('gh_repo_assets_v1', JSON.stringify(list), 60);
+    } catch (eC) {}
+    return list;
+  }
+
+  // Si falló toda conexión con GitHub, NO sobreescribir con SEED_APKS. Retornar null para proteger la hoja.
+  Logger.log('No se pudieron obtener archivos de GitHub. No se alterará la hoja de cálculo.');
+  return null;
+}
+
+function getDriveFilesList() {
+  return getRepositoryFilesList();
+}
+
+function syncApks(password, forceRefresh) {
+  if (password !== undefined && typeof password === 'string' && !verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const currentRepoFiles = getRepositoryFilesList(forceRefresh);
+  if (!currentRepoFiles || currentRepoFiles.length === 0) {
+    Logger.log('No se pudieron obtener archivos de GitHub. No se alterará la hoja de cálculo.');
+    return { success: false, error: 'No se pudo conectar a GitHub Releases' };
+  }
+
+  const sheet = getOrCreateSheet();
+
+  const data = sheet.getDataRange().getValues();
+  const existingMapByFileName = new Map();
+  const existingMapById = new Map();
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const fileId = String(row[0] || '').trim();
+    const fileName = String(row[2] || '').trim().toLowerCase();
+    const entry = {
+      rowIndex: i + 1,
+      id: fileId,
+      fileName: String(row[2] || '').trim(),
+      cleanName: String(row[1] || '').trim(),
+      browsyCode: String(row[3] || '').trim(),
+      shortUrl: String(row[4] || '').trim(),
+      directUrl: String(row[5] || '').trim(),
+      editKey: String(row[6] || '').trim(),
+      manageUrl: String(row[7] || '').trim(),
+      status: String(row[8] || '').trim(),
+      aiDesc: String(row[11] || '').trim()
+    };
+    if (fileId) existingMapById.set(fileId, entry);
+    if (fileName) existingMapByFileName.set(fileName, entry);
+  }
+
+  const seedByFileName = new Map();
+  const seedById = new Map();
+  if (typeof SEED_APKS !== 'undefined' && Array.isArray(SEED_APKS)) {
+    SEED_APKS.forEach(s => {
+      if (s.fileName) seedByFileName.set(s.fileName.toLowerCase(), s);
+      if (s.id) seedById.set(String(s.id), s);
+    });
+  }
+
+  let addedCount = 0;
+  let updatedCount = 0;
+  let codesGenerated = 0;
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+  const repoNamesSet = new Set();
+
+  for (let i = 0; i < currentRepoFiles.length; i++) {
+    const rf = currentRepoFiles[i];
+    const rfNameLower = (rf.name || '').toLowerCase();
+    if (rfNameLower.startsWith('aridamotec_tv') || rfNameLower.startsWith('aridamotec-tv') || rfNameLower.includes('aridamotectv')) continue;
+    repoNamesSet.add(rfNameLower);
+
+    const seed = seedByFileName.get(rfNameLower) || seedById.get(rf.id);
+    const cleanName = (seed && seed.cleanName) ? seed.cleanName : cleanApkName(rf.name);
+    const directUrl = rf.downloadUrl || (seed ? seed.directUrl : ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(rf.name)));
+    const aiDesc = (seed && seed.aiDescription) ? seed.aiDescription : getSemanticDescription(cleanName);
+
+    const existing = existingMapByFileName.get(rfNameLower) || existingMapById.get(rf.id);
+
+    if (!existing) {
+      let browsy = null;
+      if (seed && seed.browsyCode) {
+        browsy = {
+          code: seed.browsyCode,
+          shortUrl: seed.shortUrl,
+          editKey: seed.editKey || '',
+          manageUrl: seed.manageUrl || ''
+        };
+      } else if (codesGenerated < 20) {
+        browsy = requestBrowsyCode(directUrl);
+        if (browsy) codesGenerated++;
+      }
+
+      sheet.appendRow([
+        rf.id,
+        cleanName,
+        rf.name,
+        browsy ? browsy.code : '',
+        browsy ? browsy.shortUrl : '',
+        directUrl,
+        browsy ? browsy.editKey : '',
+        browsy ? browsy.manageUrl : '',
+        'active',
+        (seed && seed.createdAt) ? seed.createdAt : nowStr,
+        nowStr,
+        aiDesc
+      ]);
+      addedCount++;
+    } else {
+      const rIdx = existing.rowIndex;
+      let rowUpdated = false;
+
+      if (rf.id && existing.id !== rf.id) {
+        sheet.getRange(rIdx, 1).setValue(rf.id);
+        rowUpdated = true;
+      }
+
+      if (cleanName && existing.cleanName !== cleanName && (existing.cleanName === 'app release(1)' || existing.cleanName === 'tv box' || existing.cleanName === 'PLayer Pro base(2)' || !existing.cleanName)) {
+        sheet.getRange(rIdx, 2).setValue(cleanName);
+        rowUpdated = true;
+      }
+
+      if (directUrl && existing.directUrl !== directUrl) {
+        sheet.getRange(rIdx, 6).setValue(directUrl);
+        rowUpdated = true;
+      }
+
+      if ((!existing.browsyCode || existing.browsyCode === 'Pendiente') && seed && seed.browsyCode) {
+        sheet.getRange(rIdx, 4).setValue(seed.browsyCode);
+        sheet.getRange(rIdx, 5).setValue(seed.shortUrl);
+        sheet.getRange(rIdx, 7).setValue(seed.editKey || '');
+        sheet.getRange(rIdx, 8).setValue(seed.manageUrl || '');
+        rowUpdated = true;
+      } else if (!existing.browsyCode && codesGenerated < 20) {
+        const browsy = requestBrowsyCode(directUrl);
+        if (browsy && browsy.code) {
+          codesGenerated++;
+          sheet.getRange(rIdx, 4).setValue(browsy.code);
+          sheet.getRange(rIdx, 5).setValue(browsy.shortUrl);
+          sheet.getRange(rIdx, 7).setValue(browsy.editKey || '');
+          sheet.getRange(rIdx, 8).setValue(browsy.manageUrl || '');
+          rowUpdated = true;
+        }
+      }
+
+      if (existing.status && existing.status.toLowerCase().includes('del')) {
+        sheet.getRange(rIdx, 9).setValue('active');
+        rowUpdated = true;
+      }
+
+      if (!existing.aiDesc) {
+        if (seed && seed.aiDescription) {
+          sheet.getRange(rIdx, 12).setValue(seed.aiDescription);
+          existing.aiDesc = seed.aiDescription;
+        } else {
+          const autoDesc = getSemanticDescription(cleanName);
+          sheet.getRange(rIdx, 12).setValue(autoDesc);
+          existing.aiDesc = autoDesc;
+        }
+      }
+
+      sheet.getRange(rIdx, 11).setValue(nowStr);
+      if (rowUpdated) updatedCount++;
+    }
+  }
+
+  let markedDeletedCount = 0;
+  if (currentRepoFiles.length > 0) {
+    existingMapByFileName.forEach((rec, fnLower) => {
+      if (!repoNamesSet.has(fnLower)) {
+        if (!rec.status.toLowerCase().includes('del') && rec.status !== 'restored') {
+          sheet.getRange(rec.rowIndex, 9).setValue('deleted_from_repository');
+          sheet.getRange(rec.rowIndex, 11).setValue(nowStr);
+          rec.status = 'deleted_from_repository';
+          markedDeletedCount++;
+        }
+      }
+    });
+  }
+
+  return {
+    success: true,
+    total: currentRepoFiles.length,
+    totalRepo: currentRepoFiles.length,
+    totalDrive: currentRepoFiles.length,
+    added: addedCount,
+    updated: updatedCount,
+    codesGenerated: codesGenerated,
+    markedDeleted: markedDeletedCount,
+    timestamp: nowStr
+  };
+}
+
+function getApksList(password) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Contraseña incorrecta' };
+  }
+
+  try {
+    syncApks();
+  } catch (errSync) {
+    Logger.log('Auto-sync silencioso en getApksList: ' + errSync);
+  }
+
+  let sheet;
+  try {
+    sheet = getOrCreateSheet();
+  } catch (e) {
+    Logger.log('Error abriendo hoja: ' + e);
+  }
+
+  const active = [];
+  const deleted = [];
+  const seedByFileName = new Map(SEED_APKS.map(s => [(s.fileName || '').toLowerCase(), s]));
+  const seedById = new Map(SEED_APKS.map(s => [String(s.id), s]));
+
+  if (sheet && sheet.getLastRow() > 1) {
+    const data = sheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const fileId = String(row[0] || '').trim();
+      const fileName = String(row[2] || '').trim();
+      if (!fileId && !fileName) continue;
+
+      const fnLower = fileName.toLowerCase();
+      const seed = seedByFileName.get(fnLower) || seedById.get(fileId);
+
+      let browsyCode = String(row[3] || '').trim();
+      let shortUrl = String(row[4] || '').trim();
+      let directUrl = String(row[5] || '').trim();
+      let editKey = String(row[6] || '').trim();
+      let manageUrl = String(row[7] || '').trim();
+      const status = String(row[8] || 'active').trim();
+      let finalCleanName = String(row[1] || row[2] || '').trim();
+
+      if (!directUrl || directUrl.includes('drive.google.com')) {
+        if (seed && seed.directUrl) {
+          directUrl = seed.directUrl;
+        } else if (fileName) {
+          directUrl = 'https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(fileName);
+        }
+        try { sheet.getRange(i + 1, 6).setValue(directUrl); } catch (eU) {}
+      }
+
+      if ((!browsyCode || browsyCode === 'Pendiente') && seed && seed.browsyCode) {
+        browsyCode = seed.browsyCode;
+        shortUrl = seed.shortUrl;
+        editKey = seed.editKey || '';
+        manageUrl = seed.manageUrl || '';
+        try {
+          sheet.getRange(i + 1, 4).setValue(browsyCode);
+          sheet.getRange(i + 1, 5).setValue(shortUrl);
+          sheet.getRange(i + 1, 7).setValue(editKey);
+          sheet.getRange(i + 1, 8).setValue(manageUrl);
+        } catch (errSheet) {
+          Logger.log('Error actualizando celda: ' + errSheet);
+        }
+      }
+
+      let createdAtStr = '';
+      if (row[9]) {
+        if (row[9] instanceof Date) {
+          createdAtStr = Utilities.formatDate(row[9], 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+        } else {
+          createdAtStr = String(row[9]);
+        }
+      } else if (seed) {
+        createdAtStr = seed.createdAt || '';
+      }
+
+      let aiDesc = String(row[11] || '').trim();
+      if (!aiDesc) {
+        if (seed && seed.aiDescription) {
+          aiDesc = seed.aiDescription;
+        } else {
+          aiDesc = getSemanticDescription(finalCleanName);
+        }
+        try { sheet.getRange(i + 1, 12).setValue(aiDesc); } catch (e) {}
+      }
+
+      const item = {
+        driveFileId: fileId || (seed ? seed.id : ('file-' + i)),
+        cleanName: finalCleanName,
+        fileName: fileName,
+        browsyCode: browsyCode,
+        browsyShortUrl: shortUrl,
+        directDownloadUrl: directUrl,
+        browsyEditKey: editKey,
+        browsyManageUrl: manageUrl,
+        status: status,
+        createdAt: createdAtStr,
+        aiDescription: aiDesc,
+        category: classifyApkCategory(finalCleanName, fileName, aiDesc),
+        orderIndex: i
+      };
+
+      if (item.status.toLowerCase().includes('del')) {
+        deleted.push(item);
+      } else {
+        active.push(item);
+      }
+    }
+  }
+
+  if (active.length === 0 && deleted.length === 0) {
+    for (let i = 0; i < SEED_APKS.length; i++) {
+      const s = SEED_APKS[i];
+      active.push({
+        driveFileId: s.id,
+        cleanName: s.cleanName,
+        fileName: s.fileName,
+        browsyCode: s.browsyCode || '',
+        browsyShortUrl: s.shortUrl || '',
+        directDownloadUrl: s.directUrl,
+        browsyEditKey: s.editKey || '',
+        browsyManageUrl: s.manageUrl || '',
+        status: 'active',
+        createdAt: s.createdAt || '',
+        aiDescription: s.aiDescription || getSemanticDescription(s.cleanName),
+        category: classifyApkCategory(s.cleanName, s.fileName, s.aiDescription || ''),
+        orderIndex: i + 1
+      });
+    }
+  }
+
+  return {
+    success: true,
+    active: active,
+    deleted: deleted,
+    total: active.length + deleted.length,
+    currentInterval: getSyncInterval()
+  };
+}
+
+function deletePermanently(password, driveFileId) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(driveFileId)) {
+      sheet.deleteRow(i + 1);
+      return { success: true };
+    }
+  }
+
+  return { success: false, error: 'Registro no encontrado' };
+}
+
+function emptyTrash(password) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+  let deletedCount = 0;
+
+  // Recorrer de abajo hacia arriba para eliminar filas de forma segura sin desfasar índices
+  for (let i = data.length - 1; i >= 1; i--) {
+    const status = String(data[i][8] || '').toLowerCase();
+    if (status.includes('del') || status.includes('eliminad')) {
+      sheet.deleteRow(i + 1);
+      deletedCount++;
+    }
+  }
+
+  return {
+    success: true,
+    count: deletedCount,
+    message: 'Papelera vaciada correctamente'
+  };
+}
+
+function restoreApk(password, driveFileId) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(driveFileId)) {
+      sheet.getRange(i + 1, 9).setValue('restored');
+      sheet.getRange(i + 1, 11).setValue(nowStr);
+      return { success: true, message: 'Aplicación restaurada al catálogo' };
+    }
+  }
+
+  return { success: false, error: 'Registro no encontrado' };
+}
+
+function restoreAllDeleted(password) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+  let restoredCount = 0;
+
+  for (let i = 1; i < data.length; i++) {
+    const status = String(data[i][8] || '').toLowerCase();
+    if (status.includes('del') || status.includes('eliminad')) {
+      sheet.getRange(i + 1, 9).setValue('restored');
+      sheet.getRange(i + 1, 11).setValue(nowStr);
+      restoredCount++;
+    }
+  }
+
+  return {
+    success: true,
+    count: restoredCount,
+    message: 'Se restauraron ' + restoredCount + ' aplicaciones al catálogo'
+  };
+}
+
+function generateCodeForSingleApk(password, driveFileId) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+
+  const seedById = new Map(SEED_APKS.map(s => [String(s.id), s]));
+  const cached = seedById.get(String(driveFileId));
+
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(driveFileId)) {
+      let codeToSet = null;
+      let shortUrlToSet = null;
+      let editKeyToSet = '';
+      let manageUrlToSet = '';
+
+      if (cached && cached.browsyCode) {
+        codeToSet = cached.browsyCode;
+        shortUrlToSet = cached.shortUrl;
+        editKeyToSet = cached.editKey || '';
+        manageUrlToSet = cached.manageUrl || '';
+      } else {
+        const directUrl = String(data[i][5]) || ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(data[i][2]));
+        const browsy = requestBrowsyCode(directUrl);
+        if (browsy && browsy.code) {
+          codeToSet = browsy.code;
+          shortUrlToSet = browsy.shortUrl;
+          editKeyToSet = browsy.editKey || '';
+          manageUrlToSet = browsy.manageUrl || '';
+        }
+      }
+
+      if (codeToSet) {
+        sheet.getRange(i + 1, 4).setValue(codeToSet);
+        sheet.getRange(i + 1, 5).setValue(shortUrlToSet);
+        sheet.getRange(i + 1, 7).setValue(editKeyToSet);
+        sheet.getRange(i + 1, 8).setValue(manageUrlToSet);
+        sheet.getRange(i + 1, 11).setValue(Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss'));
+        return { success: true, newCode: codeToSet, shortUrl: shortUrlToSet };
+      }
+
+      return { success: false, error: 'Límite temporal de Browsy. Intenta en unos minutos.' };
+    }
+  }
+
+  return { success: false, error: 'Archivo no encontrado' };
+}
+
+function updateApkDescription(password, fileId, newDescription) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+  const targetId = String(fileId || '').trim();
+  const cleanDesc = String(newDescription || '').trim();
+
+  let updated = false;
+  for (let i = 1; i < data.length; i++) {
+    const rowId = String(data[i][0] || '').trim();
+    const rowFileName = String(data[i][2] || '').trim();
+    if (rowId === targetId || rowFileName.toLowerCase() === targetId.toLowerCase()) {
+      sheet.getRange(i + 1, 12).setValue(cleanDesc);
+      sheet.getRange(i + 1, 11).setValue(nowStr);
+      updated = true;
+      break;
+    }
+  }
+
+  if (updated) {
+    try {
+      CacheService.getScriptCache().remove('gh_repo_assets_v1');
+    } catch (eC) {}
+    return {
+      success: true,
+      fileId: fileId,
+      description: cleanDesc,
+      message: 'Descripción actualizada correctamente'
+    };
+  }
+
+  return { success: false, error: 'Aplicación no encontrada en la base de datos' };
+}
+
+/**
+ * ============================================================================
+ * CONFIGURACIÓN DE DISPARADORES DE AUTO-SINCRONIZACIÓN EN LA NUBE (24/7)
+ * ============================================================================
+ */
+
+function setSyncInterval(password, intervalMinutes) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+
+  const mins = parseInt(intervalMinutes, 10);
+  if (isNaN(mins) || mins <= 0) {
+    return { success: false, error: 'Intervalo inválido' };
+  }
+
+  const triggers = ScriptApp.getProjectTriggers();
+  for (let i = 0; i < triggers.length; i++) {
+    const t = triggers[i];
+    if (t.getHandlerFunction() === 'syncApks') {
+      ScriptApp.deleteTrigger(t);
+    }
+  }
+
+  let tb = ScriptApp.newTrigger('syncApks').timeBased();
+
+  if (mins < 60) {
+    const allowed = [5, 10, 15, 30];
+    const bestMin = allowed.reduce((prev, curr) => Math.abs(curr - mins) < Math.abs(prev - mins) ? curr : prev, 5);
+    tb = tb.everyMinutes(bestMin);
+    PropertiesService.getScriptProperties().setProperty('SYNC_INTERVAL_MINS', String(bestMin));
+  } else {
+    const hours = Math.round(mins / 60);
+    const allowedHours = [1, 2, 4, 6, 8, 12];
+    const bestHour = allowedHours.reduce((prev, curr) => Math.abs(curr - hours) < Math.abs(prev - hours) ? curr : prev, 1);
+    tb = tb.everyHours(bestHour);
+    PropertiesService.getScriptProperties().setProperty('SYNC_INTERVAL_MINS', String(bestHour * 60));
+  }
+
+  tb.create();
+
+  return {
+    success: true,
+    message: 'Auto-sincronización en la nube configurada exitosamente cada ' + mins + ' minutos.',
+    intervalMinutes: mins
+  };
+}
+
+function getSyncInterval() {
+  try {
+    const prop = PropertiesService.getScriptProperties().getProperty('SYNC_INTERVAL_MINS');
+    if (prop) return parseInt(prop, 10);
+  } catch (e) {}
+
+  const triggers = ScriptApp.getProjectTriggers();
+  for (let i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === 'syncApks') {
+      return 5;
+    }
+  }
+  return 5;
+}
+
+function setup5MinuteTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 5); }
+function setup10MinuteTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 10); }
+function setup15MinuteTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 15); }
+function setup30MinuteTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 30); }
+function setup1HourTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 60); }
+function setup6HourTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 360); }
+function setup12HourTrigger() { setSyncInterval(CONFIG.ADMIN_PASSWORD, 720); }
+
+// ============================================================================
+// CLASIFICADOR INTELIGENTE DE CATEGORÍAS (IDÉNTICO A LA APP ANDROID TV)
+// ============================================================================
+function classifyApkCategory(cleanName, fileName, desc) {
+  const norm = function(str) {
+    return (str || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+  };
+
+  const cName = norm(cleanName);
+  const fName = norm(fileName);
+  const aDesc = norm(desc);
+  const combined = cName + ' ' + fName + ' ' + aDesc;
+
+  const hasAny = function(keywords) {
+    for (let k = 0; k < keywords.length; k++) {
+      if (combined.indexOf(keywords[k]) !== -1) return true;
+    }
+    return false;
+  };
+
+  // 1. TV en Vivo, Canales e IPTV (Prioridad principal: evaluada antes que deportes)
+  if (hasAny([
+    'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
+    'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
+    'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro'
+  ])) {
+    return '📺 TV en Vivo';
+  }
+
+  // 2. Deportes
+  if (hasAny([
+    'deport', 'futbol', 'soccer', 'beisbol', 'baseball', 'baloncesto',
+    'boxeo', 'boxing', 'cricz', 'sportv', 'sportz', 'geesports', 'partidos en directo'
+  ])) {
+    return '⚽ Deportes';
+  }
+
+  // 3. Películas y Series
+  if (hasAny([
+    'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
+    'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series'
+  ])) {
+    return '🎬 Películas y Series';
+  }
+
+  // 4. Música
+  if (hasAny([
+    'musica', 'radio', 'cancion', 'canciones', 'audio', 'spotify',
+    'deezer', 'sonido', 'podcast', 'mp3', 'emisora'
+  ])) {
+    return '🎵 Música';
+  }
+
+  // 5. Juegos
+  if (hasAny(['juego', 'juegos', 'game', 'games', 'arcade', 'emulador', 'retro', 'consola'])) {
+    return '🎮 Juegos';
+  }
+
+  // 6. Utilitarios, Launchers, VPN
+  if (hasAny([
+    'utilitar', 'herramienta', 'launcher', 'vpn', 'privacidad', 'segur',
+    'clima', 'weather', 'downloader', 'browsy', 'codigos', 'tizentube', 'youtube', 'wolf',
+    'projjectivy', 'personalizar y acelerar', 'acelerar la pantalla', 'transformar el menu',
+    'navegar seguro', 'descargar e instalar'
+  ])) {
+    return '🛠️ Utilitarios';
+  }
+
+  // 7. Infantil
+  if (hasAny(['infantil', 'ninos', 'caricaturas', 'dibujos animados'])) {
+    return '👶 Infantil';
+  }
+
+  return '🛠️ Utilitarios';
+}
+
+// ============================================================================
+// SISTEMA DE CONTROL DE ACCESO Y ACTIVACIÓN POR MAC (DISPOSITIVOS TV)
+// ============================================================================
+function getOrCreateMacSheet() {
+  const files = DriveApp.getFilesByName(CONFIG.SHEET_NAME);
+  let spreadsheet;
+  if (files.hasNext()) {
+    spreadsheet = SpreadsheetApp.open(files.next());
+  } else {
+    spreadsheet = SpreadsheetApp.create(CONFIG.SHEET_NAME);
+  }
+
+  let sheet = spreadsheet.getSheetByName('Dispositivos_MAC');
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet('Dispositivos_MAC');
+    sheet.appendRow([
+      'Dirección MAC',
+      'Cliente / Titular',
+      'Modelo / Dispositivo',
+      'Estado',
+      'Fecha Registro',
+      'Última Verificación',
+      'Notas'
+    ]);
+    sheet.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function checkDeviceMac(mac, model) {
+  if (!mac) {
+    return { success: false, authorized: false, status: 'ERROR', message: 'MAC no especificada' };
+  }
+  const cleanMac = String(mac).trim().toUpperCase();
+  const cleanModel = String(model || 'Android TV').trim();
+  const sheet = getOrCreateMacSheet();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+
+  if (sheet.getLastRow() > 1) {
+    const data = sheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const rowMac = String(data[i][0] || '').trim().toUpperCase();
+      if (rowMac === cleanMac) {
+        sheet.getRange(i + 1, 6).setValue(nowStr);
+        if (!data[i][2] && cleanModel) {
+          sheet.getRange(i + 1, 3).setValue(cleanModel);
+        }
+        const client = String(data[i][1] || 'Cliente Aridamotec').trim();
+        const status = String(data[i][3] || 'PENDIENTE').trim().toUpperCase();
+        const isAuth = (status === 'ACTIVO' || status === 'ACTIVE');
+
+        return {
+          success: true,
+          authorized: isAuth,
+          status: status,
+          client: client,
+          mac: cleanMac,
+          message: isAuth ? 'Dispositivo autorizado' : ('Dispositivo en estado: ' + status)
+        };
+      }
+    }
+  }
+
+  // Si no está registrado, se añade automáticamente con estado PENDIENTE para gestión del administrador
+  sheet.appendRow([
+    cleanMac,
+    'Cliente Nuevo (Pendiente)',
+    cleanModel,
+    'PENDIENTE',
+    nowStr,
+    nowStr,
+    'Auto-registrado al instalar APK'
+  ]);
+
+  return {
+    success: true,
+    authorized: false,
+    status: 'PENDIENTE',
+    client: 'Cliente Nuevo (Pendiente)',
+    mac: cleanMac,
+    message: 'Dispositivo registrado como pendiente. Solicita la activación al Administrador.'
+  };
+}
+
+function getMacDevicesList(password) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'No autorizado' };
+  }
+  const sheet = getOrCreateMacSheet();
+  const list = [];
+  if (sheet.getLastRow() > 1) {
+    const data = sheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const mac = String(row[0] || '').trim().toUpperCase();
+      if (!mac) continue;
+      list.push({
+        mac: mac,
+        client: String(row[1] || ''),
+        model: String(row[2] || ''),
+        status: String(row[3] || 'PENDIENTE').toUpperCase(),
+        registerDate: String(row[4] || ''),
+        lastCheck: String(row[5] || ''),
+        notes: String(row[6] || '')
+      });
+    }
+  }
+  return { success: true, total: list.length, devices: list };
+}
+
+function saveOrUpdateMac(password, data) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'No autorizado' };
+  }
+  const mac = String(data.mac || '').trim().toUpperCase();
+  if (!mac) return { success: false, error: 'MAC requerida' };
+  const client = String(data.client || 'Cliente Aridamotec').trim();
+  const model = String(data.model || 'Android TV').trim();
+  const status = String(data.status || 'ACTIVO').trim().toUpperCase();
+  const notes = String(data.notes || '').trim();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+
+  const sheet = getOrCreateMacSheet();
+  let foundRow = -1;
+  if (sheet.getLastRow() > 1) {
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      if (String(values[i][0] || '').trim().toUpperCase() === mac) {
+        foundRow = i + 1;
+        break;
+      }
+    }
+  }
+
+  if (foundRow > 0) {
+    sheet.getRange(foundRow, 2).setValue(client);
+    if (model) sheet.getRange(foundRow, 3).setValue(model);
+    sheet.getRange(foundRow, 4).setValue(status);
+    sheet.getRange(foundRow, 6).setValue(nowStr);
+    sheet.getRange(foundRow, 7).setValue(notes);
+  } else {
+    sheet.appendRow([mac, client, model, status, nowStr, nowStr, notes]);
+  }
+  return { success: true, message: 'Dispositivo guardado correctamente', mac: mac, status: status };
+}
+
+function toggleMacStatus(password, mac, newStatus) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'No autorizado' };
+  }
+  const cleanMac = String(mac || '').trim().toUpperCase();
+  const status = String(newStatus || 'ACTIVO').trim().toUpperCase();
+  const sheet = getOrCreateMacSheet();
+  if (sheet.getLastRow() > 1) {
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      if (String(values[i][0] || '').trim().toUpperCase() === cleanMac) {
+        sheet.getRange(i + 1, 4).setValue(status);
+        const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+        sheet.getRange(i + 1, 6).setValue(nowStr);
+        return { success: true, mac: cleanMac, status: status };
+      }
+    }
+  }
+  return { success: false, error: 'MAC no encontrada' };
+}
+
+function deleteMacDevice(password, mac) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'No autorizado' };
+  }
+  const cleanMac = String(mac || '').trim().toUpperCase();
+  const sheet = getOrCreateMacSheet();
+  if (sheet.getLastRow() > 1) {
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      if (String(values[i][0] || '').trim().toUpperCase() === cleanMac) {
+        sheet.deleteRow(i + 1);
+        return { success: true, mac: cleanMac };
+      }
+    }
+  }
+  return { success: false, error: 'MAC no encontrada' };
+}
+
+// ================= ALIAS DIRECTOS PARA GOOGLE.SCRIPT.RUN =================
+function getMacList(password) {
+  return getMacDevicesList(password);
+}
+
+function saveMac(password, data) {
+  return saveOrUpdateMac(password, data);
+}
+
+function toggleMac(password, mac, newStatus) {
+  return toggleMacStatus(password, mac, newStatus);
+}
+
+function deleteMac(password, mac) {
+  return deleteMacDevice(password, mac);
+}
+
+
+function getLatestTvAppInfo() {
+  return {
+    success: true,
+    latestVersionCode: CONFIG.TV_APP_VERSION_CODE || 4,
+    latestVersionName: CONFIG.TV_APP_VERSION || '1.3.0',
+    downloadUrl: CONFIG.TV_APP_DOWNLOAD_URL || ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/v' + (CONFIG.TV_APP_VERSION || '1.3.0') + '/ARIDAMOTEC_TV_' + (CONFIG.TV_APP_VERSION || '1.3.0') + '.apk'),
+    changelog: CONFIG.TV_APP_CHANGELOG || 'Corrección de selección y foco en categorías y tarjetas, motor dual OTA y activación por MAC.',
+    minSupportedVersionCode: 1,
+    mandatory: false
+  };
+}
+
+function getTvAppInfo() {
+  return getLatestTvAppInfo();
+}

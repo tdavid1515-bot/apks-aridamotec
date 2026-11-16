@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ARIDAMOTEC | Catálogo Oficial de Aplicaciones Android TV</title>
+  <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,{{LOGO_B64}}">
+  <style>
+    :root {
+      --bg-dark: #05070e;
+      --bg-card: #0c1220;
+      --bg-card-hover: #10182b;
+      --accent-cyan: #00e5ff;
+      --accent-cyan-glow: rgba(0, 229, 255, 0.35);
+      --accent-orange: #ff6b00;
+      --accent-orange-glow: rgba(255, 107, 0, 0.3);
+      --border-cyan: rgba(0, 229, 255, 0.18);
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 8%, rgba(255, 107, 0, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(0, 229, 255, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= CONTROLES ANCLADOS (STICKY TOP) ================= */
+    .sticky-header-container {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5, 7, 14, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-img {
+      height: 38px;
+      width: 38px;
+      border-radius: 8px;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4));
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-official {
+      font-size: 9px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 20px;
+      padding: 2px 8px;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-download-tv-app {
+      background: linear-gradient(135deg, #00d2ff, #0072ff);
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.35);
+    }
+
+    .btn-download-tv-app:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 210, 255, 0.55);
+    }
+
+    .btn-header {
+      background: #0d1527;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      color: #f1f5f9;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-header:hover {
+      background: #131e38;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    .btn-header:active { transform: scale(0.96); }
+
+    /* Barra de Búsqueda y Orden */
+    .controls-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 24px 14px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: #0a0f1d;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 10px;
+      padding: 10px 38px 10px 38px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+      background: #0c1426;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px;
+      display: none;
+    }
+
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sort-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sort-select {
+      background: #0a0f1d;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 8px;
+      padding: 7px 12px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .sort-select:focus { border-color: var(--accent-cyan); }
+
+    /* ================= CATEGORÍAS (IDÉNTICAS A LA APP ANDROID TV) ================= */
+    .categories-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 4px;
+      margin-top: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+    }
+    .categories-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .categories-bar::-webkit-scrollbar-thumb {
+      background: rgba(0, 229, 255, 0.3);
+      border-radius: 4px;
+    }
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .category-chip:hover {
+      background: rgba(0, 229, 255, 0.12);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: #00e5ff;
+    }
+    .category-chip.active {
+      background: #00e5ff;
+      border-color: #00e5ff;
+      color: #0b0f19;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+    .category-chip-count {
+      display: inline-block;
+      padding: 1px 6px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .category-chip.active .category-chip-count {
+      background: rgba(0, 0, 0, 0.25);
+      color: #000;
+    }
+    .badge-category {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.12);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      white-space: nowrap;
+    }
+
+    /* ================= BANNER DE ESTADO ================= */
+    .banner-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 24px;
+      background: rgba(12, 18, 32, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .banner-status-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #34d399;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #34d399;
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* ================= MAIN / GRID DE TARJETAS ================= */
+    main {
+      flex: 1;
+      padding: 20px 24px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .apk-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 229, 255, 0.14);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .apk-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.12);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .apk-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .badge-status {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-act {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+    }
+
+    /* Caja de Código Browsy */
+    .browsy-box {
+      background: #080c18;
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .browsy-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .browsy-code-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      letter-spacing: 1.5px;
+      font-family: 'Courier New', Courier, monospace;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+
+    .browsy-pending {
+      font-size: 12px;
+      color: #f59e0b;
+      font-weight: 700;
+    }
+
+    .btn-card-copy {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      color: var(--accent-cyan);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-card-copy:hover {
+      background: var(--accent-cyan);
+      color: #05070e;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+
+    .btn-card-copy:active { transform: scale(0.95); }
+
+    /* Fila de Botones Secundarios (QR + Descarga) */
+    .sub-buttons-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .btn-sub-action {
+      flex: 1;
+      padding: 8px 6px;
+      background: #090e1c;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 8px;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .btn-sub-action:hover {
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+      background: #0f172a;
+    }
+
+    .btn-sub-action:active { transform: scale(0.96); }
+
+    /* Bloque ¿Para qué sirve? */
+    .guest-desc-box {
+      background: rgba(15, 23, 42, 0.65);
+      border-left: 3px solid var(--accent-cyan);
+      padding: 9px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .guest-desc-box-title {
+      font-weight: 800;
+      color: var(--accent-cyan);
+      display: block;
+      font-size: 10px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Mensaje Vacío */
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+      display: none;
+    }
+
+    /* ================= MODAL QR ================= */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(5, 7, 14, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #0d1527;
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 229, 255, 0.15);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .modal-close:hover { color: #fff; }
+
+    .modal-qr-img {
+      width: 190px;
+      height: 190px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      margin: 16px auto;
+      display: block;
+    }
+
+    .modal-code-pill {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 5px 12px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    /* ================= TOAST NOTIFICACIÓN ================= */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0d182e;
+      border: 1px solid var(--accent-cyan);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 229, 255, 0.3);
+      z-index: 3000;
+      display: none;
+      white-space: nowrap;
+      animation: fadeInOut 2.5s forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, 15px); }
+      15% { opacity: 1; transform: translate(-50%, 0); }
+      85% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -15px); }
+    }
+
+    /* ================= RESPONSIVO CELULARES (<600px) ================= */
+    @media (max-width: 600px) {
+      .header-top {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .brand-logo-img {
+        height: 30px;
+        width: 30px;
+        border-radius: 6px;
+      }
+      .badge-official {
+        font-size: 8px;
+        padding: 1px 6px;
+      }
+      .brand-subtitle {
+        font-size: 9.5px;
+      }
+      .btn-header {
+        padding: 5px 9px;
+        font-size: 11px;
+      }
+      .controls-nav {
+        padding: 8px 12px 10px;
+        gap: 10px;
+      }
+      .search-box {
+        min-width: 100%;
+      }
+      .search-input {
+        font-size: 12px;
+        padding: 8px 32px;
+      }
+      .sort-group {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .sort-select {
+        font-size: 11px;
+        padding: 5px 8px;
+      }
+      .banner-status {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+      main {
+        padding: 12px 12px 50px;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .apk-card {
+        padding: 14px;
+      }
+      .apk-title {
+        font-size: 14px;
+      }
+      .browsy-code-val {
+        font-size: 18px;
+      }
+      .btn-sub-action {
+        font-size: 10px;
+        padding: 6px 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= STICKY HEADER ================= -->
+  <div class="sticky-header-container">
+    <div class="header-top">
+      <div class="brand-group">
+        <img src="data:image/jpeg;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="brand-logo-img">
+        <div class="brand-info">
+          <div class="brand-badge-row">
+            <span class="badge-official">● CATÁLOGO OFICIAL</span>
+          </div>
+          <span class="brand-subtitle">Aplicaciones Android TV • Códigos Browsy</span>
+        </div>
+      </div>
+      <div class="header-btns">
+        <a href="https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk" target="_blank" class="btn-download-tv-app" title="Descargar instalador oficial para Android TV / TV Box">
+          📺 App Android TV (v1.3.0)
+        </a>
+        <button onclick="refreshCatalogManually()" class="btn-header" title="Actualizar catálogo">
+          <span id="refreshIcon">🔄</span> Actualizar
+        </button>
+      </div>
+    </div>
+
+    <!-- Barra de Búsqueda y Ordenamiento -->
+    <div class="controls-nav">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar aplicación por nombre o código..." oninput="handleSearch()">
+        <button id="searchClearBtn" class="search-clear" onclick="clearSearch()">✕</button>
+      </div>
+      <div class="sort-group">
+        <span class="sort-label">Ordenar:</span>
+        <select id="sortSelect" class="sort-select" onchange="handleSortChange()">
+          <option value="newest" selected>Más reciente</option>
+          <option value="name-asc">Nombre (A-Z)</option>
+          <option value="name-desc">Nombre (Z-A)</option>
+          <option value="code-asc">Código (Menor a Mayor)</option>
+          <option value="code-desc">Código (Mayor a Menor)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Barra de Categorías Dinámicas -->
+    <div id="categoryChips" class="categories-bar"></div>
+  </div>
+
+  <!-- Banner de Estado -->
+  <div class="banner-status">
+    <div class="banner-status-left">
+      <span class="pulse-dot"></span>
+      <span id="statusInfo">Cargando catálogo en vivo...</span>
+    </div>
+    <div id="statusCounter">--</div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <main>
+    <div id="cardsGrid" class="cards-grid"></div>
+    <div id="emptyMsg" class="empty-state">No se encontraron aplicaciones en el catálogo.</div>
+  </main>
+
+  <!-- ================= MODAL QR ================= -->
+  <div id="qrModal" class="modal-overlay" onclick="closeQrModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeQrModal()">✕</button>
+      <h3 style="font-size:16px; font-weight:800; color:#fff;" id="qrTitle">Código QR</h3>
+      <p style="font-size:12px; color:#94a3b8; margin-top:3px;">Escanea desde tu Android TV o celular</p>
+      <img id="qrImg" class="modal-qr-img" src="" alt="QR">
+      <div id="qrCodeBadge" class="modal-code-pill"></div>
+    </div>
+  </div>
+
+  <!-- ================= NOTIFICACIÓN TOAST ================= -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ================= LÓGICA DE CLIENTE (SOLO LECTURA) ================= -->
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec';
+
+    let catalogData = [];
+    let currentSort = 'newest';
+    let silentRefreshTimer = null;
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function escapeJs(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n');
+    }
+
+    function copyCode(code) {
+      if (!code || code === 'Pendiente') return;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('¡Código Browsy ' + code + ' copiado al portapapeles!');
+      }).catch(() => {
+        showToast('Código: ' + code);
+      });
+    }
+
+    function openQr(title, url, code) {
+      document.getElementById('qrTitle').textContent = title;
+      document.getElementById('qrCodeBadge').textContent = 'Código TV: ' + (code || 'N/A');
+      const targetUrl = url || ('https://browsy.site/' + code);
+      const qrBase = 'https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=';
+      document.getElementById('qrImg').src = qrBase + encodeURIComponent(targetUrl);
+      document.getElementById('qrModal').style.display = 'flex';
+    }
+
+    function closeQrModal() {
+      document.getElementById('qrModal').style.display = 'none';
+    }
+
+    function handleSearch() {
+      const inp = document.getElementById('searchInput');
+      const clr = document.getElementById('searchClearBtn');
+      if (clr) clr.style.display = (inp && inp.value.trim().length > 0) ? 'block' : 'none';
+      drawCards();
+    }
+
+    function clearSearch() {
+      const inp = document.getElementById('searchInput');
+      if (inp) inp.value = '';
+      const clr = document.getElementById('searchClearBtn');
+      if (clr) clr.style.display = 'none';
+      drawCards();
+    }
+
+    function handleSortChange() {
+      currentSort = document.getElementById('sortSelect').value;
+      drawCards();
+    }
+
+    let currentCategory = '⭐ Todas';
+
+    function classifyCategory(cleanName, fileName, desc) {
+      const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const combined = norm(cleanName) + ' ' + norm(fileName) + ' ' + norm(desc);
+
+      const hasAny = (keywords) => keywords.some(k => combined.includes(k));
+
+      if (hasAny([
+        'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
+        'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
+        'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro'
+      ])) {
+        return '📺 TV en Vivo';
+      }
+      if (hasAny([
+        'deport', 'futbol', 'soccer', 'beisbol', 'baseball', 'baloncesto',
+        'boxeo', 'boxing', 'cricz', 'sportv', 'sportz', 'geesports', 'partidos en directo'
+      ])) {
+        return '⚽ Deportes';
+      }
+      if (hasAny([
+        'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
+        'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series'
+      ])) {
+        return '🎬 Películas y Series';
+      }
+      if (hasAny([
+        'musica', 'radio', 'cancion', 'canciones', 'audio', 'spotify',
+        'deezer', 'sonido', 'podcast', 'mp3', 'emisora'
+      ])) {
+        return '🎵 Música';
+      }
+      if (hasAny(['juego', 'juegos', 'game', 'games', 'arcade', 'emulador', 'retro', 'consola'])) {
+        return '🎮 Juegos';
+      }
+      if (hasAny([
+        'utilitar', 'herramienta', 'launcher', 'vpn', 'privacidad', 'segur',
+        'clima', 'weather', 'downloader', 'browsy', 'codigos', 'tizentube', 'youtube', 'wolf',
+        'projjectivy', 'personalizar y acelerar', 'acelerar la pantalla', 'transformar el menu',
+        'navegar seguro', 'descargar e instalar'
+      ])) {
+        return '🛠️ Utilitarios';
+      }
+      if (hasAny(['infantil', 'ninos', 'caricaturas', 'dibujos animados'])) {
+        return '👶 Infantil';
+      }
+      return '🛠️ Utilitarios';
+    }
+
+    function renderCategoryChips() {
+      const container = document.getElementById('categoryChips');
+      if (!container || !catalogData) return;
+
+      const counts = { '⭐ Todas': catalogData.length };
+      const order = [
+        '⭐ Todas',
+        '📺 TV en Vivo',
+        '⚽ Deportes',
+        '🎬 Películas y Series',
+        '🛠️ Utilitarios',
+        '🎵 Música',
+        '🎮 Juegos',
+        '👶 Infantil'
+      ];
+
+      catalogData.forEach(item => {
+        const cat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = cat;
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      Object.keys(counts).forEach(cat => {
+        if (!order.includes(cat)) order.push(cat);
+      });
+
+      container.innerHTML = order
+        .filter(cat => (counts[cat] || 0) > 0 || cat === '⭐ Todas')
+        .map(cat => {
+          const isActive = (cat === currentCategory);
+          const count = counts[cat] || 0;
+          return `<button class="category-chip ${isActive ? 'active' : ''}" onclick="selectCategory('${escapeJs(cat)}')">
+            ${escapeHtml(cat)} <span class="category-chip-count">${count}</span>
+          </button>`;
+        }).join('');
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      renderCategoryChips();
+      drawCards();
+    }
+
+    function drawCards() {
+      const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
+      const list = catalogData || [];
+      const isAll = (currentCategory === '⭐ Todas' || currentCategory.toLowerCase().includes('todas'));
+
+      const filtered = list.filter(item => {
+        const itemCat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = itemCat;
+        const matchesCat = isAll || (itemCat === currentCategory);
+        if (!matchesCat) return false;
+
+        const clean = String(item.cleanName || '').toLowerCase();
+        const code = String(item.browsyCode || '').toLowerCase();
+        const desc = String(item.aiDescription || '').toLowerCase();
+        return clean.includes(q) || code.includes(q) || desc.includes(q);
+      });
+
+      filtered.sort((a, b) => {
+        if (currentSort === 'newest') {
+          return (b.createdAt || '').localeCompare(a.createdAt || '') || String(a.cleanName || '').localeCompare(String(b.cleanName || ''), 'es');
+        } else if (currentSort === 'name-asc') {
+          return String(a.cleanName || '').localeCompare(String(b.cleanName || ''), 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'name-desc') {
+          return String(b.cleanName || '').localeCompare(String(a.cleanName || ''), 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'code-asc') {
+          const aCode = parseInt(String(a.browsyCode || ''), 10);
+          const bCode = parseInt(String(b.browsyCode || ''), 10);
+          if (isNaN(aCode)) return 1;
+          if (isNaN(bCode)) return -1;
+          return aCode - bCode;
+        } else if (currentSort === 'code-desc') {
+          const aCode = parseInt(String(a.browsyCode || ''), 10);
+          const bCode = parseInt(String(b.browsyCode || ''), 10);
+          if (isNaN(aCode)) return 1;
+          if (isNaN(bCode)) return -1;
+          return bCode - aCode;
+        }
+        return 0;
+      });
+
+      const container = document.getElementById('cardsGrid');
+      const emptyMsg = document.getElementById('emptyMsg');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        if (emptyMsg) {
+          emptyMsg.style.display = 'block';
+          emptyMsg.textContent = 'No se encontraron aplicaciones en el catálogo.';
+        }
+        return;
+      }
+      if (emptyMsg) emptyMsg.style.display = 'none';
+
+      filtered.forEach(it => {
+        const cleanName = String(it.cleanName || '');
+        const codeStr = String(it.browsyCode || 'Pendiente').trim();
+        const hasCode = codeStr !== '' && codeStr !== 'Pendiente';
+        const desc = it.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
+        const targetUrl = it.browsyShortUrl || (hasCode ? ('https://browsy.site/' + codeStr) : '');
+        const downloadUrl = it.directDownloadUrl || (hasCode ? ('https://browsy.site/' + codeStr) : '#');
+
+        const card = document.createElement('div');
+        card.className = 'apk-card';
+        card.innerHTML = `
+          <div>
+            <div class="card-head">
+              <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span class="badge-status badge-act">Disponible</span>
+                <span class="badge-category">${escapeHtml(it.category || 'Aplicación')}</span>
+              </div>
+            </div>
+
+            <div class="browsy-box">
+              <div>
+                <span class="browsy-label">Código Browsy (TV)</span>
+                ${hasCode ? `<span class="browsy-code-val">${codeStr}</span>` : `<span class="browsy-pending">⏳ Pendiente</span>`}
+              </div>
+              ${hasCode ? `
+                <button class="btn-card-copy" onclick="copyCode('${codeStr}')">📋 Copiar</button>
+              ` : ''}
+            </div>
+
+            <div class="sub-buttons-row">
+              ${hasCode ? `
+                <button class="btn-sub-action" onclick="openQr('${escapeJs(cleanName)}', '${targetUrl}', '${codeStr}')" title="Ver código QR para escanear">
+                  📱 QR
+                </button>
+              ` : ''}
+              <a class="btn-sub-action" href="${downloadUrl}" target="_blank" rel="noopener noreferrer" title="Descargar APK directamente">
+                📥 Descarga
+              </a>
+            </div>
+
+            <div class="guest-desc-box">
+              <span class="guest-desc-box-title">¿Para qué sirve?</span>
+              ${escapeHtml(desc)}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function getCatalogSignature(list) {
+      if (!list || !list.length) return '';
+      return list.map(x => (x.cleanName || '') + '|' + (x.browsyCode || '') + '|' + (x.directDownloadUrl || '') + '|' + (x.aiDescription || '')).join(';;');
+    }
+
+    function loadCatalog(isManual = false) {
+      if (isManual) {
+        const icon = document.getElementById('refreshIcon');
+        if (icon) icon.style.animation = 'spin 1s infinite linear';
+      }
+
+      fetch(GAS_URL + '?action=guest')
+        .then(r => r.json())
+        .then(res => {
+          const icon = document.getElementById('refreshIcon');
+          if (icon) icon.style.animation = '';
+
+          if (res && res.success) {
+            catalogData = res.catalog || [];
+            document.getElementById('statusInfo').textContent = 'Catálogo actualizado';
+            document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
+            renderCategoryChips();
+            drawCards();
+            if (isManual) showToast('¡Catálogo sincronizado exitosamente!');
+          } else {
+            document.getElementById('statusInfo').textContent = 'Error al cargar catálogo';
+          }
+        })
+        .catch(err => {
+          const icon = document.getElementById('refreshIcon');
+          if (icon) icon.style.animation = '';
+          console.error('Error fetching catalog:', err);
+          document.getElementById('statusInfo').textContent = 'Error de conexión';
+        });
+    }
+
+    function refreshCatalogManually() {
+      loadCatalog(true);
+    }
+
+    function startSilentRefresh() {
+      if (silentRefreshTimer) clearInterval(silentRefreshTimer);
+      silentRefreshTimer = setInterval(() => {
+        fetch(GAS_URL + '?action=guest')
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success) {
+              const fresh = res.catalog || [];
+              if (getCatalogSignature(fresh) !== getCatalogSignature(catalogData)) {
+                catalogData = fresh;
+                document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
+                renderCategoryChips();
+                drawCards();
+                showToast('Catálogo actualizado automáticamente');
+              }
+            }
+          })
+          .catch(() => {});
+      }, 20000);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        loadCatalog(false);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCatalog(false);
+      startSilentRefresh();
+    });
+
+    window.copyCode = copyCode;
+    window.openQr = openQr;
+    window.closeQrModal = closeQrModal;
+    window.handleSearch = handleSearch;
+    window.clearSearch = clearSearch;
+    window.handleSortChange = handleSortChange;
+    window.refreshCatalogManually = refreshCatalogManually;
+  </script>
+</body>
+</html>

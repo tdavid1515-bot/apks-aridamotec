@@ -1,0 +1,4224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ARIDAMOTEC | Panel de Administración</title>
+  <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,{{LOGO_B64}}">
+  <style>
+    :root {
+      --bg-dark: #05070e;
+      --bg-card: #0c1220;
+      --bg-card-hover: #10182b;
+      --accent-cyan: #00e5ff;
+      --accent-cyan-glow: rgba(0, 229, 255, 0.35);
+      --accent-orange: #ff6b00;
+      --accent-orange-glow: rgba(255, 107, 0, 0.3);
+      --border-cyan: rgba(0, 229, 255, 0.18);
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 8%, rgba(255, 107, 0, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(0, 229, 255, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= LOGIN ================= */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(5, 7, 14, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .login-card {
+      background: linear-gradient(180deg, #10172b 0%, #0a0e1c 100%);
+      border: 1px solid var(--border-cyan);
+      border-radius: 24px;
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.12);
+    }
+    .login-logo {
+      width: 140px;
+      height: 140px;
+      max-width: 70%;
+      margin: 0 auto 16px;
+      display: block;
+      border-radius: 18px;
+      filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4));
+    }
+    .login-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 107, 0, 0.12);
+      border: 1px solid rgba(255, 107, 0, 0.35);
+      color: #ff9d42;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 22px;
+    }
+    .form-group { text-align: left; margin-bottom: 18px; }
+    .form-label { display: block; font-size: 12px; font-weight: 700; color: #cbd5e1; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .pwd-wrapper { position: relative; }
+    .input-box {
+      width: 100%;
+      padding: 14px 44px 14px 16px;
+      background: #060914;
+      border: 1px solid var(--border-cyan);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.25s;
+    }
+    .input-box:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.25);
+    }
+    .pwd-toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 8px;
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 6px 10px;
+      line-height: 1;
+      z-index: 25;
+      pointer-events: auto;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .pwd-toggle:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--accent-cyan);
+    }
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+      color: #030814;
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .btn-login:active { transform: scale(0.98); }
+    .login-error { color: #f87171; font-size: 13px; font-weight: 600; margin-top: 12px; display: none; }
+
+    .btn-link-recovery {
+      background: none;
+      border: none;
+      color: var(--accent-cyan);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px;
+      transition: color 0.2s;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .btn-link-recovery:hover {
+      color: #38bdf8;
+    }
+    .login-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 18px 0 14px 0;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .login-divider::before, .login-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .login-divider span {
+      padding: 0 10px;
+    }
+    .btn-guest {
+      width: 100%;
+      padding: 13px;
+      background: rgba(30, 41, 59, 0.7);
+      color: #e2e8f0;
+      font-weight: 700;
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-guest:hover {
+      background: rgba(51, 65, 85, 0.9);
+      border-color: var(--accent-cyan);
+      color: #00e5ff;
+    }
+    .btn-admin-switch {
+      padding: 8px 14px;
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 8px;
+      color: var(--accent-cyan);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-admin-switch:hover {
+      background: var(--accent-cyan);
+      color: #030814;
+    }
+    .badge-guest {
+      background: rgba(168, 85, 247, 0.2) !important;
+      border: 1px solid rgba(168, 85, 247, 0.4) !important;
+      color: #c084fc !important;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 16px;
+      max-width: 440px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #fff; }
+    .modal-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .recovery-success-box {
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      margin-top: 14px;
+    }
+    .guest-desc-box {
+      background: rgba(15, 23, 42, 0.65);
+      border-left: 3px solid var(--accent-cyan);
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin: 10px 0 4px 0;
+    }
+
+    /* ================= CONTROLES ANCLADOS (STICKY HEADER) ================= */
+    .sticky-header-container {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5, 7, 14, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .header-top {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-logo-img {
+      height: 38px;
+      width: 38px;
+      border-radius: 8px;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4));
+    }
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-247 {
+      font-size: 9px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 2px 7px;
+      border-radius: 99px;
+      letter-spacing: 0.5px;
+    }
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-header {
+      background: #0f172a;
+      border: 1px solid var(--border-cyan);
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-header:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .btn-header:active { transform: scale(0.95); }
+
+    /* FILA DE BÚSQUEDA Y PESTAÑAS (ANCLADA) */
+    .controls-nav {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 6px 14px 10px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 14px;
+      position: relative;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1 1 240px;
+      min-width: 180px;
+      max-width: 100%;
+    }
+    body.guest-mode .search-box {
+      flex: 1 1 540px;
+    }
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 9px 36px 9px 38px;
+      background: #0c1220;
+      border: 1px solid var(--border-cyan);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.25);
+      background: #0e1629;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .search-clear {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      display: none;
+    }
+
+    .tabs-group {
+      display: flex;
+      background: #090e1a;
+      border: 1px solid var(--border-cyan);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 4px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .tab-button {
+      padding: 7px 11px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      border-radius: 7px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-button.active {
+      background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+      color: #030814;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.35);
+    }
+    .tab-button.active-wa {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    .tab-button.active-del {
+      background: #e11d48;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(225, 29, 72, 0.35);
+    }
+    .tab-button.active-dev {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.45);
+    }
+    .tab-button.active-dev .tab-pill {
+      background: rgba(0, 0, 0, 0.25);
+      color: #ffffff;
+    }
+
+    /* ================= CATEGORÍAS (IDÉNTICAS A LA APP ANDROID TV) ================= */
+    .categories-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 4px;
+      margin-top: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+    }
+    .categories-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .categories-bar::-webkit-scrollbar-thumb {
+      background: rgba(0, 229, 255, 0.3);
+      border-radius: 4px;
+    }
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .category-chip:hover {
+      background: rgba(0, 229, 255, 0.12);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: #00e5ff;
+    }
+    .category-chip.active {
+      background: #00e5ff;
+      border-color: #00e5ff;
+      color: #0b0f19;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+    .category-chip-count {
+      display: inline-block;
+      padding: 1px 5px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .category-chip.active .category-chip-count {
+      background: rgba(0, 0, 0, 0.25);
+      color: #000;
+    }
+    .badge-category {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.12);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      white-space: nowrap;
+    }
+
+    /* ================= GESTOR DE DISPOSITIVOS / MAC ================= */
+    .device-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .device-stat-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .device-stat-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .device-stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .text-green { color: #10b981 !important; }
+    .text-amber { color: #f59e0b !important; }
+    .text-red { color: #ef4444 !important; }
+
+    .device-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .device-toolbar-left {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-width: 280px;
+    }
+    .device-search-input {
+      flex: 1;
+      padding: 8px 12px;
+      background: rgba(12, 18, 32, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+    .device-filter-select {
+      padding: 8px 12px;
+      background: rgba(12, 18, 32, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+    .device-toolbar-right {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-dev-action {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-dev-action:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .btn-dev-add {
+      background: var(--accent-cyan);
+      color: #0b0f19;
+      border: none;
+      font-weight: 700;
+    }
+    .btn-dev-add:hover {
+      background: #33ebff;
+      color: #000;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+
+    .device-table-container {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+    .device-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12.5px;
+    }
+    .device-table th {
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--accent-cyan);
+      font-size: 11px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+    }
+    .device-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      vertical-align: middle;
+    }
+    .device-table tr:hover td {
+      background: rgba(0, 229, 255, 0.03);
+    }
+    .mac-badge {
+      font-family: monospace;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .status-badge-active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: inline-block;
+    }
+    .status-badge-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: inline-block;
+    }
+    .status-badge-blocked {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      display: inline-block;
+    }
+    .dev-btn-toggle {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .dev-btn-act { background: #10b981; color: #fff; }
+    .dev-btn-block { background: #ef4444; color: #fff; }
+    .dev-btn-edit { background: rgba(255, 255, 255, 0.1); color: #fff; margin-left: 4px; }
+    .dev-btn-del { background: rgba(239, 68, 68, 0.2); color: #ef4444; margin-left: 4px; }
+    .tab-pill {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1px 6px;
+      border-radius: 99px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-left: 2px;
+    }
+    .tab-button.active .tab-pill,
+    .tab-button.active-wa .tab-pill {
+      background: rgba(0, 0, 0, 0.25);
+      color: #ffffff;
+    }
+    .tab-button.active .tab-pill {
+      color: #030814;
+    }
+
+    .sort-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      width: auto;
+      flex-shrink: 0;
+      margin: 0;
+    }
+    .sort-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .sort-select {
+      width: auto;
+      min-width: 135px;
+      max-width: 160px;
+      padding: 6px 8px;
+      background: #0c1220;
+      border: 1px solid var(--border-cyan);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .sort-select:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    @media(max-width: 890px) {
+      .controls-nav {
+        gap: 8px 10px;
+      }
+      .tabs-group {
+        order: 2;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .tab-button {
+        flex: 1;
+        font-size: 11px;
+        padding: 7px 4px;
+      }
+      .search-box {
+        order: 1;
+        flex: 1 1 calc(100% - 215px);
+        min-width: 150px;
+      }
+      .sort-row {
+        order: 1;
+      }
+    }
+
+    /* ================= ESTILOS CREADOR WHATSAPP ================= */
+    .wa-sticky-bar {
+      position: sticky;
+      top: 104px;
+      z-index: 85;
+      background: rgba(5, 7, 14, 0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 8px 0 10px 0;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.25);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.65);
+    }
+    .wa-toolbar {
+      background: #090e1c;
+      border: 1px solid var(--border-cyan);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .wa-toggle-downloader {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .wa-toggle-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #e2e8f0;
+      cursor: pointer;
+    }
+    .switch-container {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+    .switch-container input { opacity: 0; width: 0; height: 0; }
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #334155;
+      border-radius: 20px;
+      transition: .25s;
+    }
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .25s;
+    }
+    .switch-container input:checked + .switch-slider {
+      background-color: #10b981;
+    }
+    .switch-container input:checked + .switch-slider:before {
+      transform: translateX(18px);
+    }
+    .wa-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-wa-action {
+      background: #111a2e;
+      border: 1px solid var(--border-cyan);
+      color: #e2e8f0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-wa-action:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .btn-wa-action:active { transform: scale(0.96); }
+    .wa-counter {
+      font-size: 11px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 5px 9px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .wa-greeting-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #090e1c;
+      border: 1px solid var(--border-cyan);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 0;
+    }
+    .wa-greeting-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      letter-spacing: 0.5px;
+    }
+    .wa-greeting-input {
+      width: 100%;
+      background: #060a14;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .wa-greeting-input:focus {
+      border-color: var(--accent-cyan);
+    }
+    .wa-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media(min-width: 820px) {
+      .wa-layout {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: start;
+      }
+      .wa-preview-container {
+        position: sticky;
+        top: 245px;
+        max-height: calc(100vh - 265px);
+        overflow-y: auto;
+      }
+    }
+    .wa-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .wa-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+    .wa-filter-input {
+      padding: 6px 12px;
+      background: #090e1c;
+      border: 1px solid var(--border-cyan);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 11px;
+      outline: none;
+      max-width: 180px;
+    }
+    .wa-apk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 600px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .wa-item-card {
+      background: #0b1120;
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .wa-item-card:hover {
+      border-color: rgba(0, 229, 255, 0.35);
+    }
+    .wa-item-card.selected {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+    }
+    .wa-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .wa-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      overflow: hidden;
+    }
+    .wa-item-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: #10b981;
+      cursor: pointer;
+    }
+    .wa-item-name {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .wa-item-code-badge {
+      font-size: 12px;
+      font-weight: 900;
+      font-family: monospace;
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .wa-item-desc-wrapper {
+      position: relative;
+    }
+    .wa-item-desc-input {
+      width: 100%;
+      background: #060a14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 6px 36px 6px 8px;
+      color: #cbd5e1;
+      font-size: 11px;
+      resize: vertical;
+      min-height: 42px;
+      outline: none;
+      font-family: inherit;
+      line-height: 1.4;
+    }
+    .wa-item-desc-input:focus {
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+    .wa-btn-regen-ai {
+      position: absolute;
+      right: 6px;
+      bottom: 8px;
+      background: #0f172a;
+      border: 1px solid var(--border-cyan);
+      color: var(--accent-cyan);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .wa-btn-regen-ai:hover {
+      background: var(--accent-cyan);
+      color: #030814;
+    }
+    .wa-preview-container {
+      background: #090e1c;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: sticky;
+      top: 150px;
+      max-height: calc(100vh - 170px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    .wa-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+      padding-bottom: 8px;
+    }
+    .wa-preview-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #34d399;
+    }
+    .wa-format-pill {
+      font-size: 9px;
+      font-weight: 800;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .wa-chat-bubble {
+      background: #0b141a;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: #e9edef;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      flex: 1;
+      font-family: inherit;
+    }
+    .wa-actions-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .btn-wa-copy {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-wa-copy:active { transform: scale(0.98); }
+    .btn-wa-send {
+      width: 100%;
+      padding: 9px;
+      background: #111b21;
+      border: 1px solid #10b981;
+      color: #25d366;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-wa-send:hover {
+      background: rgba(37, 211, 102, 0.15);
+    }
+
+    /* ================= CONTENIDO PRINCIPAL ================= */
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 12px 14px 28px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* BANNER DE ESTADO */
+    .banner-status {
+      background: linear-gradient(90deg, rgba(255, 107, 0, 0.08) 0%, rgba(0, 229, 255, 0.06) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 11px;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .banner-status strong { color: var(--accent-cyan); }
+    .banner-status-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-empty-trash {
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .btn-empty-trash:hover {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-empty-trash:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-restore {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .btn-restore:hover {
+      background: #10b981;
+      border-color: #059669;
+      color: #fff;
+    }
+    .btn-restore-all {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #34d399;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .btn-restore-all:hover {
+      background: #10b981;
+      color: #ffffff;
+      border-color: #059669;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-restore-all:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .banner-sync-config {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sync-config-label {
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .sync-config-select {
+      background: #090e1c;
+      border: 1px solid var(--border-cyan);
+      border-radius: 8px;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 11px;
+      padding: 4px 8px;
+      outline: none;
+      cursor: pointer;
+    }
+    .sync-config-select:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+    }
+    .sync-cloud-tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ESTADO MODO ADMIN Y MODO INVITADO SINCRONIZACIÓN EN VIVO */
+    .admin-live-status, .guest-live-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #34d399;
+      user-select: none;
+    }
+    .admin-live-dot, .guest-live-dot {
+      color: #10b981;
+      font-size: 13px;
+      line-height: 1;
+      display: inline-block;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    /* CAJA DE EDICIÓN DE DESCRIPCIÓN (MODO ADMIN) */
+    .admin-desc-box {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .admin-desc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-desc-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.2px;
+    }
+    .btn-ai-mini {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(0, 229, 255, 0.25));
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      color: #c084fc;
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ai-mini:hover {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(0, 229, 255, 0.4));
+      color: #ffffff;
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+    }
+    .admin-desc-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: #090e1a;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      color: #f1f5f9;
+      font-size: 11.5px;
+      line-height: 1.4;
+      padding: 6px 8px;
+      resize: vertical;
+      min-height: 48px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .admin-desc-textarea:focus {
+      border-color: #00e5ff;
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.3);
+    }
+    .admin-desc-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 24px;
+    }
+    .admin-desc-status {
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .btn-save-desc {
+      background: #0284c7;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #ffffff;
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .btn-save-desc:hover:not(:disabled) {
+      background: #0369a1;
+      border-color: #38bdf8;
+      box-shadow: 0 0 8px rgba(2, 132, 199, 0.5);
+    }
+    .btn-save-desc:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* GRILLA DE TARJETAS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media(min-width: 580px) {
+      .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    }
+    @media(min-width: 860px) {
+      .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    }
+
+    /* TARJETA DE APK */
+    .apk-card {
+      background: linear-gradient(180deg, #10182b 0%, #0a0f1d 100%);
+      border: 1px solid var(--border-cyan);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .apk-card:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      box-shadow: 0 6px 20px rgba(0, 229, 255, 0.1);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .apk-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-white);
+      line-height: 1.35;
+      word-break: break-word;
+    }
+    .badge-status {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-act {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-del {
+      background: rgba(225, 29, 72, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(225, 29, 72, 0.3);
+    }
+
+    .apk-filename {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: monospace;
+      word-break: break-all;
+      margin-top: 4px;
+      opacity: 0.85;
+    }
+
+    /* CAJA DE CÓDIGO BROWSY */
+    .browsy-box {
+      background: #050812;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .browsy-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .browsy-code-val {
+      font-size: 24px;
+      font-weight: 900;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      color: var(--accent-cyan);
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 10px var(--accent-cyan-glow);
+    }
+    .browsy-pending {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ff9d42;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-card-copy {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      color: var(--accent-cyan);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-card-copy:hover {
+      background: rgba(0, 229, 255, 0.25);
+    }
+    .btn-card-copy:active { transform: scale(0.95); }
+
+    .btn-card-gen {
+      background: rgba(255, 107, 0, 0.15);
+      border: 1px solid rgba(255, 107, 0, 0.4);
+      color: #ff9d42;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-card-gen:active { transform: scale(0.95); }
+
+    /* BOTONES DE ACCIÓN */
+    .card-footer-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .btn-whatsapp {
+      width: 100%;
+      padding: 9px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 12px;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s;
+    }
+    .btn-whatsapp:active { transform: scale(0.98); }
+
+    .sub-buttons-row {
+      display: flex;
+      gap: 6px;
+    }
+    .btn-sub-action {
+      flex: 1;
+      padding: 8px 4px;
+      background: #090e1c;
+      border: 1px solid var(--border-cyan);
+      color: #cbd5e1;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-sub-action:hover {
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+    .btn-sub-action:active { transform: scale(0.96); }
+    .btn-del-danger {
+      background: rgba(225, 29, 72, 0.12);
+      border-color: rgba(225, 29, 72, 0.35);
+      color: #fb7185;
+    }
+    .btn-del-danger:hover {
+      border-color: #f43f5e;
+      color: #fff;
+    }
+
+    /* ================= MODAL QR ================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(5, 7, 14, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-card {
+      background: linear-gradient(180deg, #10172b 0%, #090d1a 100%);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.25);
+    }
+    .modal-close {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .modal-qr-img {
+      width: 190px;
+      height: 190px;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 10px;
+      margin: 14px auto;
+      display: block;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .modal-code-pill {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      font-family: monospace;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    /* ================= TOAST ================= */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      left: 20px;
+      max-width: 380px;
+      margin: 0 auto;
+      z-index: 1001;
+      background: #090e1c;
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 229, 255, 0.2);
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      text-align: center;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* ================= OPTIMIZACIONES MÓVILES (PANTALLAS PEQUEÑAS / CELULARES) ================= */
+    @media (max-width: 600px) {
+      .header-top {
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .brand-logo-img {
+        height: 30px;
+        width: 30px;
+        border-radius: 6px;
+      }
+      .badge-247, .badge-guest {
+        font-size: 8px;
+        padding: 1px 5px;
+      }
+      .brand-subtitle {
+        font-size: 9.5px;
+      }
+      .btn-header {
+        padding: 5px 8px;
+        font-size: 11px;
+        gap: 4px;
+      }
+      .btn-admin-switch {
+        padding: 5px 8px;
+        font-size: 10.5px;
+        gap: 4px;
+      }
+
+      .controls-nav {
+        padding: 4px 10px 8px 10px;
+        gap: 6px;
+      }
+      .search-box {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      .search-input {
+        font-size: 12px;
+        padding: 7px 28px 7px 32px;
+      }
+      .tabs-group {
+        width: 100%;
+        order: 2;
+        gap: 2px;
+        padding: 2px;
+      }
+      .tab-button {
+        flex: 1;
+        font-size: 9.5px;
+        padding: 6px 2px;
+        gap: 3px;
+      }
+      .tab-pill {
+        font-size: 8.5px;
+        padding: 1px 4px;
+      }
+      .sort-row {
+        order: 3;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+      }
+      .sort-label {
+        font-size: 10px;
+        flex-shrink: 0;
+      }
+      .sort-select {
+        flex: 1;
+        font-size: 10px;
+        padding: 4px 6px;
+      }
+
+      .banner-status {
+        padding: 7px 10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+      .banner-sync-config {
+        width: 100%;
+        justify-content: space-between;
+        font-size: 10px;
+        gap: 4px;
+      }
+      .sync-config-label {
+        font-size: 10px;
+      }
+      .sync-config-select {
+        font-size: 9.5px;
+        padding: 2px 4px;
+      }
+      .sync-cloud-tag {
+        font-size: 9px;
+        padding: 1px 5px;
+      }
+      .banner-status-right {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      #statusInfo {
+        font-size: 10px;
+      }
+      .btn-empty-trash, .btn-restore-all {
+        font-size: 9.5px;
+        padding: 3px 7px;
+        gap: 3px;
+      }
+      .guest-live-status {
+        font-size: 10px;
+        padding: 3px 8px;
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .cards-grid {
+        gap: 10px;
+      }
+      .apk-card {
+        padding: 10px 12px;
+        border-radius: 12px;
+        gap: 8px;
+      }
+      .apk-title {
+        font-size: 13.5px;
+        line-height: 1.25;
+      }
+      .badge-status {
+        font-size: 8px;
+        padding: 2px 5px;
+      }
+      .apk-filename {
+        font-size: 9.5px;
+        margin-top: 2px;
+      }
+      .browsy-box {
+        padding: 6px 10px;
+        margin-top: 6px;
+        border-radius: 9px;
+      }
+      .browsy-label {
+        font-size: 8px;
+      }
+      .browsy-code-val {
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+      .browsy-pending {
+        font-size: 10.5px;
+      }
+      .btn-card-copy {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+      .btn-card-gen {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+      .card-footer-actions {
+        gap: 5px;
+      }
+      .btn-whatsapp {
+        font-size: 10.5px;
+        padding: 7px 4px;
+        border-radius: 7px;
+      }
+      .sub-buttons-row {
+        gap: 4px;
+      }
+      .btn-sub-action {
+        font-size: 9.5px;
+        padding: 5px 2px;
+        border-radius: 6px;
+        gap: 2px;
+      }
+
+      /* Creador WhatsApp */
+      .wa-toolbar {
+        padding: 6px 8px;
+        gap: 6px;
+      }
+      .wa-toggle-label {
+        font-size: 10px;
+      }
+      .btn-wa-action {
+        font-size: 9px;
+        padding: 3px 6px;
+      }
+      .wa-counter {
+        font-size: 9px;
+        padding: 2px 5px;
+      }
+      .wa-card {
+        padding: 8px 10px;
+        border-radius: 10px;
+        gap: 6px;
+      }
+      .wa-item-title {
+        font-size: 12px;
+      }
+      .wa-item-desc-input {
+        font-size: 10.5px;
+        padding: 4px 6px;
+      }
+      .wa-btn-regen-ai {
+        font-size: 9px;
+        padding: 3px 6px;
+      }
+      .wa-preview-container {
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+      .wa-chat-bubble {
+        font-size: 10.5px;
+        line-height: 1.35;
+        padding: 8px 10px;
+      }
+      .wa-btn-copy-full, .wa-btn-send-chat {
+        font-size: 10.5px;
+        padding: 7px 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div id="loginScreen" class="login-overlay">
+    <div class="login-card">
+      <img src="data:image/jpeg;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="login-logo">
+      <div class="login-badge">
+        <span>⚡</span> GESTOR DE APKS & BROWSY
+      </div>
+
+      <form onsubmit="if(window.handleLogin){handleLogin(event);}else{event.preventDefault();}return false;" action="javascript:void(0);">
+        <div class="form-group">
+          <label class="form-label" for="pwdInput">Contraseña de Administrador</label>
+          <div class="pwd-wrapper">
+            <input type="password" id="pwdInput" class="input-box" placeholder="Ingresa contraseña..." required onkeydown="handlePwdKey(event)">
+            <button type="button" id="pwdToggleBtn" class="pwd-toggle" onclick="togglePwdVisibility(event)" title="Ver u ocultar contraseña">👁️</button>
+          </div>
+          <p id="loginError" class="login-error">⚠️ Contraseña incorrecta</p>
+        </div>
+        <button type="submit" id="loginBtn" class="btn-login">INGRESAR AL SISTEMA</button>
+
+        <div style="margin-top: 12px; text-align: center;">
+          <button type="button" class="btn-link-recovery" onclick="openRecoveryModal()">
+            🔑 ¿Olvidaste tu contraseña?
+          </button>
+        </div>
+
+        
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL RECUPERACIÓN DE CONTRASEÑA ================= -->
+  <div id="recoveryModal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">🔐 Recuperación de Administrador</div>
+        <button type="button" class="modal-close" onclick="closeRecoveryModal()">✕</button>
+      </div>
+
+      <!-- Paso 1: Solicitar código -->
+      <div id="recoveryStep1">
+        <p class="modal-desc">
+          Por protocolos de seguridad, se enviará un código de verificación de 6 dígitos al correo autorizado de la cuenta.
+        </p>
+        <button type="button" id="btnRequestOtp" class="btn-login" onclick="handleRequestOtp()" style="margin-top: 16px;">
+          📩 ENVIAR CÓDIGO AL CORREO
+        </button>
+        <p id="recoveryReqError" class="login-error" style="display:none; margin-top: 10px;"></p>
+      </div>
+
+      <!-- Paso 2: Ingresar código OTP -->
+      <div id="recoveryStep2" style="display:none;">
+        <p class="modal-desc" id="recoveryOtpSentMsg">
+          Código enviado. Revisa tu bandeja de entrada o spam.
+        </p>
+        <div class="form-group" style="margin-top: 14px;">
+          <label class="form-label" for="recoveryOtpInput">Código de 6 dígitos</label>
+          <input type="text" id="recoveryOtpInput" class="input-box" placeholder="Ej: 123456" maxlength="6" style="text-align:center; font-size: 22px; letter-spacing: 4px; font-weight: 700;">
+        </div>
+        <button type="button" id="btnVerifyOtp" class="btn-login" onclick="handleVerifyOtp()" style="margin-top: 14px;">
+          VERIFICAR CÓDIGO
+        </button>
+        <p id="recoveryVerifyError" class="login-error" style="display:none; margin-top: 10px;"></p>
+      </div>
+
+      <!-- Paso 3: Éxito y Opción de ver o cambiar clave -->
+      <div id="recoveryStep3" style="display:none;">
+        <div class="recovery-success-box">
+          <span style="font-size: 11px; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 4px;">Tu contraseña actual es:</span>
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <code id="revealedPassword" style="font-size: 20px; font-weight: 800; color: #00e5ff;"></code>
+            <button type="button" class="btn-card-copy" onclick="copyRevealedPassword()">📋 Copiar</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
+          <label class="form-label" for="newPwdInput">O definir una nueva contraseña (opcional)</label>
+          <input type="password" id="newPwdInput" class="input-box" placeholder="Mínimo 6 caracteres..." style="margin-bottom: 10px;">
+          <button type="button" class="btn-login" onclick="handleResetPassword()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            💾 GUARDAR NUEVA CONTRASEÑA
+          </button>
+        </div>
+
+        <button type="button" class="btn-guest" onclick="loginWithRecovered()" style="margin-top: 12px; width: 100%;">
+          ⚡ INGRESAR AL SISTEMA AHORA
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= CONTROLES ANCLADOS (STICKY TOP) ================= -->
+  <div class="sticky-header-container">
+    <!-- Header Superior -->
+    <div class="header-top">
+      <div class="brand-group">
+        <img src="data:image/jpeg;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="brand-logo-img">
+        <div class="brand-info">
+          <div class="brand-badge-row">
+            <span id="brandBadge" class="badge-247">● 24/7 NUBE</span>
+          </div>
+          <span id="brandSubtitle" class="brand-subtitle">Android TV • Códigos Browsy</span>
+        </div>
+      </div>
+
+      <div id="adminHeaderBtns" class="header-btns">
+        <a href="https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk" target="_blank" class="btn-header" style="text-decoration:none; background:rgba(0,210,255,0.12); border-color:rgba(0,210,255,0.4); color:#00d2ff;" title="Descargar instalador APK TV v1.3.0 (Build 4)">
+          📺 App TV v1.3.0
+        </a>
+        <a href="index.html" target="_blank" class="btn-header" style="text-decoration:none;" title="Abrir Catálogo de Clientes en nueva pestaña">
+          👁️ Catálogo Clientes
+        </a>
+        <button onclick="triggerSync()" id="syncBtn" class="btn-header" title="Sincronizar con Repositorio GitHub">
+          <span id="syncIconText">🔄</span> Sincronizar
+        </button>
+        <button onclick="logout()" class="btn-header" title="Cerrar sesión">🚪</button>
+      </div>
+    </div>
+
+    <!-- Barra de Búsqueda y Pestañas ANCLADAS -->
+    <div class="controls-nav">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar aplicación (Xuper, TV, Live, Wolf)..." oninput="handleSearch()">
+        <button id="searchClearBtn" class="search-clear" onclick="clearSearch()">✕</button>
+      </div>
+
+      <div class="tabs-group admin-only">
+        <button onclick="setTab('active')" id="tabActiveBtn" class="tab-button active">
+          📱 Catálogo <span id="countActive" class="tab-pill">0</span>
+        </button>
+        <button onclick="setTab('devices')" id="tabDevicesBtn" class="tab-button">
+          🛡️ Dispositivos / MAC <span id="countDevices" class="tab-pill">0</span>
+        </button>
+        <button onclick="setTab('whatsapp')" id="tabWaBtn" class="tab-button">
+          💬 Creador WhatsApp <span id="countWaSelected" class="tab-pill">0</span>
+        </button>
+        <button onclick="setTab('deleted')" id="tabDeletedBtn" class="tab-button">
+          🗑️ Papelera <span id="countDeleted" class="tab-pill">0</span>
+        </button>
+      </div>
+
+      <div class="sort-row">
+        <span class="sort-label">⇅ Ordenar:</span>
+        <select id="sortSelect" class="sort-select" onchange="handleSortChange()">
+          <option value="newest">🆕 Más reciente</option>
+          <option value="oldest">⏳ Más antiguo</option>
+          <option value="name-asc">🔤 Nombre (A - Z)</option>
+          <option value="name-desc">🔤 Nombre (Z - A)</option>
+          <option value="code-asc">🔢 Código (Menor a Mayor)</option>
+          <option value="code-desc">🔢 Código (Mayor a Menor)</option>
+          <option value="has-code">✅ Con código</option>
+          <option value="pending">⏳ Pendientes</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Barra de Categorías Dinámicas Admin -->
+    <div id="adminCategoryChips" class="categories-bar"></div>
+  </div>
+
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
+  <main>
+    <!-- VISTA CATÁLOGO / PAPELERA -->
+    <div id="catalogSection">
+      <div class="banner-status">
+        <div class="admin-live-status">
+          <span class="admin-live-dot">●</span>
+          <span class="admin-live-text">Sincronizado con GitHub</span>
+        </div>
+        <div class="banner-status-right">
+          <button id="restoreAllBtn" class="btn-restore-all" onclick="confirmRestoreAll()" style="display:none;" title="Restaurar todas las aplicaciones al catálogo">
+            ♻️ Restaurar Todas (<span id="restoreAllCount">0</span>)
+          </button>
+          <button id="emptyTrashBtn" class="btn-empty-trash" onclick="confirmEmptyTrash()" style="display:none;" title="Eliminar definitivamente todas las aplicaciones de la papelera">
+            🗑️ Vaciar Papelera (<span id="emptyTrashCount">0</span>)
+          </button>
+          <div id="statusInfo">Cargando catálogo...</div>
+        </div>
+      </div>
+
+      <div id="cardsGrid" class="cards-grid">
+        <!-- Tarjetas renderizadas dinámicamente -->
+      </div>
+
+      <div id="emptyMsg" class="empty-state" style="display:none;">
+        No se encontraron aplicaciones en esta sección.
+      </div>
+    </div>
+
+    <!-- NUEVA SECCIÓN INDEPENDIENTE: CREADOR DE MENSAJES WHATSAPP -->
+    <div id="waSection" style="display:none;">
+      <div class="wa-sticky-bar">
+        <!-- Herramientas superiores WhatsApp -->
+        <div class="wa-toolbar">
+          <div class="wa-toolbar-left">
+            <label class="wa-toggle-downloader" for="waIncludeDownloader">
+              <span class="switch-container">
+                <input type="checkbox" id="waIncludeDownloader" onchange="renderWhatsAppPreview()">
+                <span class="switch-slider"></span>
+              </span>
+              <span class="wa-toggle-label">Incluir opción Downloader (browsy.app/XXXX)</span>
+            </label>
+          </div>
+          <div class="wa-toolbar-right">
+            <button type="button" class="btn-wa-action" onclick="waSelectAll()">✅ Seleccionar Todo</button>
+            <button type="button" class="btn-wa-action" onclick="waDeselectAll()">❌ Deseleccionar</button>
+            <span class="wa-counter" id="waCounterBadge">0 seleccionadas</span>
+          </div>
+        </div>
+
+        <!-- Saludo editable -->
+        <div class="wa-greeting-box">
+          <label class="wa-greeting-label" for="waGreetingInput">📝 Saludo / Encabezado del Mensaje:</label>
+          <input type="text" id="waGreetingInput" class="wa-greeting-input" value="👋 ¡Hola estimado cliente! Aquí tienes las aplicaciones preparadas para instalar en tu Android TV / Fire TV:" oninput="renderWhatsAppPreview()">
+        </div>
+      </div>
+
+      <!-- Layout de dos columnas: Selector de APKs y Preview de WhatsApp -->
+      <div class="wa-layout">
+        <!-- Columna 1: Lista de APKs para elegir -->
+        <div class="wa-list-container">
+          <div class="wa-list-header">
+            <span>Selecciona las aplicaciones:</span>
+            <input type="text" id="waFilterInput" class="wa-filter-input" placeholder="Filtrar por nombre..." oninput="drawWaList()">
+          </div>
+          <div id="waApkList" class="wa-apk-list">
+            <!-- Renderizado dinámico de tarjetas seleccionables -->
+          </div>
+        </div>
+
+        <!-- Columna 2: Preview WhatsApp -->
+        <div class="wa-preview-container">
+          <div class="wa-preview-header">
+            <span class="wa-preview-title">💬 Vista Previa WhatsApp (En vivo)</span>
+            <span class="wa-format-pill">Formato WhatsApp</span>
+          </div>
+          <div class="wa-chat-bubble" id="waChatBubble">
+            <!-- Texto formateado en vivo -->
+          </div>
+          <div class="wa-actions-footer">
+            <button class="btn-wa-copy" onclick="copyFullWaMessage()">📋 Copiar Mensaje Completo</button>
+            <button class="btn-wa-send" onclick="openWhatsAppChat()">📲 Abrir en WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SECCIÓN GESTIÓN DE DISPOSITIVOS / MAC ================= -->
+    <div id="devicesSection" style="display:none;">
+      <!-- Métricas Resumen Dispositivos -->
+      <div class="device-stats-grid">
+        <div class="device-stat-card">
+          <div class="device-stat-title">🖥️ Total Dispositivos</div>
+          <div class="device-stat-value" id="statDevTotal">0</div>
+        </div>
+        <div class="device-stat-card">
+          <div class="device-stat-title">✅ Activos (Autorizados)</div>
+          <div class="device-stat-value text-green" id="statDevActive">0</div>
+        </div>
+        <div class="device-stat-card">
+          <div class="device-stat-title">⏳ Pendientes de Activar</div>
+          <div class="device-stat-value text-amber" id="statDevPending">0</div>
+        </div>
+        <div class="device-stat-card">
+          <div class="device-stat-title">🚫 Bloqueados / Inactivos</div>
+          <div class="device-stat-value text-red" id="statDevBlocked">0</div>
+        </div>
+      </div>
+
+      <!-- Barra de Control de Dispositivos -->
+      <div class="device-toolbar">
+        <div class="device-toolbar-left">
+          <input type="text" id="deviceSearchInput" class="device-search-input" placeholder="Buscar por MAC, Cliente, Equipo o Notas..." oninput="renderDevices()">
+          <select id="deviceStatusFilter" class="device-filter-select" onchange="renderDevices()">
+            <option value="all">Todos los Estados</option>
+            <option value="ACTIVO">✅ Solo Activos</option>
+            <option value="PENDIENTE">⏳ Solo Pendientes</option>
+            <option value="BLOQUEADO">🚫 Solo Bloqueados</option>
+          </select>
+        </div>
+        <div class="device-toolbar-right">
+          <button class="btn-dev-action btn-dev-add" onclick="openNewDeviceModal()">
+            ➕ Registrar Nueva MAC
+          </button>
+          <button class="btn-dev-action" onclick="loadDevices(true)">
+            🔄 Actualizar Lista
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de Dispositivos -->
+      <div class="device-table-container">
+        <table class="device-table">
+          <thead>
+            <tr>
+              <th>DIRECCIÓN MAC / ID</th>
+              <th>CLIENTE / TITULAR</th>
+              <th>EQUIPO / MODELO</th>
+              <th>ESTADO</th>
+              <th>ÚLTIMA CONEXIÓN</th>
+              <th>NOTAS</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="deviceTableBody">
+            <!-- Filas inyectadas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="deviceEmptyState" class="empty-state" style="display:none; padding:30px; text-align:center;">
+        No hay dispositivos registrados en esta vista.
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= MODAL DISPOSITIVO MAC ================= -->
+  <div id="deviceModal" class="modal-overlay" onclick="closeDeviceModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width:480px; width:92%;">
+      <button class="modal-close" onclick="closeDeviceModal()">✕</button>
+      <h3 id="deviceModalTitle" style="font-size:16px; font-weight:800; color:var(--accent-cyan); margin-bottom:14px;">🔐 Registrar / Editar Dispositivo MAC</h3>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">DIRECCIÓN MAC (XX:XX:XX:XX:XX:XX):</label>
+          <input type="text" id="devModalMac" placeholder="Ej: B4:82:C5:1A:90:3E" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(0,229,255,0.3); background:#0c1220; color:#00e5ff; font-family:monospace; font-size:15px; font-weight:bold; text-transform:uppercase;">
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">CLIENTE / TITULAR:</label>
+          <input type="text" id="devModalClient" placeholder="Nombre del cliente" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">EQUIPO / MODELO (TV Box / Android TV):</label>
+          <input type="text" id="devModalModel" placeholder="Ej: Xiaomi Mi Box S, X96 Max, Google TV" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px;">
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">ESTADO DE ACCESO:</label>
+          <select id="devModalStatus" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px;">
+            <option value="ACTIVO">✅ ACTIVO (Permitir acceso a la app)</option>
+            <option value="PENDIENTE">⏳ PENDIENTE (Esperando confirmación)</option>
+            <option value="BLOQUEADO">🚫 BLOQUEADO / DESACTIVADO</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11.5px; color:var(--text-muted); font-weight:bold; display:block; margin-bottom:4px;">NOTAS / OBSERVACIONES:</label>
+          <textarea id="devModalNotes" rows="2" placeholder="Ej: Suscripción anual sala, vence Dic 2026" style="width:100%; box-sizing:border-box; padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:13px; resize:vertical;"></textarea>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+        <button onclick="closeDeviceModal()" style="padding:8px 14px; border-radius:8px; background:rgba(255,255,255,0.1); color:#fff; border:none; cursor:pointer; font-size:12px;">Cancelar</button>
+        <button id="btnSaveDevice" onclick="submitSaveDevice()" style="padding:8px 18px; border-radius:8px; background:var(--accent-cyan); color:#0b0f19; font-weight:bold; border:none; cursor:pointer; font-size:12px;">💾 Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL QR ================= -->
+  <div id="qrModal" class="modal-overlay" onclick="closeQrModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeQrModal()">✕</button>
+      <h3 style="font-size:16px; font-weight:800; color:#fff;" id="qrTitle">Código QR</h3>
+      <p style="font-size:12px; color:#94a3b8; margin-top:3px;">Escanea desde tu Android TV o teléfono</p>
+      <img id="qrImg" class="modal-qr-img" src="" alt="QR">
+      <div id="qrCodeBadge" class="modal-code-pill"></div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST ================= -->
+  <div id="toast" class="toast">Mensaje</div>
+
+  <!-- ================= LÓGICA DE LA APLICACIÓN ================= -->
+  <script>
+    let isGuestMode = false;
+    let guestCatalogData = [];
+    let currentResetToken = '';
+    let activeTab = 'active';
+    let apksData = { active: [], deleted: [] };
+    
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec';
+
+    // Safe Google Apps Script RPC runner (protects against sandbox scope isolation and supports GitHub Pages via fetch)
+    function getGas() {
+      if (typeof window !== 'undefined' && window.google && window.google.script && window.google.script.run) {
+        return window.google.script.run;
+      }
+      try {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          return google.script.run;
+        }
+      } catch (e) {}
+
+      // Adaptador universal para GitHub Pages (CORS fetch directo a Google Apps Script)
+      return {
+        _success: null,
+        _failure: null,
+        withSuccessHandler(cb) { this._success = cb; return this; },
+        withFailureHandler(cb) { this._failure = cb; return this; },
+        _call(url) {
+          fetch(url)
+            .then(r => r.json())
+            .then(data => { if (this._success) this._success(data); })
+            .catch(err => { if (this._failure) this._failure(err); });
+        },
+        getGuestCatalog() {
+          this._call(GAS_URL + '?action=guest');
+        },
+        getApksList(pwd) {
+          this._call(GAS_URL + '?action=apks&pwd=' + encodeURIComponent(pwd));
+        },
+        syncApks(pwd) {
+          this._call(GAS_URL + '?action=sync&pwd=' + encodeURIComponent(pwd));
+        },
+        emptyTrash(pwd) {
+          this._call(GAS_URL + '?action=emptyTrash&pwd=' + encodeURIComponent(pwd));
+        },
+        restoreApk(pwd, fileId) {
+          this._call(GAS_URL + '?action=restore&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
+        },
+        restoreAllDeleted(pwd) {
+          this._call(GAS_URL + '?action=restoreAll&pwd=' + encodeURIComponent(pwd));
+        },
+        deletePermanently(pwd, fileId) {
+          this._call(GAS_URL + '?action=deletePermanent&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
+        },
+        updateApkDescription(pwd, fileId, desc) {
+          this._call(GAS_URL + '?action=updateDesc&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&desc=' + encodeURIComponent(desc));
+        },
+        generateCodeForSingleApk(pwd, fileId) {
+          this._call(GAS_URL + '?action=generateCode&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
+        },
+        setSyncInterval(pwd, mins) {
+          this._call(GAS_URL + '?action=interval&pwd=' + encodeURIComponent(pwd) + '&mins=' + encodeURIComponent(mins));
+        },
+        generateApkDescription(pwd, name) {
+          this._call(GAS_URL + '?action=describe&pwd=' + encodeURIComponent(pwd) + '&name=' + encodeURIComponent(name));
+        },
+        requestPasswordRecovery() {
+          this._call(GAS_URL + '?action=recoveryRequest');
+        },
+        verifyRecoveryCode(otp) {
+          this._call(GAS_URL + '?action=recoveryVerify&otp=' + encodeURIComponent(otp));
+        },
+        resetAdminPassword(token, newPwd) {
+          this._call(GAS_URL + '?action=recoveryReset&token=' + encodeURIComponent(token) + '&newPwd=' + encodeURIComponent(newPwd));
+        },
+        getMacList(pwd) {
+          this._call(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(pwd));
+        },
+        getMacDevicesList(pwd) {
+          this._call(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(pwd));
+        },
+        saveMac(pwd, data) {
+          let q = '&mac=' + encodeURIComponent(data.mac || '') +
+                  '&client=' + encodeURIComponent(data.client || '') +
+                  '&model=' + encodeURIComponent(data.model || '') +
+                  '&status=' + encodeURIComponent(data.status || '') +
+                  '&notes=' + encodeURIComponent(data.notes || '');
+          this._call(GAS_URL + '?action=saveMac&pwd=' + encodeURIComponent(pwd) + q);
+        },
+        saveOrUpdateMac(pwd, data) {
+          return this.saveMac(pwd, data);
+        },
+        toggleMac(pwd, mac, status) {
+          this._call(GAS_URL + '?action=toggleMac&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac) + '&status=' + encodeURIComponent(status));
+        },
+        toggleMacStatus(pwd, mac, status) {
+          return this.toggleMac(pwd, mac, status);
+        },
+        deleteMac(pwd, mac) {
+          this._call(GAS_URL + '?action=deleteMac&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac));
+        },
+        deleteMacDevice(pwd, mac) {
+          return this.deleteMac(pwd, mac);
+        }
+      };
+    }
+    // Safe storage wrapper to prevent DOMException in sandboxed iframes
+    const safeStorage = {
+      getItem(key) {
+        try {
+          return (typeof window !== 'undefined' && window.localStorage) ? window.localStorage.getItem(key) : null;
+        } catch (e) {
+          return null;
+        }
+      },
+      setItem(key, val) {
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.setItem(key, val);
+          }
+        } catch (e) {}
+      },
+      removeItem(key) {
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.removeItem(key);
+          }
+        } catch (e) {}
+      }
+    };
+    let savedPwd = safeStorage.getItem('arida_pwd') || '';
+    let currentSort = safeStorage.getItem('arida_sort') || 'newest';
+
+    function handleSortChange() {
+      currentSort = document.getElementById('sortSelect').value;
+      safeStorage.setItem('arida_sort', currentSort);
+      if (isGuestMode) {
+        drawGuestCards();
+      } else {
+        drawCards();
+      }
+    }
+
+    function handleIntervalChange(mins) {
+      showToast('Configurando auto-sincronización (' + mins + ' min)...');
+      const gas = getGas();
+      if (!gas) { showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast(res.message || ('Sincronización configurada cada ' + mins + ' minutos.'));
+            if (res.interval && document.getElementById('syncIntervalSelect')) {
+              document.getElementById('syncIntervalSelect').value = String(res.interval);
+            }
+          } else {
+            showToast(res ? res.error : 'Error al cambiar frecuencia', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .setSyncInterval(savedPwd, mins);
+    }
+
+    function getApkTime(item) {
+      if (item.createdAt) {
+        const t = new Date(item.createdAt).getTime();
+        if (!isNaN(t) && t > 0) return t;
+      }
+      if (typeof item.orderIndex === 'number') {
+        return item.orderIndex * 1000;
+      }
+      return 0;
+    }
+
+    function onReady(fn) {
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(fn, 1);
+      } else {
+        document.addEventListener('DOMContentLoaded', fn);
+      }
+    }
+
+    onReady(() => {
+      const sortEl = document.getElementById('sortSelect');
+      if (sortEl) sortEl.value = currentSort;
+
+      if (savedPwd) {
+        const pwdIn = document.getElementById('pwdInput');
+        if (pwdIn) pwdIn.value = savedPwd;
+        validateLogin(savedPwd);
+      }
+    });
+
+    function handlePwdKey(e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        handleLogin(e);
+      }
+    }
+
+    function togglePwdVisibility(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+      const input = document.getElementById('pwdInput');
+      const btn = document.getElementById('pwdToggleBtn') || document.querySelector('.pwd-toggle');
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (btn) btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        if (btn) btn.textContent = '👁️';
+      }
+    }
+
+    function handleLogin(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const pwd = (document.getElementById('pwdInput') ? document.getElementById('pwdInput').value : '').trim();
+      if (!pwd) return;
+      validateLogin(pwd);
+    }
+
+    function validateLogin(pwd) {
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginError');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> VERIFICANDO...';
+      err.style.display = 'none';
+
+      const gas = getGas();
+      if (!gas) {
+        btn.disabled = false;
+        btn.textContent = 'INGRESAR AL SISTEMA';
+        err.style.display = 'block';
+        err.textContent = 'Error: Servicio de Google Apps Script no disponible. Recarga la página.';
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          btn.disabled = false;
+          btn.textContent = 'INGRESAR AL SISTEMA';
+
+          if (res && res.success) {
+            try {
+              savedPwd = pwd;
+              safeStorage.setItem('arida_pwd', pwd);
+              renderApp(res);
+              document.getElementById('loginScreen').style.display = 'none';
+            } catch (renderErr) {
+              console.error('Error renderApp:', renderErr);
+              err.style.display = 'block';
+              err.textContent = 'Error al renderizar aplicaciones: ' + (renderErr.message || renderErr);
+              document.getElementById('loginScreen').style.display = 'flex';
+            }
+          } else {
+            err.style.display = 'block';
+            err.textContent = res ? res.error : 'Contraseña incorrecta';
+          }
+        })
+        .withFailureHandler(e => {
+          btn.disabled = false;
+          btn.textContent = 'INGRESAR AL SISTEMA';
+          err.style.display = 'block';
+          err.textContent = 'Error de conexión: ' + (e.message || e);
+        })
+        .getApksList(pwd);
+    }
+
+    function logout() {
+      safeStorage.removeItem('arida_pwd');
+      savedPwd = '';
+      document.getElementById('pwdInput').value = '';
+      document.getElementById('loginScreen').style.display = 'flex';
+    }
+
+    function loadApks(silent = false) {
+      if (!silent) {
+        document.getElementById('statusInfo').textContent = 'Consultando aplicaciones...';
+      }
+      const gas = getGas();
+      if (!gas || !savedPwd) return;
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            const isEditing = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT');
+            if (silent && isEditing) {
+              apksData = {
+                active: (res.active || []).map(normalizeApkItem),
+                deleted: (res.deleted || []).map(normalizeApkItem)
+              };
+              const cAct = document.getElementById('countActive');
+              if (cAct) cAct.textContent = apksData.active.length;
+              const cDel = document.getElementById('countDeleted');
+              if (cDel) cDel.textContent = apksData.deleted.length;
+              return;
+            }
+            renderApp(res);
+          } else if (!silent) {
+            showToast(res ? res.error : 'Error al cargar', true);
+          }
+        })
+        .withFailureHandler(e => {
+          if (!silent) showToast('Error: ' + (e.message || e), true);
+        })
+        .getApksList(savedPwd);
+    }
+
+    function normalizeApkItem(item) {
+      if (!item) return {};
+      const cleanName = String(item.cleanName || '');
+      const fileName = String(item.fileName || '');
+      const desc = String(item.aiDescription || '');
+      return {
+        ...item,
+        driveFileId: String(item.driveFileId || ''),
+        cleanName: cleanName,
+        fileName: fileName,
+        browsyCode: (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '',
+        browsyShortUrl: String(item.browsyShortUrl || ''),
+        directDownloadUrl: String(item.directDownloadUrl || ''),
+        aiDescription: desc,
+        category: item.category || classifyCategory(cleanName, fileName, desc)
+      };
+    }
+
+    function renderApp(res) {
+      isGuestMode = false;
+      document.body.classList.remove('guest-mode');
+      stopGuestAutoRefresh();
+
+      if (!res) res = { active: [], deleted: [], total: 0 };
+      apksData = {
+        active: (res.active || []).map(normalizeApkItem),
+        deleted: (res.deleted || []).map(normalizeApkItem)
+      };
+
+      const cAct = document.getElementById('countActive');
+      if (cAct) cAct.textContent = apksData.active.length;
+      const cDel = document.getElementById('countDeleted');
+      if (cDel) cDel.textContent = apksData.deleted.length;
+      const sInfo = document.getElementById('statusInfo');
+      if (sInfo) sInfo.textContent = 'Total: ' + (res.total || (apksData.active.length + apksData.deleted.length)) + ' aplicaciones registradas';
+
+      initWaData();
+      updateEmptyTrashBtn();
+      renderAdminCategoryChips();
+      try { loadDevices(); } catch (e) {}
+
+      if (activeTab === 'whatsapp') {
+        drawWaList();
+      } else if (activeTab === 'devices') {
+        renderDevices();
+      } else {
+        drawCards();
+      }
+    }
+
+    let adminCategory = '⭐ Todas';
+
+    function classifyCategory(cleanName, fileName, desc) {
+      const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const combined = norm(cleanName) + ' ' + norm(fileName) + ' ' + norm(desc);
+
+      const hasAny = (keywords) => keywords.some(k => combined.includes(k));
+
+      if (hasAny([
+        'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
+        'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
+        'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro'
+      ])) {
+        return '📺 TV en Vivo';
+      }
+      if (hasAny([
+        'deport', 'futbol', 'soccer', 'beisbol', 'baseball', 'baloncesto',
+        'boxeo', 'boxing', 'cricz', 'sportv', 'sportz', 'geesports', 'partidos en directo'
+      ])) {
+        return '⚽ Deportes';
+      }
+      if (hasAny([
+        'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
+        'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series'
+      ])) {
+        return '🎬 Películas y Series';
+      }
+      if (hasAny([
+        'musica', 'radio', 'cancion', 'canciones', 'audio', 'spotify',
+        'deezer', 'sonido', 'podcast', 'mp3', 'emisora'
+      ])) {
+        return '🎵 Música';
+      }
+      if (hasAny(['juego', 'juegos', 'game', 'games', 'arcade', 'emulador', 'retro', 'consola'])) {
+        return '🎮 Juegos';
+      }
+      if (hasAny([
+        'utilitar', 'herramienta', 'launcher', 'vpn', 'privacidad', 'segur',
+        'clima', 'weather', 'downloader', 'browsy', 'codigos', 'tizentube', 'youtube', 'wolf',
+        'projjectivy', 'personalizar y acelerar', 'acelerar la pantalla', 'transformar el menu',
+        'navegar seguro', 'descargar e instalar'
+      ])) {
+        return '🛠️ Utilitarios';
+      }
+      if (hasAny(['infantil', 'ninos', 'caricaturas', 'dibujos animados'])) {
+        return '👶 Infantil';
+      }
+      return '🛠️ Utilitarios';
+    }
+
+    function renderAdminCategoryChips() {
+      const container = document.getElementById('adminCategoryChips');
+      if (!container) return;
+
+      const list = apksData.active || [];
+      const counts = { '⭐ Todas': list.length };
+      const order = [
+        '⭐ Todas',
+        '📺 TV en Vivo',
+        '⚽ Deportes',
+        '🎬 Películas y Series',
+        '🛠️ Utilitarios',
+        '🎵 Música',
+        '🎮 Juegos',
+        '👶 Infantil'
+      ];
+
+      list.forEach(item => {
+        const cat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = cat;
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      Object.keys(counts).forEach(cat => {
+        if (!order.includes(cat)) order.push(cat);
+      });
+
+      container.innerHTML = order
+        .filter(cat => (counts[cat] || 0) > 0 || cat === '⭐ Todas')
+        .map(cat => {
+          const isActive = (cat === adminCategory);
+          const count = counts[cat] || 0;
+          return `<button class="category-chip ${isActive ? 'active' : ''}" onclick="selectAdminCategory('${escapeJs(cat)}')">
+            ${escapeHtml(cat)} <span class="category-chip-count">${count}</span>
+          </button>`;
+        }).join('');
+    }
+
+    function selectAdminCategory(cat) {
+      adminCategory = cat;
+      renderAdminCategoryChips();
+      drawCards();
+    }
+
+    function setTab(tab) {
+      activeTab = tab;
+      const bAct = document.getElementById('tabActiveBtn');
+      const bDev = document.getElementById('tabDevicesBtn');
+      const bWa = document.getElementById('tabWaBtn');
+      const bDel = document.getElementById('tabDeletedBtn');
+      const catSec = document.getElementById('catalogSection');
+      const devSec = document.getElementById('devicesSection');
+      const waSec = document.getElementById('waSection');
+      const sortRow = document.querySelector('.sort-row');
+      const catBar = document.getElementById('adminCategoryChips');
+
+      if (bAct) bAct.className = 'tab-button';
+      if (bDev) bDev.className = 'tab-button';
+      if (bWa) bWa.className = 'tab-button';
+      if (bDel) bDel.className = 'tab-button';
+
+      if (tab === 'active') {
+        if (bAct) bAct.className = 'tab-button active';
+        if (catSec) catSec.style.display = 'block';
+        if (devSec) devSec.style.display = 'none';
+        if (waSec) waSec.style.display = 'none';
+        if (sortRow) sortRow.style.display = 'inline-flex';
+        if (catBar) catBar.style.display = 'flex';
+        updateEmptyTrashBtn();
+        renderAdminCategoryChips();
+        drawCards();
+      } else if (tab === 'devices') {
+        if (bDev) bDev.className = 'tab-button active-dev';
+        if (catSec) catSec.style.display = 'none';
+        if (devSec) devSec.style.display = 'block';
+        if (waSec) waSec.style.display = 'none';
+        if (sortRow) sortRow.style.display = 'none';
+        if (catBar) catBar.style.display = 'none';
+        loadDevices();
+      } else if (tab === 'whatsapp') {
+        if (bWa) bWa.className = 'tab-button active-wa';
+        if (catSec) catSec.style.display = 'none';
+        if (devSec) devSec.style.display = 'none';
+        if (waSec) waSec.style.display = 'block';
+        if (sortRow) sortRow.style.display = 'none';
+        if (catBar) catBar.style.display = 'none';
+        updateEmptyTrashBtn();
+
+        // Anclar barra de WhatsApp exactamente bajo el header sticky
+        function updateWaSticky() {
+          const header = document.querySelector('.sticky-header-container');
+          const waSticky = document.querySelector('.wa-sticky-bar');
+          if (header && waSticky) {
+            const h = Math.round(header.getBoundingClientRect().height || header.offsetHeight || 104);
+            waSticky.style.top = h + 'px';
+            const preview = document.querySelector('.wa-preview-container');
+            if (preview && window.innerWidth >= 820) {
+              const barH = waSticky.offsetHeight || 110;
+              preview.style.top = (h + barH + 10) + 'px';
+              preview.style.maxHeight = 'calc(100vh - ' + (h + barH + 25) + 'px)';
+            }
+          }
+        }
+        setTimeout(updateWaSticky, 30);
+        window.addEventListener('resize', updateWaSticky, { passive: true });
+
+        initWaData();
+        drawWaList();
+      } else if (tab === 'deleted') {
+        if (bDel) bDel.className = 'tab-button active-del';
+        if (catSec) catSec.style.display = 'block';
+        if (devSec) devSec.style.display = 'none';
+        if (waSec) waSec.style.display = 'none';
+        if (sortRow) sortRow.style.display = 'inline-flex';
+        if (catBar) catBar.style.display = 'none';
+        updateEmptyTrashBtn();
+        drawCards();
+      }
+    }
+
+    function handleSearch() {
+      const q = document.getElementById('searchInput').value;
+      document.getElementById('searchClearBtn').style.display = q ? 'block' : 'none';
+      if (activeTab === 'whatsapp') {
+        const waFilter = document.getElementById('waFilterInput');
+        if (waFilter) waFilter.value = q;
+        drawWaList();
+      } else {
+        drawCards();
+      }
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchClearBtn').style.display = 'none';
+      if (activeTab === 'whatsapp') {
+        const waFilter = document.getElementById('waFilterInput');
+        if (waFilter) waFilter.value = '';
+        drawWaList();
+      } else {
+        drawCards();
+      }
+    }
+
+    function drawCards() {
+      const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
+      const list = activeTab === 'active' ? apksData.active : apksData.deleted;
+
+      const isAll = (adminCategory === '⭐ Todas' || adminCategory.toLowerCase().includes('todas'));
+      const filtered = list.filter(item => {
+        const itemCat = item.category || classifyCategory(item.cleanName, item.fileName, item.aiDescription);
+        item.category = itemCat;
+        if (activeTab === 'active' && !isAll && itemCat !== adminCategory) return false;
+
+        const clean = String(item.cleanName || '').toLowerCase();
+        const file = String(item.fileName || '').toLowerCase();
+        const code = String(item.browsyCode || '').toLowerCase();
+        return clean.includes(q) || file.includes(q) || code.includes(q);
+      });
+
+      // Ordenar resultados según selección
+      filtered.sort((a, b) => {
+        if (currentSort === 'newest') {
+          const tA = getApkTime(a);
+          const tB = getApkTime(b);
+          if (tB !== tA) return tB - tA;
+          return (b.cleanName || '').localeCompare(a.cleanName || '', 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'oldest') {
+          const tA = getApkTime(a);
+          const tB = getApkTime(b);
+          if (tA !== tB) return tA - tB;
+          return (a.cleanName || '').localeCompare(b.cleanName || '', 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'name-asc') {
+          return (a.cleanName || '').localeCompare(b.cleanName || '', 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'name-desc') {
+          return (b.cleanName || '').localeCompare(a.cleanName || '', 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'code-asc') {
+          const aCode = parseInt(a.browsyCode, 10);
+          const bCode = parseInt(b.browsyCode, 10);
+          if (isNaN(aCode)) return 1;
+          if (isNaN(bCode)) return -1;
+          return aCode - bCode;
+        } else if (currentSort === 'code-desc') {
+          const aCode = parseInt(a.browsyCode, 10);
+          const bCode = parseInt(b.browsyCode, 10);
+          if (isNaN(aCode)) return 1;
+          if (isNaN(bCode)) return -1;
+          return bCode - aCode;
+        } else if (currentSort === 'has-code') {
+          const aHas = (a.browsyCode && String(a.browsyCode).trim() !== '') ? 1 : 0;
+          const bHas = (b.browsyCode && String(b.browsyCode).trim() !== '') ? 1 : 0;
+          return bHas - aHas;
+        } else if (currentSort === 'pending') {
+          const aHas = (a.browsyCode && String(a.browsyCode).trim() !== '') ? 1 : 0;
+          const bHas = (b.browsyCode && String(b.browsyCode).trim() !== '') ? 1 : 0;
+          return aHas - bHas;
+        }
+        return 0;
+      });
+
+      const container = document.getElementById('cardsGrid');
+      const emptyMsg = document.getElementById('emptyMsg');
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyMsg.style.display = 'block';
+        return;
+      }
+      emptyMsg.style.display = 'none';
+
+      filtered.forEach(it => {
+        const isDel = activeTab === 'deleted';
+        const codeStr = (it.browsyCode !== undefined && it.browsyCode !== null) ? String(it.browsyCode).trim() : '';
+        const hasCode = codeStr !== '';
+        const cleanName = String(it.cleanName || '');
+        const fileName = String(it.fileName || '');
+        const shortUrl = String(it.browsyShortUrl || (hasCode ? ('https:' + '/' + '/browsy.app/' + codeStr) : ''));
+
+        const card = document.createElement('div');
+        card.className = 'apk-card';
+        card.innerHTML = `
+          <div>
+            <div class="card-head">
+              <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span class="badge-status ${isDel ? 'badge-del' : 'badge-act'}">${isDel ? 'Eliminado' : 'Activo'}</span>
+                <span class="badge-category">${escapeHtml(it.category || 'Aplicación')}</span>
+              </div>
+            </div>
+            <div class="apk-filename" title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</div>
+
+            <div class="browsy-box">
+              <div>
+                <span class="browsy-label">Código Browsy (TV)</span>
+                ${hasCode ? `<span class="browsy-code-val">${codeStr}</span>` : `<span class="browsy-pending">⏳ Pendiente</span>`}
+              </div>
+              ${hasCode ? `
+                <button class="btn-card-copy" onclick="copyCode('${codeStr}')">📋 Copiar</button>
+              ` : `
+                <button class="btn-card-gen" onclick="generateCode('${it.driveFileId}')">⚡ Generar</button>
+              `}
+            </div>
+
+            <div class="admin-desc-box">
+              <div class="admin-desc-header">
+                <span class="admin-desc-label">📝 ¿Para qué sirve? (Clientes):</span>
+                <button type="button" class="btn-ai-mini" onclick="regenAdminAiDesc('${it.driveFileId}', '${escapeJs(cleanName)}', event)" title="Sugerir descripción con Inteligencia Artificial">
+                  ✨ IA
+                </button>
+              </div>
+              <textarea id="desc_${it.driveFileId}" class="admin-desc-textarea" rows="2" placeholder="Escribe la descripción de la app para los clientes...">${escapeHtml(it.aiDescription || '')}</textarea>
+              <div class="admin-desc-actions">
+                <span id="desc_status_${it.driveFileId}" class="admin-desc-status"></span>
+                <button type="button" id="desc_btn_${it.driveFileId}" class="btn-save-desc" onclick="saveApkDesc('${it.driveFileId}')">
+                  💾 Guardar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer-actions">
+            ${hasCode ? `
+              <button class="btn-whatsapp" onclick="copyWhatsApp('${escapeJs(cleanName)}', '${codeStr}', '${shortUrl}')">
+                💬 Copiar Mensaje WhatsApp
+              </button>
+            ` : ''}
+
+            <div class="sub-buttons-row">
+              ${hasCode ? `
+                <button class="btn-sub-action" onclick="openQr('${escapeJs(cleanName)}', '${shortUrl}', '${codeStr}')">
+                  📲 QR
+                </button>
+              ` : ''}
+              
+              <a class="btn-sub-action" href="${it.directDownloadUrl || '#'}" target="_blank" rel="noopener noreferrer">
+                📥 Descarga
+              </a>
+
+              ${isDel ? `
+                <button class="btn-sub-action btn-restore" onclick="restoreSingleApk('${it.driveFileId}', '${escapeJs(cleanName)}')">
+                  ♻️ Restaurar
+                </button>
+                <button class="btn-sub-action btn-del-danger" onclick="deletePermanent('${it.driveFileId}', '${escapeJs(cleanName)}')">
+                  🗑️ Borrar
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function escapeJs(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\r/g, '')
+        .replace(/\n/g, ' ');
+    }
+
+    function copyCode(code) {
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('¡Código [ ' + code + ' ] copiado!');
+      }).catch(() => showToast('Código: ' + code));
+    }
+
+    function copyWhatsApp(name, code, shortUrl) {
+      const fallbackBrowsy = 'https:' + '/' + '/browsy.app/' + code;
+      const cleanUrl = (shortUrl || fallbackBrowsy).replace('https:' + '/' + '/', '').replace('http:' + '/' + '/', '');
+      const msg = `👋 *¡Hola estimado cliente!*\n\nPara instalar *${name}* en tu Android TV o Google TV tienes 2 opciones:\n\n📺 *Opción 1 (App Browsy):*\n1️⃣ Abre *Browsy* en tu TV.\n2️⃣ Ingresa este código: *${code}*\n3️⃣ Presiona *'Go'*.\n\n🔥 *Opción 2 (App Downloader):*\n1️⃣ Abre *Downloader* en tu TV.\n2️⃣ En la barra de dirección escribe: *${cleanUrl}*\n3️⃣ Presiona *'Go'*.\n\nCualquier consulta estamos a la orden. ¡Que lo disfrutes!`;
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast('¡Mensaje para WhatsApp copiado! (Browsy + Downloader)');
+      }).catch(() => showToast('Texto preparado'));
+    }
+
+    function openQr(title, url, code) {
+      document.getElementById('qrTitle').textContent = title;
+      document.getElementById('qrCodeBadge').textContent = 'Código TV: ' + code;
+      const qrBase = 'https:' + '/' + '/api.qrserver.com/v1/create-qr-code/?size=190x190&data=';
+      document.getElementById('qrImg').src = qrBase + encodeURIComponent(url);
+      document.getElementById('qrModal').style.display = 'flex';
+    }
+
+    function closeQrModal() {
+      document.getElementById('qrModal').style.display = 'none';
+    }
+
+    function saveApkDesc(fileId) {
+      const textarea = document.getElementById('desc_' + fileId);
+      const statusEl = document.getElementById('desc_status_' + fileId);
+      const btn = document.getElementById('desc_btn_' + fileId);
+      if (!textarea) return;
+      const newDesc = textarea.value.trim();
+
+      if (statusEl) {
+        statusEl.textContent = 'Guardando...';
+        statusEl.style.color = '#38bdf8';
+      }
+      if (btn) btn.disabled = true;
+
+      const gas = getGas();
+      if (!gas) {
+        if (statusEl) { statusEl.textContent = 'Error de servicio'; statusEl.style.color = '#ef4444'; }
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      gas.withSuccessHandler(res => {
+        if (btn) btn.disabled = false;
+        if (res && res.success) {
+          if (statusEl) {
+            statusEl.textContent = '✓ Guardado';
+            statusEl.style.color = '#34d399';
+            setTimeout(() => { if (statusEl && statusEl.textContent === '✓ Guardado') statusEl.textContent = ''; }, 3500);
+          }
+          showToast('¡Descripción actualizada en tiempo real!');
+          // Actualizar memoria local en apksData
+          const item = [...apksData.active, ...apksData.deleted].find(x => String(x.driveFileId) === String(fileId));
+          if (item) item.aiDescription = newDesc;
+          if (typeof waDescriptions !== 'undefined') {
+            waDescriptions[fileId] = newDesc;
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = 'Error: ' + (res ? res.error : 'Fallo al guardar');
+            statusEl.style.color = '#ef4444';
+          }
+        }
+      })
+      .withFailureHandler(err => {
+        if (btn) btn.disabled = false;
+        if (statusEl) {
+          statusEl.textContent = 'Error de conexión';
+          statusEl.style.color = '#ef4444';
+        }
+      })
+      .updateApkDescription(savedPwd, fileId, newDesc);
+    }
+
+    function regenAdminAiDesc(fileId, cleanName, event) {
+      if (event && event.preventDefault) event.preventDefault();
+      const textarea = document.getElementById('desc_' + fileId);
+      const statusEl = document.getElementById('desc_status_' + fileId);
+      if (!textarea) return;
+
+      if (statusEl) {
+        statusEl.textContent = '✨ Generando con IA...';
+        statusEl.style.color = '#c084fc';
+      }
+
+      const gas = getGas();
+      if (!gas) return;
+
+      gas.withSuccessHandler(res => {
+        if (res && res.success && res.description) {
+          textarea.value = res.description;
+          if (statusEl) {
+            statusEl.textContent = 'Listo. Presiona Guardar.';
+            statusEl.style.color = '#38bdf8';
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = 'No se pudo generar';
+            statusEl.style.color = '#ef4444';
+          }
+        }
+      })
+      .withFailureHandler(err => {
+        if (statusEl) {
+          statusEl.textContent = 'Error de IA';
+          statusEl.style.color = '#ef4444';
+        }
+      })
+      .generateApkDescription(savedPwd, cleanName);
+    }
+
+    function triggerSync() {
+      const btn = document.getElementById('syncBtn');
+      const icon = document.getElementById('syncIconText');
+      btn.disabled = true;
+      icon.innerHTML = '<span class="spinner"></span>';
+      showToast('Sincronizando con Repositorio GitHub...');
+      const gas = getGas();
+      if (!gas) { btn.disabled = false; icon.textContent = '🔄'; showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          btn.disabled = false;
+          icon.textContent = '🔄';
+          if (res && res.success) {
+            showToast('¡Sincronizado! ' + (res.total || res.totalDrive || res.totalRepo || '') + ' APKs verificados.');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al sincronizar', true);
+          }
+        })
+        .withFailureHandler(e => {
+          btn.disabled = false;
+          icon.textContent = '🔄';
+          showToast('Error: ' + (e.message || e), true);
+        })
+        .syncApks(savedPwd);
+    }
+
+    function generateCode(driveId) {
+      showToast('Generando código en Browsy...');
+      const gas = getGas();
+      if (!gas) { showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('¡Código Browsy generado: ' + res.newCode + '!');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al generar', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .generateCodeForSingleApk(savedPwd, driveId);
+    }
+
+    function deletePermanent(driveId, name) {
+      if (!confirm('¿Eliminar definitivamente "' + name + '" del registro?')) return;
+      showToast('Eliminando registro...');
+      const gas = getGas();
+      if (!gas) { showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('"' + name + '" eliminado definitivamente.');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al eliminar', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .deletePermanently(savedPwd, driveId);
+    }
+
+    function updateEmptyTrashBtn() {
+      const emptyBtn = document.getElementById('emptyTrashBtn');
+      const restoreBtn = document.getElementById('restoreAllBtn');
+      const emptyCountSpan = document.getElementById('emptyTrashCount');
+      const restoreCountSpan = document.getElementById('restoreAllCount');
+      const count = (apksData && apksData.deleted) ? apksData.deleted.length : 0;
+      if (emptyCountSpan) emptyCountSpan.textContent = count;
+      if (restoreCountSpan) restoreCountSpan.textContent = count;
+      if (!isGuestMode && activeTab === 'deleted' && count > 0) {
+        if (emptyBtn) emptyBtn.style.display = 'inline-flex';
+        if (restoreBtn) restoreBtn.style.display = 'inline-flex';
+      } else {
+        if (emptyBtn) emptyBtn.style.display = 'none';
+        if (restoreBtn) restoreBtn.style.display = 'none';
+      }
+    }
+
+    function restoreSingleApk(driveId, name) {
+      showToast('Restaurando "' + name + '" al catálogo...');
+      const gas = getGas();
+      if (!gas) { showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('¡"' + name + '" restaurada al catálogo exitosamente!');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al restaurar', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .restoreApk(savedPwd, driveId);
+    }
+
+    function confirmRestoreAll() {
+      const count = (apksData && apksData.deleted) ? apksData.deleted.length : 0;
+      if (count === 0) {
+        showToast('No hay aplicaciones en papelera para restaurar.');
+        return;
+      }
+      if (!confirm('¿Deseas restaurar todas las ' + count + ' aplicaciones de la papelera nuevamente al catálogo activo?')) {
+        return;
+      }
+      const btn = document.getElementById('restoreAllBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Restaurando...';
+      }
+      showToast('Restaurando ' + count + ' aplicaciones...');
+      const gas = getGas();
+      if (!gas) {
+        if (btn) btn.disabled = false;
+        showToast('Servicio no disponible', true);
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '♻️ Restaurar Todas (<span id="restoreAllCount">0</span>)';
+          }
+          if (res && res.success) {
+            showToast('¡Se restauraron ' + res.count + ' aplicaciones al catálogo!');
+            loadApks();
+          } else {
+            showToast(res ? res.error : 'Error al restaurar aplicaciones', true);
+          }
+        })
+        .withFailureHandler(e => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '♻️ Restaurar Todas (<span id="restoreAllCount">' + count + '</span>)';
+          }
+          showToast('Error: ' + (e.message || e), true);
+        })
+        .restoreAllDeleted(savedPwd);
+    }
+
+    function confirmEmptyTrash() {
+      const count = (apksData && apksData.deleted) ? apksData.deleted.length : 0;
+      if (count === 0) {
+        showToast('La papelera ya está vacía.');
+        return;
+      }
+      if (!confirm('⚠️ ¿Estás seguro de que deseas eliminar permanentemente todas las ' + count + ' aplicaciones de la papelera?\n\nEsta acción borrará definitivamente estos registros y no se puede deshacer.')) {
+        return;
+      }
+      const btn = document.getElementById('emptyTrashBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Vaciando...';
+      }
+      showToast('Vaciando papelera (' + count + ' aplicaciones)...');
+      const gas = getGas();
+      if (!gas) {
+        if (btn) btn.disabled = false;
+        showToast('Servicio no disponible', true);
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '🗑️ Vaciar Papelera (<span id="emptyTrashCount">0</span>)';
+          }
+          if (res && res.success) {
+            showToast('¡Papelera vaciada! ' + res.count + ' aplicaciones eliminadas.');
+            if (apksData) apksData.deleted = [];
+            const cDel = document.getElementById('countDeleted');
+            if (cDel) cDel.textContent = '0';
+            updateEmptyTrashBtn();
+            drawCards();
+          } else {
+            showToast(res ? res.error : 'Error al vaciar papelera', true);
+          }
+        })
+        .withFailureHandler(e => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '🗑️ Vaciar Papelera (<span id="emptyTrashCount">' + count + '</span>)';
+          }
+          showToast('Error: ' + (e.message || e), true);
+        })
+        .emptyTrash(savedPwd);
+    }
+
+    // ================= FUNCIONES CREADOR WHATSAPP =================
+    let waSelectedIds = new Set();
+    let waDescriptions = {};
+
+    function initWaData() {
+      const list = apksData.active || [];
+      list.forEach(item => {
+        if (!waDescriptions[item.driveFileId]) {
+          waDescriptions[item.driveFileId] = item.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
+        }
+      });
+      updateWaCounters();
+    }
+
+    function drawWaList() {
+      const container = document.getElementById('waApkList');
+      if (!container) return;
+      const filter = (document.getElementById('waFilterInput') ? document.getElementById('waFilterInput').value : '').toLowerCase().trim();
+      const list = apksData.active || [];
+
+      container.innerHTML = '';
+      let visibleCount = 0;
+
+      list.forEach(item => {
+        const cleanName = String(item.cleanName || '');
+        if (filter && !cleanName.toLowerCase().includes(filter)) return;
+        visibleCount++;
+
+        const isSelected = waSelectedIds.has(item.driveFileId);
+        const desc = waDescriptions[item.driveFileId] || item.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
+        const codeStr = (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '';
+
+        const card = document.createElement('div');
+        card.className = 'wa-item-card' + (isSelected ? ' selected' : '');
+        card.onclick = (e) => {
+          if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON' || e.target.type === 'checkbox') return;
+          toggleWaSelection(item.driveFileId);
+        };
+
+        card.innerHTML = `
+          <div class="wa-item-top">
+            <div class="wa-item-left">
+              <input type="checkbox" class="wa-item-checkbox" ${isSelected ? 'checked' : ''} onchange="toggleWaSelection('${item.driveFileId}')">
+              <span class="wa-item-name" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</span>
+            </div>
+            <span class="wa-item-code-badge">${codeStr || 'Pendiente'}</span>
+          </div>
+          <div class="wa-item-desc-wrapper">
+            <textarea class="wa-item-desc-input" rows="2" placeholder="Mini descripción comercial..." oninput="updateWaDesc('${item.driveFileId}', this.value)">${escapeHtml(desc)}</textarea>
+            <button type="button" class="wa-btn-regen-ai" onclick="regenAiDesc('${item.driveFileId}', '${escapeJs(cleanName)}', event)" title="Regenerar con IA">✨ IA</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (visibleCount === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:28px 16px; color:#94a3b8; font-size:12px;">No se encontraron aplicaciones que coincidan con la búsqueda.</div>';
+      }
+
+      updateWaCounters();
+      renderWhatsAppPreview();
+    }
+
+    function toggleWaSelection(driveId) {
+      if (waSelectedIds.has(driveId)) {
+        waSelectedIds.delete(driveId);
+      } else {
+        waSelectedIds.add(driveId);
+      }
+      drawWaList();
+    }
+
+    function waSelectAll() {
+      const list = apksData.active || [];
+      list.forEach(i => waSelectedIds.add(i.driveFileId));
+      drawWaList();
+    }
+
+    function waDeselectAll() {
+      waSelectedIds.clear();
+      drawWaList();
+    }
+
+    function updateWaDesc(driveId, text) {
+      waDescriptions[driveId] = text;
+      renderWhatsAppPreview();
+    }
+
+    function regenAiDesc(driveId, name, ev) {
+      if (ev) ev.stopPropagation();
+      showToast('Consultando IA para "' + name + '"...');
+      const gas = getGas();
+      if (!gas) { showToast('Servicio no disponible', true); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success && res.description) {
+            waDescriptions[driveId] = res.description;
+            showToast('¡Mini-descripción IA actualizada!');
+            drawWaList();
+          } else {
+            showToast(res ? res.error : 'No se pudo generar descripción', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .generateApkDescription(savedPwd, name);
+    }
+
+    function updateWaCounters() {
+      const badge = document.getElementById('waCounterBadge');
+      const countPill = document.getElementById('countWaSelected');
+      const total = (apksData.active || []).length;
+      const count = waSelectedIds.size;
+      if (badge) badge.textContent = count + ' de ' + total + ' seleccionadas';
+      if (countPill) countPill.textContent = count;
+    }
+
+    function buildWhatsAppMessage() {
+      const list = apksData.active || [];
+      const selectedList = list.filter(i => waSelectedIds.has(i.driveFileId));
+      const incDownloader = document.getElementById('waIncludeDownloader') ? document.getElementById('waIncludeDownloader').checked : false;
+      const greeting = (document.getElementById('waGreetingInput') ? document.getElementById('waGreetingInput').value : '').trim() ||
+        '👋 *¡Hola estimado cliente!*\nAquí tienes las aplicaciones preparadas para instalar en tu Android TV / Fire TV:';
+
+      if (selectedList.length === 0) {
+        return '*(No has seleccionado ninguna aplicación todavía)*\n\nMarca las aplicaciones que deseas en la columna izquierda para generar el mensaje consolidado para el cliente.';
+      }
+
+      let text = greeting + '\n\n';
+
+      selectedList.forEach((it) => {
+        const code = (it.browsyCode !== undefined && it.browsyCode !== null && String(it.browsyCode).trim() !== '') ? String(it.browsyCode).trim() : 'Pendiente';
+        const cleanName = String(it.cleanName || '');
+        const desc = waDescriptions[it.driveFileId] || it.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
+        let shortUrl = '';
+        if (it.browsyShortUrl) {
+          shortUrl = String(it.browsyShortUrl);
+        } else if (code !== 'Pendiente') {
+          shortUrl = 'https:' + '/' + '/browsy.app/' + code;
+        }
+        const cleanUrl = shortUrl.replace('https:' + '/' + '/', '').replace('http:' + '/' + '/', '');
+
+        text += `━━━━━━━━━━━━━━━━━━━━\n`;
+        text += `📺 *${cleanName}*\n`;
+        text += `🔑 Código Browsy: *${code}*\n`;
+        text += `✨ ${desc}\n`;
+        if (incDownloader) {
+          text += `📥 En Downloader: *${cleanUrl}*\n`;
+        }
+      });
+
+      text += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+      text += `💡 *Instrucciones rápidas para tu TV:*\n`;
+      text += `1️⃣ Abre la app *Browsy* en tu Android TV o Fire TV.\n`;
+      text += `2️⃣ Escribe el código numérico de la app que deseas y pulsa *'Go'*.\n`;
+      if (incDownloader) {
+        text += `3️⃣ Si usas *Downloader*, escribe la dirección indicada arriba y presiona *'Go'*.\n`;
+      }
+      text += `\nCualquier duda o consulta estamos a tu entera disposición. ¡Que lo disfrutes! 😊`;
+
+      return text;
+    }
+
+    function renderWhatsAppPreview() {
+      const bubble = document.getElementById('waChatBubble');
+      if (!bubble) return;
+      const msg = buildWhatsAppMessage();
+      bubble.textContent = msg;
+    }
+
+    function copyFullWaMessage() {
+      const msg = buildWhatsAppMessage();
+      if (waSelectedIds.size === 0) {
+        showToast('Selecciona al menos una aplicación para copiar', true);
+        return;
+      }
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast('¡Mensaje de WhatsApp copiado al portapapeles!');
+      }).catch(() => showToast('Texto preparado'));
+    }
+
+    function openWhatsAppChat() {
+      const msg = buildWhatsAppMessage();
+      if (waSelectedIds.size === 0) {
+        showToast('Selecciona al menos una aplicación para enviar', true);
+        return;
+      }
+      const waBase = 'https:' + '/' + '/wa.me/?text=';
+      const url = waBase + encodeURIComponent(msg);
+      window.open(url, '_blank');
+    }
+
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.borderColor = isError ? '#f43f5e' : 'var(--accent-cyan)';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+    // ================= FUNCIONES MODO INVITADO (SOLO LECTURA & AUTO-ACTUALIZACIÓN) =================
+    let guestAutoRefreshTimer = null;
+
+    function getGuestCatalogSignature(catalog) {
+      if (!Array.isArray(catalog)) return '';
+      return catalog.map(c => (c.cleanName || '') + ':' + (c.browsyCode || '')).join('|');
+    }
+
+    function startGuestAutoRefresh() {
+      stopGuestAutoRefresh();
+      // Verificación periódica silenciosa cada 20 segundos para reflejar ingresos o eliminaciones de Drive
+      guestAutoRefreshTimer = setInterval(() => {
+        if (!isGuestMode) {
+          stopGuestAutoRefresh();
+          return;
+        }
+        if (document.hidden) return;
+        refreshGuestCatalogSilently();
+      }, 20000);
+    }
+
+    function stopGuestAutoRefresh() {
+      if (guestAutoRefreshTimer) {
+        clearInterval(guestAutoRefreshTimer);
+        guestAutoRefreshTimer = null;
+      }
+    }
+
+    function refreshGuestCatalogSilently() {
+      const gas = getGas();
+      if (!gas || !isGuestMode) return;
+      gas.withSuccessHandler(res => {
+        if (res && res.success && isGuestMode) {
+          const freshCatalog = res.catalog || [];
+          const freshSig = getGuestCatalogSignature(freshCatalog);
+          const currentSig = getGuestCatalogSignature(guestCatalogData);
+          if (freshSig !== currentSig) {
+            guestCatalogData = freshCatalog;
+            const sInfo = document.getElementById('statusInfo');
+            if (sInfo) sInfo.textContent = 'Total: ' + guestCatalogData.length + ' aplicaciones disponibles';
+            drawGuestCards();
+            showToast('Catálogo actualizado automáticamente con cambios de GitHub');
+          }
+        }
+      }).getGuestCatalog();
+    }
+
+    // Al regresar a la pestaña activa del panel de administrador, sincronizar silenciosamente de inmediato
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && savedPwd) {
+        loadApks(true);
+      }
+    });
+
+    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador
+    setInterval(() => {
+      if (savedPwd && !document.hidden) {
+        loadApks(true);
+      }
+    }, 25000);
+
+    function enterGuestMode() {
+      isGuestMode = true;
+      document.body.classList.add('guest-mode');
+      document.getElementById('loginScreen').style.display = 'none';
+
+      // Interfaz adaptada a invitado
+      document.getElementById('brandBadge').textContent = '👤 MODO INVITADO';
+      document.getElementById('brandBadge').className = 'badge-guest';
+      document.getElementById('brandSubtitle').textContent = 'Catálogo Público • Solo Lectura';
+
+      // Ocultar controles de administrador y selector de auto-sincronización
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+      const bSync = document.querySelector('.banner-sync-config');
+      if (bSync) bSync.style.display = 'none';
+
+      // Mostrar estado de sincronización en vivo para invitados
+      const gLive = document.getElementById('guestLiveStatus');
+      if (gLive) gLive.style.display = 'inline-flex';
+
+      document.getElementById('catalogSection').style.display = 'block';
+      document.getElementById('waSection').style.display = 'none';
+
+      // Alternar botones del header
+      document.getElementById('adminHeaderBtns').style.display = 'none';
+      document.getElementById('guestHeaderBtns').style.display = 'flex';
+
+      document.getElementById('statusInfo').textContent = 'Cargando catálogo en vivo...';
+
+      // Iniciar auto-actualización periódica en segundo plano
+      startGuestAutoRefresh();
+
+      // Cargar catálogo seguro sin credenciales
+      const gas = getGas();
+      if (!gas) {
+        showToast('Error de conexión con el catálogo de Google Apps Script.', true);
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            guestCatalogData = res.catalog || [];
+            document.getElementById('statusInfo').textContent = 'Total: ' + guestCatalogData.length + ' aplicaciones disponibles';
+            drawGuestCards();
+          } else {
+            showToast(res ? res.error : 'Error al cargar catálogo', true);
+          }
+        })
+        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
+        .getGuestCatalog();
+    }
+
+    function exitGuestMode() {
+      isGuestMode = false;
+      document.body.classList.remove('guest-mode');
+      stopGuestAutoRefresh();
+      guestCatalogData = [];
+
+      // Restaurar interfaz de administrador
+      document.getElementById('brandBadge').textContent = '● 24/7 NUBE';
+      document.getElementById('brandBadge').className = 'badge-247';
+      document.getElementById('brandSubtitle').textContent = 'Android TV • Códigos Browsy';
+
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+      const bSync = document.querySelector('.banner-sync-config');
+      if (bSync) bSync.style.display = 'flex';
+
+      const gLive = document.getElementById('guestLiveStatus');
+      if (gLive) gLive.style.display = 'none';
+
+      document.getElementById('adminHeaderBtns').style.display = 'flex';
+      document.getElementById('guestHeaderBtns').style.display = 'none';
+
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('pwdInput').value = '';
+      const pIn = document.getElementById('pwdInput'); if (pIn && pIn.focus) pIn.focus();
+    }
+
+    function drawGuestCards() {
+      const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
+      const list = guestCatalogData || [];
+
+      const filtered = list.filter(item => {
+        const clean = String(item.cleanName || '').toLowerCase();
+        const code = String(item.browsyCode || '').toLowerCase();
+        const desc = String(item.aiDescription || '').toLowerCase();
+        return clean.includes(q) || code.includes(q) || desc.includes(q);
+      });
+
+      // Ordenar resultados según selección
+      filtered.sort((a, b) => {
+        if (currentSort === 'newest') {
+          return (b.createdAt || '').localeCompare(a.createdAt || '') || String(a.cleanName || '').localeCompare(String(b.cleanName || ''), 'es');
+        } else if (currentSort === 'oldest') {
+          return (a.createdAt || '').localeCompare(b.createdAt || '') || String(a.cleanName || '').localeCompare(String(b.cleanName || ''), 'es');
+        } else if (currentSort === 'name-asc') {
+          return String(a.cleanName || '').localeCompare(String(b.cleanName || ''), 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'name-desc') {
+          return String(b.cleanName || '').localeCompare(String(a.cleanName || ''), 'es', { sensitivity: 'base' });
+        } else if (currentSort === 'code-asc') {
+          const aCode = parseInt(String(a.browsyCode || ''), 10);
+          const bCode = parseInt(String(b.browsyCode || ''), 10);
+          if (isNaN(aCode)) return 1;
+          if (isNaN(bCode)) return -1;
+          return aCode - bCode;
+        } else if (currentSort === 'code-desc') {
+          const aCode = parseInt(String(a.browsyCode || ''), 10);
+          const bCode = parseInt(String(b.browsyCode || ''), 10);
+          if (isNaN(aCode)) return 1;
+          if (isNaN(bCode)) return -1;
+          return bCode - aCode;
+        } else if (currentSort === 'has-code') {
+          const aHas = (a.browsyCode && String(a.browsyCode).trim() !== '' && String(a.browsyCode).trim() !== 'Pendiente') ? 1 : 0;
+          const bHas = (b.browsyCode && String(b.browsyCode).trim() !== '' && String(b.browsyCode).trim() !== 'Pendiente') ? 1 : 0;
+          return bHas - aHas;
+        }
+        return 0;
+      });
+
+      const container = document.getElementById('cardsGrid');
+      const emptyMsg = document.getElementById('emptyMsg');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        if (emptyMsg) {
+          emptyMsg.style.display = 'block';
+          emptyMsg.textContent = 'No se encontraron aplicaciones en el catálogo.';
+        }
+        return;
+      }
+      if (emptyMsg) emptyMsg.style.display = 'none';
+
+      filtered.forEach(it => {
+        const cleanName = String(it.cleanName || '');
+        const codeStr = String(it.browsyCode || 'Pendiente').trim();
+        const hasCode = codeStr !== '' && codeStr !== 'Pendiente';
+        const desc = it.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
+
+        const card = document.createElement('div');
+        card.className = 'apk-card';
+        card.innerHTML = `
+          <div>
+            <div class="card-head">
+              <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
+              <span class="badge-status badge-act">Disponible</span>
+            </div>
+
+            <div class="browsy-box" style="margin-top: 10px;">
+              <div>
+                <span class="browsy-label">Código Browsy (TV)</span>
+                ${hasCode ? `<span class="browsy-code-val">${codeStr}</span>` : `<span class="browsy-pending">⏳ Pendiente</span>`}
+              </div>
+              ${hasCode ? `
+                <button class="btn-card-copy" onclick="copyCode('${codeStr}')">📋 Copiar</button>
+              ` : ''}
+            </div>
+
+            <div class="guest-desc-box">
+              <span style="font-weight:700; color:var(--accent-cyan); display:block; font-size:11px; margin-bottom:3px; text-transform:uppercase;">¿Para qué sirve?</span>
+              ${escapeHtml(desc)}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ================= FUNCIONES RECUPERACIÓN DE CONTRASEÑA =================
+    function openRecoveryModal() {
+      document.getElementById('recoveryStep1').style.display = 'block';
+      document.getElementById('recoveryStep2').style.display = 'none';
+      document.getElementById('recoveryStep3').style.display = 'none';
+      document.getElementById('recoveryReqError').style.display = 'none';
+      document.getElementById('recoveryVerifyError').style.display = 'none';
+      document.getElementById('recoveryOtpInput').value = '';
+      document.getElementById('recoveryModal').style.display = 'flex';
+    }
+
+    function closeRecoveryModal() {
+      document.getElementById('recoveryModal').style.display = 'none';
+    }
+
+    function handleRequestOtp() {
+      const btn = document.getElementById('btnRequestOtp');
+      const err = document.getElementById('recoveryReqError');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> ENVIANDO CÓDIGO...';
+      err.style.display = 'none';
+
+      const gas = getGas();
+      if (!gas) {
+        btn.disabled = false;
+        btn.textContent = '📩 ENVIAR CÓDIGO AL CORREO';
+        err.style.display = 'block';
+        err.textContent = 'Error: Servicio no disponible.';
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          btn.disabled = false;
+          btn.textContent = '📩 ENVIAR CÓDIGO AL CORREO';
+          if (res && res.success) {
+            document.getElementById('recoveryStep1').style.display = 'none';
+            document.getElementById('recoveryStep2').style.display = 'block';
+            document.getElementById('recoveryOtpSentMsg').textContent = 'Código enviado a: ' + res.maskedEmail + '. Revisa tu bandeja de entrada o spam.';
+            const oIn = document.getElementById('recoveryOtpInput'); if (oIn && oIn.focus) oIn.focus();
+            showToast('Código de seguridad enviado a ' + res.maskedEmail);
+          } else {
+            err.style.display = 'block';
+            err.textContent = res ? res.error : 'Error al enviar código';
+          }
+        })
+        .withFailureHandler(e => {
+          btn.disabled = false;
+          btn.textContent = '📩 ENVIAR CÓDIGO AL CORREO';
+          err.style.display = 'block';
+          err.textContent = 'Error de conexión: ' + (e.message || e);
+        })
+        .requestPasswordRecovery();
+    }
+
+    function handleVerifyOtp() {
+      const otp = document.getElementById('recoveryOtpInput').value.trim();
+      const btn = document.getElementById('btnVerifyOtp');
+      const err = document.getElementById('recoveryVerifyError');
+      if (!otp || otp.length < 6) {
+        err.style.display = 'block';
+        err.textContent = 'Ingresa el código completo de 6 dígitos.';
+        return;
+      }
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> VERIFICANDO...';
+      err.style.display = 'none';
+
+      const gas = getGas();
+      if (!gas) {
+        btn.disabled = false;
+        btn.textContent = 'VERIFICAR CÓDIGO';
+        err.style.display = 'block';
+        err.textContent = 'Error: Servicio no disponible.';
+        return;
+      }
+      gas.withSuccessHandler(res => {
+          btn.disabled = false;
+          btn.textContent = 'VERIFICAR CÓDIGO';
+          if (res && res.success) {
+            currentResetToken = res.resetToken;
+            document.getElementById('revealedPassword').textContent = res.currentPassword;
+            document.getElementById('recoveryStep2').style.display = 'none';
+            document.getElementById('recoveryStep3').style.display = 'block';
+            showToast('¡Código verificado con éxito!');
+          } else {
+            err.style.display = 'block';
+            err.textContent = res ? res.error : 'Código inválido';
+          }
+        })
+        .withFailureHandler(e => {
+          btn.disabled = false;
+          btn.textContent = 'VERIFICAR CÓDIGO';
+          err.style.display = 'block';
+          err.textContent = 'Error: ' + (e.message || e);
+        })
+        .verifyRecoveryCode(otp);
+    }
+
+    function copyRevealedPassword() {
+      const pwd = document.getElementById('revealedPassword').textContent;
+      navigator.clipboard.writeText(pwd).then(() => {
+        showToast('¡Contraseña copiada al portapapeles!');
+      });
+    }
+
+    function handleResetPassword() {
+      const newPwd = document.getElementById('newPwdInput').value.trim();
+      if (!newPwd || newPwd.length < 6) {
+        alert('La nueva contraseña debe tener mínimo 6 caracteres.');
+        return;
+      }
+      showToast('Guardando nueva contraseña...');
+      const gas = getGas();
+      if (!gas) { alert('Servicio no disponible'); return; }
+      gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            document.getElementById('revealedPassword').textContent = newPwd;
+            document.getElementById('newPwdInput').value = '';
+            showToast('¡Nueva contraseña guardada con éxito!');
+          } else {
+            alert(res ? res.error : 'Error al cambiar contraseña');
+          }
+        })
+        .withFailureHandler(e => alert('Error: ' + (e.message || e)))
+        .resetAdminPassword(currentResetToken, newPwd);
+    }
+
+    function loginWithRecovered() {
+      const pwd = document.getElementById('revealedPassword').textContent;
+      closeRecoveryModal();
+      document.getElementById('pwdInput').value = pwd;
+      validateLogin(pwd);
+    }
+
+
+    // ================= CONTROL Y ACTIVACIÓN POR MAC =================
+    let devicesData = [];
+
+    function copyToClipboard(text, msg) {
+      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(msg || 'Copiado al portapapeles')).catch(() => fallbackCopy(text, msg));
+      } else {
+        fallbackCopy(text, msg);
+      }
+    }
+
+    function fallbackCopy(text, msg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(msg || 'Copiado al portapapeles');
+      } catch (e) {
+        showToast('Error al copiar', true);
+      }
+      document.body.removeChild(ta);
+    }
+
+    function loadDevices(isManual) {
+      if (!savedPwd) return;
+      if (isManual) showToast('Consultando dispositivos...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            devicesData = res.devices || [];
+            updateDeviceStats();
+            renderDevices();
+            if (isManual) showToast('Lista de dispositivos actualizada (' + devicesData.length + ')');
+          } else {
+            if (isManual) showToast(res ? res.error : 'Error al cargar dispositivos', true);
+          }
+        }).withFailureHandler(err => {
+          if (isManual) showToast('Error al conectar: ' + (err.message || err), true);
+        });
+
+        if (typeof handler.getMacList === 'function') {
+          handler.getMacList(savedPwd);
+        } else if (typeof handler.getMacDevicesList === 'function') {
+          handler.getMacDevicesList(savedPwd);
+        }
+      } catch (err) {
+        console.warn('Error loadDevices:', err);
+      }
+    }
+
+    function updateDeviceStats() {
+      const total = devicesData.length;
+      let active = 0, pending = 0, blocked = 0;
+      devicesData.forEach(d => {
+        const s = (d.status || '').toUpperCase();
+        if (s === 'ACTIVO' || s === 'ACTIVE') active++;
+        else if (s === 'PENDIENTE') pending++;
+        else blocked++;
+      });
+      const elTot = document.getElementById('statDevTotal');
+      const elAct = document.getElementById('statDevActive');
+      const elPen = document.getElementById('statDevPending');
+      const elBlo = document.getElementById('statDevBlocked');
+      const countDev = document.getElementById('countDevices');
+      if (elTot) elTot.textContent = total;
+      if (elAct) elAct.textContent = active;
+      if (elPen) elPen.textContent = pending;
+      if (elBlo) elBlo.textContent = blocked;
+      if (countDev) countDev.textContent = total;
+    }
+
+    function renderDevices() {
+      const tbody = document.getElementById('deviceTableBody');
+      const empty = document.getElementById('deviceEmptyState');
+      if (!tbody) return;
+
+      const q = (document.getElementById('deviceSearchInput') ? document.getElementById('deviceSearchInput').value : '').toLowerCase().trim();
+      const statusFilter = document.getElementById('deviceStatusFilter') ? document.getElementById('deviceStatusFilter').value : 'all';
+
+      const filtered = devicesData.filter(d => {
+        const s = (d.status || '').toUpperCase();
+        if (statusFilter !== 'all') {
+          if (statusFilter === 'ACTIVO' && s !== 'ACTIVO' && s !== 'ACTIVE') return false;
+          if (statusFilter === 'PENDIENTE' && s !== 'PENDIENTE') return false;
+          if (statusFilter === 'BLOQUEADO' && s !== 'BLOQUEADO' && s !== 'INACTIVO') return false;
+        }
+        if (q) {
+          const mac = (d.mac || '').toLowerCase();
+          const cli = (d.client || '').toLowerCase();
+          const mod = (d.model || '').toLowerCase();
+          const not = (d.notes || '').toLowerCase();
+          return mac.includes(q) || cli.includes(q) || mod.includes(q) || not.includes(q);
+        }
+        return true;
+      });
+
+      tbody.innerHTML = '';
+      if (filtered.length === 0) {
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      filtered.forEach(d => {
+        const s = (d.status || 'PENDIENTE').toUpperCase();
+        const isAct = (s === 'ACTIVO' || s === 'ACTIVE');
+        const isPen = (s === 'PENDIENTE');
+
+        let statusBadge = '';
+        if (isAct) {
+          statusBadge = '<span class="status-badge-active">✅ ACTIVO</span>';
+        } else if (isPen) {
+          statusBadge = '<span class="status-badge-pending">⏳ PENDIENTE</span>';
+        } else {
+          statusBadge = '<span class="status-badge-blocked">🚫 BLOQUEADO</span>';
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="mac-badge">
+              <span>${escapeHtml(d.mac)}</span>
+              <button onclick="copyToClipboard('${escapeJs(d.mac)}', 'MAC copiada')" title="Copiar MAC" style="background:none; border:none; cursor:pointer; font-size:12px; color:var(--accent-cyan); padding:0;">📋</button>
+            </div>
+          </td>
+          <td><strong>${escapeHtml(d.client || 'Sin Asignar')}</strong></td>
+          <td><span style="font-size:12px; color:#cbd5e1;">${escapeHtml(d.model || 'Android TV')}</span></td>
+          <td>${statusBadge}</td>
+          <td><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.lastCheck || d.registerDate || '--')}</span></td>
+          <td><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.notes || '--')}</span></td>
+          <td>
+            ${isAct ? `
+              <button class="dev-btn-toggle dev-btn-block" onclick="toggleDeviceStatus('${escapeJs(d.mac)}', 'BLOQUEADO')">⏸️ Bloquear</button>
+            ` : `
+              <button class="dev-btn-toggle dev-btn-act" onclick="toggleDeviceStatus('${escapeJs(d.mac)}', 'ACTIVO')">✅ Activar</button>
+            `}
+            <button class="dev-btn-toggle dev-btn-edit" onclick="openEditDeviceModal('${escapeJs(d.mac)}')">✏️</button>
+            <button class="dev-btn-toggle dev-btn-del" onclick="confirmDeleteDevice('${escapeJs(d.mac)}')">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleDeviceStatus(mac, newStatus) {
+      if (!savedPwd) return;
+      showToast((newStatus === 'ACTIVO' ? 'Activando' : 'Bloqueando') + ' dispositivo ' + mac + '...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('Dispositivo ' + mac + ' actualizado a ' + newStatus);
+            loadDevices();
+          } else {
+            showToast(res ? res.error : 'Error al actualizar estado', true);
+          }
+        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+
+        if (typeof handler.toggleMac === 'function') {
+          handler.toggleMac(savedPwd, mac, newStatus);
+        } else if (typeof handler.toggleMacStatus === 'function') {
+          handler.toggleMacStatus(savedPwd, mac, newStatus);
+        }
+      } catch (e) {
+        console.warn('Error toggleDeviceStatus:', e);
+      }
+    }
+
+    function openNewDeviceModal() {
+      document.getElementById('deviceModalTitle').textContent = '➕ Registrar Nuevo Dispositivo MAC';
+      document.getElementById('devModalMac').value = '';
+      document.getElementById('devModalMac').disabled = false;
+      document.getElementById('devModalClient').value = '';
+      document.getElementById('devModalModel').value = '';
+      document.getElementById('devModalStatus').value = 'ACTIVO';
+      document.getElementById('devModalNotes').value = '';
+      document.getElementById('deviceModal').style.display = 'flex';
+    }
+
+    function openEditDeviceModal(mac) {
+      const dev = devicesData.find(d => d.mac === mac);
+      if (!dev) return;
+      document.getElementById('deviceModalTitle').textContent = '✏️ Editar Dispositivo MAC';
+      document.getElementById('devModalMac').value = dev.mac;
+      document.getElementById('devModalMac').disabled = true;
+      document.getElementById('devModalClient').value = dev.client || '';
+      document.getElementById('devModalModel').value = dev.model || '';
+      document.getElementById('devModalStatus').value = (dev.status || 'ACTIVO').toUpperCase();
+      document.getElementById('devModalNotes').value = dev.notes || '';
+      document.getElementById('deviceModal').style.display = 'flex';
+    }
+
+    function closeDeviceModal() {
+      document.getElementById('deviceModal').style.display = 'none';
+    }
+
+    function submitSaveDevice() {
+      const mac = document.getElementById('devModalMac').value.trim().toUpperCase();
+      if (!mac) {
+        showToast('Debes ingresar la dirección MAC', true);
+        return;
+      }
+      const client = document.getElementById('devModalClient').value.trim();
+      const model = document.getElementById('devModalModel').value.trim();
+      const status = document.getElementById('devModalStatus').value;
+      const notes = document.getElementById('devModalNotes').value.trim();
+
+      showToast('Guardando dispositivo...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('Dispositivo ' + mac + ' guardado exitosamente');
+            closeDeviceModal();
+            loadDevices();
+          } else {
+            showToast(res ? res.error : 'Error al guardar dispositivo', true);
+          }
+        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+
+        if (typeof handler.saveMac === 'function') {
+          handler.saveMac(savedPwd, { mac, client, model, status, notes });
+        } else if (typeof handler.saveOrUpdateMac === 'function') {
+          handler.saveOrUpdateMac(savedPwd, { mac, client, model, status, notes });
+        }
+      } catch (e) {
+        console.warn('Error submitSaveDevice:', e);
+      }
+    }
+
+    function confirmDeleteDevice(mac) {
+      if (!confirm('¿Estás seguro de que deseas eliminar definitivamente el dispositivo con MAC ' + mac + '?')) {
+        return;
+      }
+      showToast('Eliminando dispositivo...');
+      const gas = getGas();
+      if (!gas) return;
+
+      try {
+        const handler = gas.withSuccessHandler(res => {
+          if (res && res.success) {
+            showToast('Dispositivo ' + mac + ' eliminado.');
+            loadDevices();
+          } else {
+            showToast(res ? res.error : 'Error al eliminar', true);
+          }
+        }).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
+
+        if (typeof handler.deleteMac === 'function') {
+          handler.deleteMac(savedPwd, mac);
+        } else if (typeof handler.deleteMacDevice === 'function') {
+          handler.deleteMacDevice(savedPwd, mac);
+        }
+      } catch (e) {
+        console.warn('Error confirmDeleteDevice:', e);
+      }
+    }
+
+    // Explicit global bindings for iframe sandboxes
+    window.handleLogin = handleLogin;
+    window.handlePwdKey = handlePwdKey;
+    window.togglePwdVisibility = togglePwdVisibility;
+    window.openRecoveryModal = openRecoveryModal;
+    window.closeRecoveryModal = closeRecoveryModal;
+    window.enterGuestMode = enterGuestMode;
+    window.exitGuestMode = exitGuestMode;
+    window.handleRequestOtp = handleRequestOtp;
+    window.handleVerifyOtp = handleVerifyOtp;
+    window.handleResetPassword = handleResetPassword;
+    window.loginWithRecovered = loginWithRecovered;
+    window.copyRevealedPassword = copyRevealedPassword;
+    window.triggerSync = triggerSync;
+    window.logout = logout;
+    window.setTab = setTab;
+    window.handleSortChange = handleSortChange;
+    window.handleSearch = handleSearch;
+    window.clearSearch = clearSearch;
+    window.copyCode = copyCode;
+    window.copyWhatsApp = copyWhatsApp;
+    window.openQr = openQr;
+    window.closeQrModal = closeQrModal;
+    window.generateCode = generateCode;
+    window.deletePermanent = deletePermanent;
+    window.restoreSingleApk = restoreSingleApk;
+    window.confirmRestoreAll = confirmRestoreAll;
+    window.confirmEmptyTrash = confirmEmptyTrash;
+    window.updateEmptyTrashBtn = updateEmptyTrashBtn;
+    window.handleIntervalChange = handleIntervalChange;
+    window.saveApkDesc = saveApkDesc;
+    window.regenAdminAiDesc = regenAdminAiDesc;
+    window.waSelectAll = waSelectAll;
+    window.waDeselectAll = waDeselectAll;
+    window.toggleWaSelection = toggleWaSelection;
+    window.updateWaDesc = updateWaDesc;
+    window.regenAiDesc = regenAiDesc;
+    window.renderWhatsAppPreview = renderWhatsAppPreview;
+    window.copyFullWaMessage = copyFullWaMessage;
+    window.openWhatsAppChat = openWhatsAppChat;
+    window.loadDevices = loadDevices;
+    window.renderDevices = renderDevices;
+    window.toggleDeviceStatus = toggleDeviceStatus;
+    window.openNewDeviceModal = openNewDeviceModal;
+    window.openEditDeviceModal = openEditDeviceModal;
+    window.closeDeviceModal = closeDeviceModal;
+    window.submitSaveDevice = submitSaveDevice;
+    window.confirmDeleteDevice = confirmDeleteDevice;
+    window.selectAdminCategory = selectAdminCategory;
+    window.renderAdminCategoryChips = renderAdminCategoryChips;
+    window.copyToClipboard = copyToClipboard;
+  </script>
+</body>
+</html>
