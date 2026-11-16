@@ -20,10 +20,10 @@ const CONFIG = {
   SHEET_NAME: 'Control APKs y Códigos Browsy',
   APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
   GEMINI_API_KEY: '',
-  TV_APP_VERSION: '1.3.0',
-  TV_APP_VERSION_CODE: 4,
-  TV_APP_DOWNLOAD_URL: 'https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk',
-  TV_APP_CHANGELOG: 'Corrección de selección y foco en categorías y tarjetas, motor dual OTA y activación por MAC.'
+  TV_APP_VERSION: '1.3.1',
+  TV_APP_VERSION_CODE: 5,
+  TV_APP_DOWNLOAD_URL: 'https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.1/ARIDAMOTEC_TV_1.3.1.apk',
+  TV_APP_CHANGELOG: 'Logos adaptativos en alta resolución, Leanback 16:9, reasignación de categorías en vivo, autor de APKs, descargo legal y foco D-Pad optimizado.'
 };
 
 const SEED_APKS = [
