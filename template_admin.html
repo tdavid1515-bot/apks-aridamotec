@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ARIDAMOTEC | Panel de Administración</title>
-  <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,{{LOGO_B64}}">
+  <link rel="icon" type="image/png" href="data:image/png;base64,{{LOGO_B64}}">
   <style>
     :root {
       --bg-dark: #05070e;
@@ -379,10 +379,10 @@
       margin: 0 auto;
       padding: 10px 24px 14px;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: flex-start;
-      gap: 12px 18px;
+      gap: 16px;
       position: relative;
     }
     .tabs-group {
@@ -394,9 +394,10 @@
 
     .search-box {
       position: relative;
-      flex: 1 1 260px;
-      min-width: 200px;
-      max-width: 380px;
+      flex: 0 0 320px;
+      width: 320px;
+      min-width: 240px;
+      max-width: 320px;
     }
     body.guest-mode .search-box {
       flex: 1 1 540px;
@@ -2044,7 +2045,7 @@
   <!-- ================= LOGIN SCREEN ================= -->
   <div id="loginScreen" class="login-overlay">
     <div class="login-card">
-      <img src="data:image/jpeg;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="login-logo">
+      <img src="data:image/png;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="login-logo">
       <div class="login-badge">
         <span>⚡</span> GESTOR DE APKS & BROWSY
       </div>
@@ -2136,7 +2137,7 @@
     <!-- Header Superior -->
     <div class="header-top">
       <div class="brand-group">
-        <img src="data:image/jpeg;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="brand-logo-img">
+        <img src="data:image/png;base64,{{LOGO_B64}}" alt="ARIDAMOTEC" class="brand-logo-img">
         <div class="brand-info">
           <div class="brand-badge-row">
             <span id="brandBadge" class="badge-247">● 24/7 NUBE</span>
@@ -2174,9 +2175,6 @@
         <button onclick="setTab('whatsapp')" id="tabWaBtn" class="tab-button">
           💬 Creador WhatsApp <span id="countWaSelected" class="tab-pill">0</span>
         </button>
-        <button onclick="setTab('deleted')" id="tabDeletedBtn" class="tab-button">
-          🗑️ Papelera <span id="countDeleted" class="tab-pill">0</span>
-        </button>
       </div>
 
       <div class="sort-row">
@@ -2205,15 +2203,9 @@
       <div class="banner-status">
         <div class="admin-live-status">
           <span class="admin-live-dot">●</span>
-          <span class="admin-live-text">Sincronizado con GitHub</span>
+          <span class="admin-live-text">Sincronizado con GitHub Releases (SSOT)</span>
         </div>
         <div class="banner-status-right">
-          <button id="restoreAllBtn" class="btn-restore-all" onclick="confirmRestoreAll()" style="display:none;" title="Restaurar todas las aplicaciones al catálogo">
-            ♻️ Restaurar Todas (<span id="restoreAllCount">0</span>)
-          </button>
-          <button id="emptyTrashBtn" class="btn-empty-trash" onclick="confirmEmptyTrash()" style="display:none;" title="Eliminar definitivamente todas las aplicaciones de la papelera">
-            🗑️ Vaciar Papelera (<span id="emptyTrashCount">0</span>)
-          </button>
           <div id="statusInfo">Cargando catálogo...</div>
         </div>
       </div>
@@ -2655,8 +2647,19 @@
             try {
               savedPwd = pwd;
               safeStorage.setItem('arida_pwd', pwd);
-              renderApp(res);
               document.getElementById('loginScreen').style.display = 'none';
+
+              // Intentar renderizar de inmediato desde catalog.json (SSOT)
+              fetch('catalog.json?t=' + Date.now())
+                .then(r => r.json())
+                .then(cData => {
+                  if (cData && Array.isArray(cData.catalog)) {
+                    renderApp({ active: cData.catalog, deleted: [], total: cData.catalog.length });
+                  } else {
+                    renderApp(res);
+                  }
+                })
+                .catch(() => renderApp(res));
             } catch (renderErr) {
               console.error('Error renderApp:', renderErr);
               err.style.display = 'block';
@@ -2686,33 +2689,45 @@
 
     function loadApks(silent = false) {
       if (!silent) {
-        document.getElementById('statusInfo').textContent = 'Consultando aplicaciones...';
+        document.getElementById('statusInfo').textContent = 'Consultando aplicaciones (SSOT)...';
       }
-      const gas = getGas();
-      if (!gas || !savedPwd) return;
-      gas.withSuccessHandler(res => {
-          if (res && res.success) {
+      // 1. Intento primario ultra-rápido directo a catalog.json en GitHub Pages CDN
+      fetch('catalog.json?t=' + Date.now())
+        .then(r => {
+          if (!r.ok) throw new Error('CDN status ' + r.status);
+          return r.json();
+        })
+        .then(res => {
+          if (res && (res.success || Array.isArray(res.catalog))) {
             const isEditing = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT');
             if (silent && isEditing) {
-              apksData = {
-                active: (res.active || []).map(normalizeApkItem),
-                deleted: (res.deleted || []).map(normalizeApkItem)
-              };
+              apksData.active = (res.catalog || []).map(normalizeApkItem);
               const cAct = document.getElementById('countActive');
               if (cAct) cAct.textContent = apksData.active.length;
-              const cDel = document.getElementById('countDeleted');
-              if (cDel) cDel.textContent = apksData.deleted.length;
               return;
             }
             renderApp(res);
-          } else if (!silent) {
-            showToast(res ? res.error : 'Error al cargar', true);
+            if (!silent) showToast('Catálogo sincronizado con GitHub (' + (res.catalog || []).length + ' apps)');
+          } else {
+            throw new Error('Respuesta inválida');
           }
         })
-        .withFailureHandler(e => {
-          if (!silent) showToast('Error: ' + (e.message || e), true);
-        })
-        .getApksList(savedPwd);
+        .catch(cdnErr => {
+          console.warn('CDN fetch failed en admin, consultando GAS:', cdnErr);
+          const gas = getGas();
+          if (!gas || !savedPwd) return;
+          gas.withSuccessHandler(res => {
+              if (res && res.success) {
+                renderApp(res);
+              } else if (!silent) {
+                showToast(res ? res.error : 'Error al cargar', true);
+              }
+            })
+            .withFailureHandler(e => {
+              if (!silent) showToast('Error: ' + (e.message || e), true);
+            })
+            .getApksList(savedPwd);
+        });
     }
 
     
@@ -2765,21 +2780,19 @@
       document.body.classList.remove('guest-mode');
       stopGuestAutoRefresh();
 
-      if (!res) res = { active: [], deleted: [], total: 0 };
+      if (!res) res = { active: [], total: 0 };
+      const rawActive = Array.isArray(res.catalog) ? res.catalog : (res.active || []);
       apksData = {
-        active: (res.active || []).map(normalizeApkItem),
-        deleted: (res.deleted || []).map(normalizeApkItem)
+        active: rawActive.map(normalizeApkItem),
+        deleted: []
       };
 
       const cAct = document.getElementById('countActive');
       if (cAct) cAct.textContent = apksData.active.length;
-      const cDel = document.getElementById('countDeleted');
-      if (cDel) cDel.textContent = apksData.deleted.length;
       const sInfo = document.getElementById('statusInfo');
-      if (sInfo) sInfo.textContent = 'Total: ' + (res.total || (apksData.active.length + apksData.deleted.length)) + ' aplicaciones registradas';
+      if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (GitHub Releases)';
 
       initWaData();
-      updateEmptyTrashBtn();
       renderAdminCategoryChips();
       try { loadDevices(); } catch (e) {}
 
@@ -2891,7 +2904,6 @@
       const bAct = document.getElementById('tabActiveBtn');
       const bDev = document.getElementById('tabDevicesBtn');
       const bWa = document.getElementById('tabWaBtn');
-      const bDel = document.getElementById('tabDeletedBtn');
       const catSec = document.getElementById('catalogSection');
       const devSec = document.getElementById('devicesSection');
       const waSec = document.getElementById('waSection');
@@ -2901,7 +2913,6 @@
       if (bAct) bAct.className = 'tab-button';
       if (bDev) bDev.className = 'tab-button';
       if (bWa) bWa.className = 'tab-button';
-      if (bDel) bDel.className = 'tab-button';
 
       if (tab === 'active') {
         if (bAct) bAct.className = 'tab-button active';
@@ -2910,7 +2921,6 @@
         if (waSec) waSec.style.display = 'none';
         if (sortRow) { sortRow.style.visibility = 'visible'; sortRow.style.pointerEvents = 'auto'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'flex';
-        updateEmptyTrashBtn();
         renderAdminCategoryChips();
         drawCards();
       } else if (tab === 'devices') {
@@ -2928,7 +2938,6 @@
         if (waSec) waSec.style.display = 'block';
         if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'none';
-        updateEmptyTrashBtn();
 
         // Anclar barra de WhatsApp exactamente bajo el header sticky
         function updateWaSticky() {
@@ -2950,15 +2959,6 @@
 
         initWaData();
         drawWaList();
-      } else if (tab === 'deleted') {
-        if (bDel) bDel.className = 'tab-button active-del';
-        if (catSec) catSec.style.display = 'block';
-        if (devSec) devSec.style.display = 'none';
-        if (waSec) waSec.style.display = 'none';
-        if (sortRow) sortRow.style.display = 'inline-flex';
-        if (catBar) catBar.style.display = 'none';
-        updateEmptyTrashBtn();
-        drawCards();
       }
     }
 
@@ -3103,7 +3103,6 @@
       emptyMsg.style.display = 'none';
 
       filtered.forEach(it => {
-        const isDel = activeTab === 'deleted';
         const codeStr = (it.browsyCode !== undefined && it.browsyCode !== null) ? String(it.browsyCode).trim() : '';
         const hasCode = codeStr !== '';
         const cleanName = String(it.cleanName || '');
@@ -3117,7 +3116,7 @@
             <div class="card-head">
               <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-                <span class="badge-status ${isDel ? 'badge-del' : 'badge-act'}">${isDel ? 'Eliminado' : 'Activo'}</span>
+                <span class="badge-status badge-act">Activo</span>
                 <select class="admin-cat-select" onchange="changeApkCategory('${escapeJs(it.driveFileId)}', this.value, event)" title="Reasignar categoría">
                   <option value="📺 TV en Vivo" ${(it.category === '📺 TV en Vivo') ? 'selected' : ''}>📺 TV en Vivo</option>
                   <option value="⚽ Deportes" ${(it.category === '⚽ Deportes') ? 'selected' : ''}>⚽ Deportes</option>
@@ -3180,15 +3179,6 @@
               <a class="btn-sub-action" href="${it.directDownloadUrl || '#'}" target="_blank" rel="noopener noreferrer">
                 📥 Descarga
               </a>
-
-              ${isDel ? `
-                <button class="btn-sub-action btn-restore" onclick="restoreSingleApk('${it.driveFileId}', '${escapeJs(cleanName)}')">
-                  ♻️ Restaurar
-                </button>
-                <button class="btn-sub-action btn-del-danger" onclick="deletePermanent('${it.driveFileId}', '${escapeJs(cleanName)}')">
-                  🗑️ Borrar
-                </button>
-              ` : ''}
             </div>
           </div>
         `;
