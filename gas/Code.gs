@@ -41,7 +41,8 @@ const SEED_APKS = [
     "sizeFormatted": "31.5 MB",
     "createdAt": "2026-11-16T04:58:59Z",
     "updatedAt": "2026-11-16T04:59:06Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/2943"
   },
   {
     "id": "ATV.LAUNCHER.v0.1.42-pro.apk",
@@ -50,14 +51,17 @@ const SEED_APKS = [
     "category": "🛠️ Utilitarios",
     "author": "DStudio / ATV",
     "aiDescription": "Con esta aplicación podrás personalizar la interfaz de tu Android TV con un inicio rápido, limpio y sin publicidad.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "7346",
+    "browsyShortUrl": "https://browsy.app/7346",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ATV.LAUNCHER.v0.1.42-pro.apk",
     "size": 8982550,
     "sizeFormatted": "8.6 MB",
     "createdAt": "2026-11-16T04:52:13Z",
     "updatedAt": "2026-11-16T04:52:23Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7346",
+    "editKey": "rCPb9e6uMhHP",
+    "manageUrl": "https://browsy.app/manage?code=7346&key=rCPb9e6uMhHP"
   },
   {
     "id": "BIXPLUS_V2.apk",
@@ -66,14 +70,17 @@ const SEED_APKS = [
     "category": "📺 TV en Vivo",
     "author": "BixPlus Stream",
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, señales internacionales y entretenimiento continuo.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "4368",
+    "browsyShortUrl": "https://browsy.app/4368",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/BIXPLUS_V2.apk",
     "size": 30296295,
     "sizeFormatted": "28.9 MB",
     "createdAt": "2026-11-16T05:16:13Z",
     "updatedAt": "2026-11-16T05:16:21Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/4368",
+    "editKey": "86qKjauK6FAB",
+    "manageUrl": "https://browsy.app/manage?code=4368&key=86qKjauK6FAB"
   },
   {
     "id": "Browsy_1.5.0_APKPure.xapk",
@@ -89,7 +96,8 @@ const SEED_APKS = [
     "sizeFormatted": "4.5 MB",
     "createdAt": "2026-11-13T23:53:30Z",
     "updatedAt": "2026-11-13T23:53:32Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/2461"
   },
   {
     "id": "ClipBox.apk",
@@ -105,7 +113,8 @@ const SEED_APKS = [
     "sizeFormatted": "33.5 MB",
     "createdAt": "2026-11-13T23:53:32Z",
     "updatedAt": "2026-11-13T23:53:41Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9594"
   },
   {
     "id": "com.wireguard.android-1.0.20260315.apk",
@@ -121,7 +130,8 @@ const SEED_APKS = [
     "sizeFormatted": "16.2 MB",
     "createdAt": "2026-11-13T23:55:51Z",
     "updatedAt": "2026-11-13T23:56:02Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9813"
   },
   {
     "id": "CricZ.TV.v7.3.apk",
@@ -137,7 +147,8 @@ const SEED_APKS = [
     "sizeFormatted": "12.2 MB",
     "createdAt": "2026-11-13T23:53:41Z",
     "updatedAt": "2026-11-13T23:53:45Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9985"
   },
   {
     "id": "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
@@ -153,7 +164,8 @@ const SEED_APKS = [
     "sizeFormatted": "5.7 MB",
     "createdAt": "2026-11-13T23:53:45Z",
     "updatedAt": "2026-11-13T23:53:47Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/3959"
   },
   {
     "id": "FlyStream.apk",
@@ -162,14 +174,17 @@ const SEED_APKS = [
     "category": "📺 TV en Vivo",
     "author": "FlyStream Media",
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, señales internacionales y entretenimiento continuo.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "5866",
+    "browsyShortUrl": "https://browsy.app/5866",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/FlyStream.apk",
     "size": 8577095,
     "sizeFormatted": "8.2 MB",
     "createdAt": "2026-11-16T05:04:25Z",
     "updatedAt": "2026-11-16T05:04:28Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/5866",
+    "editKey": "rCdbKULSZE58",
+    "manageUrl": "https://browsy.app/manage?code=5866&key=rCdbKULSZE58"
   },
   {
     "id": "GeeSports_.v3.9.apk",
@@ -185,7 +200,8 @@ const SEED_APKS = [
     "sizeFormatted": "13.8 MB",
     "createdAt": "2026-11-16T04:54:53Z",
     "updatedAt": "2026-11-16T04:54:56Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/4584"
   },
   {
     "id": "LokuraTv.apk",
@@ -201,7 +217,8 @@ const SEED_APKS = [
     "sizeFormatted": "75.9 MB",
     "createdAt": "2026-11-13T23:54:06Z",
     "updatedAt": "2026-11-13T23:54:59Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7827"
   },
   {
     "id": "LokuraTv_Pro_Ultra.apk",
@@ -217,7 +234,8 @@ const SEED_APKS = [
     "sizeFormatted": "45.7 MB",
     "createdAt": "2026-11-13T23:54:59Z",
     "updatedAt": "2026-11-13T23:55:18Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7827"
   },
   {
     "id": "luma-tv.apk",
@@ -233,7 +251,8 @@ const SEED_APKS = [
     "sizeFormatted": "6.7 MB",
     "createdAt": "2026-11-13T23:55:18Z",
     "updatedAt": "2026-11-13T23:55:23Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/2360"
   },
   {
     "id": "MXL.IPTV.apk",
@@ -242,14 +261,17 @@ const SEED_APKS = [
     "category": "📺 TV en Vivo",
     "author": "MXL Tech",
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, señales internacionales y entretenimiento continuo.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "8524",
+    "browsyShortUrl": "https://browsy.app/8524",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.IPTV.apk",
     "size": 37363644,
     "sizeFormatted": "35.6 MB",
     "createdAt": "2026-11-16T04:58:42Z",
     "updatedAt": "2026-11-16T04:58:51Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/8524",
+    "editKey": "ydBgN8fDqPmY",
+    "manageUrl": "https://browsy.app/manage?code=8524&key=ydBgN8fDqPmY"
   },
   {
     "id": "MXL.MOVIES.apk",
@@ -258,14 +280,17 @@ const SEED_APKS = [
     "category": "🎬 Películas y Series",
     "author": "MXL Tech",
     "aiDescription": "Con esta aplicación podrás acceder a un completo catálogo de cine, estrenos exclusivos y temporadas de series.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "4225",
+    "browsyShortUrl": "https://browsy.app/4225",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.MOVIES.apk",
     "size": 40372693,
     "sizeFormatted": "38.5 MB",
     "createdAt": "2026-11-16T04:58:51Z",
     "updatedAt": "2026-11-16T04:58:59Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/4225",
+    "editKey": "awGbdN5hBKGb",
+    "manageUrl": "https://browsy.app/manage?code=4225&key=awGbdN5hBKGb"
   },
   {
     "id": "PLayer_Pro_base.2.apk",
@@ -281,7 +306,8 @@ const SEED_APKS = [
     "sizeFormatted": "33.5 MB",
     "createdAt": "2026-11-13T23:57:18Z",
     "updatedAt": "2026-11-13T23:57:26Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/2270"
   },
   {
     "id": "PlayTV_Premium_20.1.apk",
@@ -297,7 +323,8 @@ const SEED_APKS = [
     "sizeFormatted": "11.6 MB",
     "createdAt": "2026-11-13T23:57:26Z",
     "updatedAt": "2026-11-13T23:57:42Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/3114"
   },
   {
     "id": "PROJJECTIVY.launcher.v4.72.Premium.apk",
@@ -313,7 +340,8 @@ const SEED_APKS = [
     "sizeFormatted": "12.2 MB",
     "createdAt": "2026-11-13T23:57:42Z",
     "updatedAt": "2026-11-13T23:57:53Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7624"
   },
   {
     "id": "RBTV.apk",
@@ -329,7 +357,8 @@ const SEED_APKS = [
     "sizeFormatted": "25.6 MB",
     "createdAt": "2026-11-13T23:57:53Z",
     "updatedAt": "2026-11-13T23:58:01Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7812"
   },
   {
     "id": "SPORTV_3.9.VIP.apk",
@@ -345,7 +374,8 @@ const SEED_APKS = [
     "sizeFormatted": "15.0 MB",
     "createdAt": "2026-11-13T23:58:01Z",
     "updatedAt": "2026-11-13T23:58:06Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/4065"
   },
   {
     "id": "Sportz.X.VERSION.3.2.apk",
@@ -361,7 +391,8 @@ const SEED_APKS = [
     "sizeFormatted": "20.0 MB",
     "createdAt": "2026-11-13T23:58:06Z",
     "updatedAt": "2026-11-13T23:58:15Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/5280"
   },
   {
     "id": "Surfshark.apk",
@@ -377,7 +408,8 @@ const SEED_APKS = [
     "sizeFormatted": "149.1 MB",
     "createdAt": "2026-11-13T23:58:15Z",
     "updatedAt": "2026-11-13T23:59:02Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/2915"
   },
   {
     "id": "TizenTube_v2.03_YouTube_arm.apk",
@@ -393,7 +425,8 @@ const SEED_APKS = [
     "sizeFormatted": "76.8 MB",
     "createdAt": "2026-11-16T04:51:31Z",
     "updatedAt": "2026-11-16T05:18:31Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9360"
   },
   {
     "id": "TizenTube_v2.03_YouTube_arm64.apk",
@@ -409,7 +442,8 @@ const SEED_APKS = [
     "sizeFormatted": "146.0 MB",
     "createdAt": "2026-11-16T04:50:38Z",
     "updatedAt": "2026-11-16T05:18:31Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9360"
   },
   {
     "id": "Tsuzuku.v4.1.4.Android.TV.apk",
@@ -418,14 +452,17 @@ const SEED_APKS = [
     "category": "🎬 Películas y Series",
     "author": "Tsuzuku Project",
     "aiDescription": "Con esta aplicación podrás disfrutar de estrenos de anime en máxima calidad, series completas y películas animadas.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "3893",
+    "browsyShortUrl": "https://browsy.app/3893",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk",
     "size": 11438058,
     "sizeFormatted": "10.9 MB",
     "createdAt": "2026-11-16T04:59:20Z",
     "updatedAt": "2026-11-16T04:59:23Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/3893",
+    "editKey": "U7NsoPTqYkfQ",
+    "manageUrl": "https://browsy.app/manage?code=3893&key=U7NsoPTqYkfQ"
   },
   {
     "id": "Watched.apk",
@@ -434,14 +471,17 @@ const SEED_APKS = [
     "category": "🎬 Películas y Series",
     "author": "Watched AG",
     "aiDescription": "Con esta aplicación podrás acceder a un completo catálogo de cine, estrenos exclusivos y temporadas de series.",
-    "browsyCode": "",
-    "browsyShortUrl": "",
+    "browsyCode": "6015",
+    "browsyShortUrl": "https://browsy.app/6015",
     "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Watched.apk",
     "size": 3163906,
     "sizeFormatted": "3.0 MB",
     "createdAt": "2026-11-16T05:04:23Z",
     "updatedAt": "2026-11-16T05:04:25Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/6015",
+    "editKey": "z6HQ2KCpjNZR",
+    "manageUrl": "https://browsy.app/manage?code=6015&key=z6HQ2KCpjNZR"
   },
   {
     "id": "WiwyXuper.apk",
@@ -457,7 +497,8 @@ const SEED_APKS = [
     "sizeFormatted": "39.5 MB",
     "createdAt": "2026-11-14T00:00:55Z",
     "updatedAt": "2026-11-14T00:01:51Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9290"
   },
   {
     "id": "Wolf.Launcher.0.1.9.apk",
@@ -473,7 +514,8 @@ const SEED_APKS = [
     "sizeFormatted": "3.1 MB",
     "createdAt": "2026-11-14T00:02:53Z",
     "updatedAt": "2026-11-14T00:02:55Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7242"
   },
   {
     "id": "XTREMETV.apk",
@@ -489,7 +531,8 @@ const SEED_APKS = [
     "sizeFormatted": "5.5 MB",
     "createdAt": "2026-11-16T05:11:11Z",
     "updatedAt": "2026-11-16T05:11:17Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/6603"
   },
   {
     "id": "XUPER.TV.v4.99.20.Android.TV.Original.apk",
@@ -505,7 +548,8 @@ const SEED_APKS = [
     "sizeFormatted": "34.1 MB",
     "createdAt": "2026-11-14T00:03:53Z",
     "updatedAt": "2026-11-16T05:18:31Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/9249"
   },
   {
     "id": "XuperTv-NF-v4.35.1-ModByNF.apk",
@@ -521,7 +565,8 @@ const SEED_APKS = [
     "sizeFormatted": "49.0 MB",
     "createdAt": "2026-11-14T12:53:29Z",
     "updatedAt": "2026-11-14T12:56:25Z",
-    "status": "active"
+    "status": "active",
+    "shortUrl": "https://browsy.app/7522"
   }
 ];
 
