@@ -1145,11 +1145,28 @@
         if (icon) icon.style.animation = 'spin 1s infinite linear';
       }
 
-      // 1. Intento primario ultra-rápido directo a catalog.json en CDN GitHub Pages con bypass de caché
-      fetch('catalog.json?t=' + Date.now(), { cache: 'no-store' })
-        .then(r => {
-          if (!r.ok) throw new Error('CDN response: ' + r.status);
-          return r.json();
+      // 1. Intento primario a Google Apps Script (Contiene las descripciones y categorías en vivo de Google Sheets)
+      const fetchGAS = () => {
+        return fetch(GAS_URL + '?action=guest&_t=' + Date.now())
+          .then(r => {
+            if (!r.ok) throw new Error('GAS status: ' + r.status);
+            return r.json();
+          });
+      };
+
+      // 2. Respaldo ultra-rápido a catalog.json en CDN GitHub Pages
+      const fetchCDN = () => {
+        return fetch('catalog.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(r => {
+            if (!r.ok) throw new Error('CDN response: ' + r.status);
+            return r.json();
+          });
+      };
+
+      fetchGAS()
+        .catch(errGas => {
+          console.warn('Consulta directa GAS falló, consultando CDN de respaldo:', errGas);
+          return fetchCDN();
         })
         .then(res => {
           const icon = document.getElementById('refreshIcon');
@@ -1163,35 +1180,15 @@
             drawCards();
             if (isManual) showToast('¡Catálogo sincronizado exitosamente (' + catalogData.length + ' apps)!');
           } else {
-            throw new Error('Respuesta CDN inválida');
+            throw new Error('Respuesta inválida');
           }
         })
-        .catch(cdnErr => {
-          console.warn('Consulta directa CDN falló, consultando endpoint GAS de respaldo:', cdnErr);
-          // 2. Respaldo seguro a GAS
-          fetch(GAS_URL + '?action=guest')
-            .then(r => r.json())
-            .then(res => {
-              const icon = document.getElementById('refreshIcon');
-              if (icon) icon.style.animation = '';
-
-              if (res && res.success) {
-                catalogData = res.catalog || [];
-                document.getElementById('statusInfo').textContent = 'Catálogo actualizado';
-                document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
-                renderCategoryChips();
-                drawCards();
-                if (isManual) showToast('¡Catálogo sincronizado exitosamente!');
-              } else {
-                document.getElementById('statusInfo').textContent = 'Error al cargar catálogo';
-              }
-            })
-            .catch(err => {
-              const icon = document.getElementById('refreshIcon');
-              if (icon) icon.style.animation = '';
-              console.error('Error fetching catalog:', err);
-              document.getElementById('statusInfo').textContent = 'Error de conexión';
-            });
+        .catch(err => {
+          const icon = document.getElementById('refreshIcon');
+          if (icon) icon.style.animation = '';
+          console.error('Error fetching catalog:', err);
+          document.getElementById('statusInfo').textContent = 'Error de conexión';
+          if (isManual) showToast('Error al conectar con los servidores', true);
         });
     }
 
@@ -1202,9 +1199,10 @@
     function startSilentRefresh() {
       if (silentRefreshTimer) clearInterval(silentRefreshTimer);
       silentRefreshTimer = setInterval(() => {
-        fetch('catalog.json?t=' + Date.now())
+        fetch(GAS_URL + '?action=guest&_t=' + Date.now())
+          .catch(() => fetch('catalog.json?t=' + Date.now()))
           .then(r => {
-            if (!r.ok) throw new Error('CDN status ' + r.status);
+            if (!r.ok) throw new Error('Status ' + r.status);
             return r.json();
           })
           .then(res => {
@@ -1219,23 +1217,7 @@
               }
             }
           })
-          .catch(() => {
-            fetch(GAS_URL + '?action=guest')
-              .then(r => r.json())
-              .then(res => {
-                if (res && res.success) {
-                  const fresh = res.catalog || [];
-                  if (getCatalogSignature(fresh) !== getCatalogSignature(catalogData)) {
-                    catalogData = fresh;
-                    document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
-                    renderCategoryChips();
-                    drawCards();
-                    showToast('Catálogo actualizado automáticamente');
-                  }
-                }
-              })
-              .catch(() => {});
-          });
+          .catch(() => {});
       }, 45000);
     }
 

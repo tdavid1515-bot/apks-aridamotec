@@ -240,6 +240,36 @@ async function runSync() {
     }
   }
 
+  // Enriquecer catálogo con las descripciones y categorías personalizadas de Google Sheets
+  try {
+    const gasGuestUrl = 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec?action=guest';
+    const gasRes = await fetch(gasGuestUrl, { headers: { 'User-Agent': 'ARIDAMOTEC-Sync-Engine' } });
+    if (gasRes.ok) {
+      const gasJson = await gasRes.json();
+      if (gasJson && Array.isArray(gasJson.catalog)) {
+        const gasMap = new Map();
+        gasJson.catalog.forEach(g => {
+          if (g.fileName) gasMap.set(g.fileName.toLowerCase(), g);
+          if (g.id) gasMap.set(String(g.id), g);
+        });
+        for (const item of updatedCatalog) {
+          const matched = (item.fileName && gasMap.get(item.fileName.toLowerCase())) || gasMap.get(String(item.id));
+          if (matched) {
+            if (matched.aiDescription && matched.aiDescription.trim()) {
+              item.aiDescription = matched.aiDescription.trim();
+            }
+            if (matched.category && matched.category.trim()) {
+              item.category = matched.category.trim();
+            }
+          }
+        }
+        console.log('📑 Metadatos y descripciones de Google Sheets fusionados exitosamente en catalog.json.');
+      }
+    }
+  } catch (errGas) {
+    console.warn('Aviso: No se pudo consultar Google Sheets para enriquecer descripciones:', errGas.message);
+  }
+
   // Guardar catálogo unificado
   const finalJson = {
     success: true,

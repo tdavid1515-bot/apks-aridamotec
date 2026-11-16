@@ -2720,46 +2720,55 @@
       document.getElementById('loginScreen').style.display = 'flex';
     }
 
+    const localSavedDescriptions = {};
+    const localSavedCategories = {};
+
     function loadApks(silent = false) {
       if (!silent) {
         document.getElementById('statusInfo').textContent = 'Consultando aplicaciones (SSOT)...';
       }
-      // 1. Intento primario ultra-rápido directo a catalog.json en GitHub Pages CDN
-      fetch('catalog.json?t=' + Date.now())
-        .then(r => {
-          if (!r.ok) throw new Error('CDN status ' + r.status);
-          return r.json();
+      // 1. Intento primario directo a Google Apps Script (Contiene las descripciones y categorías en vivo de Google Sheets)
+      const fetchGAS = () => {
+        return fetch(GAS_URL + '?action=apks&pwd=' + encodeURIComponent(savedPwd) + '&_t=' + Date.now())
+          .then(r => {
+            if (!r.ok) throw new Error('GAS status ' + r.status);
+            return r.json();
+          });
+      };
+
+      // 2. Respaldo a GitHub Pages CDN
+      const fetchCDN = () => {
+        return fetch('catalog.json?t=' + Date.now())
+          .then(r => {
+            if (!r.ok) throw new Error('CDN status ' + r.status);
+            return r.json();
+          });
+      };
+
+      fetchGAS()
+        .catch(errGas => {
+          console.warn('Fallo consultando GAS en admin, intentando CDN de respaldo:', errGas);
+          return fetchCDN();
         })
         .then(res => {
           if (res && (res.success || Array.isArray(res.catalog))) {
             const isEditing = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT');
             if (silent && isEditing) {
-              apksData.active = (res.catalog || []).map(normalizeApkItem);
+              const rawActive = Array.isArray(res.catalog) ? res.catalog : (res.active || []);
+              apksData.active = rawActive.map(normalizeApkItem);
               const cAct = document.getElementById('countActive');
               if (cAct) cAct.textContent = apksData.active.length;
               return;
             }
             renderApp(res);
-            if (!silent) showToast('Catálogo sincronizado con GitHub (' + (res.catalog || []).length + ' apps)');
+            if (!silent) showToast('Catálogo sincronizado (' + (res.catalog || res.active || []).length + ' apps)');
           } else {
             throw new Error('Respuesta inválida');
           }
         })
-        .catch(cdnErr => {
-          console.warn('CDN fetch failed en admin, consultando GAS:', cdnErr);
-          const gas = getGas();
-          if (!gas || !savedPwd) return;
-          gas.withSuccessHandler(res => {
-              if (res && res.success) {
-                renderApp(res);
-              } else if (!silent) {
-                showToast(res ? res.error : 'Error al cargar', true);
-              }
-            })
-            .withFailureHandler(e => {
-              if (!silent) showToast('Error: ' + (e.message || e), true);
-            })
-            .getApksList(savedPwd);
+        .catch(errAll => {
+          console.error('Error total cargando aplicaciones:', errAll);
+          if (!silent) showToast('Error de conexión al cargar catálogo', true);
         });
     }
 
@@ -2795,8 +2804,16 @@
       if (!item) return {};
       const cleanName = String(item.cleanName || '');
       const fileName = String(item.fileName || '');
-      const desc = String(item.aiDescription || '');
+      let desc = String(item.aiDescription || '');
       const assignedId = String(item.id || item.driveFileId || item.fileName || '');
+      let cat = item.category || classifyCategory(cleanName, fileName, desc);
+
+      const localDesc = localSavedDescriptions[assignedId] || (fileName && localSavedDescriptions[fileName.toLowerCase()]);
+      if (localDesc) desc = localDesc;
+
+      const localCat = localSavedCategories[assignedId] || (fileName && localSavedCategories[fileName.toLowerCase()]);
+      if (localCat) cat = localCat;
+
       return {
         ...item,
         id: assignedId,
@@ -2807,7 +2824,7 @@
         browsyShortUrl: String(item.browsyShortUrl || ''),
         directDownloadUrl: String(item.directDownloadUrl || ''),
         aiDescription: desc,
-        category: item.category || classifyCategory(cleanName, fileName, desc),
+        category: cat,
         author: item.author || detectAuthor(cleanName, fileName),
         createdAt: item.createdAt || ''
       };
@@ -3047,12 +3064,21 @@
       const targetItem = allItems.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
       const fileName = targetItem ? targetItem.fileName : '';
 
+      localSavedDescriptions[fileId] = newDesc;
+      if (fileName) localSavedDescriptions[fileName.toLowerCase()] = newDesc;
+      if (targetItem) targetItem.aiDescription = newDesc;
+      if (typeof waDescriptions !== 'undefined') {
+        waDescriptions[fileId] = newDesc;
+      }
+
       const updateLocal = (list) => {
         const found = list.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
         if (found) found.category = newCategory;
       };
       updateLocal(apksData.active);
       updateLocal(apksData.deleted);
+      localSavedCategories[fileId] = newCategory;
+      if (fileName) localSavedCategories[fileName.toLowerCase()] = newCategory;
 
       const onComplete = (res) => {
         if (selectElem) selectElem.disabled = false;
@@ -3294,6 +3320,13 @@
       const allItems = [...(apksData.active || []), ...(apksData.deleted || [])];
       const targetItem = allItems.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
       const fileName = targetItem ? targetItem.fileName : '';
+
+      localSavedDescriptions[fileId] = newDesc;
+      if (fileName) localSavedDescriptions[fileName.toLowerCase()] = newDesc;
+      if (targetItem) targetItem.aiDescription = newDesc;
+      if (typeof waDescriptions !== 'undefined') {
+        waDescriptions[fileId] = newDesc;
+      }
 
       if (statusEl) {
         statusEl.textContent = 'Guardando...';
