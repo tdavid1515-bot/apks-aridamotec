@@ -381,9 +381,15 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 12px 18px;
       position: relative;
+    }
+    .tabs-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .search-box {
@@ -758,6 +764,74 @@
       width: auto;
       flex-shrink: 0;
       margin-left: auto;
+      min-width: 200px;
+      justify-content: flex-end;
+    }
+    .admin-cat-select {
+      background: #0a1124;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      border-radius: 6px;
+      color: var(--accent-cyan);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 6px;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-cat-select:focus, .admin-cat-select:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+    }
+    .apk-sub-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 3px;
+      margin-bottom: 8px;
+    }
+    .apk-author-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 6px;
+      padding: 2px 7px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legal-disclaimer-footer {
+      max-width: 1400px;
+      margin: 40px auto 20px;
+      padding: 16px 20px;
+      background: rgba(10, 16, 30, 0.7);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .disclaimer-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .disclaimer-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .disclaimer-text {
+      margin: 0;
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+    .disclaimer-text strong {
+      color: #cbd5e1;
     }
     .sort-label {
       font-size: 11px;
@@ -2435,6 +2509,12 @@
         },
         deleteMacDevice(pwd, mac) {
           return this.deleteMac(pwd, mac);
+        },
+        updateCategory(pwd, fileId, category) {
+          this._call(GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(category));
+        },
+        deduplicate(pwd) {
+          this._call(GAS_URL + '?action=deduplicate&pwd=' + encodeURIComponent(pwd));
         }
       };
     }
@@ -2635,6 +2715,32 @@
         .getApksList(savedPwd);
     }
 
+    
+    function detectAuthor(cleanName, fileName) {
+      const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const combined = norm(cleanName) + ' ' + norm(fileName);
+      if (combined.includes('modbynf') || combined.includes('xuper')) return 'By NF / Aridamotec Mod';
+      if (combined.includes('wolf')) return 'Wolf Dev';
+      if (combined.includes('wireguard')) return 'WireGuard LLC';
+      if (combined.includes('weather')) return 'Weather XL Dev';
+      if (combined.includes('tizentube')) return 'TizenTube Project';
+      if (combined.includes('projjectivy')) return 'Spocky / Projectivy';
+      if (combined.includes('downloader')) return 'AFTVnews.com';
+      if (combined.includes('animxl')) return 'AnimXL Team';
+      if (combined.includes('clipbox')) return 'ClipBox Media';
+      if (combined.includes('mxl')) return 'MXL Tech';
+      if (combined.includes('sportv') || combined.includes('cricz')) return 'Sports Network Live';
+      if (combined.includes('surfshark')) return 'Surfshark B.V.';
+      if (combined.includes('wiwy')) return 'WiWy TV Corp';
+      if (combined.includes('zuper')) return 'Züper Tech';
+      if (combined.includes('playtv')) return 'PlayTV Stream';
+      if (combined.includes('xtremetv')) return 'Xtreme TV Mod';
+      if (combined.includes('luma')) return 'Luma TV';
+      if (combined.includes('magis')) return 'Magis Team';
+      if (combined.includes('lokura')) return 'Lokura TV Dev';
+      return 'Oficial / Desarrollador';
+    }
+  
     function normalizeApkItem(item) {
       if (!item) return {};
       const cleanName = String(item.cleanName || '');
@@ -2649,7 +2755,8 @@
         browsyShortUrl: String(item.browsyShortUrl || ''),
         directDownloadUrl: String(item.directDownloadUrl || ''),
         aiDescription: desc,
-        category: item.category || classifyCategory(cleanName, fileName, desc)
+        category: item.category || classifyCategory(cleanName, fileName, desc),
+        author: item.author || detectAuthor(cleanName, fileName)
       };
     }
 
@@ -2801,7 +2908,7 @@
         if (catSec) catSec.style.display = 'block';
         if (devSec) devSec.style.display = 'none';
         if (waSec) waSec.style.display = 'none';
-        if (sortRow) sortRow.style.display = 'inline-flex';
+        if (sortRow) { sortRow.style.visibility = 'visible'; sortRow.style.pointerEvents = 'auto'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'flex';
         updateEmptyTrashBtn();
         renderAdminCategoryChips();
@@ -2811,7 +2918,7 @@
         if (catSec) catSec.style.display = 'none';
         if (devSec) devSec.style.display = 'block';
         if (waSec) waSec.style.display = 'none';
-        if (sortRow) sortRow.style.display = 'none';
+        if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'none';
         loadDevices();
       } else if (tab === 'whatsapp') {
@@ -2819,7 +2926,7 @@
         if (catSec) catSec.style.display = 'none';
         if (devSec) devSec.style.display = 'none';
         if (waSec) waSec.style.display = 'block';
-        if (sortRow) sortRow.style.display = 'none';
+        if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'none';
         updateEmptyTrashBtn();
 
@@ -2879,6 +2986,56 @@
       }
     }
 
+    
+    function changeApkCategory(fileId, newCategory, ev) {
+      if (!savedPwd) {
+        showToast('Sesión no válida', true);
+        return;
+      }
+      const selectElem = ev ? ev.target : null;
+      if (selectElem) selectElem.disabled = true;
+      showToast('Actualizando categoría a ' + newCategory + '...');
+
+      const gas = getGas();
+      const updateLocal = (list) => {
+        const found = list.find(x => String(x.driveFileId) === String(fileId));
+        if (found) found.category = newCategory;
+      };
+      updateLocal(apksData.active);
+      updateLocal(apksData.deleted);
+
+      const onComplete = (res) => {
+        if (selectElem) selectElem.disabled = false;
+        if (res && res.success) {
+          showToast('✅ Categoría actualizada: ' + newCategory);
+          renderAdminCategoryChips();
+        } else {
+          showToast('Error: ' + (res ? res.error : 'No se pudo actualizar'), true);
+        }
+      };
+
+      if (gas && typeof gas.withSuccessHandler === 'function') {
+        try {
+          const h = gas.withSuccessHandler(onComplete).withFailureHandler(err => {
+            if (selectElem) selectElem.disabled = false;
+            showToast('Error de red: ' + (err.message || err), true);
+          });
+          if (typeof h.updateCategory === 'function') {
+            h.updateCategory(savedPwd, fileId, newCategory);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      fetch(GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(savedPwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(newCategory))
+        .then(r => r.json())
+        .then(onComplete)
+        .catch(err => {
+          if (selectElem) selectElem.disabled = false;
+          showToast('Error al conectar con el servidor', true);
+        });
+    }
+  
     function drawCards() {
       const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
       const list = activeTab === 'active' ? apksData.active : apksData.deleted;
@@ -2961,10 +3118,21 @@
               <div class="apk-title" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
                 <span class="badge-status ${isDel ? 'badge-del' : 'badge-act'}">${isDel ? 'Eliminado' : 'Activo'}</span>
-                <span class="badge-category">${escapeHtml(it.category || 'Aplicación')}</span>
+                <select class="admin-cat-select" onchange="changeApkCategory('${escapeJs(it.driveFileId)}', this.value, event)" title="Reasignar categoría">
+                  <option value="📺 TV en Vivo" ${(it.category === '📺 TV en Vivo') ? 'selected' : ''}>📺 TV en Vivo</option>
+                  <option value="⚽ Deportes" ${(it.category === '⚽ Deportes') ? 'selected' : ''}>⚽ Deportes</option>
+                  <option value="🎬 Películas y Series" ${(it.category === '🎬 Películas y Series') ? 'selected' : ''}>🎬 Películas y Series</option>
+                  <option value="🛠️ Utilitarios" ${(it.category === '🛠️ Utilitarios') ? 'selected' : ''}>🛠️ Utilitarios</option>
+                  <option value="🎵 Música" ${(it.category === '🎵 Música') ? 'selected' : ''}>🎵 Música</option>
+                  <option value="🎮 Juegos" ${(it.category === '🎮 Juegos') ? 'selected' : ''}>🎮 Juegos</option>
+                  <option value="👶 Infantil" ${(it.category === '👶 Infantil') ? 'selected' : ''}>👶 Infantil</option>
+                </select>
               </div>
             </div>
-            <div class="apk-filename" title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</div>
+            <div class="apk-sub-meta">
+              <span class="apk-filename" title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</span>
+              <span class="apk-author-tag" title="Autor / Desarrollador">👤 ${escapeHtml(it.author || 'Oficial')}</span>
+            </div>
 
             <div class="browsy-box">
               <div>

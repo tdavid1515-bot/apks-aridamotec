@@ -61,7 +61,7 @@ const SEED_APKS = [
     "editKey": "DLD5eKwFjByE",
     "manageUrl": "https://browsy.app/manage?code=3305&key=DLD5eKwFjByE",
     "createdAt": "2026-11-13 20:30:00",
-    "aiDescription": "Con esta aplicación podrás acceder a una completa plataforma de entretenimiento y streaming."
+    "aiDescription": "Con esta aplicación podrás acceder a canales deportivos 24/7 con cobertura de fútbol internacional, NBA, boxeo y UFC."
   },
   {
     "id": "745633864",
@@ -524,6 +524,10 @@ function doGet(e) {
       res = generateCodeForSingleApk(e.parameter.pwd, e.parameter.fileId);
     } else if (act === 'deletePermanent') {
       res = deletePermanently(e.parameter.pwd, e.parameter.fileId);
+    } else if (act === 'updateCategory') {
+      res = updateApkCategory(e.parameter.pwd, e.parameter.fileId, e.parameter.category);
+    } else if (act === 'deduplicate') {
+      res = deduplicateSheetRows(e.parameter.pwd);
     } else if (act === 'updateDesc' || act === 'updateDescription') {
       res = updateApkDescription(e.parameter.pwd, e.parameter.fileId, e.parameter.desc || e.parameter.description);
     } else if (act === 'interval') {
@@ -827,6 +831,9 @@ function getGuestCatalog() {
         aiDescription = (seed && seed.aiDescription) ? seed.aiDescription : getSemanticDescription(cleanName);
       }
 
+      const explicitCat = String(row[12] || '').trim();
+      const author = String(row[13] || '').trim() || detectApkAuthor(cleanName, fileName);
+
       catalog.push({
         cleanName: cleanName,
         fileName: fileName,
@@ -834,7 +841,8 @@ function getGuestCatalog() {
         browsyShortUrl: shortUrl,
         directDownloadUrl: directUrl,
         aiDescription: aiDescription,
-        category: classifyApkCategory(cleanName, fileName, aiDescription),
+        category: explicitCat || classifyApkCategory(cleanName, fileName, aiDescription),
+        author: author,
         createdAt: createdAt
       });
     }
@@ -847,7 +855,8 @@ function getGuestCatalog() {
         browsyShortUrl: s.shortUrl || (s.browsyCode ? ('https://browsy.site/' + s.browsyCode) : ''),
         directDownloadUrl: s.directUrl || ('https://github.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases/download/' + CONFIG.GITHUB_RELEASE_TAG + '/' + encodeURIComponent(s.fileName || s.name || '')),
         aiDescription: s.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.',
-        category: classifyApkCategory(s.cleanName, s.fileName || s.name || '', s.aiDescription || ''),
+        category: s.category || classifyApkCategory(s.cleanName, s.fileName || s.name || '', s.aiDescription || ''),
+        author: detectApkAuthor(s.cleanName, s.fileName || s.name || ''),
         createdAt: s.createdAt || ''
       });
     });
@@ -886,13 +895,21 @@ function getOrCreateSheet() {
       'Estado',
       'Fecha Creación',
       'Última Sincronización',
-      'Descripción IA'
+      'Descripción IA',
+      'Categoría',
+      'Autor / Origen'
     ]);
-    sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    sheet.getRange(1, 1, 1, 14).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     sheet.setFrozenRows(1);
   } else {
     if (sheet.getLastColumn() < 12) {
       sheet.getRange(1, 12).setValue('Descripción IA').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+    if (sheet.getLastColumn() < 13) {
+      sheet.getRange(1, 13).setValue('Categoría').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+    if (sheet.getLastColumn() < 14) {
+      sheet.getRange(1, 14).setValue('Autor / Origen').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     }
   }
 
@@ -908,36 +925,104 @@ function cleanApkName(rawName) {
     .trim();
 }
 
-function getSemanticDescription(cleanName) {
-  const n = (cleanName || '').toLowerCase();
-  if (n.includes('player') || n.includes('iptv') || n.includes('xtreme') || n.includes('mxl') || n.includes('xuper') || n.includes('zuper') || n.includes('wiwy') || n.includes('xtv') || n.includes('luma') || n.includes('playtv') || n.includes('live tv')) {
-    return 'Con esta aplicación podrás disfrutar de televisión en vivo, películas y series con servicio IPTV estable y su propio servidor integrado.';
+function detectApkAuthor(cleanName, fileName) {
+  const s = ((cleanName || '') + ' ' + (fileName || '')).toLowerCase();
+  if (s.includes('modbynf') || s.includes('bynf')) return 'ModByNF';
+  if (s.includes('wireguard')) return 'WireGuard LLC';
+  if (s.includes('surfshark')) return 'Surfshark B.V.';
+  if (s.includes('weather xl') || s.includes('exovoid')) return 'Exovoid SRL';
+  if (s.includes('wolf')) return 'Wolf Development';
+  if (s.includes('atv launcher')) return 'D Studio';
+  if (s.includes('browsy')) return 'Browsy TV';
+  if (s.includes('downloader')) return 'AFTVnews';
+  if (s.includes('tizentube')) return 'TizenTube Project';
+  if (s.includes('projectivy')) return 'Spocky';
+  if (s.includes('xuper') || s.includes('zuper')) return 'Comunidad Xuper';
+  if (s.includes('playtv')) return 'PlayTV Team';
+  if (s.includes('rbtv') || s.includes('redbox')) return 'RedBox TV';
+  if (s.includes('mxl')) return 'MXL Team';
+  if (s.includes('cricz')) return 'CricZ Sports';
+  if (s.includes('clipbox') || s.includes('animxl')) return 'MediaBox Project';
+  if (s.includes('luma')) return 'Luma Interactive';
+  if (s.includes('xtreme')) return 'XTREME Team';
+  return 'Desarrollador / Comunidad';
+}
+
+function getSemanticDescription(cleanName, fileName) {
+  const n = ((cleanName || '') + ' ' + (fileName || '')).toLowerCase();
+
+  // 1. Películas, Series y Anime específicos
+  if (n.includes('animxl')) {
+    return 'Con esta aplicación podrás disfrutar de series y películas de anime japonés en alta calidad con subtítulos.';
   }
-  if (n.includes('app release') || n.includes('sport') || n.includes('futbol') || n.includes('deporte') || n.includes('cricz') || n.includes('rbtv')) {
-    return 'Con esta aplicación podrás sintonizar eventos deportivos en directo como fútbol internacional, béisbol, baloncesto y boxeo.';
+  if (n.includes('clipbox')) {
+    return 'Con esta aplicación podrás ver estrenos de cine, películas en cartelera y series completas en alta resolución.';
   }
-  if (n.includes('movie') || n.includes('cine') || n.includes('pelicula') || n.includes('clipbox')) {
-    return 'Con esta aplicación podrás ver estrenos de cine y series completas en alta calidad y sin cortes comerciales.';
+  if (n.includes('movie') || n.includes('cine') || n.includes('pelicula')) {
+    return 'Con esta aplicación podrás disfrutar de estrenos cinematográficos y series bajo demanda sin cortes comerciales.';
   }
-  if (n.includes('anim') || n.includes('manga') || n.includes('otaku')) {
-    return 'Con esta aplicación podrás ver tus series y películas de anime favoritas en excelente resolución en tu pantalla.';
+
+  // 2. Deportes específicos (variados y diferenciados)
+  if (n.includes('cricz')) {
+    return 'Con esta aplicación podrás sintonizar torneos internacionales de cricket, tenis, eventos de contacto y deportes mundiales.';
   }
-  if (n.includes('launcher') || n.includes('wolf') || n.includes('atv') || n.includes('projjectivy')) {
-    return 'Con esta aplicación podrás personalizar y acelerar la pantalla de inicio de tu Android TV sin anuncios.';
+  if (n.includes('sportv')) {
+    return 'Con esta aplicación podrás ver fútbol sudamericano en vivo, ligas europeas, Conmebol y programación deportiva prémium.';
   }
-  if (n.includes('download') || n.includes('descarga') || n.includes('browsy')) {
-    return 'Con esta aplicación podrás descargar e instalar aplicaciones directamente en tu Android TV mediante códigos o enlaces.';
+  if (n.includes('app release') || n.includes('deportes en vivo') || n.includes('sports tv') || n.includes('geesports')) {
+    return 'Con esta aplicación podrás acceder a canales deportivos 24/7 con cobertura de fútbol internacional, NBA, boxeo y UFC.';
   }
-  if (n.includes('vpn') || n.includes('surfshark') || n.includes('wireguard')) {
-    return 'Con esta aplicación podrás navegar con máxima seguridad, privacidad y desbloquear contenidos de otros países.';
+
+  // 3. TV en Vivo, Canales e IPTV específicos
+  if (n.includes('rbtv') || n.includes('redbox')) {
+    return 'Con esta aplicación podrás sintonizar más de 1000 canales de televisión internacional y señales deportivas de todo el mundo.';
   }
-  if (n.includes('tube') || n.includes('youtube') || n.includes('tizentube')) {
-    return 'Con esta aplicación podrás ver YouTube en tu televisor con tema oscuro y sin publicidad que interrumpa tus videos.';
+  if (n.includes('peruano')) {
+    return 'Con esta aplicación podrás ver canales nacionales y regionales de televisión abierta y por cable de Perú y Latinoamérica.';
   }
-  if (n.includes('weather') || n.includes('clima')) {
-    return 'Con esta aplicación podrás consultar el pronóstico del clima con radares y animaciones en pantalla grande.';
+  if (n.includes('luma')) {
+    return 'Con esta aplicación podrás disfrutar de televisión latina en vivo, cine familiar y canales de entretenimiento variado.';
   }
-  return 'Con esta aplicación podrás disfrutar de televisión en vivo, películas y series con excelente estabilidad en tu TV.';
+  if (n.includes('mxl')) {
+    return 'Con esta aplicación podrás cargar y sintonizar canales de televisión en vivo mediante listas IPTV M3U y protocolos avanzados.';
+  }
+  if (n.includes('playtv')) {
+    return 'Con esta aplicación podrás disfrutar de una gran variedad de canales prémium en vivo y entretenimiento continuo para toda la familia.';
+  }
+  if (n.includes('xtreme')) {
+    return 'Con esta aplicación podrás ver señales deportivas de ESPN, DirecTV Sports y canales de televisión en vivo con excelente estabilidad.';
+  }
+  if (n.includes('xuper') || n.includes('zuper') || n.includes('wiwy') || n.includes('player pro')) {
+    return 'Con esta aplicación podrás acceder a televisión en directo, señales exclusivas y entretenimiento con servidor integrado.';
+  }
+
+  // 4. Utilitarios, Launchers, VPN y Herramientas
+  if (n.includes('wolf')) {
+    return 'Con esta aplicación podrás transformar el escritorio de tu Android TV con un launcher limpio, rápido y sin anuncios.';
+  }
+  if (n.includes('atv launcher')) {
+    return 'Con esta aplicación podrás personalizar la pantalla de inicio con soporte de widgets, accesos rápidos y cuadrícula adaptable.';
+  }
+  if (n.includes('wireguard')) {
+    return 'Con esta aplicación podrás navegar con máxima velocidad, cifrado de datos de nueva generación y privacidad absoluta.';
+  }
+  if (n.includes('surfshark')) {
+    return 'Con esta aplicación podrás proteger tu red, desbloquear catálogos globales de streaming y navegar con VPN segura.';
+  }
+  if (n.includes('weather')) {
+    return 'Con esta aplicación podrás consultar el pronóstico del tiempo en pantalla completa con mapas satelitales y radares.';
+  }
+  if (n.includes('browsy')) {
+    return 'Con esta aplicación podrás abrir enlaces web y descargar paquetes mediante códigos numéricos cortos en tu televisor.';
+  }
+  if (n.includes('downloader')) {
+    return 'Con esta aplicación podrás navegar e instalar aplicaciones directamente en tu televisor desde cualquier dirección web.';
+  }
+  if (n.includes('tizentube') || n.includes('youtube')) {
+    return 'Con esta aplicación podrás ver videos de YouTube en tu televisor con soporte 4K y sin anuncios molestos.';
+  }
+
+  return 'Con esta aplicación podrás disfrutar de contenido multimedia y entretenimiento en tu televisor Android TV.';
 }
 
 function generateApkDescription(password, apkName) {
@@ -1044,9 +1129,10 @@ function getRepositoryFilesList(forceRefresh) {
 
   const items = new Map();
 
-  // 1. Intento primario: API REST de GitHub Releases
+  // 1. Intento primario: API REST de GitHub Releases (iterando todas las versiones para capturar todos los APKs)
   try {
-    const res = UrlFetchApp.fetch(CONFIG.GITHUB_API_RELEASE, {
+    const allReleasesUrl = 'https://api.github.com/repos/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/releases?per_page=100';
+    const res = UrlFetchApp.fetch(allReleasesUrl, {
       method: 'get',
       headers: {
         'User-Agent': 'ARIDAMOTEC-App',
@@ -1056,18 +1142,24 @@ function getRepositoryFilesList(forceRefresh) {
     });
 
     if (res.getResponseCode() === 200) {
-      const release = JSON.parse(res.getContentText());
-      if (release.assets && Array.isArray(release.assets)) {
-        release.assets.forEach(asset => {
-          const name = asset.name || '';
-          const lowerName = name.toLowerCase();
-          if (lowerName.startsWith('aridamotec_tv') || lowerName.startsWith('aridamotec-tv') || lowerName.includes('aridamotectv')) return;
-          if (name.toLowerCase().endsWith('.apk') || name.toLowerCase().endsWith('.xapk')) {
-            items.set(name.toLowerCase(), {
-              id: String(asset.id),
-              name: name,
-              downloadUrl: asset.browser_download_url,
-              size: asset.size
+      const releases = JSON.parse(res.getContentText());
+      if (Array.isArray(releases)) {
+        releases.forEach(rel => {
+          if (rel.assets && Array.isArray(rel.assets)) {
+            rel.assets.forEach(asset => {
+              const name = asset.name || '';
+              const lowerName = name.toLowerCase();
+              if (lowerName.startsWith('aridamotec_tv') || lowerName.startsWith('aridamotec-tv') || lowerName.includes('aridamotectv')) return;
+              if (name.toLowerCase().endsWith('.apk') || name.toLowerCase().endsWith('.xapk')) {
+                if (!items.has(lowerName)) {
+                  items.set(lowerName, {
+                    id: String(asset.id),
+                    name: name,
+                    downloadUrl: asset.browser_download_url,
+                    size: asset.size
+                  });
+                }
+              }
             });
           }
         });
@@ -1142,6 +1234,9 @@ function syncApks(password, forceRefresh) {
     Logger.log('No se pudieron obtener archivos de GitHub. No se alterará la hoja de cálculo.');
     return { success: false, error: 'No se pudo conectar a GitHub Releases' };
   }
+
+  // Ejecutar deduplicación previa para limpiar la hoja y restaurar items válidos
+  try { deduplicateSheetRows(); } catch (eDedup) {}
 
   const sheet = getOrCreateSheet();
 
@@ -1285,19 +1380,8 @@ function syncApks(password, forceRefresh) {
     }
   }
 
+  // NOTA: Se desactiva el marcado automático a 'deleted_from_repository' para proteger APKs válidas recién subidas.
   let markedDeletedCount = 0;
-  if (currentRepoFiles.length > 0) {
-    existingMapByFileName.forEach((rec, fnLower) => {
-      if (!repoNamesSet.has(fnLower)) {
-        if (!rec.status.toLowerCase().includes('del') && rec.status !== 'restored') {
-          sheet.getRange(rec.rowIndex, 9).setValue('deleted_from_repository');
-          sheet.getRange(rec.rowIndex, 11).setValue(nowStr);
-          rec.status = 'deleted_from_repository';
-          markedDeletedCount++;
-        }
-      }
-    });
-  }
 
   return {
     success: true,
@@ -1399,6 +1483,9 @@ function getApksList(password) {
         try { sheet.getRange(i + 1, 12).setValue(aiDesc); } catch (e) {}
       }
 
+      const explicitCategory = String(row[12] || '').trim();
+      const author = String(row[13] || '').trim() || detectApkAuthor(finalCleanName, fileName);
+
       const item = {
         driveFileId: fileId || (seed ? seed.id : ('file-' + i)),
         cleanName: finalCleanName,
@@ -1411,7 +1498,8 @@ function getApksList(password) {
         status: status,
         createdAt: createdAtStr,
         aiDescription: aiDesc,
-        category: classifyApkCategory(finalCleanName, fileName, aiDesc),
+        category: explicitCategory || classifyApkCategory(finalCleanName, fileName, aiDesc),
+        author: author,
         orderIndex: i
       };
 
@@ -1725,29 +1813,29 @@ function classifyApkCategory(cleanName, fileName, desc) {
     return false;
   };
 
-  // 1. TV en Vivo, Canales e IPTV (Prioridad principal: evaluada antes que deportes)
+  // 1. Películas y Series (Prioridad para evitar solapamientos con IPTV)
   if (hasAny([
-    'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
-    'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
-    'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro'
+    'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
+    'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series', 'vod'
   ])) {
-    return '📺 TV en Vivo';
+    return '🎬 Películas y Series';
   }
 
   // 2. Deportes
   if (hasAny([
-    'deport', 'futbol', 'soccer', 'beisbol', 'baseball', 'baloncesto',
-    'boxeo', 'boxing', 'cricz', 'sportv', 'sportz', 'geesports', 'partidos en directo'
+    'sportv', 'sportz', 'cricz', 'geesports', 'deport', 'futbol', 'soccer',
+    'beisbol', 'baseball', 'baloncesto', 'boxeo', 'boxing', 'nba', 'ufc', 'partidos en directo'
   ])) {
     return '⚽ Deportes';
   }
 
-  // 3. Películas y Series
+  // 3. TV en Vivo, Canales e IPTV
   if (hasAny([
-    'anime', 'estrenos de cine', 'series completas', 'cine', 'solo peliculas',
-    'clipbox', 'animxl', 'movies', 'series y peliculas de anime', 'pelicula', 'peliculas', 'serie', 'series'
+    'canales de television', 'television en vivo', 'tv en vivo', 'television latina',
+    'senales exclusivas', 'canales familiares', 'iptv', 'm3u', 'servidor integrado', 'canales en vivo',
+    'lokuratv', 'rbtv', 'redbox', 'xuper', 'zuper', 'wiwy', 'playtv', 'xtremetv', 'luma tv', 'player pro', 'peruano'
   ])) {
-    return '🎬 Películas y Series';
+    return '📺 TV en Vivo';
   }
 
   // 4. Música
@@ -1999,4 +2087,107 @@ function getLatestTvAppInfo() {
 
 function getTvAppInfo() {
   return getLatestTvAppInfo();
+}
+
+// ============================================================================
+// REASIGNACIÓN DE CATEGORÍAS MANUAL Y DEDUPLICACIÓN DE HOJA
+// ============================================================================
+function updateApkCategory(password, fileId, newCategory) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+  const targetId = String(fileId || '').trim();
+  const cleanCat = String(newCategory || '').trim();
+
+  let updated = false;
+  for (let i = 1; i < data.length; i++) {
+    const rowId = String(data[i][0] || '').trim();
+    const rowFileName = String(data[i][2] || '').trim();
+    if (rowId === targetId || rowFileName.toLowerCase() === targetId.toLowerCase()) {
+      sheet.getRange(i + 1, 13).setValue(cleanCat);
+      sheet.getRange(i + 1, 11).setValue(nowStr);
+      updated = true;
+      break;
+    }
+  }
+
+  if (updated) {
+    try {
+      CacheService.getScriptCache().remove('gh_repo_assets_v1');
+    } catch (eC) {}
+    return {
+      success: true,
+      fileId: fileId,
+      category: cleanCat,
+      message: 'Categoría actualizada exitosamente a: ' + cleanCat
+    };
+  }
+  return { success: false, error: 'Aplicación no encontrada en el catálogo' };
+}
+
+function deduplicateSheetRows(password) {
+  if (password !== undefined && typeof password === 'string' && !verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+  const sheet = getOrCreateSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return { success: true, removedCount: 0 };
+
+  const data = sheet.getDataRange().getValues();
+  const seenMap = new Map();
+  const rowsToDelete = [];
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const fileId = String(row[0] || '').trim();
+    const fileName = String(row[2] || '').trim().toLowerCase();
+    const status = String(row[8] || 'active').trim().toLowerCase();
+    const key = fileName || fileId.toLowerCase();
+    if (!key) continue;
+
+    const rowIndex = i + 1;
+    if (!seenMap.has(key)) {
+      seenMap.set(key, { rowIndex: rowIndex, row: row });
+      // Restaurar automáticamente a active si estaba erróneamente en papelera
+      if (status.includes('deleted_from_repository')) {
+        sheet.getRange(rowIndex, 9).setValue('active');
+        sheet.getRange(rowIndex, 11).setValue(nowStr);
+      }
+    } else {
+      const existing = seenMap.get(key);
+      const existingHasCode = existing.row[3] && String(existing.row[3]).trim().length > 0;
+      const currentHasCode = row[3] && String(row[3]).trim().length > 0;
+
+      if (!existingHasCode && currentHasCode) {
+        sheet.getRange(existing.rowIndex, 4).setValue(row[3]);
+        sheet.getRange(existing.rowIndex, 5).setValue(row[4]);
+      }
+      if (!existing.row[11] && row[11]) {
+        sheet.getRange(existing.rowIndex, 12).setValue(row[11]);
+      }
+      if (!existing.row[12] && row[12]) {
+        sheet.getRange(existing.rowIndex, 13).setValue(row[12]);
+      }
+      rowsToDelete.push(rowIndex);
+    }
+  }
+
+  rowsToDelete.sort((a, b) => b - a);
+  for (let r = 0; r < rowsToDelete.length; r++) {
+    sheet.deleteRow(rowsToDelete[r]);
+  }
+
+  return { success: true, removedCount: rowsToDelete.length, message: 'Deduplicación completada con éxito' };
+}
+
+function updateCategory(password, fileId, category) {
+  return updateApkCategory(password, fileId, category);
+}
+
+function deduplicate(password) {
+  return deduplicateSheetRows(password);
 }
