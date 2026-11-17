@@ -317,7 +317,7 @@ async function runSync() {
         latestVersionCode: vCode,
         latestVersionName: latestTvName,
         downloadUrl: `https://cdn.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@main/ARIDAMOTEC_TV_${latestTvName}.apk`,
-        changelog: "• Mayor rapidez y fluidez al abrir la aplicación.\n• Nuevo botón para encontrar fácilmente las aplicaciones recién agregadas.\n• Identificación de aplicaciones oficiales y verificadas.\n• Navegación más cómoda y precisa con el control remoto.",
+        changelog: (currentVer && currentVer.changelog) ? currentVer.changelog : "• Descargas de aplicaciones directas y ultra-rápidas.\n• Botón de cancelar descarga habilitado en cada aplicación.\n• Tamaño del archivo visible en cada ficha técnica.\n• Mayor estabilidad y fluidez en tu televisor.",
         minSupportedVersionCode: 1,
         mandatory: false,
         updatedAt: latestTvCreatedAt || new Date().toISOString()
