@@ -3949,14 +3949,14 @@
     // Al regresar a la pestaña activa del panel de administrador, sincronizar silenciosamente de inmediato
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && savedPwd) {
-        loadApks(true);
+        triggerSync(true);
       }
     });
 
-    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador
+    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador con sincronización en vivo
     setInterval(() => {
       if (savedPwd && !document.hidden) {
-        loadApks(true);
+        triggerSync(true);
       }
     }, 25000);
 

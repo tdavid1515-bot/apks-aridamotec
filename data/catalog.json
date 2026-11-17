@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 37,
-  "total": 37,
+  "count": 35,
+  "total": 35,
   "catalog": [
     {
       "id": "759604072",
@@ -98,24 +98,6 @@
       "aiDescription": "Con esta aplicación podrás abrir enlaces web y descargar paquetes mediante códigos numéricos cortos en tu televisor.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial"
-    },
-    {
-      "id": "760178748",
-      "fileName": "Browsy_1.5.0_APKPure.xapk",
-      "cleanName": "Browsy Links (App TV)",
-      "category": "🛠️ Utilitarios",
-      "author": "Oficial / Desarrollador",
-      "aiDescription": "Con esta aplicación podrás instalar aplicaciones o actualizaciones mediante códigos numéricos directos en tu TV Box.",
-      "browsyCode": "2461",
-      "browsyShortUrl": "https://browsy.app/2461",
-      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.xapk",
-      "size": 4748428,
-      "sizeFormatted": "4.5 MB",
-      "createdAt": "2026-11-13T23:53:30Z",
-      "updatedAt": "2026-11-13T23:53:32Z",
-      "status": "active",
-      "shortUrl": "https://browsy.app/2461",
-      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.xapk"
     },
     {
       "id": "757478245",
@@ -503,24 +485,6 @@
       "aiDescription": "Con esta aplicación podrás ver videos de YouTube en tu televisor con soporte 4K y sin anuncios molestos.",
       "category": "🛠️ Utilitarios",
       "author": "TizenTube Project"
-    },
-    {
-      "id": "753498273",
-      "fileName": "TizenTube_v2.03_YouTube_arm64.apk",
-      "cleanName": "TizenTube (YouTube arm64)",
-      "category": "🛠️ Utilitarios",
-      "author": "TizenTube Project",
-      "aiDescription": "Con esta aplicación podrás ver YouTube en tu televisor con tema oscuro y sin publicidad que interrumpa tus videos.",
-      "browsyCode": "9360",
-      "browsyShortUrl": "https://browsy.app/9360",
-      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm64.apk",
-      "size": 153048724,
-      "sizeFormatted": "146 MB",
-      "createdAt": "2026-11-16T04:50:38Z",
-      "updatedAt": "2026-11-16T05:18:31Z",
-      "status": "active",
-      "shortUrl": "https://browsy.app/9360",
-      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm64.apk"
     },
     {
       "id": "753517643",
