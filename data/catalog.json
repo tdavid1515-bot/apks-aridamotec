@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 35,
-  "total": 35,
+  "count": 36,
+  "total": 36,
   "catalog": [
     {
       "id": "759604072",
@@ -171,6 +171,25 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9985",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk"
+    },
+    {
+      "id": "760912286",
+      "cleanName": "Developer Tools 2 4 7 APKPure",
+      "fileName": "Developer_Tools_2.4.7_APKPure.apk",
+      "browsyCode": "7839",
+      "shortUrl": "https://browsy.app/7839",
+      "browsyShortUrl": "https://browsy.app/7839",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Developer_Tools_2.4.7_APKPure.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Developer_Tools_2.4.7_APKPure.apk",
+      "editKey": "J6GWYbTeUrq7",
+      "manageUrl": "https://browsy.app/manage?code=7839&key=J6GWYbTeUrq7",
+      "size": 8437118,
+      "sizeFormatted": "8 MB",
+      "status": "active",
+      "createdAt": "2026-11-17T22:35:16Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
     },
     {
       "id": "745634804",
