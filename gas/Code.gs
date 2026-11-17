@@ -1907,7 +1907,9 @@ function updateApkDescription(password, fileId, newDescription, fileName) {
 
   if (updated) {
     try {
-      CacheService.getScriptCache().remove('gh_repo_assets_v1');
+      var cache = CacheService.getScriptCache();
+      cache.remove('guest_catalog_cache_v3');
+      cache.remove('gh_repo_assets_v1');
     } catch (eC) {}
     return {
       success: true,
@@ -2381,7 +2383,9 @@ function updateApkCategory(password, fileId, newCategory, fileName) {
 
   if (updated) {
     try {
-      CacheService.getScriptCache().remove('gh_repo_assets_v1');
+      var cache = CacheService.getScriptCache();
+      cache.remove('guest_catalog_cache_v3');
+      cache.remove('gh_repo_assets_v1');
     } catch (eC) {}
     return {
       success: true,

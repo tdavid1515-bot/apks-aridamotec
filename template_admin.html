@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ARIDAMOTEC | Panel de Administración</title>
   <link rel="icon" type="image/png" href="data:image/png;base64,{{LOGO_B64}}">
+  <script>
+    (function() {
+      try {
+        var pwd = localStorage.getItem('arida_pwd') || sessionStorage.getItem('arida_pwd');
+        if (pwd) {
+          document.documentElement.classList.add('has-saved-session');
+        }
+      } catch(e) {}
+    })();
+  </script>
   <style>
     :root {
       --bg-dark: #05070e;
@@ -34,6 +44,9 @@
     }
 
     /* ================= LOGIN ================= */
+    html.has-saved-session #loginScreen {
+      display: none !important;
+    }
     .login-overlay {
       position: fixed;
       inset: 0;
@@ -2624,6 +2637,17 @@
       if (savedPwd) {
         const pwdIn = document.getElementById('pwdInput');
         if (pwdIn) pwdIn.value = savedPwd;
+
+        // Renderizar inmediatamente desde catalog.json (SSOT local) para evitar parpadeos o pantallas vacías
+        fetch('catalog.json?t=' + Date.now())
+          .then(r => r.json())
+          .then(cData => {
+            if (cData && Array.isArray(cData.catalog) && (!apksData.active || apksData.active.length === 0)) {
+              renderApp({ active: cData.catalog, deleted: [], total: cData.catalog.length });
+            }
+          })
+          .catch(() => {});
+
         validateLogin(savedPwd);
       }
     });
@@ -2670,6 +2694,8 @@
         btn.textContent = 'INGRESAR AL SISTEMA';
         err.style.display = 'block';
         err.textContent = 'Error: Servicio de Google Apps Script no disponible. Recarga la página.';
+        document.documentElement.classList.remove('has-saved-session');
+        document.getElementById('loginScreen').style.display = 'flex';
         return;
       }
       gas.withSuccessHandler(res => {
@@ -2680,6 +2706,7 @@
             try {
               savedPwd = pwd;
               safeStorage.setItem('arida_pwd', pwd);
+              document.documentElement.classList.add('has-saved-session');
               document.getElementById('loginScreen').style.display = 'none';
 
               // Intentar renderizar de inmediato desde catalog.json (SSOT)
@@ -2697,9 +2724,12 @@
               console.error('Error renderApp:', renderErr);
               err.style.display = 'block';
               err.textContent = 'Error al renderizar aplicaciones: ' + (renderErr.message || renderErr);
+              document.documentElement.classList.remove('has-saved-session');
               document.getElementById('loginScreen').style.display = 'flex';
             }
           } else {
+            document.documentElement.classList.remove('has-saved-session');
+            document.getElementById('loginScreen').style.display = 'flex';
             err.style.display = 'block';
             err.textContent = res ? res.error : 'Contraseña incorrecta';
           }
@@ -2707,8 +2737,14 @@
         .withFailureHandler(e => {
           btn.disabled = false;
           btn.textContent = 'INGRESAR AL SISTEMA';
-          err.style.display = 'block';
-          err.textContent = 'Error de conexión: ' + (e.message || e);
+          if (document.documentElement.classList.contains('has-saved-session')) {
+            showToast('Aviso: Sin conexión con Google Apps Script. Operando con caché local.', true);
+          } else {
+            err.style.display = 'block';
+            err.textContent = 'Error de conexión: ' + (e.message || e);
+            document.documentElement.classList.remove('has-saved-session');
+            document.getElementById('loginScreen').style.display = 'flex';
+          }
         })
         .getApksList(pwd);
     }
@@ -2716,12 +2752,19 @@
     function logout() {
       safeStorage.removeItem('arida_pwd');
       savedPwd = '';
+      document.documentElement.classList.remove('has-saved-session');
       document.getElementById('pwdInput').value = '';
       document.getElementById('loginScreen').style.display = 'flex';
     }
 
-    const localSavedDescriptions = {};
-    const localSavedCategories = {};
+    let localSavedDescriptions = {};
+    let localSavedCategories = {};
+    try {
+      localSavedDescriptions = JSON.parse(safeStorage.getItem('arida_saved_descriptions') || '{}');
+    } catch(e) { localSavedDescriptions = {}; }
+    try {
+      localSavedCategories = JSON.parse(safeStorage.getItem('arida_saved_categories') || '{}');
+    } catch(e) { localSavedCategories = {}; }
 
     function loadApks(silent = false) {
       if (!silent) {
@@ -3081,27 +3124,27 @@
       const targetItem = allItems.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
       const fileName = targetItem ? targetItem.fileName : '';
 
-      localSavedDescriptions[fileId] = newDesc;
-      if (fileName) localSavedDescriptions[fileName.toLowerCase()] = newDesc;
-      if (targetItem) targetItem.aiDescription = newDesc;
-      if (typeof waDescriptions !== 'undefined') {
-        waDescriptions[fileId] = newDesc;
-      }
-
       const updateLocal = (list) => {
+        if (!Array.isArray(list)) return;
         const found = list.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
         if (found) found.category = newCategory;
       };
       updateLocal(apksData.active);
       updateLocal(apksData.deleted);
+      if (targetItem) targetItem.category = newCategory;
+
       localSavedCategories[fileId] = newCategory;
       if (fileName) localSavedCategories[fileName.toLowerCase()] = newCategory;
+      try {
+        safeStorage.setItem('arida_saved_categories', JSON.stringify(localSavedCategories));
+      } catch (e) {}
 
       const onComplete = (res) => {
         if (selectElem) selectElem.disabled = false;
         if (res && res.success) {
           showToast('✅ Categoría actualizada: ' + newCategory);
           renderAdminCategoryChips();
+          drawCards();
         } else {
           showToast('Error: ' + (res ? res.error : 'No se pudo actualizar'), true);
         }
@@ -3344,6 +3387,9 @@
       if (typeof waDescriptions !== 'undefined') {
         waDescriptions[fileId] = newDesc;
       }
+      try {
+        safeStorage.setItem('arida_saved_descriptions', JSON.stringify(localSavedDescriptions));
+      } catch (e) {}
 
       if (statusEl) {
         statusEl.textContent = 'Guardando...';
@@ -3351,14 +3397,7 @@
       }
       if (btn) btn.disabled = true;
 
-      const gas = getGas();
-      if (!gas) {
-        if (statusEl) { statusEl.textContent = 'Error de servicio'; statusEl.style.color = '#ef4444'; }
-        if (btn) btn.disabled = false;
-        return;
-      }
-
-      gas.withSuccessHandler(res => {
+      const onDescComplete = (res) => {
         if (btn) btn.disabled = false;
         if (res && res.success) {
           if (statusEl) {
@@ -3367,7 +3406,6 @@
             setTimeout(() => { if (statusEl && statusEl.textContent === '✓ Guardado') statusEl.textContent = ''; }, 3500);
           }
           showToast('¡Descripción actualizada en tiempo real!');
-          // Actualizar memoria local en apksData
           if (targetItem) targetItem.aiDescription = newDesc;
           if (typeof waDescriptions !== 'undefined') {
             waDescriptions[fileId] = newDesc;
@@ -3378,15 +3416,35 @@
             statusEl.style.color = '#ef4444';
           }
         }
-      })
-      .withFailureHandler(err => {
-        if (btn) btn.disabled = false;
-        if (statusEl) {
-          statusEl.textContent = 'Error de conexión';
-          statusEl.style.color = '#ef4444';
-        }
-      })
-      .updateApkDescription(savedPwd, fileId, newDesc, fileName);
+      };
+
+      const gas = getGas();
+      if (gas && typeof gas.withSuccessHandler === 'function') {
+        try {
+          const h = gas.withSuccessHandler(onDescComplete).withFailureHandler(err => {
+            if (btn) btn.disabled = false;
+            if (statusEl) {
+              statusEl.textContent = 'Error de conexión';
+              statusEl.style.color = '#ef4444';
+            }
+          });
+          if (typeof h.updateApkDescription === 'function') {
+            h.updateApkDescription(savedPwd, fileId, newDesc, fileName);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      fetch(GAS_URL + '?action=updateDesc&pwd=' + encodeURIComponent(savedPwd) + '&fileId=' + encodeURIComponent(fileId) + '&desc=' + encodeURIComponent(newDesc) + (fileName ? ('&fileName=' + encodeURIComponent(fileName)) : ''))
+        .then(r => r.json())
+        .then(onDescComplete)
+        .catch(err => {
+          if (btn) btn.disabled = false;
+          if (statusEl) {
+            statusEl.textContent = 'Error de red';
+            statusEl.style.color = '#ef4444';
+          }
+        });
     }
 
     function regenAdminAiDesc(fileId, cleanName, event) {
