@@ -316,8 +316,8 @@ async function runSync() {
         success: true,
         latestVersionCode: vCode,
         latestVersionName: latestTvName,
-        downloadUrl: `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/ARIDAMOTEC_TV_${latestTvName}.apk`,
-        changelog: currentVer.changelog || "Actualización oficial automática con mejoras de rendimiento, catálogo y foco D-Pad.",
+        downloadUrl: `https://cdn.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@main/ARIDAMOTEC_TV_${latestTvName}.apk`,
+        changelog: "• Mayor rapidez y fluidez al abrir la aplicación.\n• Nuevo botón para encontrar fácilmente las aplicaciones recién agregadas.\n• Identificación de aplicaciones oficiales y verificadas.\n• Navegación más cómoda y precisa con el control remoto.",
         minSupportedVersionCode: 1,
         mandatory: false,
         updatedAt: latestTvCreatedAt || new Date().toISOString()
