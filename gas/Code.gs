@@ -962,12 +962,18 @@ function overlaySheetMetadata(items) {
     for (let i = 1; i < data.length; i++) {
       const rowId = String(data[i][0] || '').trim();
       const rowFile = String(data[i][2] || '').trim().toLowerCase();
+      const rowCode = String(data[i][3] || '').trim();
+      const rowShort = String(data[i][4] || '').trim();
+      const rowDirect = String(data[i][5] || '').trim();
       const rowDesc = String(data[i][11] || '').trim();
       const rowCat = String(data[i][12] || '').trim();
       if (rowFile || rowId) {
         const meta = {};
         if (rowDesc) meta.aiDescription = rowDesc;
         if (rowCat) meta.category = rowCat;
+        if (rowCode) meta.browsyCode = rowCode;
+        if (rowShort) meta.browsyShortUrl = rowShort;
+        if (rowDirect) meta.directDownloadUrl = rowDirect;
         if (rowFile) metaMap.set(rowFile, meta);
         if (rowId) metaMap.set(rowId, meta);
       }
@@ -980,6 +986,9 @@ function overlaySheetMetadata(items) {
       if (meta) {
         if (meta.aiDescription) it.aiDescription = meta.aiDescription;
         if (meta.category) it.category = meta.category;
+        if (meta.browsyCode && !it.browsyCode) it.browsyCode = meta.browsyCode;
+        if (meta.browsyShortUrl && !it.browsyShortUrl) it.browsyShortUrl = meta.browsyShortUrl;
+        if (meta.directDownloadUrl && !it.directDownloadUrl) it.directDownloadUrl = meta.directDownloadUrl;
       }
     });
   } catch (eM) {
@@ -996,6 +1005,44 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }
 
+// ÚNICA FUENTE DE VERDAD (SSOT) UNIFICADA PARA WEB ADMIN, VISITANTES Y APP ANDROID TV
+function getUnifiedCatalogList() {
+  let catalog = [];
+  try {
+    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
+    const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    if (resp.getResponseCode() === 200) {
+      const parsed = JSON.parse(resp.getContentText());
+      if (parsed && Array.isArray(parsed.catalog)) {
+        catalog = parsed.catalog;
+      }
+    }
+  } catch (err) {
+    Logger.log('Error getUnifiedCatalogList desde GitHub: ' + err);
+  }
+
+  if (!catalog || catalog.length === 0) {
+    catalog = SEED_APKS.slice();
+  }
+
+  // 1. Superponer metadatos de Google Sheets (categoría, descripción, códigos)
+  const enriched = overlaySheetMetadata(catalog);
+
+  // 2. Normalizar todas las fechas createdAt a formato estricto ISO 8601 UTC
+  enriched.forEach(item => {
+    if (item.createdAt) {
+      try {
+        const d = new Date(item.createdAt);
+        if (!isNaN(d.getTime())) {
+          item.createdAt = d.toISOString();
+        }
+      } catch (e) {}
+    }
+  });
+
+  return enriched;
+}
+
 function getGuestCatalog() {
   const cache = CacheService.getScriptCache();
   try {
@@ -1007,128 +1054,7 @@ function getGuestCatalog() {
     Logger.log('Error leyendo caché de catálogo: ' + eC);
   }
 
-  let catalog = [];
-
-  // 1. Obtener la lista viva desde Google Sheets
-  try {
-    const sheet = getOrCreateSheet();
-    const data = sheet.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      const row = data[i];
-      const status = String(row[8] || '').trim().toLowerCase();
-      if (status !== 'trash' && status !== 'deleted' && status !== 'deleted_from_repository') {
-        const cleanN = String(row[1] || '').trim();
-        const fileN = String(row[2] || '').trim();
-        const bCode = String(row[3] || '').trim();
-        const shortU = String(row[4] || '').trim();
-        const directU = String(row[5] || '').trim();
-        const desc = String(row[11] || '').trim();
-        const cat = String(row[12] || '').trim();
-        const auth = String(row[13] || '').trim();
-        const createdA = String(row[9] || '').trim();
-
-        if (fileN || cleanN) {
-          catalog.push({
-            id: String(row[0] || ''),
-            cleanName: cleanN || cleanApkName(fileN),
-            fileName: fileN,
-            browsyCode: bCode,
-            browsyShortUrl: shortU,
-            shortUrl: shortU,
-            directDownloadUrl: directU,
-            directUrl: directU,
-            status: 'active',
-            createdAt: createdA,
-            aiDescription: desc || getSemanticDescription(cleanN, fileN),
-            category: cat || classifyApkCategory(cleanN, fileN, desc),
-            author: auth || detectApkAuthor(cleanN, fileN),
-            size: 0,
-            sizeFormatted: ''
-          });
-        }
-      }
-    }
-  } catch (eSheet) {
-    Logger.log('Error leyendo hoja en getGuestCatalog: ' + eSheet);
-  }
-
-  // 2. Si la hoja está vacía o falló, respaldo a catalog.json en GitHub
-  if (catalog.length === 0) {
-    try {
-      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
-      const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
-      if (resp.getResponseCode() === 200) {
-        const parsed = JSON.parse(resp.getContentText());
-        if (parsed && Array.isArray(parsed.catalog)) catalog = parsed.catalog;
-      }
-    } catch (eGh) {
-      Logger.log('Error consultando catalog.json de respaldo: ' + eGh);
-    }
-  }
-
-  // 3. Opción 2: Consulta Híbrida en Vivo con GitHub Releases
-  // Cruzar con los archivos reales existentes en GitHub Releases en este instante
-  try {
-    const liveFiles = getRepositoryFilesList(false);
-    if (liveFiles && liveFiles.length > 0) {
-      const catalogByFile = new Map();
-      catalog.forEach(item => {
-        if (item.fileName) catalogByFile.set(item.fileName.toLowerCase(), item);
-      });
-
-      const liveFileSet = new Set();
-      liveFiles.forEach(rf => {
-        const fnLower = (rf.name || '').toLowerCase();
-        liveFileSet.add(fnLower);
-
-        const existing = catalogByFile.get(fnLower);
-        if (existing) {
-          // Asignar el tamaño real en bytes y formateado si no lo tiene
-          if (rf.size) {
-            existing.size = rf.size;
-            existing.sizeFormatted = formatBytes(rf.size);
-          }
-          if (rf.downloadUrl && !existing.directDownloadUrl) {
-            existing.directDownloadUrl = rf.downloadUrl;
-            existing.directUrl = rf.downloadUrl;
-          }
-        } else {
-          // ¡Archivo recién subido a GitHub Releases! Añadirlo inmediatamente a la vista
-          const cName = cleanApkName(rf.name);
-          const newDesc = getSemanticDescription(cName, rf.name);
-          const newCat = classifyApkCategory(cName, rf.name, newDesc);
-          const newAuth = detectApkAuthor(cName, rf.name);
-          catalog.unshift({
-            id: String(rf.id),
-            cleanName: cName,
-            fileName: rf.name,
-            browsyCode: 'Pendiente',
-            browsyShortUrl: '',
-            shortUrl: '',
-            directDownloadUrl: rf.downloadUrl,
-            directUrl: rf.downloadUrl,
-            status: 'active',
-            createdAt: new Date().toISOString(),
-            aiDescription: newDesc,
-            category: newCat,
-            author: newAuth,
-            size: rf.size || 0,
-            sizeFormatted: formatBytes(rf.size || 0)
-          });
-        }
-      });
-
-      // Filtrar inmediatamente archivos que hayan sido eliminados de GitHub Releases
-      catalog = catalog.filter(it => it.fileName && liveFileSet.has(it.fileName.toLowerCase()));
-    }
-  } catch (eLive) {
-    Logger.log('Aviso: no se pudo cruzar en vivo con GitHub Releases: ' + eLive);
-  }
-
-  // Si aún sigue vacío, usar respaldo estático de emergencia
-  if (catalog.length === 0) {
-    catalog = overlaySheetMetadata(SEED_APKS);
-  }
+  const catalog = getUnifiedCatalogList();
 
   const result = {
     success: true,
@@ -1138,7 +1064,7 @@ function getGuestCatalog() {
   };
 
   try {
-    cache.put('guest_catalog_cache_v3', JSON.stringify(result), 30); // 30 segundos de frescura total
+    cache.put('guest_catalog_cache_v3', JSON.stringify(result), 30); // 30 segundos
   } catch (ePut) {}
 
   return result;
@@ -1675,21 +1601,13 @@ function getApksList(password) {
   if (!verifyAuth(password)) {
     return { success: false, error: 'Contraseña incorrecta' };
   }
-  try {
-    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
-    const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
-    if (resp.getResponseCode() === 200) {
-      const parsed = JSON.parse(resp.getContentText());
-      if (parsed && Array.isArray(parsed.catalog)) {
-        const enriched = overlaySheetMetadata(parsed.catalog);
-        return { success: true, total: enriched.length, active: enriched, deleted: [] };
-      }
-    }
-  } catch (err) {
-    Logger.log('Error getApksList desde GitHub: ' + err);
-  }
-  const enrichedSeed = overlaySheetMetadata(SEED_APKS);
-  return { success: true, total: enrichedSeed.length, active: enrichedSeed, deleted: [] };
+  const catalog = getUnifiedCatalogList();
+  return {
+    success: true,
+    total: catalog.length,
+    active: catalog,
+    deleted: []
+  };
 }
 
 function deletePermanently(password, driveFileId) {
