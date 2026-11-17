@@ -2773,6 +2773,23 @@
     }
 
     
+    function cleanApkName(fileName) {
+      if (!fileName) return '';
+      let name = fileName.replace(/\.(apk|xapk)$/i, '');
+      name = name.replace(/[-_.]+/g, ' ');
+      name = name.replace(/\b(v?\d+(\.\d+)+)\b/gi, '').trim();
+      name = name.replace(/\s+/g, ' ');
+      return name || fileName;
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
     function detectAuthor(cleanName, fileName) {
       const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
       const combined = norm(cleanName) + ' ' + norm(fileName);
@@ -3453,6 +3470,11 @@
         }
 
         // 3. Cruzar datos en vivo
+        if (liveAssets.length > 0) {
+          const liveFileSet = new Set(liveAssets.map(a => (a.name || '').toLowerCase()));
+          remoteCatalog = remoteCatalog.filter(item => item.fileName && liveFileSet.has(item.fileName.toLowerCase()));
+        }
+
         const catalogFileMap = new Map();
         remoteCatalog.forEach(item => catalogFileMap.set(item.fileName.toLowerCase(), item));
 
@@ -3471,6 +3493,8 @@
               browsyShortUrl: '',
               directUrl: asset.browser_download_url,
               directDownloadUrl: asset.browser_download_url,
+              size: asset.size || 0,
+              sizeFormatted: formatBytes(asset.size || 0),
               status: 'active',
               createdAt: asset.created_at,
               aiDescription: 'Aplicación recién detectada en GitHub Releases.',
