@@ -316,7 +316,7 @@ async function runSync() {
         success: true,
         latestVersionCode: vCode,
         latestVersionName: latestTvName,
-        downloadUrl: latestTvUrl || `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/ARIDAMOTEC_TV_${latestTvName}.apk`,
+        downloadUrl: `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/ARIDAMOTEC_TV_${latestTvName}.apk`,
         changelog: currentVer.changelog || "Actualización oficial automática con mejoras de rendimiento, catálogo y foco D-Pad.",
         minSupportedVersionCode: 1,
         mandatory: false,

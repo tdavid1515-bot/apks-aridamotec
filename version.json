@@ -2,9 +2,9 @@
   "success": true,
   "latestVersionCode": 8,
   "latestVersionName": "1.3.4",
-  "downloadUrl": "https://tdavid1515-bot.github.io/apks-aridamotec/ARIDAMOTEC_TV_1.3.4.apk",
+  "downloadUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/ARIDAMOTEC_TV_1.3.4.apk",
   "changelog": "Badge e indicador dinámico de APKs nuevas (< 3 días), filtro minimalista [✨ Nuevas], autor Oficial/Modificado y retención de foco D-Pad anti-jump.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-17T00:00:00.670Z"
+  "updatedAt": "2026-11-17T00:01:54.334Z"
 }
