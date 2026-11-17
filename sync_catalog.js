@@ -18,6 +18,14 @@ function cleanApkName(fileName) {
   return name || fileName;
 }
 
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
 function detectAuthor(cleanName, fileName) {
   const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const combined = norm(cleanName) + ' ' + norm(fileName);
@@ -202,6 +210,10 @@ async function runSync() {
       existing.id = String(asset.id);
       existing.directDownloadUrl = downloadUrl;
       existing.directUrl = downloadUrl;
+      if (asset.size) {
+        existing.size = asset.size;
+        existing.sizeFormatted = formatBytes(asset.size);
+      }
       if (!existing.author) existing.author = detectAuthor(existing.cleanName, asset.name);
       updatedCatalog.push(existing);
     } else {
@@ -225,6 +237,8 @@ async function runSync() {
         directDownloadUrl: downloadUrl,
         editKey: browsy ? browsy.editKey : '',
         manageUrl: browsy ? browsy.manageUrl : '',
+        size: asset.size || (existing && existing.size) || null,
+        sizeFormatted: asset.size ? formatBytes(asset.size) : ((existing && existing.sizeFormatted) || null),
         status: 'active',
         createdAt: asset.created_at || new Date().toISOString(),
         aiDescription: desc,
