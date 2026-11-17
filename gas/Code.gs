@@ -20,10 +20,10 @@ const CONFIG = {
   SHEET_NAME: 'Control APKs y Códigos Browsy',
   APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
   GEMINI_API_KEY: '',
-  TV_APP_VERSION: '1.3.3',
-  TV_APP_VERSION_CODE: 7,
-  TV_APP_DOWNLOAD_URL: 'https://tdavid1515-bot.github.io/apks-aridamotec/ARIDAMOTEC_TV_1.3.3.apk',
-  TV_APP_CHANGELOG: 'Badge e indicador dinámico de APKs nuevas (< 3 días), filtro minimalista [✨ Nuevas], autor Oficial/Modificado y retención de foco D-Pad anti-jump.'
+  TV_APP_VERSION: '1.3.6',
+  TV_APP_VERSION_CODE: 10,
+  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.6.apk',
+  TV_APP_CHANGELOG: 'Sincronización instantánea de nuevos APKs en tiempo real, catálogo actualizado, corrección de caché para WSA/TV y tamaño en fichas.'
 };
 
 const SEED_APKS = [
