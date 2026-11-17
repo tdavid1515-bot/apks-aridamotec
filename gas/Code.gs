@@ -618,6 +618,50 @@ const SEED_APKS = [
   }
 ];
 
+function doPost(e) {
+  let postData = null;
+  try {
+    if (e && e.postData && e.postData.contents) {
+      postData = JSON.parse(e.postData.contents);
+    }
+  } catch (err) {
+    Logger.log('Error parseando JSON en doPost: ' + err);
+  }
+
+  // Manejar Webhooks de GitHub (Releases, assets, push o ping)
+  if (postData) {
+    Logger.log('GitHub Webhook recibido en doPost. Acción: ' + (postData.action || 'evento'));
+    try {
+      // 1. Ejecutar sincronización instantánea con GitHub Releases y actualizar la hoja
+      const syncResult = syncApks(CONFIG.ADMIN_PASSWORD, true);
+
+      // 2. Invalidar cachés para que las próximas consultas entreguen los datos frescos en el acto
+      const cache = CacheService.getScriptCache();
+      cache.remove('guest_catalog_cache_v3');
+      cache.remove('gh_repo_assets_v1');
+
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        source: 'github_webhook',
+        action: postData.action || 'release_event',
+        sync: syncResult,
+        timestamp: new Date().toISOString()
+      })).setMimeType(ContentService.MimeType.JSON);
+    } catch (eSync) {
+      Logger.log('Error procesando Webhook en syncApks: ' + eSync);
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: eSync.message
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({
+    success: false,
+    error: 'Payload vacío o no reconocido'
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
   if (e && e.parameter && e.parameter.action) {
     const act = e.parameter.action;
@@ -944,22 +988,160 @@ function overlaySheetMetadata(items) {
   return items;
 }
 
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
 function getGuestCatalog() {
+  const cache = CacheService.getScriptCache();
   try {
-    const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
-    const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
-    if (resp.getResponseCode() === 200) {
-      const parsed = JSON.parse(resp.getContentText());
-      if (parsed && Array.isArray(parsed.catalog)) {
-        const enriched = overlaySheetMetadata(parsed.catalog);
-        return { success: true, count: enriched.length, total: enriched.length, catalog: enriched };
+    const cached = cache.get('guest_catalog_cache_v3');
+    if (cached) {
+      return JSON.parse(cached);
+    }
+  } catch (eC) {
+    Logger.log('Error leyendo caché de catálogo: ' + eC);
+  }
+
+  let catalog = [];
+
+  // 1. Obtener la lista viva desde Google Sheets
+  try {
+    const sheet = getOrCreateSheet();
+    const data = sheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const status = String(row[8] || '').trim().toLowerCase();
+      if (status !== 'trash' && status !== 'deleted' && status !== 'deleted_from_repository') {
+        const cleanN = String(row[1] || '').trim();
+        const fileN = String(row[2] || '').trim();
+        const bCode = String(row[3] || '').trim();
+        const shortU = String(row[4] || '').trim();
+        const directU = String(row[5] || '').trim();
+        const desc = String(row[11] || '').trim();
+        const cat = String(row[12] || '').trim();
+        const auth = String(row[13] || '').trim();
+        const createdA = String(row[9] || '').trim();
+
+        if (fileN || cleanN) {
+          catalog.push({
+            id: String(row[0] || ''),
+            cleanName: cleanN || cleanApkName(fileN),
+            fileName: fileN,
+            browsyCode: bCode,
+            browsyShortUrl: shortU,
+            shortUrl: shortU,
+            directDownloadUrl: directU,
+            directUrl: directU,
+            status: 'active',
+            createdAt: createdA,
+            aiDescription: desc || getSemanticDescription(cleanN, fileN),
+            category: cat || classifyApkCategory(cleanN, fileN, desc),
+            author: auth || detectApkAuthor(cleanN, fileN),
+            size: 0,
+            sizeFormatted: ''
+          });
+        }
       }
     }
-  } catch (err) {
-    Logger.log('Error consultando catalog.json en GitHub: ' + err);
+  } catch (eSheet) {
+    Logger.log('Error leyendo hoja en getGuestCatalog: ' + eSheet);
   }
-  const enrichedSeed = overlaySheetMetadata(SEED_APKS);
-  return { success: true, count: enrichedSeed.length, total: enrichedSeed.length, catalog: enrichedSeed };
+
+  // 2. Si la hoja está vacía o falló, respaldo a catalog.json en GitHub
+  if (catalog.length === 0) {
+    try {
+      const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
+      const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+      if (resp.getResponseCode() === 200) {
+        const parsed = JSON.parse(resp.getContentText());
+        if (parsed && Array.isArray(parsed.catalog)) catalog = parsed.catalog;
+      }
+    } catch (eGh) {
+      Logger.log('Error consultando catalog.json de respaldo: ' + eGh);
+    }
+  }
+
+  // 3. Opción 2: Consulta Híbrida en Vivo con GitHub Releases
+  // Cruzar con los archivos reales existentes en GitHub Releases en este instante
+  try {
+    const liveFiles = getRepositoryFilesList(false);
+    if (liveFiles && liveFiles.length > 0) {
+      const catalogByFile = new Map();
+      catalog.forEach(item => {
+        if (item.fileName) catalogByFile.set(item.fileName.toLowerCase(), item);
+      });
+
+      const liveFileSet = new Set();
+      liveFiles.forEach(rf => {
+        const fnLower = (rf.name || '').toLowerCase();
+        liveFileSet.add(fnLower);
+
+        const existing = catalogByFile.get(fnLower);
+        if (existing) {
+          // Asignar el tamaño real en bytes y formateado si no lo tiene
+          if (rf.size) {
+            existing.size = rf.size;
+            existing.sizeFormatted = formatBytes(rf.size);
+          }
+          if (rf.downloadUrl && !existing.directDownloadUrl) {
+            existing.directDownloadUrl = rf.downloadUrl;
+            existing.directUrl = rf.downloadUrl;
+          }
+        } else {
+          // ¡Archivo recién subido a GitHub Releases! Añadirlo inmediatamente a la vista
+          const cName = cleanApkName(rf.name);
+          const newDesc = getSemanticDescription(cName, rf.name);
+          const newCat = classifyApkCategory(cName, rf.name, newDesc);
+          const newAuth = detectApkAuthor(cName, rf.name);
+          catalog.unshift({
+            id: String(rf.id),
+            cleanName: cName,
+            fileName: rf.name,
+            browsyCode: 'Pendiente',
+            browsyShortUrl: '',
+            shortUrl: '',
+            directDownloadUrl: rf.downloadUrl,
+            directUrl: rf.downloadUrl,
+            status: 'active',
+            createdAt: new Date().toISOString(),
+            aiDescription: newDesc,
+            category: newCat,
+            author: newAuth,
+            size: rf.size || 0,
+            sizeFormatted: formatBytes(rf.size || 0)
+          });
+        }
+      });
+
+      // Filtrar inmediatamente archivos que hayan sido eliminados de GitHub Releases
+      catalog = catalog.filter(it => it.fileName && liveFileSet.has(it.fileName.toLowerCase()));
+    }
+  } catch (eLive) {
+    Logger.log('Aviso: no se pudo cruzar en vivo con GitHub Releases: ' + eLive);
+  }
+
+  // Si aún sigue vacío, usar respaldo estático de emergencia
+  if (catalog.length === 0) {
+    catalog = overlaySheetMetadata(SEED_APKS);
+  }
+
+  const result = {
+    success: true,
+    count: catalog.length,
+    total: catalog.length,
+    catalog: catalog
+  };
+
+  try {
+    cache.put('guest_catalog_cache_v3', JSON.stringify(result), 30); // 30 segundos de frescura total
+  } catch (ePut) {}
+
+  return result;
 }
 
 function getOrCreateSheet() {

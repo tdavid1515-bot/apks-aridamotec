@@ -10,6 +10,8 @@ on:
       - '**.apk'
       - 'version.json'
   workflow_dispatch:
+  repository_dispatch:
+    types: [apk_upload, release_change]
   schedule:
     # Chequeo programado cada 5 minutos para detectar automáticamente inclusiones o borrados en GitHub Releases
     - cron: '*/5 * * * *'

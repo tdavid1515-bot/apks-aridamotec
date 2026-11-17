@@ -3426,12 +3426,12 @@
       .generateApkDescription(savedPwd, cleanName);
     }
 
-    async function triggerSync() {
+    async function triggerSync(silent = false) {
       const btn = document.getElementById('syncBtn');
       const icon = document.getElementById('syncIconText');
-      btn.disabled = true;
-      icon.innerHTML = '<span class="spinner"></span>';
-      showToast('🔍 Escaneando GitHub Releases en vivo...');
+      if (btn && !silent) btn.disabled = true;
+      if (icon && !silent) icon.innerHTML = '<span class="spinner"></span>';
+      if (!silent) showToast('🔍 Escaneando GitHub Releases en vivo...');
 
       try {
         // 1. Consultar directamente la API pública de GitHub Releases para ver archivos reales
@@ -3516,23 +3516,35 @@
           if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (GitHub Releases)';
         }
 
-        btn.disabled = false;
-        icon.textContent = '🔄';
+        if (btn) btn.disabled = false;
+        if (icon) icon.textContent = '🔄';
 
         if (newDetectedCount > 0) {
           showToast(`⚡ ¡Detectada(s) ${newDetectedCount} nueva(s) APK en GitHub! Mostrando en catálogo.`);
-        } else {
+        } else if (!silent) {
           showToast(`✅ Catálogo 100% sincronizado con GitHub Releases (${liveAssets.length || remoteCatalog.length} APKs).`);
         }
 
       } catch (err) {
         console.warn('Error en escaneo directo GitHub:', err);
-        btn.disabled = false;
-        icon.textContent = '🔄';
-        showToast('Error al conectar con GitHub Releases: ' + err.message, true);
+        if (btn) btn.disabled = false;
+        if (icon) icon.textContent = '🔄';
+        if (!silent) showToast('Error al conectar con GitHub Releases: ' + err.message, true);
         loadApks();
       }
     }
+
+    // Auto-sincronización silenciosa cada 45 segundos y al volver a la pestaña
+    if (!window.adminAutoSyncInterval) {
+      window.adminAutoSyncInterval = setInterval(() => {
+        if (!document.hidden && isLoggedIn) triggerSync(true);
+      }, 45000);
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && isLoggedIn) {
+        triggerSync(true);
+      }
+    });
 
     function generateCode(driveId) {
       showToast('Generando código en Browsy...');
