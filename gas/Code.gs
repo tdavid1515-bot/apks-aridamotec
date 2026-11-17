@@ -677,6 +677,14 @@ function doGet(e) {
     } else if (act === 'sheet') {
       const sheet = getOrCreateSheet();
       res = sheet.getDataRange().getValues();
+    } else if (act === 'sheetInfo') {
+      const ss = getSpreadsheet();
+      res = {
+        success: true,
+        id: ss.getId(),
+        name: ss.getName(),
+        url: ss.getUrl()
+      };
     } else if (act === 'sync') {
       res = syncApks(e.parameter.pwd, true);
     } else if (act === 'emptyTrash') {
@@ -1070,15 +1078,41 @@ function getGuestCatalog() {
   return result;
 }
 
-function getOrCreateSheet() {
-  const files = DriveApp.getFilesByName(CONFIG.SHEET_NAME);
-  let spreadsheet;
+function getSpreadsheet() {
+  const props = PropertiesService.getScriptProperties();
+  let ssId = props.getProperty('SPREADSHEET_ID');
+  let spreadsheet = null;
 
-  if (files.hasNext()) {
-    spreadsheet = SpreadsheetApp.open(files.next());
-  } else {
-    spreadsheet = SpreadsheetApp.create(CONFIG.SHEET_NAME);
+  if (ssId) {
+    try {
+      spreadsheet = SpreadsheetApp.openById(ssId);
+    } catch (e) {
+      Logger.log('Aviso: No se pudo abrir Spreadsheet por ID guardado (' + ssId + '): ' + e);
+      spreadsheet = null;
+    }
   }
+
+  if (!spreadsheet) {
+    const files = DriveApp.getFilesByName(CONFIG.SHEET_NAME);
+    if (files.hasNext()) {
+      const file = files.next();
+      spreadsheet = SpreadsheetApp.open(file);
+      try {
+        props.setProperty('SPREADSHEET_ID', file.getId());
+      } catch (eP) {}
+    } else {
+      spreadsheet = SpreadsheetApp.create(CONFIG.SHEET_NAME);
+      try {
+        props.setProperty('SPREADSHEET_ID', spreadsheet.getId());
+      } catch (eP) {}
+    }
+  }
+
+  return spreadsheet;
+}
+
+function getOrCreateSheet() {
+  const spreadsheet = getSpreadsheet();
 
   let sheet = spreadsheet.getSheetByName('APKs');
   if (!sheet) {
@@ -1995,13 +2029,7 @@ function classifyApkCategory(cleanName, fileName, desc) {
 // SISTEMA DE CONTROL DE ACCESO Y ACTIVACIÓN POR MAC (DISPOSITIVOS TV)
 // ============================================================================
 function getOrCreateMacSheet() {
-  const files = DriveApp.getFilesByName(CONFIG.SHEET_NAME);
-  let spreadsheet;
-  if (files.hasNext()) {
-    spreadsheet = SpreadsheetApp.open(files.next());
-  } else {
-    spreadsheet = SpreadsheetApp.create(CONFIG.SHEET_NAME);
-  }
+  const spreadsheet = getSpreadsheet();
 
   let sheet = spreadsheet.getSheetByName('Dispositivos_MAC');
   if (!sheet) {
