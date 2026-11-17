@@ -306,14 +306,6 @@ async function runSync() {
 
   console.log(`✅ Catálogo actualizado: ${updatedCatalog.length} APKs indexadas (${codesGenerated} códigos generados).`);
 
-  // Reconstruir páginas HTML (index.html y admin.html)
-  try {
-    console.log('🔨 Recompilando páginas web...');
-    execSync('node build.js', { stdio: 'inherit', cwd: __dirname });
-  } catch (errBuild) {
-    console.error('Error ejecutando build.js:', errBuild.message);
-  }
-
   // Sincronizar automáticamente version.json si hay un nuevo instalador oficial de la app
   try {
     if (latestTvName) {
@@ -322,9 +314,9 @@ async function runSync() {
       if (fs.existsSync(verPath)) {
         try { currentVer = JSON.parse(fs.readFileSync(verPath, 'utf8')); } catch (e) {}
       }
-      let vCode = currentVer.latestVersionCode || 7;
+      let vCode = currentVer.latestVersionCode || 9;
       if (currentVer.latestVersionName && currentVer.latestVersionName !== latestTvName) {
-        vCode = (currentVer.latestVersionCode || 7) + 1;
+        vCode = (currentVer.latestVersionCode || 9) + 1;
       }
       const versionData = {
         success: true,
@@ -345,6 +337,14 @@ async function runSync() {
     }
   } catch (eVer) {
     console.error('Error sincronizando version.json:', eVer.message);
+  }
+
+  // Reconstruir páginas HTML (index.html y admin.html) con la versión recién sincronizada
+  try {
+    console.log('🔨 Recompilando páginas web con versión actualizada...');
+    execSync('node build.js', { stdio: 'inherit', cwd: __dirname });
+  } catch (errBuild) {
+    console.error('Error ejecutando build.js:', errBuild.message);
   }
 }
 

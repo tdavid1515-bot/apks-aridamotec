@@ -305,12 +305,19 @@ app.post('/api/describe', requireAuth, (req, res) => {
 
 // Endpoint OTA de versión oficial de la APK de TV
 app.get('/api/app/version', (req, res) => {
+  const versionFile = path.join(__dirname, 'version.json');
+  if (fs.existsSync(versionFile)) {
+    try {
+      const vData = JSON.parse(fs.readFileSync(versionFile, 'utf8'));
+      return res.json(vData);
+    } catch (e) {}
+  }
   res.json({
     success: true,
-    latestVersionCode: 4,
-    latestVersionName: '1.3.0',
-    downloadUrl: 'https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.3.0/ARIDAMOTEC_TV_1.3.0.apk',
-    changelog: 'Corrección de selección y foco en categorías y tarjetas, motor dual OTA y activación por MAC.',
+    latestVersionCode: 9,
+    latestVersionName: '1.3.5',
+    downloadUrl: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.5.apk',
+    changelog: 'Descargas directas ultra-rápidas, botón cancelar descarga y optimizaciones de rendimiento.',
     minSupportedVersionCode: 1
   });
 });

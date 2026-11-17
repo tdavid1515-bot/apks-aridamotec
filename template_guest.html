@@ -781,8 +781,8 @@
         </div>
       </div>
       <div class="header-btns">
-        <a href="https://tdavid1515-bot.github.io/apks-aridamotec/ARIDAMOTEC_TV_1.3.2.apk" download="ARIDAMOTEC_TV_1.3.2.apk" class="btn-download-tv-app" title="Descargar instalador oficial para Android TV / TV Box">
-          📺 App Android TV (v1.3.2)
+        <a id="tvInstallerBtn" href="{{TV_APP_DOWNLOAD_URL}}" download class="btn-download-tv-app" title="Descargar instalador oficial para Android TV / TV Box (v{{TV_APP_VERSION}})">
+          📺 App Android TV (v<span id="tvInstallerVersion">{{TV_APP_VERSION}}</span>)
         </a>
         <button onclick="refreshCatalogManually()" class="btn-header" title="Actualizar catálogo">
           <span id="refreshIcon">🔄</span> Actualizar
@@ -1192,13 +1192,39 @@
         });
     }
 
+    function loadTvAppVersion() {
+      const btn = document.getElementById('tvInstallerBtn');
+      const span = document.getElementById('tvInstallerVersion');
+      if (!btn || !span) return;
+
+      const fetchLocal = () => fetch('version.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error('Local 404'); return r.json(); });
+      const fetchGAS = () => fetch(GAS_URL + '?action=appVersion&_t=' + Date.now()).then(r => { if (!r.ok) throw new Error('GAS ' + r.status); return r.json(); });
+      const fetchGH = () => fetch('https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/version.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error('GH ' + r.status); return r.json(); });
+
+      fetchLocal()
+        .catch(() => fetchGAS())
+        .catch(() => fetchGH())
+        .then(data => {
+          if (data && data.latestVersionName) {
+            const vName = data.latestVersionName;
+            const vUrl = data.downloadUrl || ('https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_' + vName + '.apk');
+            btn.href = vUrl;
+            span.textContent = vName;
+            btn.title = 'Descargar instalador oficial para Android TV / TV Box (v' + vName + ')';
+          }
+        })
+        .catch(err => console.warn('Nota: usando versión estática activa:', err));
+    }
+
     function refreshCatalogManually() {
       loadCatalog(true);
+      loadTvAppVersion();
     }
 
     function startSilentRefresh() {
       if (silentRefreshTimer) clearInterval(silentRefreshTimer);
       silentRefreshTimer = setInterval(() => {
+        loadTvAppVersion();
         fetch(GAS_URL + '?action=guest&_t=' + Date.now())
           .catch(() => fetch('catalog.json?t=' + Date.now()))
           .then(r => {
@@ -1229,6 +1255,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadCatalog(false);
+      loadTvAppVersion();
       startSilentRefresh();
     });
 
