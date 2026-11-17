@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 36,
-  "total": 36,
+  "count": 37,
+  "total": 37,
   "catalog": [
     {
       "id": "759604072",
@@ -79,6 +79,25 @@
       "editKey": "86qKjauK6FAB",
       "manageUrl": "https://browsy.app/manage?code=4368&key=86qKjauK6FAB",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/BIXPLUS_V2.apk"
+    },
+    {
+      "id": "760400474",
+      "cleanName": "Browsy 1 5 0 APKPure",
+      "fileName": "Browsy_1.5.0_APKPure.apk",
+      "browsyCode": "9373",
+      "shortUrl": "https://browsy.app/9373",
+      "browsyShortUrl": "https://browsy.app/9373",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.apk",
+      "editKey": "Hk7hapiBmZVz",
+      "manageUrl": "https://browsy.app/manage?code=9373&key=Hk7hapiBmZVz",
+      "size": 4492719,
+      "sizeFormatted": "4.3 MB",
+      "status": "active",
+      "createdAt": "2026-11-17T19:47:46Z",
+      "aiDescription": "Con esta aplicación podrás abrir enlaces web y descargar paquetes mediante códigos numéricos cortos en tu televisor.",
+      "category": "🛠️ Utilitarios",
+      "author": "Oficial"
     },
     {
       "id": "760178748",
@@ -190,7 +209,7 @@
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk"
     },
     {
-      "id": "753529004",
+      "id": "760444446",
       "fileName": "FlyStream.apk",
       "cleanName": "FlyStream (TV en Vivo)",
       "category": "🎬 Películas y Series",
@@ -199,8 +218,8 @@
       "browsyCode": "5866",
       "browsyShortUrl": "https://browsy.app/5866",
       "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/FlyStream.apk",
-      "size": 8577095,
-      "sizeFormatted": "8.2 MB",
+      "size": 9142416,
+      "sizeFormatted": "8.7 MB",
       "createdAt": "2026-11-16T05:04:25Z",
       "updatedAt": "2026-11-16T05:04:28Z",
       "status": "active",
@@ -524,7 +543,7 @@
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk"
     },
     {
-      "id": "753528905",
+      "id": "760444352",
       "fileName": "Watched.apk",
       "cleanName": "Watched Media Player",
       "category": "🎬 Películas y Series",
