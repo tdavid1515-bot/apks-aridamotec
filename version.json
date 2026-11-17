@@ -6,5 +6,5 @@
   "changelog": "• Sincronización instantánea de nuevos APKs en tiempo real.\n• Catálogo actualizado con las últimas aplicaciones añadidas.\n• Corrección de caché para Subsistema Windows (WSA) y Android TV.\n• Botón de cancelar descarga y tamaño en cada ficha.\n• Navegación mejorada con el mando hacia el botón de filtro Nuevas.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-17T16:42:38.328Z"
+  "updatedAt": "2026-11-17T17:34:19.000Z"
 }
