@@ -637,6 +637,7 @@ function doPost(e) {
 
       // 2. Invalidar cachés para que las próximas consultas entreguen los datos frescos en el acto
       const cache = CacheService.getScriptCache();
+      cache.remove('guest_catalog_cache_v4');
       cache.remove('guest_catalog_cache_v3');
       cache.remove('gh_repo_assets_v1');
 
@@ -1871,6 +1872,7 @@ function updateApkDescription(password, fileId, newDescription, fileName) {
   if (updated) {
     try {
       var cache = CacheService.getScriptCache();
+      cache.remove('guest_catalog_cache_v4');
       cache.remove('guest_catalog_cache_v3');
       cache.remove('gh_repo_assets_v1');
     } catch (eC) {}
@@ -2341,6 +2343,7 @@ function updateApkCategory(password, fileId, newCategory, fileName) {
   if (updated) {
     try {
       var cache = CacheService.getScriptCache();
+      cache.remove('guest_catalog_cache_v4');
       cache.remove('guest_catalog_cache_v3');
       cache.remove('gh_repo_assets_v1');
     } catch (eC) {}
