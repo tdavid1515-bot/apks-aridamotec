@@ -6,5 +6,5 @@
   "changelog": "• Calibración estricta y precisa de apps instaladas (cero falsos positivos con versiones o paquetes).\n• Sincronización instantánea en vivo con GitHub Releases al iniciar y en segundo plano.\n• Actualizaciones de categorías y catálogo sincronizadas en tiempo real.\n• Activación por MAC 100% automática e inmediata sin botones manuales.\n• Nuevo menú de filtros y orden (A-Z, Z-A, Tamaño, Solo instaladas, Novedades).\n• Retención exacta de foco en la tarjeta tras instalar una aplicación.\n• Logo oficial actualizado en miniatura y cabecera.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-18T03:16:56.251Z"
+  "updatedAt": "2026-11-18T03:19:06.072Z"
 }
