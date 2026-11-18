@@ -1,10 +1,10 @@
 {
   "success": true,
-  "latestVersionCode": 13,
-  "latestVersionName": "1.3.9",
-  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.9.apk",
-  "changelog": "• Calibración estricta y precisa de apps instaladas (cero falsos positivos con versiones o paquetes).\n• Sincronización instantánea en vivo con GitHub Releases al iniciar y en segundo plano.\n• Actualizaciones de categorías y catálogo sincronizadas en tiempo real.\n• Activación por MAC 100% automática e inmediata sin botones manuales.\n• Nuevo menú de filtros y orden (A-Z, Z-A, Tamaño, Solo instaladas, Novedades).\n• Retención exacta de foco en la tarjeta tras instalar una aplicación.\n• Logo oficial actualizado en miniatura y cabecera.",
+  "latestVersionCode": 14,
+  "latestVersionName": "1.4.0",
+  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.0.apk",
+  "changelog": "• Arquitectura de escáner 100% asíncrona: arranque instantáneo en 0.05s sin congelamiento ni pantallas negras (cero ANR).\n• Búsqueda ultrarrápida O(1) en memoria para detección real de apps instaladas.\n• Cero falsos positivos en paquetes del sistema y cruce exacto de versiones.\n• Sincronización instantánea en vivo con GitHub Releases y Google Sheets.\n• Activación por MAC automática e inmediata.\n• Menú completo de filtros (A-Z, Z-A, Tamaño, Solo instaladas, Novedades).\n• Retención precisa del foco en la tarjeta tras instalar.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-18T03:40:52.640Z"
+  "updatedAt": "2026-11-18T04:26:42.599Z"
 }
