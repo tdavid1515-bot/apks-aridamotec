@@ -1163,6 +1163,36 @@
           });
       };
 
+      // Validación en vivo contra GitHub Releases para reflejo instantáneo de altas y bajas
+      const verifyLiveReleases = async (catalogList) => {
+        try {
+          const ghRes = await fetch('https://api.github.com/repos/tdavid1515-bot/apks-aridamotec/releases?per_page=100', {
+            headers: { 'Accept': 'application/vnd.github.v3+json' }
+          });
+          if (ghRes.ok) {
+            const ghData = await ghRes.json();
+            const releases = Array.isArray(ghData) ? ghData : [ghData];
+            const liveNames = new Set();
+            for (const rel of releases) {
+              if (rel && Array.isArray(rel.assets)) {
+                for (const a of rel.assets) {
+                  const fn = (a.name || '').toLowerCase();
+                  if ((fn.endsWith('.apk') || fn.endsWith('.xapk')) && !fn.startsWith('aridamotec_tv')) {
+                    liveNames.add(fn);
+                  }
+                }
+              }
+            }
+            if (liveNames.size > 0) {
+              return catalogList.filter(item => item.fileName && liveNames.has(item.fileName.toLowerCase()));
+            }
+          }
+        } catch (e) {
+          console.warn('Nota: validación live release no disponible:', e);
+        }
+        return catalogList;
+      };
+
       fetchGAS()
         .catch(errGas => {
           console.warn('Consulta directa GAS falló, consultando CDN de respaldo:', errGas);
@@ -1173,12 +1203,23 @@
           if (icon) icon.style.animation = '';
 
           if (res && (res.success || Array.isArray(res.catalog))) {
-            catalogData = res.catalog || [];
+            const rawCatalog = res.catalog || [];
+            catalogData = rawCatalog;
             document.getElementById('statusInfo').textContent = 'Catálogo actualizado';
             document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
             renderCategoryChips();
             drawCards();
             if (isManual) showToast('¡Catálogo sincronizado exitosamente (' + catalogData.length + ' apps)!');
+
+            // Confirmación instantánea en vivo contra GitHub Releases
+            verifyLiveReleases(rawCatalog).then(filtered => {
+              if (filtered && filtered.length !== catalogData.length) {
+                catalogData = filtered;
+                document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
+                renderCategoryChips();
+                drawCards();
+              }
+            });
           } else {
             throw new Error('Respuesta inválida');
           }
@@ -1234,13 +1275,15 @@
           .then(res => {
             if (res && (res.success || Array.isArray(res.catalog))) {
               const fresh = res.catalog || [];
-              if (getCatalogSignature(fresh) !== getCatalogSignature(catalogData)) {
-                catalogData = fresh;
-                document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
-                renderCategoryChips();
-                drawCards();
-                showToast('Catálogo actualizado automáticamente');
-              }
+              verifyLiveReleases(fresh).then(verifiedFresh => {
+                if (getCatalogSignature(verifiedFresh) !== getCatalogSignature(catalogData)) {
+                  catalogData = verifiedFresh;
+                  document.getElementById('statusCounter').textContent = 'Total: ' + catalogData.length + ' aplicaciones disponibles';
+                  renderCategoryChips();
+                  drawCards();
+                  showToast('Catálogo actualizado automáticamente');
+                }
+              });
             }
           })
           .catch(() => {});

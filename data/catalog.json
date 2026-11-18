@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 36,
-  "total": 36,
+  "count": 35,
+  "total": 35,
   "catalog": [
     {
       "id": "759604072",
@@ -377,24 +377,6 @@
       "status": "active",
       "shortUrl": "https://browsy.app/2270",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PLayer_Pro_base.2.apk"
-    },
-    {
-      "id": "745643792",
-      "fileName": "PlayTV_Premium_20.1.apk",
-      "cleanName": "PlayTV Premium 20.1",
-      "category": "📺 TV en Vivo",
-      "author": "PlayTV Stream",
-      "aiDescription": "Con esta aplicación podrás disfrutar de una gran variedad de canales en vivo y entretenimiento prémium.",
-      "browsyCode": "3114",
-      "browsyShortUrl": "https://browsy.app/3114",
-      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PlayTV_Premium_20.1.apk",
-      "size": 12213247,
-      "sizeFormatted": "11.6 MB",
-      "createdAt": "2026-11-13T23:57:26Z",
-      "updatedAt": "2026-11-13T23:57:42Z",
-      "status": "active",
-      "shortUrl": "https://browsy.app/3114",
-      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PlayTV_Premium_20.1.apk"
     },
     {
       "id": "745644418",

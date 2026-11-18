@@ -1033,6 +1033,17 @@ function getUnifiedCatalogList() {
     catalog = SEED_APKS.slice();
   }
 
+  // Filtrado estricto en tiempo real contra los archivos existentes en GitHub Releases (SSOT)
+  try {
+    const liveFiles = getRepositoryFilesList(false);
+    if (liveFiles && liveFiles.length > 0) {
+      const liveSet = new Set(liveFiles.map(f => (f.name || f.fileName || '').toLowerCase()));
+      catalog = catalog.filter(item => item.fileName && liveSet.has(item.fileName.toLowerCase()));
+    }
+  } catch (errLive) {
+    Logger.log('Aviso: Falló filtrado live de releases en getUnifiedCatalogList: ' + errLive);
+  }
+
   // 1. Superponer metadatos de Google Sheets (categoría, descripción, códigos)
   const enriched = overlaySheetMetadata(catalog);
 
@@ -1054,7 +1065,7 @@ function getUnifiedCatalogList() {
 function getGuestCatalog() {
   const cache = CacheService.getScriptCache();
   try {
-    const cached = cache.get('guest_catalog_cache_v3');
+    const cached = cache.get('guest_catalog_cache_v4');
     if (cached) {
       return JSON.parse(cached);
     }
@@ -1072,7 +1083,7 @@ function getGuestCatalog() {
   };
 
   try {
-    cache.put('guest_catalog_cache_v3', JSON.stringify(result), 30); // 30 segundos
+    cache.put('guest_catalog_cache_v4', JSON.stringify(result), 15); // 15 segundos
   } catch (ePut) {}
 
   return result;
