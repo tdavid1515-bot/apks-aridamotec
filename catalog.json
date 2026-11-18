@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 35,
-  "total": 35,
+  "count": 37,
+  "total": 37,
   "catalog": [
     {
       "id": "759604072",
@@ -97,6 +97,25 @@
       "createdAt": "2026-11-17T19:47:46Z",
       "aiDescription": "Con esta aplicación podrás abrir enlaces web y descargar paquetes mediante códigos numéricos cortos en tu televisor.",
       "category": "🛠️ Utilitarios",
+      "author": "Oficial"
+    },
+    {
+      "id": "761731949",
+      "cleanName": "Button Mapper v4 15 Premium",
+      "fileName": "Button.Mapper.v4.15.Premium.apk",
+      "browsyCode": "7203",
+      "shortUrl": "https://browsy.app/7203",
+      "browsyShortUrl": "https://browsy.app/7203",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Button.Mapper.v4.15.Premium.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Button.Mapper.v4.15.Premium.apk",
+      "editKey": "R5T85bhUSDPc",
+      "manageUrl": "https://browsy.app/manage?code=7203&key=R5T85bhUSDPc",
+      "size": 6497953,
+      "sizeFormatted": "6.2 MB",
+      "status": "active",
+      "createdAt": "2026-11-18T03:32:21Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
       "author": "Oficial"
     },
     {
@@ -506,6 +525,25 @@
       "editKey": "U7NsoPTqYkfQ",
       "manageUrl": "https://browsy.app/manage?code=3893&key=U7NsoPTqYkfQ",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk"
+    },
+    {
+      "id": "761731600",
+      "cleanName": "tvQuickActions Pro v3 7 0 Modded",
+      "fileName": "tvQuickActions.Pro.v3.7.0.Modded.apk",
+      "browsyCode": "3145",
+      "shortUrl": "https://browsy.app/3145",
+      "browsyShortUrl": "https://browsy.app/3145",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/tvQuickActions.Pro.v3.7.0.Modded.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/tvQuickActions.Pro.v3.7.0.Modded.apk",
+      "editKey": "8AZLkzppyx8C",
+      "manageUrl": "https://browsy.app/manage?code=3145&key=8AZLkzppyx8C",
+      "size": 49330886,
+      "sizeFormatted": "47 MB",
+      "status": "active",
+      "createdAt": "2026-11-18T03:32:13Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
     },
     {
       "id": "760444352",
