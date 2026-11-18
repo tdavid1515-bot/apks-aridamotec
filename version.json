@@ -6,5 +6,5 @@
   "changelog": "• Nuevo logo oficial de la aplicación en miniatura y banner TV Leanback 16:9.\n• Botón de ordenar y filtros integrado con márgenes perfectos (Nombre A-Z/Z-A, Menor/Mayor peso, Solo instaladas, Novedades).\n• Eliminado botón redundante de nuevas y badge Disponible en tarjetas.\n• Detección real de aplicaciones instaladas cruzadas con el repositorio.\n• Retención precisa del foco en la tarjeta tras finalizar la instalación.\n• Activación por MAC 100% automática en tiempo real al detectar autorización en el panel admin.\n• Arranque directo con datos recientes y verificación de revocación de MAC en SplashActivity.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-18T01:50:12.736Z"
+  "updatedAt": "2026-11-18T01:57:33.157Z"
 }
