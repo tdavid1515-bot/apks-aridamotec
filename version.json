@@ -1,9 +1,9 @@
 {
   "success": true,
-  "latestVersionCode": 10,
-  "latestVersionName": "1.3.6",
-  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.6.apk",
-  "changelog": "• Sincronización instantánea de nuevos APKs en tiempo real.\n• Catálogo actualizado con las últimas aplicaciones añadidas.\n• Corrección de caché para Subsistema Windows (WSA) y Android TV.\n• Botón de cancelar descarga y tamaño en cada ficha.\n• Navegación mejorada con el mando hacia el botón de filtro Nuevas.",
+  "latestVersionCode": 11,
+  "latestVersionName": "1.3.7",
+  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.7.apk",
+  "changelog": "• Nuevo logo oficial en miniatura y banner Leanback 16:9.\n• Corrección de alineación y márgenes del botón de filtro en TV.\n• Nuevo selector de ordenamiento y filtros avanzados (Nombre A-Z/Z-A, Menor/Mayor peso, Solo instaladas).\n• Retención inteligente de foco en la tarjeta tras finalizar instalación.\n• Activación por MAC 100% automática en tiempo real sin pulsar botones.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
   "updatedAt": "2026-11-17T23:26:42.825Z"
