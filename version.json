@@ -1,10 +1,10 @@
 {
   "success": true,
-  "latestVersionCode": 11,
-  "latestVersionName": "1.3.7",
-  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.7.apk",
-  "changelog": "• Nuevo logo oficial en miniatura y banner Leanback 16:9.\n• Corrección de alineación y márgenes del botón de filtro en TV.\n• Nuevo selector de ordenamiento y filtros avanzados (Nombre A-Z/Z-A, Menor/Mayor peso, Solo instaladas).\n• Retención inteligente de foco en la tarjeta tras finalizar instalación.\n• Activación por MAC 100% automática en tiempo real sin pulsar botones.",
+  "latestVersionCode": 12,
+  "latestVersionName": "1.3.8",
+  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.8.apk",
+  "changelog": "• Nuevo logo oficial de la aplicación en miniatura y banner TV Leanback 16:9.\n• Botón de ordenar y filtros integrado con márgenes perfectos (Nombre A-Z/Z-A, Menor/Mayor peso, Solo instaladas, Novedades).\n• Eliminado botón redundante de nuevas y badge Disponible en tarjetas.\n• Detección real de aplicaciones instaladas cruzadas con el repositorio.\n• Retención precisa del foco en la tarjeta tras finalizar la instalación.\n• Activación por MAC 100% automática en tiempo real al detectar autorización en el panel admin.\n• Arranque directo con datos recientes y verificación de revocación de MAC en SplashActivity.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-18T00:22:03.024Z"
+  "updatedAt": "2026-11-18T01:20:00.000Z"
 }

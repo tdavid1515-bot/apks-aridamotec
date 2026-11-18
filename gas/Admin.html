@@ -11,6 +11,7 @@
         var pwd = localStorage.getItem('arida_pwd') || sessionStorage.getItem('arida_pwd');
         if (pwd) {
           document.documentElement.classList.add('has-saved-session');
+          document.write('<style>#loginScreen{display:none !important;}</style>');
         }
       } catch(e) {}
     })();
@@ -2450,7 +2451,7 @@
     
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec';
 
-    // Safe Google Apps Script RPC runner (protects against sandbox scope isolation and supports GitHub Pages via fetch)
+    // Safe Google Apps Script RPC runner (isolated instances per call to prevent race conditions on GitHub Pages)
     function getGas() {
       if (typeof window !== 'undefined' && window.google && window.google.script && window.google.script.run) {
         return window.google.script.run;
@@ -2461,68 +2462,72 @@
         }
       } catch (e) {}
 
-      // Adaptador universal para GitHub Pages (CORS fetch directo a Google Apps Script)
-      return {
-        _success: null,
-        _failure: null,
-        withSuccessHandler(cb) { this._success = cb; return this; },
-        withFailureHandler(cb) { this._failure = cb; return this; },
+      // Adaptador universal para GitHub Pages (cada llamada tiene su propio handler independiente)
+      class GasCallAdapter {
+        constructor() {
+          this._success = null;
+          this._failure = null;
+        }
+        withSuccessHandler(cb) { this._success = cb; return this; }
+        withFailureHandler(cb) { this._failure = cb; return this; }
         _call(url) {
+          const s = this._success;
+          const f = this._failure;
           fetch(url)
             .then(r => r.json())
-            .then(data => { if (this._success) this._success(data); })
-            .catch(err => { if (this._failure) this._failure(err); });
-        },
+            .then(data => { if (s) s(data); })
+            .catch(err => { if (f) f(err); });
+        }
         getGuestCatalog() {
           this._call(GAS_URL + '?action=guest');
-        },
+        }
         getApksList(pwd) {
           this._call(GAS_URL + '?action=apks&pwd=' + encodeURIComponent(pwd));
-        },
+        }
         syncApks(pwd) {
           this._call(GAS_URL + '?action=sync&pwd=' + encodeURIComponent(pwd));
-        },
+        }
         emptyTrash(pwd) {
           this._call(GAS_URL + '?action=emptyTrash&pwd=' + encodeURIComponent(pwd));
-        },
+        }
         restoreApk(pwd, fileId) {
           this._call(GAS_URL + '?action=restore&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
-        },
+        }
         restoreAllDeleted(pwd) {
           this._call(GAS_URL + '?action=restoreAll&pwd=' + encodeURIComponent(pwd));
-        },
+        }
         deletePermanently(pwd, fileId) {
           this._call(GAS_URL + '?action=deletePermanent&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
-        },
+        }
         updateApkDescription(pwd, fileId, desc, fileName) {
           let u = GAS_URL + '?action=updateDesc&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&desc=' + encodeURIComponent(desc);
           if (fileName) u += '&fileName=' + encodeURIComponent(fileName);
           this._call(u);
-        },
+        }
         generateCodeForSingleApk(pwd, fileId) {
           this._call(GAS_URL + '?action=generateCode&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId));
-        },
+        }
         setSyncInterval(pwd, mins) {
           this._call(GAS_URL + '?action=interval&pwd=' + encodeURIComponent(pwd) + '&mins=' + encodeURIComponent(mins));
-        },
+        }
         generateApkDescription(pwd, name) {
           this._call(GAS_URL + '?action=describe&pwd=' + encodeURIComponent(pwd) + '&name=' + encodeURIComponent(name));
-        },
+        }
         requestPasswordRecovery() {
           this._call(GAS_URL + '?action=recoveryRequest');
-        },
+        }
         verifyRecoveryCode(otp) {
           this._call(GAS_URL + '?action=recoveryVerify&otp=' + encodeURIComponent(otp));
-        },
+        }
         resetAdminPassword(token, newPwd) {
           this._call(GAS_URL + '?action=recoveryReset&token=' + encodeURIComponent(token) + '&newPwd=' + encodeURIComponent(newPwd));
-        },
+        }
         getMacList(pwd) {
           this._call(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(pwd));
-        },
+        }
         getMacDevicesList(pwd) {
           this._call(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(pwd));
-        },
+        }
         saveMac(pwd, data) {
           let q = '&mac=' + encodeURIComponent(data.mac || '') +
                   '&client=' + encodeURIComponent(data.client || '') +
@@ -2530,31 +2535,32 @@
                   '&status=' + encodeURIComponent(data.status || '') +
                   '&notes=' + encodeURIComponent(data.notes || '');
           this._call(GAS_URL + '?action=saveMac&pwd=' + encodeURIComponent(pwd) + q);
-        },
+        }
         saveOrUpdateMac(pwd, data) {
           return this.saveMac(pwd, data);
-        },
+        }
         toggleMac(pwd, mac, status) {
           this._call(GAS_URL + '?action=toggleMac&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac) + '&status=' + encodeURIComponent(status));
-        },
+        }
         toggleMacStatus(pwd, mac, status) {
           return this.toggleMac(pwd, mac, status);
-        },
+        }
         deleteMac(pwd, mac) {
           this._call(GAS_URL + '?action=deleteMac&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac));
-        },
+        }
         deleteMacDevice(pwd, mac) {
           return this.deleteMac(pwd, mac);
-        },
+        }
         updateCategory(pwd, fileId, category, fileName) {
           let u = GAS_URL + '?action=updateCategory&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId) + '&category=' + encodeURIComponent(category);
           if (fileName) u += '&fileName=' + encodeURIComponent(fileName);
           this._call(u);
-        },
+        }
         deduplicate(pwd) {
           this._call(GAS_URL + '?action=deduplicate&pwd=' + encodeURIComponent(pwd));
         }
-      };
+      }
+      return new GasCallAdapter();
     }
     // Safe storage wrapper to prevent DOMException in sandboxed iframes
     const safeStorage = {
@@ -2871,7 +2877,9 @@
       const localDesc = localSavedDescriptions[assignedId] || (fileName && localSavedDescriptions[fileName.toLowerCase()]);
       if (localDesc) desc = localDesc;
 
-      const localCat = localSavedCategories[assignedId] || (fileName && localSavedCategories[fileName.toLowerCase()]);
+      const localCat = localSavedCategories[assignedId] || 
+                       localSavedCategories[assignedId.toLowerCase()] || 
+                       (fileName && (localSavedCategories[fileName] || localSavedCategories[fileName.toLowerCase()]));
       if (localCat) cat = localCat;
 
       return {
@@ -3110,7 +3118,7 @@
     }
 
     
-    function changeApkCategory(fileId, newCategory, ev) {
+    function changeApkCategory(fileId, newCategory, ev, directFileName) {
       if (!savedPwd) {
         showToast('Sesión no válida', true);
         return;
@@ -3119,47 +3127,54 @@
       if (selectElem) selectElem.disabled = true;
       showToast('Actualizando categoría a ' + newCategory + '...');
 
-      const gas = getGas();
       const allItems = [...(apksData.active || []), ...(apksData.deleted || [])];
       const targetItem = allItems.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
-      const fileName = targetItem ? targetItem.fileName : '';
+      const fileName = directFileName || (targetItem ? targetItem.fileName : '');
 
       const updateLocal = (list) => {
         if (!Array.isArray(list)) return;
-        const found = list.find(x => String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || String(x.fileName) === String(fileId));
-        if (found) found.category = newCategory;
+        list.forEach(x => {
+          if (String(x.driveFileId) === String(fileId) || String(x.id) === String(fileId) || (fileName && String(x.fileName).toLowerCase() === fileName.toLowerCase())) {
+            x.category = newCategory;
+          }
+        });
       };
       updateLocal(apksData.active);
       updateLocal(apksData.deleted);
       if (targetItem) targetItem.category = newCategory;
 
       localSavedCategories[fileId] = newCategory;
-      if (fileName) localSavedCategories[fileName.toLowerCase()] = newCategory;
+      localSavedCategories[String(fileId).toLowerCase()] = newCategory;
+      if (fileName) {
+        localSavedCategories[fileName] = newCategory;
+        localSavedCategories[fileName.toLowerCase()] = newCategory;
+      }
       try {
         safeStorage.setItem('arida_saved_categories', JSON.stringify(localSavedCategories));
       } catch (e) {}
 
+      renderAdminCategoryChips();
+      drawCards();
+
       const onComplete = (res) => {
         if (selectElem) selectElem.disabled = false;
         if (res && res.success) {
-          showToast('✅ Categoría actualizada: ' + newCategory);
-          renderAdminCategoryChips();
-          drawCards();
+          showToast('✅ Categoría guardada: ' + newCategory);
         } else {
-          showToast('Error: ' + (res ? res.error : 'No se pudo actualizar'), true);
+          showToast('Aviso: Guardada localmente (' + (res ? res.error : 'Sin respuesta') + ')', true);
         }
       };
 
+      const gas = getGas();
       if (gas && typeof gas.withSuccessHandler === 'function') {
         try {
-          const h = gas.withSuccessHandler(onComplete).withFailureHandler(err => {
-            if (selectElem) selectElem.disabled = false;
-            showToast('Error de red: ' + (err.message || err), true);
-          });
-          if (typeof h.updateCategory === 'function') {
-            h.updateCategory(savedPwd, fileId, newCategory, fileName);
-            return;
-          }
+          gas.withSuccessHandler(onComplete)
+             .withFailureHandler(err => {
+               if (selectElem) selectElem.disabled = false;
+               showToast('Guardada localmente (servidor tardó)', true);
+             })
+             .updateCategory(savedPwd, fileId, newCategory, fileName);
+          return;
         } catch (e) {}
       }
 
@@ -3168,7 +3183,7 @@
         .then(onComplete)
         .catch(err => {
           if (selectElem) selectElem.disabled = false;
-          showToast('Error al conectar con el servidor', true);
+          showToast('Guardada localmente', true);
         });
     }
   
@@ -3256,7 +3271,7 @@
               </div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
                 <span class="badge-status badge-act">Activo</span>
-                <select class="admin-cat-select" onchange="changeApkCategory('${escapeJs(it.driveFileId)}', this.value, event)" title="Reasignar categoría">
+                <select class="admin-cat-select" onchange="changeApkCategory('${escapeJs(it.driveFileId)}', this.value, event, '${escapeJs(it.fileName)}')" title="Reasignar categoría">
                   <option value="📺 TV en Vivo" ${(it.category === '📺 TV en Vivo') ? 'selected' : ''}>📺 TV en Vivo</option>
                   <option value="⚽ Deportes" ${(it.category === '⚽ Deportes') ? 'selected' : ''}>⚽ Deportes</option>
                   <option value="🎬 Películas y Series" ${(it.category === '🎬 Películas y Series') ? 'selected' : ''}>🎬 Películas y Series</option>
@@ -3592,17 +3607,7 @@
       }
     }
 
-    // Auto-sincronización silenciosa cada 45 segundos y al volver a la pestaña
-    if (!window.adminAutoSyncInterval) {
-      window.adminAutoSyncInterval = setInterval(() => {
-        if (!document.hidden && isLoggedIn) triggerSync(true);
-      }, 45000);
-    }
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && isLoggedIn) {
-        triggerSync(true);
-      }
-    });
+
 
     function generateCode(driveId) {
       showToast('Generando código en Browsy...');
@@ -4011,12 +4016,12 @@
       }
     });
 
-    // Auto-actualización periódica en segundo plano cada 25 segundos para administrador con sincronización en vivo
+    // Auto-actualización periódica en segundo plano cada 60 segundos para administrador con sincronización en vivo
     setInterval(() => {
       if (savedPwd && !document.hidden) {
         triggerSync(true);
       }
-    }, 25000);
+    }, 60000);
 
     function enterGuestMode() {
       isGuestMode = true;

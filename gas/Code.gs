@@ -20,9 +20,9 @@ const CONFIG = {
   SHEET_NAME: 'Control APKs y Códigos Browsy',
   APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
   GEMINI_API_KEY: '',
-  TV_APP_VERSION: '1.3.7',
-  TV_APP_VERSION_CODE: 11,
-  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.7.apk',
+  TV_APP_VERSION: '1.3.8',
+  TV_APP_VERSION_CODE: 12,
+  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.3.8.apk',
   TV_APP_CHANGELOG: 'Nuevo logo miniatura oficial, nuevos filtros por nombre y peso, foco estable tras instalar y activación MAC 100% automática.'
 };
 
@@ -2399,8 +2399,8 @@ function deduplicateSheetRows(password) {
   return { success: true, removedCount: rowsToDelete.length, message: 'Deduplicación completada con éxito' };
 }
 
-function updateCategory(password, fileId, category) {
-  return updateApkCategory(password, fileId, category);
+function updateCategory(password, fileId, category, fileName) {
+  return updateApkCategory(password, fileId, category, fileName);
 }
 
 function deduplicate(password) {
