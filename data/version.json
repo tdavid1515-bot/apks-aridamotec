@@ -6,5 +6,5 @@
   "changelog": "• Arquitectura de escáner 100% asíncrona: arranque instantáneo en 0.05s sin congelamiento ni pantallas negras (cero ANR).\n• Búsqueda ultrarrápida O(1) en memoria para detección real de apps instaladas.\n• Cero falsos positivos en paquetes del sistema y cruce exacto de versiones.\n• Sincronización instantánea en vivo con GitHub Releases y Google Sheets.\n• Activación por MAC automática e inmediata.\n• Menú completo de filtros (A-Z, Z-A, Tamaño, Solo instaladas, Novedades).\n• Retención precisa del foco en la tarjeta tras instalar.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-21T04:21:48.045Z"
+  "updatedAt": "2026-11-21T05:24:54.998Z"
 }

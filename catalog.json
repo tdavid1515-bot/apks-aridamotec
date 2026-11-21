@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 37,
-  "total": 37,
+  "count": 40,
+  "total": 40,
   "catalog": [
     {
       "id": "759604072",
@@ -174,6 +174,25 @@
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/com.wireguard.android-1.0.20260315.apk"
     },
     {
+      "id": "774406570",
+      "cleanName": "CrexiFy TV",
+      "fileName": "CrexiFy_TV.apk",
+      "browsyCode": "7761",
+      "shortUrl": "https://browsy.app/7761",
+      "browsyShortUrl": "https://browsy.app/7761",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CrexiFy_TV.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CrexiFy_TV.apk",
+      "editKey": "axAMg3vJCtLd",
+      "manageUrl": "https://browsy.app/manage?code=7761&key=axAMg3vJCtLd",
+      "size": 10418793,
+      "sizeFormatted": "9.9 MB",
+      "status": "active",
+      "createdAt": "2026-11-21T04:25:46Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
+    },
+    {
       "id": "745634574",
       "fileName": "CricZ.TV.v7.3.apk",
       "cleanName": "CricZ TV Deportes",
@@ -265,6 +284,44 @@
       "status": "active",
       "shortUrl": "https://browsy.app/4584",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GeeSports_.v3.9.apk"
+    },
+    {
+      "id": "774404894",
+      "cleanName": "GoPlusTV 4 4 0 Fix ModByNF",
+      "fileName": "GoPlusTV-4.4.0-Fix-ModByNF.apk",
+      "browsyCode": "4212",
+      "shortUrl": "https://browsy.app/4212",
+      "browsyShortUrl": "https://browsy.app/4212",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GoPlusTV-4.4.0-Fix-ModByNF.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GoPlusTV-4.4.0-Fix-ModByNF.apk",
+      "editKey": "WTKQMrHcJhoh",
+      "manageUrl": "https://browsy.app/manage?code=4212&key=WTKQMrHcJhoh",
+      "size": 71741348,
+      "sizeFormatted": "68.4 MB",
+      "status": "active",
+      "createdAt": "2026-11-21T04:25:01Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "ModByNF"
+    },
+    {
+      "id": "774405282",
+      "cleanName": "GoPlusTV 4 4 0 Vip 404 ModByNF",
+      "fileName": "GoPlusTV-4.4.0-Vip-404-ModByNF.apk",
+      "browsyCode": "1617",
+      "shortUrl": "https://browsy.app/1617",
+      "browsyShortUrl": "https://browsy.app/1617",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GoPlusTV-4.4.0-Vip-404-ModByNF.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GoPlusTV-4.4.0-Vip-404-ModByNF.apk",
+      "editKey": "d9DtL9e2nYiW",
+      "manageUrl": "https://browsy.app/manage?code=1617&key=d9DtL9e2nYiW",
+      "size": 48575574,
+      "sizeFormatted": "46.3 MB",
+      "status": "active",
+      "createdAt": "2026-11-21T04:25:12Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "ModByNF"
     },
     {
       "id": "745635705",
