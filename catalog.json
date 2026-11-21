@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 40,
-  "total": 40,
+  "count": 43,
+  "total": 43,
   "catalog": [
     {
       "id": "759604072",
@@ -209,6 +209,25 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9985",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk"
+    },
+    {
+      "id": "776984319",
+      "cleanName": "Cx File Explorer v2 8 1 Premium",
+      "fileName": "Cx.File.Explorer.v2.8.1.Premium.apk",
+      "browsyCode": "8287",
+      "shortUrl": "https://browsy.app/8287",
+      "browsyShortUrl": "https://browsy.app/8287",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Cx.File.Explorer.v2.8.1.Premium.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Cx.File.Explorer.v2.8.1.Premium.apk",
+      "editKey": "eTKFLx9phEgv",
+      "manageUrl": "https://browsy.app/manage?code=8287&key=eTKFLx9phEgv",
+      "size": 11850435,
+      "sizeFormatted": "11.3 MB",
+      "status": "active",
+      "createdAt": "2026-11-21T21:54:28Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
     },
     {
       "id": "760912286",
@@ -492,6 +511,25 @@
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RBTV.apk"
     },
     {
+      "id": "776984555",
+      "cleanName": "RetroJuegos v1 1",
+      "fileName": "RetroJuegos.v1.1.apk",
+      "browsyCode": "6758",
+      "shortUrl": "https://browsy.app/6758",
+      "browsyShortUrl": "https://browsy.app/6758",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RetroJuegos.v1.1.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RetroJuegos.v1.1.apk",
+      "editKey": "VtT4a4SWPmH5",
+      "manageUrl": "https://browsy.app/manage?code=6758&key=VtT4a4SWPmH5",
+      "size": 60079702,
+      "sizeFormatted": "57.3 MB",
+      "status": "active",
+      "createdAt": "2026-11-21T21:54:34Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
+    },
+    {
       "id": "745645044",
       "fileName": "SPORTV_3.9.VIP.apk",
       "cleanName": "SPORTV 3.9 VIP (Deportes)",
@@ -658,6 +696,25 @@
       "status": "active",
       "shortUrl": "https://browsy.app/7242",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Wolf.Launcher.0.1.9.apk"
+    },
+    {
+      "id": "776984108",
+      "cleanName": "X plore v4 53 05 Premium",
+      "fileName": "X-plore.v4.53.05.Premium.apk",
+      "browsyCode": "8036",
+      "shortUrl": "https://browsy.app/8036",
+      "browsyShortUrl": "https://browsy.app/8036",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/X-plore.v4.53.05.Premium.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/X-plore.v4.53.05.Premium.apk",
+      "editKey": "d3yU7sV7dB6R",
+      "manageUrl": "https://browsy.app/manage?code=8036&key=d3yU7sV7dB6R",
+      "size": 15252711,
+      "sizeFormatted": "14.5 MB",
+      "status": "active",
+      "createdAt": "2026-11-21T21:54:21Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
     },
     {
       "id": "753545640",
