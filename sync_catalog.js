@@ -99,6 +99,8 @@ function getContextualDescription(cleanName, fileName, category) {
   if (combined.includes('geesports')) return 'Cobertura y streaming en vivo de eventos deportivos internacionales, fútbol y canales prémium.';
   if (combined.includes('sportv')) return 'Canales deportivos prémium en directo para disfrutar de ligas de fútbol, campeonatos y torneos en tu televisor.';
   if (combined.includes('sportz')) return 'Plataforma multideportiva para disfrutar de transmisiones en directo de fútbol, baloncesto y eventos deportivos.';
+  if (combined.includes('x_sports') || combined.includes('xsports') || (combined.includes('sports') && combined.includes('x-'))) return 'Plataforma deportiva prémium para Android TV con transmisiones en directo de fútbol internacional, boxeo, UFC, baloncesto y las mejores disciplinas.';
+  if (combined.includes('ltscore') || combined.includes('lt_score') || combined.includes('latin_events')) return 'Centro deportivo en vivo y marcador interactivo para Android TV con resultados en tiempo real, canales deportivos y coberturas de fútbol latino e internacional.';
   if (combined.includes('goplus')) return 'Plataforma de canales de televisión en vivo con amplia programación de entretenimiento, cine y eventos en directo con señal estable.';
   if (combined.includes('lokuratv')) return 'Servicio completo de televisión en vivo con canales latinos, señales prémium, cine y servidor integrado de alta estabilidad.';
   if (combined.includes('xuper') || combined.includes('zuper')) return 'Televisión en directo y entretenimiento con amplia selección de canales nacionales e internacionales y servidor dedicado.';

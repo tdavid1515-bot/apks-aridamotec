@@ -81,8 +81,13 @@ def extract_icon_from_apk(apk_path, target_png_path):
     namelist = zf.namelist()
     valid_icons = []
     for ip in icon_paths:
-        if ip in namelist and ip.lower().endswith(('.png', '.webp')):
-            valid_icons.append(ip)
+        if ip in namelist:
+            try:
+                header = zf.read(ip)[:16]
+                if header.startswith(b'\x89PNG\r\n\x1a\n') or (header.startswith(b'RIFF') and b'WEBP' in header) or header.startswith(b'\xff\xd8\xff'):
+                    valid_icons.append(ip)
+            except Exception:
+                pass
 
     if not valid_icons:
         for n in namelist:
@@ -91,21 +96,25 @@ def extract_icon_from_apk(apk_path, target_png_path):
                 if 'ic_launcher' in nl or 'app_icon' in nl or 'logo' in nl or 'icon' in nl:
                     valid_icons.append(n)
 
-    # If still not found, search square images in zip
+    # If still not found, search all square images or candidates in zip
     if not valid_icons:
         square_candidates = []
         for n in namelist:
-            nl = n.lower()
-            if (nl.endswith('.png') or nl.endswith('.webp')) and not nl.endswith('.9.png'):
-                try:
+            if n.startswith('lib/') or n.startswith('META-INF/'):
+                continue
+            try:
+                header = zf.read(n)[:16]
+                if header.startswith(b'\x89PNG\r\n\x1a\n') or (header.startswith(b'RIFF') and b'WEBP' in header):
                     data = zf.read(n)
                     im = Image.open(io.BytesIO(data))
                     w, h = im.size
-                    if w == h and w in [48, 72, 96, 128, 144, 192, 256, 512]:
-                        square_candidates.append(n)
-                except Exception:
-                    pass
-        valid_icons = square_candidates
+                    if w == h and w >= 48:
+                        square_candidates.append((w, n))
+            except Exception:
+                pass
+        if square_candidates:
+            square_candidates.sort(key=lambda x: x[0], reverse=True)
+            valid_icons = [x[1] for x in square_candidates]
 
     if valid_icons:
         def score(name):
@@ -125,8 +134,8 @@ def extract_icon_from_apk(apk_path, target_png_path):
         raw_data = zf.read(best_entry)
         try:
             im = Image.open(io.BytesIO(raw_data)).convert('RGBA')
-            if im.size != (120, 120):
-                im = im.resize((120, 120), Image.Resampling.LANCZOS)
+            if im.size != (512, 512):
+                im = im.resize((512, 512), Image.Resampling.LANCZOS)
             im.save(target_png_path, format='PNG', optimize=True)
             for d in OUTPUT_DIRS:
                 copy_path = os.path.join(d, os.path.basename(target_png_path))
