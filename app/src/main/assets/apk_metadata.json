@@ -151,7 +151,7 @@
     "packageName": "dev.luma.tv",
     "versionName": "2.4",
     "versionCode": "26",
-    "iconAsset": null
+    "iconAsset": "icons/luma_tv.png"
   },
   "MoviePlus.armeabi-v7a.apk": {
     "cleanName": "MoviePlus armeabi v7a",
@@ -284,7 +284,7 @@
     "packageName": "tv.xsports.x1x",
     "versionName": "1.0",
     "versionCode": "9",
-    "iconAsset": null
+    "iconAsset": "icons/x_sports.png"
   },
   "XTREMETV.apk": {
     "cleanName": "XTREMETV (IPTV)",
