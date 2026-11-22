@@ -403,12 +403,23 @@ async function runSync() {
       if (currentVer.latestVersionName && currentVer.latestVersionName !== latestTvName) {
         vCode = (currentVer.latestVersionCode || 9) + 1;
       }
+      const defaultCasualChangelog = "• Mejoras visuales en la pantalla y tarjetas de aplicaciones.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.";
+      let casualChangelog = defaultCasualChangelog;
+      if (currentVer && currentVer.changelog) {
+        const lower = currentVer.changelog.toLowerCase();
+        const techTerms = ["anr", "o(1)", "asíncron", "asincron", "código", "codigo", "token", "clave", "hashing", "sha", "arquitectura", "falsos positivos", "socket", "http", "api", "merge", "commit", "ipv4", "fastly", "timeout"];
+        const isTech = techTerms.some(t => lower.includes(t));
+        if (!isTech) {
+          casualChangelog = currentVer.changelog;
+        }
+      }
+
       const versionData = {
         success: true,
         latestVersionCode: vCode,
         latestVersionName: latestTvName,
         downloadUrl: `https://cdn.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@main/ARIDAMOTEC_TV_${latestTvName}.apk`,
-        changelog: (currentVer && currentVer.changelog) ? currentVer.changelog : "• Descargas de aplicaciones directas y ultra-rápidas.\n• Botón de cancelar descarga habilitado en cada aplicación.\n• Tamaño del archivo visible en cada ficha técnica.\n• Mayor estabilidad y fluidez en tu televisor.",
+        changelog: casualChangelog,
         minSupportedVersionCode: 1,
         mandatory: false,
         updatedAt: latestTvCreatedAt || new Date().toISOString()
