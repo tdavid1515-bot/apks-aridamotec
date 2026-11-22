@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 46,
-  "total": 46,
+  "count": 47,
+  "total": 47,
   "catalog": [
     {
       "id": "759604072",
@@ -910,6 +910,24 @@
       "shortUrl": "https://browsy.app/7522",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XuperTv-NF-v4.35.1-ModByNF.apk",
       "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xupertv_nf_v4_35_1_modbynf.png"
+    },
+    {
+      "id": "780496111",
+      "cleanName": "Xuper Focuz 5 2 0",
+      "fileName": "Xuper_Focuz_5.2.0.apk",
+      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xuper_focuz_5_2_0.png",
+      "browsyCode": "8418",
+      "shortUrl": "https://browsy.app/8418",
+      "browsyShortUrl": "https://browsy.app/8418",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Xuper_Focuz_5.2.0.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Xuper_Focuz_5.2.0.apk",
+      "size": 33295815,
+      "sizeFormatted": "31.8 MB",
+      "status": "active",
+      "createdAt": "2026-11-22T21:19:56Z",
+      "aiDescription": "Televisión en directo y entretenimiento con amplia selección de canales nacionales e internacionales y servidor dedicado.",
+      "category": "📺 TV en Vivo",
+      "author": "Xuper Dev"
     }
   ]
 }
