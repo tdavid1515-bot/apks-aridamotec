@@ -56,16 +56,70 @@ function classifyCategory(cleanName, fileName) {
   const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const combined = norm(cleanName) + ' ' + norm(fileName);
 
-  if (combined.includes('sport') || combined.includes('deport') || combined.includes('futbol') || combined.includes('cricz') || combined.includes('geesports')) {
+  if (combined.includes('sport') || combined.includes('deport') || combined.includes('futbol') || combined.includes('cricz') || combined.includes('geesports') || combined.includes('ak47')) {
     return '⚽ Deportes';
   }
-  if (combined.includes('animxl') || combined.includes('anime') || combined.includes('tsuzuku') || combined.includes('clipbox') || combined.includes('movie') || combined.includes('cine') || combined.includes('series')) {
+  if (combined.includes('animxl') || combined.includes('anime') || combined.includes('tsuzuku') || combined.includes('clipbox') || combined.includes('movie') || combined.includes('cine') || combined.includes('series') || combined.includes('cinehax') || combined.includes('watched')) {
     return '🎬 Películas y Series';
   }
-  if (combined.includes('launcher') || combined.includes('vpn') || combined.includes('wireguard') || combined.includes('surfshark') || combined.includes('weather') || combined.includes('downloader') || combined.includes('tizentube') || combined.includes('browsy') || combined.includes('util')) {
+  if (combined.includes('smarttube') || combined.includes('tizentube') || combined.includes('youtube') || combined.includes('music') || combined.includes('musica') || combined.includes('spotify') || combined.includes('radio')) {
+    return '🎵 Música';
+  }
+  if (combined.includes('juego') || combined.includes('game') || combined.includes('retro') || combined.includes('arcade') || combined.includes('emulador')) {
+    return '🎮 Juegos';
+  }
+  if (combined.includes('launcher') || combined.includes('vpn') || combined.includes('wireguard') || combined.includes('surfshark') || combined.includes('weather') || combined.includes('downloader') || combined.includes('browsy') || combined.includes('button mapper') || combined.includes('tvquickactions') || combined.includes('explorer') || combined.includes('x-plore') || combined.includes('xplore') || combined.includes('developer tools') || combined.includes('util')) {
     return '🛠️ Utilitarios';
   }
   return '📺 TV en Vivo';
+}
+
+function getContextualDescription(cleanName, fileName, category) {
+  const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  const combined = norm(cleanName) + ' ' + norm(fileName);
+
+  if (combined.includes('smarttube')) return 'Reproductor prémium de YouTube para Android TV sin anuncios, con soporte 4K/HDR y reproducción en segundo plano.';
+  if (combined.includes('tizentube')) return 'Cliente ligero de YouTube para Android TV sin publicidad molesta y con soporte para alta resolución 4K.';
+  if (combined.includes('projectivy')) return 'Lanzador prémium y minimalista para Android TV que sustituye la pantalla principal con una interfaz rápida, limpia y sin anuncios.';
+  if (combined.includes('wolf') && combined.includes('launcher')) return 'Lanzador ultra ligero y personalizable que optimiza la pantalla de inicio eliminando lentitud y publicidad.';
+  if (combined.includes('atv') && combined.includes('launcher')) return 'Lanzador ágil y configurable para Android TV con navegación fluida y bajo consumo de memoria del sistema.';
+  if (combined.includes('x_plore') || combined.includes('xplore')) return 'Potente explorador de archivos de doble panel para Android TV con soporte para almacenamiento interno, USB, redes LAN y nube.';
+  if (combined.includes('cx') && (combined.includes('explorer') || combined.includes('file'))) return 'Gestor de archivos intuitivo y visual para explorar carpetas, liberar almacenamiento y organizar tu televisor.';
+  if (combined.includes('surfshark')) return 'Red privada virtual (VPN) de alta velocidad para proteger tu privacidad, cifrar tu conexión y desbloquear contenidos globales.';
+  if (combined.includes('wireguard')) return 'Protocolo VPN moderno, ultra rápido y de bajo consumo para conexiones cifradas y seguras en Android TV.';
+  if (combined.includes('button') && combined.includes('mapper')) return 'Herramienta para reasignar y personalizar las funciones de los botones de tu control remoto con atajos y combinaciones.';
+  if (combined.includes('tvquickactions')) return 'Menú de acciones rápidas para tu control remoto con accesos directos, panel lateral y optimizaciones del televisor.';
+  if (combined.includes('downloader')) return 'Navegador web y gestor de descargas para buscar, descargar e instalar archivos APK directamente en tu televisor.';
+  if (combined.includes('browsy')) return 'Navegador ligero para abrir enlaces y descargar paquetes APK mediante códigos numéricos cortos directamente en tu televisor.';
+  if (combined.includes('developer') && combined.includes('tools')) return 'Suite de herramientas técnicas para desarrolladores con análisis de hardware, permisos y depuración en Android TV.';
+  if (combined.includes('retrojuegos')) return 'Centro de emulación retro para revivir clásicos de consolas de Arcade, Nintendo y Sega directamente con tu mando.';
+  if (combined.includes('crexify')) return 'Plataforma deportiva para ver eventos en directo, partidos de fútbol internacional y canales en alta definición.';
+  if (combined.includes('ak47')) return 'Señales deportivas en directo para seguir partidos de fútbol internacional, eventos de combate y torneos mundiales.';
+  if (combined.includes('cricz')) return 'Transmisiones deportivas en directo de ligas internacionales y eventos deportivos globales en alta calidad.';
+  if (combined.includes('geesports')) return 'Cobertura y streaming en vivo de eventos deportivos internacionales, fútbol y canales prémium.';
+  if (combined.includes('sportv')) return 'Canales deportivos prémium en directo para disfrutar de ligas de fútbol, campeonatos y torneos en tu televisor.';
+  if (combined.includes('sportz')) return 'Plataforma multideportiva para disfrutar de transmisiones en directo de fútbol, baloncesto y eventos deportivos.';
+  if (combined.includes('goplus')) return 'Plataforma de canales de televisión en vivo con amplia programación de entretenimiento, cine y eventos en directo con señal estable.';
+  if (combined.includes('lokuratv')) return 'Servicio completo de televisión en vivo con canales latinos, señales prémium, cine y servidor integrado de alta estabilidad.';
+  if (combined.includes('xuper') || combined.includes('zuper')) return 'Televisión en directo y entretenimiento con amplia selección de canales nacionales e internacionales y servidor dedicado.';
+  if (combined.includes('wiwy')) return 'Acceso a canales de televisión en directo, transmisiones en vivo y contenido variado para toda la familia.';
+  if (combined.includes('bixplus')) return 'Plataforma de canales de televisión en vivo, series y películas con excelente estabilidad y reproductor integrado.';
+  if (combined.includes('flystream')) return 'Transmisión de televisión en directo y canales familiares con servidor optimizado para Android TV.';
+  if (combined.includes('xtreme')) return 'Reproductor de IPTV con acceso a canales de televisión en vivo, señales prémium y eventos en directo.';
+  if (combined.includes('mxl')) return 'Potente reproductor de streaming multimedia para listas M3U, canales en vivo y contenidos bajo demanda.';
+  if (combined.includes('animxl')) return 'Plataforma especializada en anime con episodios completos, estrenos de temporada y reproducción en alta resolución.';
+  if (combined.includes('tsuzuku')) return 'Aplicación dedicada a series y películas de anime japonés con catálogo actualizado y subtítulos en español.';
+  if (combined.includes('cinehax')) return 'Catálogo bajo demanda de películas de estreno, cine taquillero y series completas sin cortes publicitarios.';
+  if (combined.includes('clipbox')) return 'Servicio de películas y series en streaming con variedad de géneros y calidad Full HD para disfrutar en familia.';
+  if (combined.includes('movieplus')) return 'Centro de cine y series bajo demanda con estrenos taquilleros, sagas completas y títulos en 4K.';
+  if (combined.includes('watched')) return 'Reproductor multimedia universal para cargar paquetes de contenidos y disfrutar de cine y series en streaming.';
+
+  if (category === '📺 TV en Vivo') return 'Servicio de televisión en vivo con señales en directo, variedad de canales y programación continua en tu TV.';
+  if (category === '⚽ Deportes') return 'Transmisiones y eventos deportivos en vivo para seguir las mejores disciplinas, partidos y torneos en tu TV.';
+  if (category === '🎬 Películas y Series') return 'Plataforma de entretenimiento con catálogo de películas, series completas y estrenos para disfrutar en tu televisor.';
+  if (category === '🎵 Música') return 'Reproductor y plataforma de música y contenidos de audio para disfrutar en la pantalla grande de tu televisor.';
+  if (category === '🎮 Juegos') return 'Videojuego optimizado para Android TV compatible con mando y control remoto para jugar en pantalla grande.';
+  return 'Herramienta de sistema diseñada para optimizar, gestionar y mejorar la experiencia de tu Android TV.';
 }
 
 async function requestBrowsyCode(directUrl) {
@@ -205,6 +259,9 @@ async function runSync() {
     const existing = catalogMap.get(fnLower);
     const downloadUrl = asset.browser_download_url;
 
+    const sanitizedFn = asset.name.replace(/\.apk$/i, '').replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase().replace(/_+/g, '_').replace(/^_+|_+$/g, '');
+    const defaultIconUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/icons/${sanitizedFn}.png`;
+
     if (existing && existing.browsyCode && existing.browsyCode !== 'Pendiente') {
       // Ya tiene código válido
       existing.id = String(asset.id);
@@ -215,6 +272,7 @@ async function runSync() {
         existing.sizeFormatted = formatBytes(asset.size);
       }
       if (!existing.author) existing.author = detectAuthor(existing.cleanName, asset.name);
+      if (!existing.iconUrl) existing.iconUrl = defaultIconUrl;
       updatedCatalog.push(existing);
     } else {
       // Es una APK nueva o carece de código Browsy -> Invocar API de Browsy
@@ -224,19 +282,18 @@ async function runSync() {
       const cleanName = existing && existing.cleanName ? existing.cleanName : cleanApkName(asset.name);
       const category = existing && existing.category ? existing.category : classifyCategory(cleanName, asset.name);
       const author = existing && existing.author ? existing.author : detectAuthor(cleanName, asset.name);
-      const desc = existing && existing.aiDescription ? existing.aiDescription : `Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.`;
+      const desc = existing && existing.aiDescription && !existing.aiDescription.includes("contenido multimedia y entretenimiento") ? existing.aiDescription : getContextualDescription(cleanName, asset.name, category);
 
       const item = {
         id: String(asset.id),
         cleanName: cleanName,
         fileName: asset.name,
+        iconUrl: existing && existing.iconUrl ? existing.iconUrl : defaultIconUrl,
         browsyCode: browsy ? browsy.code : (existing ? existing.browsyCode : 'Pendiente'),
         shortUrl: browsy ? browsy.shortUrl : (existing && existing.shortUrl ? existing.shortUrl : ''),
         browsyShortUrl: browsy ? browsy.shortUrl : (existing && existing.browsyShortUrl ? existing.browsyShortUrl : ''),
         directUrl: downloadUrl,
         directDownloadUrl: downloadUrl,
-        editKey: browsy ? browsy.editKey : '',
-        manageUrl: browsy ? browsy.manageUrl : '',
         size: asset.size || (existing && existing.size) || null,
         sizeFormatted: asset.size ? formatBytes(asset.size) : ((existing && existing.sizeFormatted) || null),
         status: 'active',
@@ -274,6 +331,9 @@ async function runSync() {
             }
             if (matched.category && matched.category.trim()) {
               item.category = matched.category.trim();
+            }
+            if (matched.iconUrl || matched.logo || matched.icon) {
+              item.iconUrl = (matched.iconUrl || matched.logo || matched.icon).trim();
             }
           }
         }
