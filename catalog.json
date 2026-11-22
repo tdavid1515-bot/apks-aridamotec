@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 44,
-  "total": 44,
+  "count": 46,
+  "total": 46,
   "catalog": [
     {
       "id": "759604072",
@@ -379,6 +379,25 @@
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv_Pro_Ultra.apk"
     },
     {
+      "id": "779775916",
+      "cleanName": "LTScores 2 1 0 VIP",
+      "fileName": "LTScores.2_1.0.VIP.apk",
+      "browsyCode": "2963",
+      "shortUrl": "https://browsy.app/2963",
+      "browsyShortUrl": "https://browsy.app/2963",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LTScores.2_1.0.VIP.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LTScores.2_1.0.VIP.apk",
+      "editKey": "H5hHqjX9RGLY",
+      "manageUrl": "https://browsy.app/manage?code=2963&key=H5hHqjX9RGLY",
+      "size": 12943833,
+      "sizeFormatted": "12.3 MB",
+      "status": "active",
+      "createdAt": "2026-11-22T17:00:35Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
+    },
+    {
       "id": "745639055",
       "fileName": "luma-tv.apk",
       "cleanName": "Luma TV (Canales)",
@@ -733,6 +752,25 @@
       "createdAt": "2026-11-21T21:54:21Z",
       "aiDescription": "Con esta aplicación puedes ver tus archivos internos para gestionar almacenamiento, además de poder acceder a tus archivos en la nube directamente en el televisor.",
       "category": "🛠️ Utilitarios",
+      "author": "Oficial"
+    },
+    {
+      "id": "779778707",
+      "cleanName": "X Sports",
+      "fileName": "X-Sports.apk",
+      "browsyCode": "3673",
+      "shortUrl": "https://browsy.app/3673",
+      "browsyShortUrl": "https://browsy.app/3673",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/X-Sports.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/X-Sports.apk",
+      "editKey": "hrLGsPdUPwoZ",
+      "manageUrl": "https://browsy.app/manage?code=3673&key=hrLGsPdUPwoZ",
+      "size": 52404648,
+      "sizeFormatted": "50 MB",
+      "status": "active",
+      "createdAt": "2026-11-22T17:01:36Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "⚽ Deportes",
       "author": "Oficial"
     },
     {
