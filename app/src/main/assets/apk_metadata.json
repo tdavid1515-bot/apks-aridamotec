@@ -1,0 +1,324 @@
+{
+  "AK47Sports_.V1.6.apk": {
+    "cleanName": "AK47Sports V1 6",
+    "packageName": "app.aksports.live",
+    "versionName": "1.6",
+    "versionCode": "7",
+    "iconAsset": "icons/ak47sports_v1_6.png"
+  },
+  "ANIMXL.apk": {
+    "cleanName": "ANIMXL (Anime)",
+    "packageName": "tv.animxlplus.app",
+    "versionName": "2.1.0-tvbox",
+    "versionCode": "13",
+    "iconAsset": "icons/animxl.png"
+  },
+  "ATV.LAUNCHER.v0.1.42-pro.apk": {
+    "cleanName": "ATV Launcher Pro",
+    "packageName": "ca.dstudio.atvlauncher.pro",
+    "versionName": "0.1.42-pro",
+    "versionCode": "30002736",
+    "iconAsset": "icons/atv_launcher_v0_1_42_pro.png"
+  },
+  "BIXPLUS_V2.apk": {
+    "cleanName": "BixPlus V2 (IPTV)",
+    "packageName": "com.bixmax.x1x",
+    "versionName": "1.48",
+    "versionCode": "20008",
+    "iconAsset": "icons/bixplus_v2.png"
+  },
+  "Browsy_1.5.0_APKPure.apk": {
+    "cleanName": "Browsy 1 5 0 APKPure",
+    "packageName": "com.browsy.app",
+    "versionName": "1.5.0",
+    "versionCode": "18",
+    "iconAsset": "icons/browsy_1_5_0_apkpure.png"
+  },
+  "Button.Mapper.v4.15.Premium.apk": {
+    "cleanName": "Button Mapper v4 15 Premium",
+    "packageName": "flar2.homebutton",
+    "versionName": "4.15",
+    "versionCode": "415",
+    "iconAsset": "icons/button_mapper_v4_15_premium.png"
+  },
+  "Cinehax-18.8.-Vip-ModByNF.apk": {
+    "cleanName": "Cinehax 18 8 Vip ModByNF",
+    "packageName": "com.cinehax",
+    "versionName": "18.8",
+    "versionCode": "1",
+    "iconAsset": "icons/cinehax_18_8_vip_modbynf.png"
+  },
+  "ClipBox.apk": {
+    "cleanName": "ClipBox (Cine & Series)",
+    "packageName": "org.clipbox.player",
+    "versionName": "1.6.3.1",
+    "versionCode": "1631",
+    "iconAsset": "icons/clipbox.png"
+  },
+  "com.wireguard.android-1.0.20260315.apk": {
+    "cleanName": "WireGuard VPN",
+    "packageName": "com.wireguard.android",
+    "versionName": "1.0.20260315",
+    "versionCode": "519",
+    "iconAsset": "icons/com_wireguard_android_1_0_20260315.png"
+  },
+  "CrexiFy_TV.apk": {
+    "cleanName": "CrexiFy TV",
+    "packageName": "com.crexify.tv",
+    "versionName": "4.5",
+    "versionCode": "12",
+    "iconAsset": "icons/crexify_tv.png"
+  },
+  "CricZ.TV.v7.3.apk": {
+    "cleanName": "CricZ TV Deportes",
+    "packageName": "com.pro.cricztv",
+    "versionName": "7.3",
+    "versionCode": "10",
+    "iconAsset": "icons/cricz_tv_v7_3.png"
+  },
+  "Cx.File.Explorer.v2.8.1.Premium.apk": {
+    "cleanName": "Cx File Explorer v2 8 1 Premium",
+    "packageName": "com.cxinventor.file.explorer",
+    "versionName": "2.8.1",
+    "versionCode": "281",
+    "iconAsset": "icons/cx_file_explorer_v2_8_1_premium.png"
+  },
+  "Developer_Tools_2.4.7_APKPure.apk": {
+    "cleanName": "Developer Tools 2 4 7 APKPure",
+    "packageName": "com.roysolberg.android.developertools",
+    "versionName": "2.4.7",
+    "versionCode": "121",
+    "iconAsset": "icons/developer_tools_2_4_7_apkpure.png"
+  },
+  "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk": {
+    "cleanName": "Downloader by AFTVnews",
+    "packageName": "com.esaba.downloader",
+    "versionName": "1.5.0-ForGoogleAndroidDevices",
+    "versionCode": "58",
+    "iconAsset": "icons/downloader_by_aftvnews_1_5_0_forgoogleandroiddevices_apkpure.png"
+  },
+  "FlyStream.apk": {
+    "cleanName": "FlyStream (TV en Vivo)",
+    "packageName": "net.flystream.tv",
+    "versionName": "2.78",
+    "versionCode": "80",
+    "iconAsset": "icons/flystream.png"
+  },
+  "GeeSports_.v3.9.apk": {
+    "cleanName": "GeeSports Deportes",
+    "packageName": "com.live.geesports",
+    "versionName": "3.9",
+    "versionCode": "12",
+    "iconAsset": "icons/geesports_v3_9.png"
+  },
+  "GoPlusTV-4.4.0-Fix-ModByNF.apk": {
+    "cleanName": "GoPlusTV 4 4 0 Fix ModByNF",
+    "packageName": "com.golite.gnulatv",
+    "versionName": "4.4.0.Plus",
+    "versionCode": "44",
+    "iconAsset": "icons/goplustv_4_4_0_fix_modbynf.png"
+  },
+  "GoPlusTV-4.4.0-Vip-404-ModByNF.apk": {
+    "cleanName": "GoPlusTV 4 4 0 Vip 404 ModByNF",
+    "packageName": "com.golite.gnulatv",
+    "versionName": "4.4.0.Plus",
+    "versionCode": "44",
+    "iconAsset": "icons/goplustv_4_4_0_vip_404_modbynf.png"
+  },
+  "LokuraTv.apk": {
+    "cleanName": "LokuraTv Oficial",
+    "packageName": "com.appsmasther.iptv_android",
+    "versionName": "1.0.0",
+    "versionCode": "1",
+    "iconAsset": "icons/lokuratv.png"
+  },
+  "LokuraTv_Pro_Ultra.apk": {
+    "cleanName": "LokuraTv Pro Ultra",
+    "packageName": "com.ue7tte.ibob41836c7",
+    "versionName": "4.3",
+    "versionCode": "54",
+    "iconAsset": "icons/lokuratv_pro_ultra.png"
+  },
+  "LTScores.2_1.0.VIP.apk": {
+    "cleanName": "LTScores 2 1 0 VIP",
+    "packageName": "com.app.player.latin_events",
+    "versionName": "1.0",
+    "versionCode": "1",
+    "iconAsset": "icons/ltscores_2_1_0_vip.png"
+  },
+  "luma-tv.apk": {
+    "cleanName": "Luma TV (Canales)",
+    "packageName": "dev.luma.tv",
+    "versionName": "2.4",
+    "versionCode": "26",
+    "iconAsset": null
+  },
+  "MoviePlus.armeabi-v7a.apk": {
+    "cleanName": "MoviePlus armeabi v7a",
+    "packageName": "com.dvex.movp",
+    "versionName": "17.3",
+    "versionCode": "90354",
+    "iconAsset": "icons/movieplus_armeabi_v7a.png"
+  },
+  "MXL.IPTV.apk": {
+    "cleanName": "MXL IPTV Player",
+    "packageName": "tv.mxliptv.app",
+    "versionName": "3.2.5-tvbox",
+    "versionCode": "134",
+    "iconAsset": "icons/mxl_iptv.png"
+  },
+  "MXL.MOVIES.apk": {
+    "cleanName": "MXL Movies (Cine)",
+    "packageName": "tv.mxlmovies.app",
+    "versionName": "3.1.2-tvbox",
+    "versionCode": "65",
+    "iconAsset": "icons/mxl_movies.png"
+  },
+  "PLayer_Pro_base.2.apk": {
+    "cleanName": "Player Pro (IPTV)",
+    "packageName": "live.playerpro",
+    "versionName": "4.0.7",
+    "versionCode": "8",
+    "iconAsset": "icons/player_pro_base_2.png"
+  },
+  "Projectivy.Launcher.v4.73.Premium.apk": {
+    "cleanName": "Projectivy Launcher v4 73 Premium",
+    "packageName": "com.spocky.projengmenu",
+    "versionName": "4.73",
+    "versionCode": "98",
+    "iconAsset": "icons/projectivy_launcher_v4_73_premium.png"
+  },
+  "RBTV.apk": {
+    "cleanName": "RBTV Canales & Deportes",
+    "packageName": "com.rblive.tv",
+    "versionName": "3.0.321",
+    "versionCode": "321",
+    "iconAsset": "icons/rbtv.png"
+  },
+  "RetroJuegos.v1.apk": {
+    "cleanName": "RetroJuegos v1",
+    "packageName": "com.example.retrojuegos",
+    "versionName": "1.0",
+    "versionCode": "5",
+    "iconAsset": "icons/retrojuegos_v1.png"
+  },
+  "SmartTube_beta_32.80_universal.apk": {
+    "cleanName": "SmartTube beta 32 80 universal",
+    "packageName": "org.smarttube.beta",
+    "versionName": "32.80",
+    "versionCode": "2470",
+    "iconAsset": "icons/smarttube_beta_32_80_universal.png"
+  },
+  "SPORTV_3.9.VIP.apk": {
+    "cleanName": "SPORTV 3.9 VIP (Deportes)",
+    "packageName": "com.puertasport.tv.tvnativo",
+    "versionName": "3.9",
+    "versionCode": "39",
+    "iconAsset": "icons/sportv_3_9_vip.png"
+  },
+  "Sportz.X.VERSION.3.2.apk": {
+    "cleanName": "Sportz X Deportes",
+    "packageName": "com.sportzx.live",
+    "versionName": "3.2",
+    "versionCode": "18",
+    "iconAsset": "icons/sportz_x_version_3_2.png"
+  },
+  "Surfshark.apk": {
+    "cleanName": "Surfshark VPN",
+    "packageName": "com.surfshark.vpnclient.android",
+    "versionName": "3.37.0",
+    "versionCode": "310049640",
+    "iconAsset": "icons/surfshark.png"
+  },
+  "TizenTube_icon_name_YouTube_dark.apk": {
+    "cleanName": "TizenTube icon name YouTube dark",
+    "packageName": "io.gh.reisxd.tizentube.cobalt",
+    "versionName": "2.0.3",
+    "versionCode": "203",
+    "iconAsset": "icons/tizentube_icon_name_youtube_dark.png"
+  },
+  "Tsuzuku.v4.1.4.Android.TV.apk": {
+    "cleanName": "Tsuzuku TV (Anime)",
+    "packageName": "com.syha01.tsuzukutv",
+    "versionName": "4.1.4",
+    "versionCode": "30",
+    "iconAsset": "icons/tsuzuku_v4_1_4_android_tv.png"
+  },
+  "tvQuickActions.Pro.v3.7.0.Modded.apk": {
+    "cleanName": "tvQuickActions Pro v3 7 0 Modded",
+    "packageName": "dev.vodik7.tvquickactions",
+    "versionName": "3.7.0",
+    "versionCode": "405",
+    "iconAsset": "icons/tvquickactions_pro_v3_7_0_modded.png"
+  },
+  "Watched.apk": {
+    "cleanName": "Watched Media Player",
+    "packageName": "com.watched.firetv",
+    "versionName": "1.0.14",
+    "versionCode": "16",
+    "iconAsset": "icons/watched.png"
+  },
+  "WiwyXuper.apk": {
+    "cleanName": "WiwyXuper (TV en Vivo)",
+    "packageName": "com.xuper.wiwyxuper",
+    "versionName": "4.34.4",
+    "versionCode": "43487",
+    "iconAsset": "icons/wiwyxuper.png"
+  },
+  "Wolf.Launcher.0.1.9.apk": {
+    "cleanName": "Wolf Launcher TV",
+    "packageName": "com.wolf.firelauncher",
+    "versionName": "0.1.9-Wolf",
+    "versionCode": "11900120",
+    "iconAsset": "icons/wolf_launcher_0_1_9.png"
+  },
+  "X-plore.v4.53.05.Premium.apk": {
+    "cleanName": "X plore v4 53 05 Premium",
+    "packageName": "com.lonelycatgames.Xplore",
+    "versionName": "4.53.05",
+    "versionCode": "45305",
+    "iconAsset": "icons/x_plore_v4_53_05_premium.png"
+  },
+  "X-Sports.apk": {
+    "cleanName": "X Sports",
+    "packageName": "tv.xsports.x1x",
+    "versionName": "1.0",
+    "versionCode": "9",
+    "iconAsset": null
+  },
+  "XTREMETV.apk": {
+    "cleanName": "XTREMETV (IPTV)",
+    "packageName": "com.xtreme.tv",
+    "versionName": "40.6",
+    "versionCode": "1",
+    "iconAsset": "icons/xtremetv.png"
+  },
+  "Xuper-Tv-NF-4.99.20-ModByNF.apk": {
+    "cleanName": "Xuper Tv NF 4 99 20 ModByNF",
+    "packageName": "com.android.mgstvNF404",
+    "versionName": "4.99.20",
+    "versionCode": "49920",
+    "iconAsset": "icons/xuper_tv_nf_4_99_20_modbynf.png"
+  },
+  "XUPER.TV.v4.99.20.Android.TV.Original.apk": {
+    "cleanName": "Xuper TV v4.99.20 Original",
+    "packageName": "com.android.mgstv",
+    "versionName": "4.99.20",
+    "versionCode": "49920",
+    "iconAsset": "icons/xuper_tv_v4_99_20_android_tv_original.png"
+  },
+  "XuperHydra_4.99.20.apk": {
+    "cleanName": "XuperHydra 4 99 20",
+    "packageName": "com.android.mgstv",
+    "versionName": "4.99.20",
+    "versionCode": "49921",
+    "iconAsset": "icons/xuperhydra_4_99_20.png"
+  },
+  "XuperTv-NF-v4.35.1-ModByNF.apk": {
+    "cleanName": "XuperTV NF v4.35 ModByNF",
+    "packageName": "com.android.mgstxNF",
+    "versionName": "4.35.1",
+    "versionCode": "43501",
+    "iconAsset": "icons/xupertv_nf_v4_35_1_modbynf.png"
+  }
+}
