@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 43,
-  "total": 43,
+  "count": 44,
+  "total": 44,
   "catalog": [
     {
       "id": "759604072",
@@ -527,6 +527,25 @@
       "createdAt": "2026-11-21T21:54:34Z",
       "aiDescription": "Con esta aplicación podrás revivir viejos tiempos con consolas retro de Arcade, Nintendo y Sega.",
       "category": "🎮 Juegos",
+      "author": "Oficial"
+    },
+    {
+      "id": "777858048",
+      "cleanName": "SmartTube beta 32 80 universal",
+      "fileName": "SmartTube_beta_32.80_universal.apk",
+      "browsyCode": "4822",
+      "shortUrl": "https://browsy.app/4822",
+      "browsyShortUrl": "https://browsy.app/4822",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SmartTube_beta_32.80_universal.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SmartTube_beta_32.80_universal.apk",
+      "editKey": "3A9HJPKwQk4Q",
+      "manageUrl": "https://browsy.app/manage?code=4822&key=3A9HJPKwQk4Q",
+      "size": 35470195,
+      "sizeFormatted": "33.8 MB",
+      "status": "active",
+      "createdAt": "2026-11-22T04:25:21Z",
+      "aiDescription": "Con esta aplicación podrás disfrutar de contenido y funciones optimizadas en tu Android TV.",
+      "category": "📺 TV en Vivo",
       "author": "Oficial"
     },
     {
