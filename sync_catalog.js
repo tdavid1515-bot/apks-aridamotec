@@ -31,6 +31,7 @@ function detectAuthor(cleanName, fileName) {
   const combined = norm(cleanName) + ' ' + norm(fileName);
   if (combined.includes('modbynf')) return 'ModByNF';
   if (combined.includes('original')) return 'Oficial';
+  if (combined.includes('focuz')) return 'Xuper Focuz Dev';
   if (combined.includes('xuper')) return 'Xuper Dev';
   if (combined.includes('wolf')) return 'Wolf Dev';
   if (combined.includes('wireguard')) return 'WireGuard LLC';
@@ -103,6 +104,7 @@ function getContextualDescription(cleanName, fileName, category) {
   if (combined.includes('ltscore') || combined.includes('lt_score') || combined.includes('latin_events')) return 'Centro deportivo en vivo y marcador interactivo para Android TV con resultados en tiempo real, canales deportivos y coberturas de fútbol latino e internacional.';
   if (combined.includes('goplus')) return 'Plataforma de canales de televisión en vivo con amplia programación de entretenimiento, cine y eventos en directo con señal estable.';
   if (combined.includes('lokuratv')) return 'Servicio completo de televisión en vivo con canales latinos, señales prémium, cine y servidor integrado de alta estabilidad.';
+  if (combined.includes('focuz')) return 'Xuper Focuz v5.2.0 es una plataforma avanzada de televisión y streaming optimizada para pantallas grandes, con interfaz ultra ágil, categorización dinámica de canales en vivo y servidor de alto rendimiento.';
   if (combined.includes('xuper') || combined.includes('zuper')) return 'Televisión en directo y entretenimiento con amplia selección de canales nacionales e internacionales y servidor dedicado.';
   if (combined.includes('wiwy')) return 'Acceso a canales de televisión en directo, transmisiones en vivo y contenido variado para toda la familia.';
   if (combined.includes('bixplus')) return 'Plataforma de canales de televisión en vivo, series y películas con excelente estabilidad y reproductor integrado.';
@@ -116,12 +118,27 @@ function getContextualDescription(cleanName, fileName, category) {
   if (combined.includes('movieplus')) return 'Centro de cine y series bajo demanda con estrenos taquilleros, sagas completas y títulos en 4K.';
   if (combined.includes('watched')) return 'Reproductor multimedia universal para cargar paquetes de contenidos y disfrutar de cine y series en streaming.';
 
-  if (category === '📺 TV en Vivo') return 'Servicio de televisión en vivo con señales en directo, variedad de canales y programación continua en tu TV.';
-  if (category === '⚽ Deportes') return 'Transmisiones y eventos deportivos en vivo para seguir las mejores disciplinas, partidos y torneos en tu TV.';
-  if (category === '🎬 Películas y Series') return 'Plataforma de entretenimiento con catálogo de películas, series completas y estrenos para disfrutar en tu televisor.';
-  if (category === '🎵 Música') return 'Reproductor y plataforma de música y contenidos de audio para disfrutar en la pantalla grande de tu televisor.';
-  if (category === '🎮 Juegos') return 'Videojuego optimizado para Android TV compatible con mando y control remoto para jugar en pantalla grande.';
-  return 'Herramienta de sistema diseñada para optimizar, gestionar y mejorar la experiencia de tu Android TV.';
+  // Generación dinámica de descripción contextual y única para cualquier nueva APK futura
+  const appClean = cleanName || 'Aplicación';
+  const authorClean = detectAuthor(cleanName, fileName) || 'Oficial';
+  const catClean = (category || 'TV en Vivo').replace(/^[^\w\s]+/, '').trim();
+
+  let verStr = '';
+  const m = (fileName || '').match(/[v_\-]?(\d+(\.\d+)+)/i);
+  if (m) {
+    verStr = ` (v${m[1]})`;
+  }
+
+  return `${appClean}${verStr} por ${authorClean}: Aplicación prémium de ${catClean.toLowerCase()} optimizada para Android TV con navegación ágil mediante control remoto y reproducción fluida.`;
+}
+
+function isGenericDescription(d) {
+  if (!d) return true;
+  return d.includes("contenido multimedia y entretenimiento") ||
+         d.includes("Televisión en directo y entretenimiento con amplia selección") ||
+         d.includes("Con esta aplicación podrás disfrutar") ||
+         d.includes("Servicio de televisión en vivo con señales en directo") ||
+         d.includes("Herramienta de sistema diseñada para optimizar");
 }
 
 async function requestBrowsyCode(directUrl) {
@@ -273,8 +290,11 @@ async function runSync() {
         existing.size = asset.size;
         existing.sizeFormatted = formatBytes(asset.size);
       }
-      if (!existing.author) existing.author = detectAuthor(existing.cleanName, asset.name);
+      existing.author = detectAuthor(existing.cleanName, asset.name);
       if (!existing.iconUrl) existing.iconUrl = defaultIconUrl;
+      if (isGenericDescription(existing.aiDescription)) {
+        existing.aiDescription = getContextualDescription(existing.cleanName, asset.name, existing.category || classifyCategory(existing.cleanName, asset.name));
+      }
       updatedCatalog.push(existing);
     } else {
       // Es una APK nueva o carece de código Browsy -> Invocar API de Browsy
@@ -283,8 +303,8 @@ async function runSync() {
       
       const cleanName = existing && existing.cleanName ? existing.cleanName : cleanApkName(asset.name);
       const category = existing && existing.category ? existing.category : classifyCategory(cleanName, asset.name);
-      const author = existing && existing.author ? existing.author : detectAuthor(cleanName, asset.name);
-      const desc = existing && existing.aiDescription && !existing.aiDescription.includes("contenido multimedia y entretenimiento") ? existing.aiDescription : getContextualDescription(cleanName, asset.name, category);
+      const author = detectAuthor(cleanName, asset.name);
+      const desc = existing && existing.aiDescription && !isGenericDescription(existing.aiDescription) ? existing.aiDescription : getContextualDescription(cleanName, asset.name, category);
 
       const item = {
         id: String(asset.id),
@@ -328,7 +348,7 @@ async function runSync() {
         for (const item of updatedCatalog) {
           const matched = (item.fileName && gasMap.get(item.fileName.toLowerCase())) || gasMap.get(String(item.id));
           if (matched) {
-            if (matched.aiDescription && matched.aiDescription.trim()) {
+            if (matched.aiDescription && matched.aiDescription.trim() && !isGenericDescription(matched.aiDescription)) {
               item.aiDescription = matched.aiDescription.trim();
             }
             if (matched.category && matched.category.trim()) {
@@ -337,6 +357,9 @@ async function runSync() {
             if (matched.iconUrl || matched.logo || matched.icon) {
               item.iconUrl = (matched.iconUrl || matched.logo || matched.icon).trim();
             }
+          }
+          if (isGenericDescription(item.aiDescription)) {
+            item.aiDescription = getContextualDescription(item.cleanName, item.fileName, item.category || classifyCategory(item.cleanName, item.fileName));
           }
         }
         console.log('📑 Metadatos y descripciones de Google Sheets fusionados exitosamente en catalog.json.');

@@ -150,25 +150,32 @@ def extract_icon_from_apk(apk_path, target_png_path):
     return False, pkg_name, ver_name, ver_code, None
 
 def main():
-    gas_url = "https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec?action=guest"
-    print(f"Checking catalog from GAS / GitHub Releases...")
+    print(f"Checking catalog from local catalog.json / GitHub Releases...")
     catalog = []
-    try:
-        req = urllib.request.Request(gas_url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-        catalog = data.get("catalog", [])
-    except Exception as e:
-        print(f"Warning: Could not fetch GAS: {e}")
-        # Fallback to local catalog_seed or io_catalog
-        for local_cat in ["io_catalog.json", "app/src/main/assets/catalog_seed.json"]:
-            if os.path.exists(local_cat):
-                try:
-                    with open(local_cat, 'r', encoding='utf-8') as f:
-                        catalog = json.load(f).get("catalog", [])
+    for local_cat in ["catalog.json", "data/catalog.json", "io_catalog.json", "app/src/main/assets/catalog_seed.json"]:
+        if os.path.exists(local_cat):
+            try:
+                with open(local_cat, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if isinstance(data, dict) and "catalog" in data:
+                        catalog = data["catalog"]
+                    elif isinstance(data, list):
+                        catalog = data
+                if catalog:
+                    print(f"Loaded {len(catalog)} apps from local file: {local_cat}")
                     break
-                except Exception:
-                    pass
+            except Exception as e:
+                print(f"Notice: Could not load {local_cat}: {e}")
+
+    if not catalog:
+        gas_url = "https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec?action=guest"
+        try:
+            req = urllib.request.Request(gas_url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+            catalog = data.get("catalog", [])
+        except Exception as e:
+            print(f"Warning: Could not fetch GAS: {e}")
 
     print(f"Total apps to evaluate: {len(catalog)}")
 
@@ -185,17 +192,20 @@ def main():
 
     for idx, item in enumerate(catalog):
         fn = item.get("fileName")
+        if not fn:
+            continue
         clean_name = item.get("cleanName")
         url = item.get("directDownloadUrl") or item.get("directUrl")
         sanitized = sanitize_name(fn)
         target_png = os.path.join(OUTPUT_DIRS[0], f"{sanitized}.png")
+        copy_root = os.path.join(OUTPUT_DIRS[1], f"{sanitized}.png")
 
-        # Skip if already extracted and mapped
-        if os.path.exists(target_png) and fn in metadata and metadata[fn].get("packageName"):
-            # Ensure copy exists in icons/
-            copy_root = os.path.join(OUTPUT_DIRS[1], f"{sanitized}.png")
-            if not os.path.exists(copy_root):
+        # Skip if already extracted
+        if os.path.exists(target_png) or os.path.exists(copy_root):
+            if os.path.exists(target_png) and not os.path.exists(copy_root):
                 shutil.copyfile(target_png, copy_root)
+            elif os.path.exists(copy_root) and not os.path.exists(target_png):
+                shutil.copyfile(copy_root, target_png)
             continue
 
         if not url:

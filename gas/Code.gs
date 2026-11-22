@@ -628,6 +628,13 @@ function doPost(e) {
     Logger.log('Error parseando JSON en doPost: ' + err);
   }
 
+  // Reporte de aplicaciones instaladas desde Android TV
+  if (postData && (postData.action === 'reportInstalledApps' || postData.act === 'reportInstalledApps')) {
+    const res = saveInstalledApps(postData.mac, postData.apps);
+    return ContentService.createTextOutput(JSON.stringify(res))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   // Manejar Webhooks de GitHub (Releases, assets, push o ping)
   if (postData) {
     Logger.log('GitHub Webhook recibido en doPost. Acción: ' + (postData.action || 'evento'));
@@ -712,6 +719,8 @@ function doGet(e) {
       res = getLatestTvAppInfo();
     } else if (act === 'checkMac') {
       res = checkDeviceMac(e.parameter.mac, e.parameter.model);
+    } else if (act === 'reportInstalledApps') {
+      res = saveInstalledApps(e.parameter.mac, e.parameter.apps);
     } else if (act === 'macList') {
       res = getMacDevicesList(e.parameter.pwd);
     } else if (act === 'saveMac') {
@@ -2054,12 +2063,50 @@ function getOrCreateMacSheet() {
       'Estado',
       'Fecha Registro',
       'Última Verificación',
-      'Notas'
+      'Notas',
+      'Apps_Instaladas'
     ]);
-    sheet.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    sheet.getRange(1, 1, 1, 8).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     sheet.setFrozenRows(1);
+  } else {
+    // Si la hoja ya existe pero tiene 7 columnas, agregar la cabecera de la columna 8
+    if (sheet.getLastColumn() < 8) {
+      sheet.getRange(1, 8).setValue('Apps_Instaladas').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
   }
   return sheet;
+}
+
+function saveInstalledApps(mac, appsJson) {
+  if (!mac) return { success: false, error: 'MAC requerida' };
+  const cleanMac = String(mac).trim().toUpperCase();
+  const sheet = getOrCreateMacSheet();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+  const strApps = (typeof appsJson === 'string') ? appsJson : JSON.stringify(appsJson || []);
+
+  if (sheet.getLastRow() > 1) {
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      if (String(values[i][0] || '').trim().toUpperCase() === cleanMac) {
+        sheet.getRange(i + 1, 6).setValue(nowStr);
+        sheet.getRange(i + 1, 8).setValue(strApps);
+        return { success: true, message: 'Apps reportadas correctamente', mac: cleanMac };
+      }
+    }
+  }
+
+  // Si el dispositivo aún no estaba en la hoja, agregarlo
+  sheet.appendRow([
+    cleanMac,
+    'Cliente Nuevo',
+    'Android TV',
+    'PENDIENTE',
+    nowStr,
+    nowStr,
+    'Auto-reporte de apps instaladas',
+    strApps
+  ]);
+  return { success: true, message: 'Dispositivo y apps registradas', mac: cleanMac };
 }
 
 function checkDeviceMac(mac, model) {
@@ -2104,7 +2151,8 @@ function checkDeviceMac(mac, model) {
     'PENDIENTE',
     nowStr,
     nowStr,
-    'Auto-registrado al instalar APK'
+    'Auto-registrado al instalar APK',
+    '[]'
   ]);
 
   return {
@@ -2136,7 +2184,8 @@ function getMacDevicesList(password) {
         status: String(row[3] || 'PENDIENTE').toUpperCase(),
         registerDate: String(row[4] || ''),
         lastCheck: String(row[5] || ''),
-        notes: String(row[6] || '')
+        notes: String(row[6] || ''),
+        installedApps: String(row[7] || '[]')
       });
     }
   }
