@@ -2077,9 +2077,15 @@ function getOrCreateMacSheet() {
   return sheet;
 }
 
+function normalizeMac(mac) {
+  if (!mac) return '';
+  return String(mac).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+}
+
 function saveInstalledApps(mac, appsJson) {
   if (!mac) return { success: false, error: 'MAC requerida' };
   const cleanMac = String(mac).trim().toUpperCase();
+  const targetNormMac = normalizeMac(cleanMac);
   const sheet = getOrCreateMacSheet();
   const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
   const strApps = (typeof appsJson === 'string') ? appsJson : JSON.stringify(appsJson || []);
@@ -2087,7 +2093,7 @@ function saveInstalledApps(mac, appsJson) {
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
-      if (String(values[i][0] || '').trim().toUpperCase() === cleanMac) {
+      if (normalizeMac(values[i][0]) === targetNormMac) {
         sheet.getRange(i + 1, 6).setValue(nowStr);
         sheet.getRange(i + 1, 8).setValue(strApps);
         return { success: true, message: 'Apps reportadas correctamente', mac: cleanMac };
@@ -2114,6 +2120,7 @@ function checkDeviceMac(mac, model) {
     return { success: false, authorized: false, status: 'ERROR', message: 'MAC no especificada' };
   }
   const cleanMac = String(mac).trim().toUpperCase();
+  const targetNormMac = normalizeMac(cleanMac);
   const cleanModel = String(model || 'Android TV').trim();
   const sheet = getOrCreateMacSheet();
   const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
@@ -2121,8 +2128,8 @@ function checkDeviceMac(mac, model) {
   if (sheet.getLastRow() > 1) {
     const data = sheet.getDataRange().getValues();
     for (let i = 1; i < data.length; i++) {
-      const rowMac = String(data[i][0] || '').trim().toUpperCase();
-      if (rowMac === cleanMac) {
+      const rowNormMac = normalizeMac(data[i][0]);
+      if (rowNormMac === targetNormMac) {
         sheet.getRange(i + 1, 6).setValue(nowStr);
         if (!data[i][2] && cleanModel) {
           sheet.getRange(i + 1, 3).setValue(cleanModel);
@@ -2206,10 +2213,11 @@ function saveOrUpdateMac(password, data) {
 
   const sheet = getOrCreateMacSheet();
   let foundRow = -1;
+  const targetNormMac = normalizeMac(mac);
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
-      if (String(values[i][0] || '').trim().toUpperCase() === mac) {
+      if (normalizeMac(values[i][0]) === targetNormMac) {
         foundRow = i + 1;
         break;
       }
@@ -2233,12 +2241,13 @@ function toggleMacStatus(password, mac, newStatus) {
     return { success: false, error: 'No autorizado' };
   }
   const cleanMac = String(mac || '').trim().toUpperCase();
+  const targetNormMac = normalizeMac(cleanMac);
   const status = String(newStatus || 'ACTIVO').trim().toUpperCase();
   const sheet = getOrCreateMacSheet();
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
-      if (String(values[i][0] || '').trim().toUpperCase() === cleanMac) {
+      if (normalizeMac(values[i][0]) === targetNormMac) {
         sheet.getRange(i + 1, 4).setValue(status);
         const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
         sheet.getRange(i + 1, 6).setValue(nowStr);
@@ -2254,11 +2263,12 @@ function deleteMacDevice(password, mac) {
     return { success: false, error: 'No autorizado' };
   }
   const cleanMac = String(mac || '').trim().toUpperCase();
+  const targetNormMac = normalizeMac(cleanMac);
   const sheet = getOrCreateMacSheet();
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
-      if (String(values[i][0] || '').trim().toUpperCase() === cleanMac) {
+      if (normalizeMac(values[i][0]) === targetNormMac) {
         sheet.deleteRow(i + 1);
         return { success: true, mac: cleanMac };
       }
