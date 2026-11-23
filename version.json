@@ -3,8 +3,8 @@
   "latestVersionCode": 25,
   "latestVersionName": "1.4.1",
   "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.1.apk",
-  "changelog": "• Mejoras visuales: diseño renovado y fondos en la zona de presentación.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Búsqueda más cómoda con nuevas funciones y accesos directos.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.",
+  "changelog": "• Mejoras visuales en la pantalla y tarjetas de aplicaciones.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-23T01:26:00.000Z"
+  "updatedAt": "2026-11-23T01:28:50.971Z"
 }
