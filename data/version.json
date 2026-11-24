@@ -6,5 +6,5 @@
   "changelog": "• Máxima fluidez en la navegación con control remoto y foco estático estable.\n• Asistente inteligente de Patch NF: detección de parches ya aplicados con auto-salida y limpieza automática del instalador.\n• Conexión directa y segura a través de ARIDAMOTEC Anycast Cloud CDN con alta disponibilidad.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-24T18:55:00Z"
+  "updatedAt": "2026-11-24T13:10:20Z"
 }
