@@ -513,7 +513,7 @@
       "sizeFormatted": "22.3 MB",
       "status": "active",
       "createdAt": "2026-11-24T04:36:57Z",
-      "aiDescription": "Herramienta de optimización que renueva la identidad de tu dispositivo para anular y evitar bloqueos de inicio de sesión en aplicaciones Xuper.",
+      "aiDescription": "Herramienta de optimización que renueva la identidad de tu dispositivo para resolver y anular bloqueos de inicio de sesión en aplicaciones Xuper.",
       "category": "🛠️ Utilitarios",
       "author": "ModByNF"
     },
@@ -947,7 +947,5 @@
       "category": "📺 TV en Vivo",
       "author": "Xuper Focuz Dev"
     }
-  ],
-  "active": 48,
-  "lastSync": "2026-11-23T23:37:00Z"
+  ]
 }
