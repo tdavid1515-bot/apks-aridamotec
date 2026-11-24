@@ -425,8 +425,15 @@ async function handleServeHtml(request, filename) {
   const originHtmlUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/${filename}?t=${Date.now()}`;
   try {
     const res = await fetch(originHtmlUrl, {
-      headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
-      cf: { cacheEverything: false }
+      headers: {
+        'User-Agent': 'Aridamotec-CDN/1.0',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
+      },
+      cf: {
+        cacheTtl: 0,
+        cacheEverything: false
+      }
     });
     if (!res.ok) {
       return new Response('Error cargando página web desde origen', { status: 502 });
