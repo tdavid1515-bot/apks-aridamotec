@@ -20,10 +20,10 @@ const CONFIG = {
   SHEET_NAME: 'Control APKs y Códigos Browsy',
   APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
   GEMINI_API_KEY: '',
-  TV_APP_VERSION: '1.4.2',
-  TV_APP_VERSION_CODE: 26,
-  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.2.apk',
-  TV_APP_CHANGELOG: 'Asistente automático Patch NF, mejoras de versión y optimizaciones generales.'
+  TV_APP_VERSION: '1.4.3',
+  TV_APP_VERSION_CODE: 27,
+  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.3.apk',
+  TV_APP_CHANGELOG: 'Asistente interactivo guiado de Patch NF, deduplicación MAC y mejoras de compatibilidad.'
 };
 
 const SEED_APKS = [
@@ -2155,36 +2155,72 @@ function checkDeviceMac(mac, model, storageFree, storageTotal) {
   const cleanMac = String(mac).trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
   const cleanModel = String(model || 'Android TV').trim();
-  const sheet = getOrCreateMacSheet();
-  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
 
-  if (sheet.getLastRow() > 1) {
-    const data = sheet.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      const rowNormMac = normalizeMac(data[i][0]);
-      if (rowNormMac === targetNormMac) {
-        sheet.getRange(i + 1, 6).setValue(nowStr);
-        if (!data[i][2] && cleanModel) {
-          sheet.getRange(i + 1, 3).setValue(cleanModel);
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(15000);
+  } catch (eLock) {
+    Logger.log('Lock timeout en checkDeviceMac: ' + eLock);
+  }
+
+  try {
+    const sheet = getOrCreateMacSheet();
+    const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+
+    if (sheet.getLastRow() > 1) {
+      const data = sheet.getDataRange().getValues();
+      let activeIndex = -1;
+      let duplicateIndices = [];
+
+      for (let i = 1; i < data.length; i++) {
+        const rowNormMac = normalizeMac(data[i][0]);
+        if (rowNormMac === targetNormMac) {
+          const st = String(data[i][3] || '').trim().toUpperCase();
+          if (st === 'ACTIVO' || st === 'ACTIVE') {
+            if (activeIndex === -1) {
+              activeIndex = i;
+            } else {
+              duplicateIndices.push(i);
+            }
+          } else {
+            duplicateIndices.push(i);
+          }
+        }
+      }
+
+      // Si hay un registro ACTIVO y registros duplicados PENDIENTES, purgar los duplicados
+      if (activeIndex !== -1 && duplicateIndices.length > 0) {
+        duplicateIndices.sort(function(a, b) { return b - a; });
+        for (let d = 0; d < duplicateIndices.length; d++) {
+          sheet.deleteRow(duplicateIndices[d] + 1);
+        }
+      }
+
+      const primaryIndex = (activeIndex !== -1) ? activeIndex : (duplicateIndices.length > 0 ? duplicateIndices[0] : -1);
+      if (primaryIndex !== -1) {
+        const row = primaryIndex + 1;
+        sheet.getRange(row, 6).setValue(nowStr);
+        if (!data[primaryIndex][2] && cleanModel) {
+          sheet.getRange(row, 3).setValue(cleanModel);
         }
         if (storageFree !== undefined && storageFree !== null && storageFree !== '') {
-          sheet.getRange(i + 1, 9).setValue(Number(storageFree));
+          sheet.getRange(row, 9).setValue(Number(storageFree));
         }
         if (storageTotal !== undefined && storageTotal !== null && storageTotal !== '') {
-          sheet.getRange(i + 1, 10).setValue(Number(storageTotal));
+          sheet.getRange(row, 10).setValue(Number(storageTotal));
         }
-        const client = String(data[i][1] || 'Cliente Aridamotec').trim();
-        const status = String(data[i][3] || 'PENDIENTE').trim().toUpperCase();
+        const client = String(data[primaryIndex][1] || 'Cliente Aridamotec').trim();
+        const status = String(data[primaryIndex][3] || 'PENDIENTE').trim().toUpperCase();
         const isAuth = (status === 'ACTIVO' || status === 'ACTIVE');
 
         // Consultar si hay orden remota pendiente para este dispositivo
         let pendingCommand = null;
-        const rawCmd = data[i][10];
+        const rawCmd = data[primaryIndex][10];
         if (rawCmd && String(rawCmd).trim().length > 0) {
           try {
             pendingCommand = (typeof rawCmd === 'string') ? JSON.parse(rawCmd) : rawCmd;
             // Limpiar la orden consumida para que no se ejecute múltiples veces
-            sheet.getRange(i + 1, 11).setValue('');
+            sheet.getRange(row, 11).setValue('');
           } catch (eCmd) {
             Logger.log('Error parseando orden pendiente: ' + eCmd);
           }
@@ -2204,31 +2240,33 @@ function checkDeviceMac(mac, model, storageFree, storageTotal) {
         return resp;
       }
     }
+
+    // Si no está registrado en absoluto, se añade automáticamente con estado PENDIENTE
+    sheet.appendRow([
+      cleanMac,
+      'Cliente Nuevo (Pendiente)',
+      cleanModel,
+      'PENDIENTE',
+      nowStr,
+      nowStr,
+      'Auto-registrado al instalar APK',
+      '[]',
+      Number(storageFree) || 0,
+      Number(storageTotal) || 0,
+      ''
+    ]);
+
+    return {
+      success: true,
+      authorized: false,
+      status: 'PENDIENTE',
+      client: 'Cliente Nuevo (Pendiente)',
+      mac: cleanMac,
+      message: 'Dispositivo registrado como pendiente. Solicita la activación al Administrador.'
+    };
+  } finally {
+    try { lock.releaseLock(); } catch (eRel) {}
   }
-
-  // Si no está registrado, se añade automáticamente con estado PENDIENTE para gestión del administrador
-  sheet.appendRow([
-    cleanMac,
-    'Cliente Nuevo (Pendiente)',
-    cleanModel,
-    'PENDIENTE',
-    nowStr,
-    nowStr,
-    'Auto-registrado al instalar APK',
-    '[]',
-    Number(storageFree) || 0,
-    Number(storageTotal) || 0,
-    ''
-  ]);
-
-  return {
-    success: true,
-    authorized: false,
-    status: 'PENDIENTE',
-    client: 'Cliente Nuevo (Pendiente)',
-    mac: cleanMac,
-    message: 'Dispositivo registrado como pendiente. Solicita la activación al Administrador.'
-  };
 }
 
 function sendRemoteCommand(password, mac, commandObj) {
@@ -2261,17 +2299,23 @@ function getMacDevicesList(password) {
   }
   const sheet = getOrCreateMacSheet();
   const list = [];
+  const macMap = {};
+  const duplicateRowsToDelete = [];
+
   if (sheet.getLastRow() > 1) {
     const data = sheet.getDataRange().getValues();
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
       const mac = String(row[0] || '').trim().toUpperCase();
       if (!mac) continue;
-      list.push({
+      const norm = normalizeMac(mac);
+      const status = String(row[3] || 'PENDIENTE').toUpperCase();
+
+      const item = {
         mac: mac,
         client: String(row[1] || ''),
         model: String(row[2] || ''),
-        status: String(row[3] || 'PENDIENTE').toUpperCase(),
+        status: status,
         registerDate: String(row[4] || ''),
         lastCheck: String(row[5] || ''),
         notes: String(row[6] || ''),
@@ -2279,7 +2323,33 @@ function getMacDevicesList(password) {
         storageFreeMb: Number(row[8]) || 0,
         storageTotalMb: Number(row[9]) || 0,
         pendingCommand: String(row[10] || '')
-      });
+      };
+
+      if (!macMap[norm]) {
+        macMap[norm] = { item: item, rowIndex: i + 1 };
+      } else {
+        // Si ya existía un registro para esta MAC:
+        // Si el actual es ACTIVO y el guardado era PENDIENTE, conservamos el ACTIVO y marcamos el anterior para borrar
+        const prevStatus = macMap[norm].item.status;
+        if ((status === 'ACTIVO' || status === 'ACTIVE') && prevStatus !== 'ACTIVO' && prevStatus !== 'ACTIVE') {
+          duplicateRowsToDelete.push(macMap[norm].rowIndex);
+          macMap[norm] = { item: item, rowIndex: i + 1 };
+        } else {
+          duplicateRowsToDelete.push(i + 1);
+        }
+      }
+    }
+
+    // Purgar de abajo hacia arriba filas duplicadas físicas de la hoja
+    if (duplicateRowsToDelete.length > 0) {
+      duplicateRowsToDelete.sort(function(a, b) { return b - a; });
+      for (let d = 0; d < duplicateRowsToDelete.length; d++) {
+        try { sheet.deleteRow(duplicateRowsToDelete[d]); } catch (eDel) {}
+      }
+    }
+
+    for (let k in macMap) {
+      list.push(macMap[k].item);
     }
   }
   return { success: true, total: list.length, devices: list };
@@ -2351,16 +2421,29 @@ function deleteMacDevice(password, mac) {
   const cleanMac = String(mac || '').trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
   const sheet = getOrCreateMacSheet();
-  if (sheet.getLastRow() > 1) {
-    const values = sheet.getDataRange().getValues();
-    for (let i = 1; i < values.length; i++) {
-      if (normalizeMac(values[i][0]) === targetNormMac) {
-        sheet.deleteRow(i + 1);
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+  } catch (eLock) {}
+
+  try {
+    if (sheet.getLastRow() > 1) {
+      const values = sheet.getDataRange().getValues();
+      let deleted = false;
+      for (let i = values.length - 1; i >= 1; i--) {
+        if (normalizeMac(values[i][0]) === targetNormMac) {
+          sheet.deleteRow(i + 1);
+          deleted = true;
+        }
+      }
+      if (deleted) {
         return { success: true, mac: cleanMac };
       }
     }
+    return { success: false, error: 'MAC no encontrada' };
+  } finally {
+    try { lock.releaseLock(); } catch (eRel) {}
   }
-  return { success: false, error: 'MAC no encontrada' };
 }
 
 // ================= ALIAS DIRECTOS PARA GOOGLE.SCRIPT.RUN =================

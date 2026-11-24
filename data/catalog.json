@@ -501,7 +501,7 @@
     },
     {
       "id": "785709864",
-      "cleanName": "Patch NF (Anti-Login Xuper)",
+      "cleanName": "Patch NF (Anti-Login)",
       "fileName": "Patch.NF-All-.ModByNF.apk",
       "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/patch_nf_all_modbynf.png",
       "browsyCode": "7948",
@@ -513,7 +513,7 @@
       "sizeFormatted": "22.3 MB",
       "status": "active",
       "createdAt": "2026-11-24T04:36:57Z",
-      "aiDescription": "Herramienta de optimización que renueva la identidad de tu dispositivo para resolver y anular bloqueos de inicio de sesión en aplicaciones Xuper.",
+      "aiDescription": "Herramienta de mantenimiento y asistencia técnica que renueva la identidad del TV Box para eliminar bloqueos de inicio de sesión en aplicaciones de televisión.",
       "category": "🛠️ Utilitarios",
       "author": "ModByNF"
     },
