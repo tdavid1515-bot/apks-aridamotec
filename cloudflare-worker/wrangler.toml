@@ -1,0 +1,8 @@
+name = "aridamotec-cdn"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# Plan 100% Gratuito de Cloudflare
+# Da 100,000 peticiones diarias gratis
+[observability]
+enabled = true

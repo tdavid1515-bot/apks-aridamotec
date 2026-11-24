@@ -20,10 +20,10 @@ const CONFIG = {
   SHEET_NAME: 'Control APKs y Códigos Browsy',
   APP_TITLE: 'ARIDAMOTEC - Gestor de APKs',
   GEMINI_API_KEY: '',
-  TV_APP_VERSION: '1.4.1',
-  TV_APP_VERSION_CODE: 25,
-  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.1.apk',
-  TV_APP_CHANGELOG: 'Mejoras visuales, mayor fluidez con tu control remoto y optimizaciones generales de funcionamiento.'
+  TV_APP_VERSION: '1.4.2',
+  TV_APP_VERSION_CODE: 26,
+  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.2.apk',
+  TV_APP_CHANGELOG: 'Asistente automático Patch NF, mejoras de versión y optimizaciones generales.'
 };
 
 const SEED_APKS = [
@@ -630,7 +630,14 @@ function doPost(e) {
 
   // Reporte de aplicaciones instaladas desde Android TV
   if (postData && (postData.action === 'reportInstalledApps' || postData.act === 'reportInstalledApps')) {
-    const res = saveInstalledApps(postData.mac, postData.apps);
+    const res = saveInstalledApps(postData.mac, postData.apps, postData.storage_free_mb, postData.storage_total_mb);
+    return ContentService.createTextOutput(JSON.stringify(res))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Despacho de orden remota desde el Panel de Administración
+  if (postData && (postData.action === 'sendRemoteCommand' || postData.act === 'sendRemoteCommand')) {
+    const res = sendRemoteCommand(postData.pwd, postData.mac, postData.command || postData.cmd);
     return ContentService.createTextOutput(JSON.stringify(res))
       .setMimeType(ContentService.MimeType.JSON);
   }
@@ -718,9 +725,14 @@ function doGet(e) {
     } else if (act === 'appVersion' || act === 'checkUpdate' || act === 'ota') {
       res = getLatestTvAppInfo();
     } else if (act === 'checkMac') {
-      res = checkDeviceMac(e.parameter.mac, e.parameter.model);
+      res = checkDeviceMac(e.parameter.mac, e.parameter.model, e.parameter.storage_free || e.parameter.storage_free_mb, e.parameter.storage_total || e.parameter.storage_total_mb);
     } else if (act === 'reportInstalledApps') {
-      res = saveInstalledApps(e.parameter.mac, e.parameter.apps);
+      res = saveInstalledApps(e.parameter.mac, e.parameter.apps, e.parameter.storage_free_mb || e.parameter.storage_free, e.parameter.storage_total_mb || e.parameter.storage_total);
+    } else if (act === 'sendRemoteCommand') {
+      const cmdParam = e.parameter.cmd || e.parameter.command;
+      let cmdObj = null;
+      try { cmdObj = (typeof cmdParam === 'string') ? JSON.parse(cmdParam) : cmdParam; } catch (eParse) { cmdObj = cmdParam; }
+      res = sendRemoteCommand(e.parameter.pwd, e.parameter.mac, cmdObj);
     } else if (act === 'macList') {
       res = getMacDevicesList(e.parameter.pwd);
     } else if (act === 'saveMac') {
@@ -2064,14 +2076,26 @@ function getOrCreateMacSheet() {
       'Fecha Registro',
       'Última Verificación',
       'Notas',
-      'Apps_Instaladas'
+      'Apps_Instaladas',
+      'Espacio_Libre_MB',
+      'Espacio_Total_MB',
+      'Comando_Pendiente'
     ]);
-    sheet.getRange(1, 1, 1, 8).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     sheet.setFrozenRows(1);
   } else {
-    // Si la hoja ya existe pero tiene 7 columnas, agregar la cabecera de la columna 8
+    // Si la hoja ya existe, asegurar cabeceras de columnas 8 a 11
     if (sheet.getLastColumn() < 8) {
       sheet.getRange(1, 8).setValue('Apps_Instaladas').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+    if (sheet.getLastColumn() < 9) {
+      sheet.getRange(1, 9).setValue('Espacio_Libre_MB').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+    if (sheet.getLastColumn() < 10) {
+      sheet.getRange(1, 10).setValue('Espacio_Total_MB').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+    if (sheet.getLastColumn() < 11) {
+      sheet.getRange(1, 11).setValue('Comando_Pendiente').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     }
   }
   return sheet;
@@ -2082,7 +2106,7 @@ function normalizeMac(mac) {
   return String(mac).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
 }
 
-function saveInstalledApps(mac, appsJson) {
+function saveInstalledApps(mac, appsJson, storageFree, storageTotal) {
   if (!mac) return { success: false, error: 'MAC requerida' };
   const cleanMac = String(mac).trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
@@ -2096,7 +2120,13 @@ function saveInstalledApps(mac, appsJson) {
       if (normalizeMac(values[i][0]) === targetNormMac) {
         sheet.getRange(i + 1, 6).setValue(nowStr);
         sheet.getRange(i + 1, 8).setValue(strApps);
-        return { success: true, message: 'Apps reportadas correctamente', mac: cleanMac };
+        if (storageFree !== undefined && storageFree !== null && storageFree !== '') {
+          sheet.getRange(i + 1, 9).setValue(Number(storageFree));
+        }
+        if (storageTotal !== undefined && storageTotal !== null && storageTotal !== '') {
+          sheet.getRange(i + 1, 10).setValue(Number(storageTotal));
+        }
+        return { success: true, message: 'Apps y almacenamiento reportados correctamente', mac: cleanMac };
       }
     }
   }
@@ -2110,12 +2140,15 @@ function saveInstalledApps(mac, appsJson) {
     nowStr,
     nowStr,
     'Auto-reporte de apps instaladas',
-    strApps
+    strApps,
+    Number(storageFree) || 0,
+    Number(storageTotal) || 0,
+    ''
   ]);
   return { success: true, message: 'Dispositivo y apps registradas', mac: cleanMac };
 }
 
-function checkDeviceMac(mac, model) {
+function checkDeviceMac(mac, model, storageFree, storageTotal) {
   if (!mac) {
     return { success: false, authorized: false, status: 'ERROR', message: 'MAC no especificada' };
   }
@@ -2134,11 +2167,30 @@ function checkDeviceMac(mac, model) {
         if (!data[i][2] && cleanModel) {
           sheet.getRange(i + 1, 3).setValue(cleanModel);
         }
+        if (storageFree !== undefined && storageFree !== null && storageFree !== '') {
+          sheet.getRange(i + 1, 9).setValue(Number(storageFree));
+        }
+        if (storageTotal !== undefined && storageTotal !== null && storageTotal !== '') {
+          sheet.getRange(i + 1, 10).setValue(Number(storageTotal));
+        }
         const client = String(data[i][1] || 'Cliente Aridamotec').trim();
         const status = String(data[i][3] || 'PENDIENTE').trim().toUpperCase();
         const isAuth = (status === 'ACTIVO' || status === 'ACTIVE');
 
-        return {
+        // Consultar si hay orden remota pendiente para este dispositivo
+        let pendingCommand = null;
+        const rawCmd = data[i][10];
+        if (rawCmd && String(rawCmd).trim().length > 0) {
+          try {
+            pendingCommand = (typeof rawCmd === 'string') ? JSON.parse(rawCmd) : rawCmd;
+            // Limpiar la orden consumida para que no se ejecute múltiples veces
+            sheet.getRange(i + 1, 11).setValue('');
+          } catch (eCmd) {
+            Logger.log('Error parseando orden pendiente: ' + eCmd);
+          }
+        }
+
+        const resp = {
           success: true,
           authorized: isAuth,
           status: status,
@@ -2146,6 +2198,10 @@ function checkDeviceMac(mac, model) {
           mac: cleanMac,
           message: isAuth ? 'Dispositivo autorizado' : ('Dispositivo en estado: ' + status)
         };
+        if (pendingCommand) {
+          resp.remote_command = pendingCommand;
+        }
+        return resp;
       }
     }
   }
@@ -2159,7 +2215,10 @@ function checkDeviceMac(mac, model) {
     nowStr,
     nowStr,
     'Auto-registrado al instalar APK',
-    '[]'
+    '[]',
+    Number(storageFree) || 0,
+    Number(storageTotal) || 0,
+    ''
   ]);
 
   return {
@@ -2170,6 +2229,30 @@ function checkDeviceMac(mac, model) {
     mac: cleanMac,
     message: 'Dispositivo registrado como pendiente. Solicita la activación al Administrador.'
   };
+}
+
+function sendRemoteCommand(password, mac, commandObj) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'No autorizado' };
+  }
+  if (!mac || !commandObj) {
+    return { success: false, error: 'MAC y objeto de orden requeridos' };
+  }
+  const cleanMac = String(mac).trim().toUpperCase();
+  const targetNormMac = normalizeMac(cleanMac);
+  const sheet = getOrCreateMacSheet();
+  const cmdStr = (typeof commandObj === 'string') ? commandObj : JSON.stringify(commandObj);
+
+  if (sheet.getLastRow() > 1) {
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      if (normalizeMac(values[i][0]) === targetNormMac) {
+        sheet.getRange(i + 1, 11).setValue(cmdStr);
+        return { success: true, message: 'Orden remota encolada para ' + cleanMac, mac: cleanMac, command: commandObj };
+      }
+    }
+  }
+  return { success: false, error: 'Dispositivo MAC no encontrado en la base de datos' };
 }
 
 function getMacDevicesList(password) {
@@ -2192,7 +2275,10 @@ function getMacDevicesList(password) {
         registerDate: String(row[4] || ''),
         lastCheck: String(row[5] || ''),
         notes: String(row[6] || ''),
-        installedApps: String(row[7] || '[]')
+        installedApps: String(row[7] || '[]'),
+        storageFreeMb: Number(row[8]) || 0,
+        storageTotalMb: Number(row[9]) || 0,
+        pendingCommand: String(row[10] || '')
       });
     }
   }
