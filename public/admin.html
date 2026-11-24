@@ -2395,8 +2395,16 @@
           </div>
 
           <!-- Buscador Catálogo -->
-          <div style="margin-bottom:8px;">
-            <input type="text" id="catAppsSearchInput" oninput="filterCatalogApps()" placeholder="🔍 Filtrar por nombre o categoría..." style="width:100%; box-sizing:border-box; padding:7px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:#070b14; color:#fff; font-size:12px;">
+          <div style="margin-bottom:6px;">
+            <input type="text" id="catAppsSearchInput" oninput="filterCatalogApps()" placeholder="🔍 Filtrar por nombre, categoría o estado..." style="width:100%; box-sizing:border-box; padding:7px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:#070b14; color:#fff; font-size:12px;">
+          </div>
+
+          <!-- Pestañas Filtro Rápido de Estado -->
+          <div id="catStatusFilterRow" style="display:flex; gap:6px; margin-bottom:8px; overflow-x:auto; padding-bottom:2px;">
+            <button type="button" onclick="setCatalogStatusFilter('all')" id="btnCatFilter_all" style="padding:3px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; border:1px solid rgba(0,229,255,0.4); background:rgba(0,229,255,0.15); color:var(--accent-cyan); white-space:nowrap; transition:all 0.2s;">Todos (<span id="catCount_all">0</span>)</button>
+            <button type="button" onclick="setCatalogStatusFilter('available')" id="btnCatFilter_available" style="padding:3px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:#94a3b8; white-space:nowrap; transition:all 0.2s;">✨ Disponibles (<span id="catCount_available">0</span>)</button>
+            <button type="button" onclick="setCatalogStatusFilter('update')" id="btnCatFilter_update" style="padding:3px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:#94a3b8; white-space:nowrap; transition:all 0.2s;">⚡ Actualizaciones (<span id="catCount_update">0</span>)</button>
+            <button type="button" onclick="setCatalogStatusFilter('installed')" id="btnCatFilter_installed" style="padding:3px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:#94a3b8; white-space:nowrap; transition:all 0.2s;">✅ Instaladas (<span id="catCount_installed">0</span>)</button>
           </div>
 
           <!-- Lista con Scroll Catálogo -->
@@ -4537,6 +4545,8 @@
 
       document.getElementById('devAppsSearchInput').value = '';
       if (document.getElementById('catAppsSearchInput')) document.getElementById('catAppsSearchInput').value = '';
+      currentCatalogStatusFilter = 'all';
+      if (typeof setCatalogStatusFilter === 'function') setCatalogStatusFilter('all');
 
       renderDeviceAppsList(currentDeviceApps);
       renderCatalogAppsList(apksData.active || []);
@@ -4739,6 +4749,178 @@
       }
     }
 
+    // Metadatos oficiales de paquetes y versiones de las APKs del catálogo
+    const APK_OFFICIAL_METADATA = {
+      "AK47Sports_.V1.6.apk": { packageName: "app.aksports.live", versionName: "1.6", versionCode: 7 },
+      "ANIMXL.apk": { packageName: "tv.animxlplus.app", versionName: "2.1.0-tvbox", versionCode: 13 },
+      "ATV.LAUNCHER.v0.1.42-pro.apk": { packageName: "ca.dstudio.atvlauncher.pro", versionName: "0.1.42-pro", versionCode: 30002736 },
+      "BIXPLUS_V2.apk": { packageName: "com.bixmax.x1x", versionName: "1.48", versionCode: 20008 },
+      "Browsy_1.5.0_APKPure.apk": { packageName: "com.browsy.app", versionName: "1.5.0", versionCode: 18 },
+      "Button.Mapper.v4.15.Premium.apk": { packageName: "flar2.homebutton", versionName: "4.15", versionCode: 415 },
+      "Cinehax-18.8.-Vip-ModByNF.apk": { packageName: "com.cinehax", versionName: "18.8", versionCode: 1 },
+      "ClipBox.apk": { packageName: "org.clipbox.player", versionName: "1.6.3.1", versionCode: 1631 },
+      "com.wireguard.android-1.0.20260315.apk": { packageName: "com.wireguard.android", versionName: "1.0.20260315", versionCode: 519 },
+      "CrexiFy_TV.apk": { packageName: "com.crexify.tv", versionName: "4.5", versionCode: 12 },
+      "CricZ.TV.v7.3.apk": { packageName: "com.pro.cricztv", versionName: "7.3", versionCode: 10 },
+      "Cx.File.Explorer.v2.8.1.Premium.apk": { packageName: "com.cxinventor.file.explorer", versionName: "2.8.1", versionCode: 281 },
+      "Developer_Tools_2.4.7_APKPure.apk": { packageName: "com.roysolberg.android.developertools", versionName: "2.4.7", versionCode: 121 },
+      "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk": { packageName: "com.esaba.downloader", versionName: "1.5.0-ForGoogleAndroidDevices", versionCode: 58 },
+      "FlyStream.apk": { packageName: "net.flystream.tv", versionName: "2.78", versionCode: 80 },
+      "GeeSports_.v3.9.apk": { packageName: "com.live.geesports", versionName: "3.9", versionCode: 12 },
+      "GoPlusTV-4.4.0-Fix-ModByNF.apk": { packageName: "com.golite.gnulatv", versionName: "4.4.0.Plus", versionCode: 44 },
+      "GoPlusTV-4.4.0-Vip-404-ModByNF.apk": { packageName: "com.golite.gnulatv", versionName: "4.4.0.Plus", versionCode: 44 },
+      "LokuraTv.apk": { packageName: "com.appsmasther.iptv_android", versionName: "1.0.0", versionCode: 1 },
+      "LokuraTv_Pro_Ultra.apk": { packageName: "com.ue7tte.ibob41836c7", versionName: "4.3", versionCode: 54 },
+      "LTScores.2_1.0.VIP.apk": { packageName: "com.app.player.latin_events", versionName: "1.0", versionCode: 1 },
+      "luma-tv.apk": { packageName: "dev.luma.tv", versionName: "2.4", versionCode: 26 },
+      "MoviePlus.armeabi-v7a.apk": { packageName: "com.dvex.movp", versionName: "16.9", versionCode: 90315 },
+      "MXL.IPTV.apk": { packageName: "tv.mxliptv.app", versionName: "1.0.8", versionCode: 8 },
+      "MXL.MOVIES.apk": { packageName: "tv.mxlmovies.app", versionName: "3.1.2-tvbox", versionCode: 65 },
+      "Patch.NF-All-.ModByNF.apk": { packageName: "com.ModByNF.Patch404", versionName: "4.0.4", versionCode: 40004 },
+      "Patch NF-All- ModByNF.apk": { packageName: "com.ModByNF.Patch404", versionName: "4.0.4", versionCode: 40004 },
+      "PLayer_Pro_base.2.apk": { packageName: "live.playerpro", versionName: "4.0.7", versionCode: 8 },
+      "Projectivy.Launcher.v4.73.Premium.apk": { packageName: "com.spocky.projengmenu", versionName: "4.73", versionCode: 98 },
+      "RBTV.apk": { packageName: "com.rblive.tv", versionName: "3.0.321", versionCode: 321 },
+      "RetroJuegos.v1.apk": { packageName: "com.example.retrojuegos", versionName: "1.0", versionCode: 5 },
+      "SmartTube_beta_32.80_universal.apk": { packageName: "org.smarttube.beta", versionName: "32.80", versionCode: 2470 },
+      "SPORTV_3.9.VIP.apk": { packageName: "com.puertasport.tv.tvnativo", versionName: "3.9", versionCode: 39 },
+      "Sportz.X.VERSION.3.2.apk": { packageName: "com.sportzx.live", versionName: "3.2", versionCode: 18 },
+      "Surfshark.apk": { packageName: "com.surfshark.vpnclient.android", versionName: "3.37.0", versionCode: 310049640 },
+      "TizenTube_icon_name_YouTube_dark.apk": { packageName: "io.gh.reisxd.tizentube.cobalt", versionName: "2.0.3", versionCode: 203 },
+      "Tsuzuku.v4.1.4.Android.TV.apk": { packageName: "com.syha01.tsuzukutv", versionName: "4.1.4", versionCode: 30 },
+      "tvQuickActions.Pro.v3.7.0.Modded.apk": { packageName: "dev.vodik7.tvquickactions", versionName: "3.7.0", versionCode: 405 },
+      "Watched.apk": { packageName: "com.watched.firetv", versionName: "1.0.14", versionCode: 16 },
+      "WiwyXuper.apk": { packageName: "com.xuper.wiwyxuper", versionName: "4.34.4", versionCode: 43487 },
+      "Wolf.Launcher.0.1.9.apk": { packageName: "com.wolf.firelauncher", versionName: "0.1.9-Wolf", versionCode: 11900120 },
+      "X-plore.v4.53.05.Premium.apk": { packageName: "com.lonelycatgames.Xplore", versionName: "4.53.05", versionCode: 45305 },
+      "X-Sports.apk": { packageName: "tv.xsports.x1x", versionName: "1.0", versionCode: 9 },
+      "XTREMETV.apk": { packageName: "com.xtreme.tv", versionName: "40.6", versionCode: 1 },
+      "Xuper-Tv-NF-4.99.20-ModByNF.apk": { packageName: "com.android.mgstvNF404", versionName: "4.99.20", versionCode: 49920 },
+      "XUPER.TV.v4.99.20.Android.TV.Original.apk": { packageName: "com.android.mgstv", versionName: "4.99.20", versionCode: 49920 },
+      "XuperHydra_4.99.20.apk": { packageName: "com.android.mgstv", versionName: "4.99.20", versionCode: 49921 },
+      "XuperTv-NF-v4.35.1-ModByNF.apk": { packageName: "com.android.mgstxNF", versionName: "4.35.1", versionCode: 43501 },
+      "Xuper_Focuz_5.2.0.apk": { packageName: "com.xuper.focuz", versionName: "5.2.0", versionCode: 520 }
+    };
+
+    function getCatalogAppMeta(item) {
+      if (!item) return { packageName: '', versionName: '', versionCode: 0 };
+      const fn = item.fileName || '';
+      const meta = APK_OFFICIAL_METADATA[fn] || APK_OFFICIAL_METADATA[fn.trim()] || null;
+      if (meta) {
+        return {
+          packageName: meta.packageName || item.packageName || '',
+          versionName: meta.versionName || item.versionName || '',
+          versionCode: meta.versionCode || item.versionCode || 0
+        };
+      }
+      return {
+        packageName: item.packageName || '',
+        versionName: item.versionName || '',
+        versionCode: item.versionCode || 0
+      };
+    }
+
+    function compareAppVersions(vInstalled, vCatalog) {
+      if (!vInstalled || !vCatalog) return 0;
+      const s1 = String(vInstalled).trim().replace(/^[vV]/, '').replace(/[^0-9.]/g, '.');
+      const s2 = String(vCatalog).trim().replace(/^[vV]/, '').replace(/[^0-9.]/g, '.');
+      const p1 = s1.split(/\.+/);
+      const p2 = s2.split(/\.+/);
+      const maxLen = Math.max(p1.length, p2.length);
+      for (let i = 0; i < maxLen; i++) {
+        const n1 = (i < p1.length && p1[i] !== '') ? parseInt(p1[i], 10) || 0 : 0;
+        const n2 = (i < p2.length && p2[i] !== '') ? parseInt(p2[i], 10) || 0 : 0;
+        if (n1 !== n2) return n1 < n2 ? -1 : 1;
+      }
+      return 0;
+    }
+
+    function evaluateCatalogItemStatus(item, installedPkgMap, installedLabelMap) {
+      const fn = (item.fileName || '').toLowerCase();
+      const clean = (item.cleanName || '').toLowerCase();
+      const meta = getCatalogAppMeta(item);
+      const pkg = (meta.packageName || item.packageName || '').toLowerCase();
+      
+      const isPatch = fn.includes('patch') || clean.includes('patch');
+
+      let matched = null;
+      if (pkg && installedPkgMap.has(pkg)) {
+        matched = installedPkgMap.get(pkg);
+      } else if (!isPatch && clean) {
+        const cleanBase = clean.replace(/\b(v?\d+(\.\d+)*|apkpure|modbynf|original|dark|tv|pro|ultra|vip|mod)\b/g, '').replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+        if (cleanBase.length >= 3 && installedLabelMap.has(cleanBase)) {
+          matched = installedLabelMap.get(cleanBase);
+        }
+      }
+
+      if (isPatch) {
+        return {
+          status: 'patch',
+          label: '🛠️ Parche / Herramienta',
+          matched: matched,
+          meta: meta
+        };
+      }
+
+      if (matched) {
+        const instVer = matched.ver || '';
+        const catVer = meta.versionName || '';
+        const instCode = Number(matched.code) || 0;
+        const catCode = Number(meta.versionCode) || 0;
+
+        let hasUpdate = false;
+        if (catCode > 0 && instCode > 0) {
+          hasUpdate = catCode > instCode;
+        } else if (instVer && catVer) {
+          hasUpdate = compareAppVersions(instVer, catVer) < 0;
+        }
+
+        if (hasUpdate) {
+          return {
+            status: 'update',
+            label: `⚡ Actualizar${instVer ? ` (v${instVer} → v${catVer})` : ''}`,
+            matched: matched,
+            meta: meta
+          };
+        } else {
+          return {
+            status: 'installed',
+            label: `✅ Instalada${instVer ? ` (v${instVer})` : ''}`,
+            matched: matched,
+            meta: meta
+          };
+        }
+      }
+
+      return {
+        status: 'available',
+        label: 'Disponible',
+        matched: null,
+        meta: meta
+      };
+    }
+
+    let currentCatalogStatusFilter = 'all';
+
+    function setCatalogStatusFilter(filter) {
+      currentCatalogStatusFilter = filter;
+      ['all', 'available', 'update', 'installed'].forEach(k => {
+        const btn = document.getElementById('btnCatFilter_' + k);
+        if (btn) {
+          if (k === filter) {
+            btn.style.borderColor = 'rgba(0,229,255,0.4)';
+            btn.style.background = 'rgba(0,229,255,0.15)';
+            btn.style.color = 'var(--accent-cyan)';
+          } else {
+            btn.style.borderColor = 'rgba(255,255,255,0.1)';
+            btn.style.background = 'rgba(255,255,255,0.03)';
+            btn.style.color = '#94a3b8';
+          }
+        }
+      });
+      filterCatalogApps();
+    }
+
     function renderCatalogAppsList(catalogItems) {
       const container = document.getElementById('catAppsContainer');
       const badge = document.getElementById('catAppsBadgeCount');
@@ -4746,20 +4928,43 @@
       const list = catalogItems || [];
       if (badge) badge.textContent = list.length;
 
+      const installedPkgMap = new Map();
+      const installedLabelMap = new Map();
+      currentDeviceApps.forEach(a => {
+        if (a.pkg) installedPkgMap.set(a.pkg.toLowerCase(), a);
+        if (a.name) {
+          const norm = a.name.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+          if (norm.length >= 3) installedLabelMap.set(norm, a);
+        }
+      });
+
+      // Contadores globales por estado
+      let countAll = 0, countAvail = 0, countUpdate = 0, countInst = 0;
+      (apksData.active || []).forEach(item => {
+        countAll++;
+        const st = evaluateCatalogItemStatus(item, installedPkgMap, installedLabelMap);
+        if (st.status === 'update') countUpdate++;
+        else if (st.status === 'installed') countInst++;
+        else countAvail++;
+      });
+      const elAll = document.getElementById('catCount_all');
+      const elAvail = document.getElementById('catCount_available');
+      const elUpdate = document.getElementById('catCount_update');
+      const elInst = document.getElementById('catCount_installed');
+      if (elAll) elAll.textContent = countAll;
+      if (elAvail) elAvail.textContent = countAvail;
+      if (elUpdate) elUpdate.textContent = countUpdate;
+      if (elInst) elInst.textContent = countInst;
+
       if (list.length === 0) {
         container.innerHTML = `
           <div style="text-align:center; padding:32px 12px; color:#94a3b8;">
             <div style="font-size:28px; margin-bottom:6px;">📦</div>
-            <p style="font-size:12.5px; margin:0; color:#e2e8f0; font-weight:700;">Catálogo vacío</p>
+            <p style="font-size:12.5px; margin:0; color:#e2e8f0; font-weight:700;">No hay aplicaciones con este criterio</p>
           </div>
         `;
         return;
       }
-
-      const installedPkgMap = new Map();
-      currentDeviceApps.forEach(a => {
-        if (a.pkg) installedPkgMap.set(a.pkg.toLowerCase(), a);
-      });
 
       let html = '';
       list.forEach(item => {
@@ -4767,27 +4972,49 @@
         const name = escapeHtml(item.cleanName || item.fileName || 'App');
         const cat = escapeHtml(item.category || 'General');
         const sizeStr = item.sizeFormatted || (item.size ? formatBytes(item.size) : '25 MB');
-        const pkg = (item.packageName || '').toLowerCase();
-        
-        const isInstalled = pkg && installedPkgMap.has(pkg);
         const isChecked = selectedCatalogApps.has(id) ? 'checked' : '';
 
+        const st = evaluateCatalogItemStatus(item, installedPkgMap, installedLabelMap);
+        
+        let cardBg = 'rgba(255,255,255,0.03)';
+        let cardBorder = 'rgba(255,255,255,0.06)';
+        let cardHover = 'rgba(255,255,255,0.06)';
         let statusPill = '';
-        if (isInstalled) {
-          statusPill = '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; background:rgba(34,197,94,0.15); color:#4ade80;">Instalada</span>';
+        let detailHtml = '';
+
+        if (st.status === 'update') {
+          cardBg = 'rgba(245,158,11,0.05)';
+          cardBorder = 'rgba(245,158,11,0.3)';
+          cardHover = 'rgba(245,158,11,0.1)';
+          statusPill = `<span style="font-size:10px; font-weight:800; padding:2.5px 8px; border-radius:6px; background:rgba(245,158,11,0.18); color:#fbbf24; border:1px solid rgba(245,158,11,0.4); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">⚡ Actualizar</span>`;
+          detailHtml = `<span style="color:#fbbf24; font-weight:700;">• Instalada: v${st.matched.ver || '?'} → v${st.meta.versionName || '?'}</span>`;
+        } else if (st.status === 'installed') {
+          cardBg = 'rgba(34,197,94,0.03)';
+          cardBorder = 'rgba(34,197,94,0.18)';
+          cardHover = 'rgba(34,197,94,0.07)';
+          statusPill = `<span style="font-size:10px; font-weight:700; padding:2.5px 8px; border-radius:6px; background:rgba(34,197,94,0.14); color:#4ade80; border:1px solid rgba(34,197,94,0.3); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">✅ Instalada</span>`;
+          detailHtml = `<span style="color:#4ade80;">• v${st.matched.ver || st.meta.versionName}</span>`;
+        } else if (st.status === 'patch') {
+          cardBg = 'rgba(168,85,247,0.04)';
+          cardBorder = 'rgba(168,85,247,0.25)';
+          cardHover = 'rgba(168,85,247,0.08)';
+          statusPill = `<span style="font-size:10px; font-weight:700; padding:2.5px 8px; border-radius:6px; background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🛠️ Parche</span>`;
+          detailHtml = `<span style="color:#c084fc;">• Herramienta de optimización</span>`;
         } else {
-          statusPill = '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; background:rgba(0,229,255,0.1); color:var(--accent-cyan);">Disponible</span>';
+          statusPill = `<span style="font-size:10px; font-weight:700; padding:2.5px 8px; border-radius:6px; background:rgba(0,229,255,0.1); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.25); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">Disponible</span>`;
+          detailHtml = `<span style="color:#94a3b8;">• v${st.meta.versionName || '1.0'}</span>`;
         }
 
         html += `
-          <label style="display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:8px 10px; cursor:pointer; gap:10px; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+          <label style="display:flex; align-items:center; background:${cardBg}; border:1px solid ${cardBorder}; border-radius:10px; padding:8px 10px; cursor:pointer; gap:10px; transition:all 0.2s;" onmouseover="this.style.background='${cardHover}'" onmouseout="this.style.background='${cardBg}'">
             <input type="checkbox" ${isChecked} onchange="toggleSelectCatalogApp('${escapeJs(id)}', this.checked)" style="accent-color:var(--accent-cyan); width:16px; height:16px; cursor:pointer; flex-shrink:0;">
             <div style="min-width:0; flex:1;">
               <div style="font-size:12.5px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
-              <div style="font-size:10.5px; color:#94a3b8; display:flex; gap:6px; margin-top:2px;">
+              <div style="font-size:10.5px; color:#94a3b8; display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; align-items:center;">
                 <span>${cat}</span>
                 <span>•</span>
                 <span style="color:var(--accent-cyan); font-weight:600;">${sizeStr}</span>
+                ${detailHtml}
               </div>
             </div>
             ${statusPill}
@@ -4808,27 +5035,62 @@
     function toggleSelectAllCatalog(checked) {
       selectedCatalogApps.clear();
       if (checked) {
+        const installedPkgMap = new Map();
+        const installedLabelMap = new Map();
+        currentDeviceApps.forEach(a => {
+          if (a.pkg) installedPkgMap.set(a.pkg.toLowerCase(), a);
+          if (a.name) {
+            const norm = a.name.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+            if (norm.length >= 3) installedLabelMap.set(norm, a);
+          }
+        });
         (apksData.active || []).forEach(item => {
-          const id = item.id || item.fileName;
-          if (id) selectedCatalogApps.add(id);
+          const st = evaluateCatalogItemStatus(item, installedPkgMap, installedLabelMap);
+          if (st.status === 'available' || st.status === 'update' || st.status === 'patch') {
+            const id = item.id || item.fileName;
+            if (id) selectedCatalogApps.add(id);
+          }
         });
       }
-      renderCatalogAppsList(apksData.active || []);
+      filterCatalogApps();
+      updateStorageMetrics();
     }
 
     function filterCatalogApps() {
       const q = (document.getElementById('catAppsSearchInput').value || '').toLowerCase().trim();
       const list = apksData.active || [];
-      if (!q) {
-        renderCatalogAppsList(list);
-        return;
-      }
+
+      const installedPkgMap = new Map();
+      const installedLabelMap = new Map();
+      currentDeviceApps.forEach(a => {
+        if (a.pkg) installedPkgMap.set(a.pkg.toLowerCase(), a);
+        if (a.name) {
+          const norm = a.name.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+          if (norm.length >= 3) installedLabelMap.set(norm, a);
+        }
+      });
+
       const filtered = list.filter(item => {
+        const st = evaluateCatalogItemStatus(item, installedPkgMap, installedLabelMap);
+
+        if (currentCatalogStatusFilter === 'available') {
+          if (st.status !== 'available' && st.status !== 'patch') return false;
+        } else if (currentCatalogStatusFilter === 'update') {
+          if (st.status !== 'update') return false;
+        } else if (currentCatalogStatusFilter === 'installed') {
+          if (st.status !== 'installed') return false;
+        }
+
+        if (!q) return true;
         const n = (item.cleanName || '').toLowerCase();
         const f = (item.fileName || '').toLowerCase();
         const c = (item.category || '').toLowerCase();
-        return n.includes(q) || f.includes(q) || c.includes(q);
+        const p = (st.meta.packageName || '').toLowerCase();
+        const s = st.status.toLowerCase();
+        const l = st.label.toLowerCase();
+        return n.includes(q) || f.includes(q) || c.includes(q) || p.includes(q) || s.includes(q) || l.includes(q);
       });
+
       renderCatalogAppsList(filtered);
     }
 
@@ -4887,14 +5149,19 @@
       if (selectedItems.length === 1) {
         const item = selectedItems[0];
         const dlUrl = item.directDownloadUrl || item.downloadUrl || '';
-        dispatchRemoteCommand(currentDevice.mac, 'install', item.fileName, item.packageName || '', dlUrl);
+        const meta = getCatalogAppMeta(item);
+        const pkg = item.packageName || meta.packageName || '';
+        dispatchRemoteCommand(currentDevice.mac, 'install', item.fileName, pkg, dlUrl);
       } else {
-        const batch = selectedItems.map(item => ({
-          action: 'install',
-          fileName: item.fileName,
-          packageName: item.packageName || '',
-          downloadUrl: item.directDownloadUrl || item.downloadUrl || ''
-        }));
+        const batch = selectedItems.map(item => {
+          const meta = getCatalogAppMeta(item);
+          return {
+            action: 'install',
+            fileName: item.fileName,
+            packageName: item.packageName || meta.packageName || '',
+            downloadUrl: item.directDownloadUrl || item.downloadUrl || ''
+          };
+        });
         dispatchRemoteCommand(currentDevice.mac, 'install', '', '', '', batch);
       }
 
