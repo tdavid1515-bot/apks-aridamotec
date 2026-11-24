@@ -322,17 +322,21 @@
     "iconAsset": "icons/xupertv_nf_v4_35_1_modbynf.png"
   },
   "Patch.NF-All-.ModByNF.apk": {
+    "cleanName": "Patch NF (Anti-Login Xuper)",
     "packageName": "com.ModByNF.Patch404",
     "versionCode": 40004,
     "versionName": "4.0.4",
     "category": "🛠️ Utilitarios",
-    "author": "ModByNF"
+    "author": "ModByNF",
+    "iconAsset": "icons/patch_nf_all_modbynf.png"
   },
   "Patch NF-All- ModByNF.apk": {
+    "cleanName": "Patch NF (Anti-Login Xuper)",
     "packageName": "com.ModByNF.Patch404",
     "versionCode": 40004,
     "versionName": "4.0.4",
     "category": "🛠️ Utilitarios",
-    "author": "ModByNF"
+    "author": "ModByNF",
+    "iconAsset": "icons/patch_nf_all_modbynf.png"
   }
 }

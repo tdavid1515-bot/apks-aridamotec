@@ -1,10 +1,10 @@
 {
   "success": true,
-  "latestVersionCode": 14,
-  "latestVersionName": "1.4.0",
-  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.0.apk",
-  "changelog": "• Mejoras visuales en la pantalla y tarjetas de aplicaciones.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.",
+  "latestVersionCode": 26,
+  "latestVersionName": "1.4.2",
+  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.2.apk",
+  "changelog": "• Asistente automático de Patch NF para Xuper con auto-limpieza.\n• Nueva terminología Mejorar y Nueva versión sin conflictos de paquetes.\n• Telemetría de almacenamiento en tiempo real para asistencia remota.\n• Optimización de servicio en segundo plano y mayor fluidez.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-23T00:48:32.641Z"
+  "updatedAt": "2026-11-24T11:08:00.000Z"
 }

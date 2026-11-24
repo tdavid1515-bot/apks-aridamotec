@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 47,
-  "total": 47,
+  "count": 48,
+  "total": 48,
   "catalog": [
     {
       "id": "759604072",
@@ -500,6 +500,24 @@
       "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/mxl_movies.png"
     },
     {
+      "id": "785709864",
+      "cleanName": "Patch NF (Anti-Login Xuper)",
+      "fileName": "Patch.NF-All-.ModByNF.apk",
+      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/patch_nf_all_modbynf.png",
+      "browsyCode": "7948",
+      "shortUrl": "https://browsy.app/7948",
+      "browsyShortUrl": "https://browsy.app/7948",
+      "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Patch.NF-All-.ModByNF.apk",
+      "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Patch.NF-All-.ModByNF.apk",
+      "size": 23375417,
+      "sizeFormatted": "22.3 MB",
+      "status": "active",
+      "createdAt": "2026-11-24T04:36:57Z",
+      "aiDescription": "Herramienta de optimización que renueva la identidad de tu dispositivo para anular y evitar bloqueos de inicio de sesión en aplicaciones Xuper.",
+      "category": "🛠️ Utilitarios",
+      "author": "ModByNF"
+    },
+    {
       "id": "745643533",
       "fileName": "PLayer_Pro_base.2.apk",
       "cleanName": "Player Pro (IPTV)",
@@ -929,5 +947,7 @@
       "category": "📺 TV en Vivo",
       "author": "Xuper Focuz Dev"
     }
-  ]
+  ],
+  "active": 48,
+  "lastSync": "2026-11-23T23:37:00Z"
 }
