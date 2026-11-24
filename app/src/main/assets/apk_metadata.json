@@ -338,5 +338,12 @@
     "category": "🛠️ Utilitarios",
     "author": "ModByNF",
     "iconAsset": "icons/patch_nf_all_modbynf.png"
+  },
+  "igames-psp.apk": {
+    "cleanName": "igames psp",
+    "packageName": "cm.aptoide.pt",
+    "versionName": "10.0.2",
+    "versionCode": "13004",
+    "iconAsset": "icons/igames_psp.png"
   }
 }

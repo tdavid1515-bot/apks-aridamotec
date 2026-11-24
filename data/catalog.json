@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 48,
-  "total": 48,
+  "count": 49,
+  "total": 49,
   "catalog": [
     {
       "id": "759604072",
@@ -377,6 +377,25 @@
       "author": "ModByNF",
       "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/goplustv_4_4_0_vip_404_modbynf.png",
       "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/GoPlusTV-4.4.0-Vip-404-ModByNF.apk"
+    },
+    {
+      "id": "789051030",
+      "cleanName": "igames psp",
+      "fileName": "igames-psp.apk",
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/igames_psp.png",
+      "browsyCode": "6062",
+      "shortUrl": "https://browsy.app/6062",
+      "browsyShortUrl": "https://browsy.app/6062",
+      "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/igames-psp.apk",
+      "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/igames-psp.apk",
+      "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/igames-psp.apk",
+      "size": 23105107,
+      "sizeFormatted": "22 MB",
+      "status": "active",
+      "createdAt": "2026-11-24T22:10:24Z",
+      "aiDescription": "igames psp por Oficial: Aplicación prémium de juegos optimizada para Android TV con navegación ágil mediante control remoto y reproducción fluida.",
+      "category": "🎮 Juegos",
+      "author": "Oficial"
     },
     {
       "id": "745635705",
