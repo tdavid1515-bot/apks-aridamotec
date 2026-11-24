@@ -320,5 +320,19 @@
     "versionName": "4.35.1",
     "versionCode": "43501",
     "iconAsset": "icons/xupertv_nf_v4_35_1_modbynf.png"
+  },
+  "Patch.NF-All-.ModByNF.apk": {
+    "packageName": "com.ModByNF.Patch404",
+    "versionCode": 40004,
+    "versionName": "4.0.4",
+    "category": "🛠️ Utilitarios",
+    "author": "ModByNF"
+  },
+  "Patch NF-All- ModByNF.apk": {
+    "packageName": "com.ModByNF.Patch404",
+    "versionCode": 40004,
+    "versionName": "4.0.4",
+    "category": "🛠️ Utilitarios",
+    "author": "ModByNF"
   }
 }
