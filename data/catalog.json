@@ -21,7 +21,7 @@
       "aiDescription": "Señales deportivas en directo para seguir partidos de fútbol internacional, eventos de combate y torneos mundiales.",
       "category": "⚽ Deportes",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/ak47sports_v1_6.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/ak47sports_v1_6.png"
     },
     {
       "id": "753516957",
@@ -40,7 +40,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/2943",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ANIMXL.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/animxl.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/animxl.png"
     },
     {
       "id": "753501528",
@@ -61,7 +61,7 @@
       "editKey": "rCPb9e6uMhHP",
       "manageUrl": "https://browsy.app/manage?code=7346&key=rCPb9e6uMhHP",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ATV.LAUNCHER.v0.1.42-pro.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/atv_launcher_v0_1_42_pro.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/atv_launcher_v0_1_42_pro.png"
     },
     {
       "id": "753559487",
@@ -82,7 +82,7 @@
       "editKey": "86qKjauK6FAB",
       "manageUrl": "https://browsy.app/manage?code=4368&key=86qKjauK6FAB",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/BIXPLUS_V2.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/bixplus_v2.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/bixplus_v2.png"
     },
     {
       "id": "760400474",
@@ -102,7 +102,7 @@
       "aiDescription": "Con esta aplicación podrás abrir enlaces web y descargar paquetes mediante códigos numéricos cortos en tu televisor.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/browsy_1_5_0_apkpure.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/browsy_1_5_0_apkpure.png"
     },
     {
       "id": "761731949",
@@ -122,7 +122,7 @@
       "aiDescription": "Con esta aplicación podrás reasignar las funciones de los botones físicos tanto en teléfonos celulares Android como en dispositivos con Android TV.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/button_mapper_v4_15_premium.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/button_mapper_v4_15_premium.png"
     },
     {
       "id": "757478245",
@@ -142,7 +142,7 @@
       "aiDescription": "Catálogo bajo demanda de películas de estreno, cine taquillero y series completas sin cortes publicitarios.",
       "category": "🎬 Películas y Series",
       "author": "ModByNF",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/cinehax_18_8_vip_modbynf.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/cinehax_18_8_vip_modbynf.png"
     },
     {
       "id": "745634088",
@@ -161,7 +161,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9594",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ClipBox.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/clipbox.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/clipbox.png"
     },
     {
       "id": "745640371",
@@ -180,7 +180,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9813",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/com.wireguard.android-1.0.20260315.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/com_wireguard_android_1_0_20260315.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/com_wireguard_android_1_0_20260315.png"
     },
     {
       "id": "774406570",
@@ -200,7 +200,7 @@
       "aiDescription": "Con esta aplicación podrás sintonizar eventos deportivos en directo como fútbol internacional, béisbol, baloncesto y boxeo.",
       "category": "⚽ Deportes",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/crexify_tv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/crexify_tv.png"
     },
     {
       "id": "745634574",
@@ -219,7 +219,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9985",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/cricz_tv_v7_3.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/cricz_tv_v7_3.png"
     },
     {
       "id": "776984319",
@@ -239,7 +239,7 @@
       "aiDescription": "Con esta aplicación puedes gestionar archivos desde el televisor y liberar espacio, todo de forma muy sencilla y visual usando solo el control remoto.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/cx_file_explorer_v2_8_1_premium.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/cx_file_explorer_v2_8_1_premium.png"
     },
     {
       "id": "760912286",
@@ -259,7 +259,7 @@
       "aiDescription": "Suite de herramientas técnicas para desarrolladores con análisis de hardware, permisos y depuración en Android TV.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/developer_tools_2_4_7_apkpure.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/developer_tools_2_4_7_apkpure.png"
     },
     {
       "id": "745634804",
@@ -278,7 +278,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/3959",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/downloader_by_aftvnews_1_5_0_forgoogleandroiddevices_apkpure.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/downloader_by_aftvnews_1_5_0_forgoogleandroiddevices_apkpure.png"
     },
     {
       "id": "760444446",
@@ -299,7 +299,7 @@
       "editKey": "rCdbKULSZE58",
       "manageUrl": "https://browsy.app/manage?code=5866&key=rCdbKULSZE58",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/FlyStream.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/flystream.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/flystream.png"
     },
     {
       "id": "753507081",
@@ -318,7 +318,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/4584",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GeeSports_.v3.9.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/geesports_v3_9.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/geesports_v3_9.png"
     },
     {
       "id": "774404894",
@@ -338,7 +338,7 @@
       "aiDescription": "Plataforma de canales de televisión en vivo con amplia programación de entretenimiento, cine y eventos en directo con señal estable.",
       "category": "📺 TV en Vivo",
       "author": "ModByNF",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/goplustv_4_4_0_fix_modbynf.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/goplustv_4_4_0_fix_modbynf.png"
     },
     {
       "id": "774405282",
@@ -358,7 +358,7 @@
       "aiDescription": "Plataforma de canales de televisión en vivo con amplia programación de entretenimiento, cine y eventos en directo con señal estable.",
       "category": "📺 TV en Vivo",
       "author": "ModByNF",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/goplustv_4_4_0_vip_404_modbynf.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/goplustv_4_4_0_vip_404_modbynf.png"
     },
     {
       "id": "745635705",
@@ -377,7 +377,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/7827",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/lokuratv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/lokuratv.png"
     },
     {
       "id": "745638099",
@@ -396,7 +396,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/7827",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv_Pro_Ultra.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/lokuratv_pro_ultra.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/lokuratv_pro_ultra.png"
     },
     {
       "id": "779775916",
@@ -416,7 +416,7 @@
       "aiDescription": "Centro deportivo en vivo y marcador interactivo para Android TV con resultados en tiempo real, canales deportivos y coberturas de fútbol latino e internacional.",
       "category": "⚽ Deportes",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/ltscores_2_1_0_vip.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/ltscores_2_1_0_vip.png"
     },
     {
       "id": "745639055",
@@ -435,7 +435,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/2360",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/luma-tv.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/luma_tv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/luma_tv.png"
     },
     {
       "id": "755470039",
@@ -455,7 +455,7 @@
       "author": "Oficial",
       "size": 117270649,
       "sizeFormatted": "111.8 MB",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/movieplus_armeabi_v7a.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/movieplus_armeabi_v7a.png"
     },
     {
       "id": "753516469",
@@ -476,7 +476,7 @@
       "editKey": "ydBgN8fDqPmY",
       "manageUrl": "https://browsy.app/manage?code=8524&key=ydBgN8fDqPmY",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.IPTV.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/mxl_iptv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/mxl_iptv.png"
     },
     {
       "id": "753516744",
@@ -497,13 +497,13 @@
       "editKey": "awGbdN5hBKGb",
       "manageUrl": "https://browsy.app/manage?code=4225&key=awGbdN5hBKGb",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.MOVIES.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/mxl_movies.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/mxl_movies.png"
     },
     {
       "id": "785709864",
       "cleanName": "Patch NF (Anti-Login)",
       "fileName": "Patch.NF-All-.ModByNF.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/patch_nf_all_modbynf.png",
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/patch_nf_all_modbynf.png",
       "browsyCode": "7948",
       "shortUrl": "https://browsy.app/7948",
       "browsyShortUrl": "https://browsy.app/7948",
@@ -534,7 +534,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/2270",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PLayer_Pro_base.2.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/player_pro_base_2.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/player_pro_base_2.png"
     },
     {
       "id": "763551986",
@@ -554,7 +554,7 @@
       "aiDescription": "Lanzador prémium y minimalista para Android TV que sustituye la pantalla principal con una interfaz rápida, limpia y sin anuncios.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/projectivy_launcher_v4_73_premium.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/projectivy_launcher_v4_73_premium.png"
     },
     {
       "id": "745644814",
@@ -573,7 +573,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/7812",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RBTV.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/rbtv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/rbtv.png"
     },
     {
       "id": "776984555",
@@ -593,7 +593,7 @@
       "aiDescription": "Con esta aplicación podrás revivir viejos tiempos con consolas retro de Arcade, Nintendo y Sega.",
       "category": "🎮 Juegos",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/retrojuegos_v1.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/retrojuegos_v1.png"
     },
     {
       "id": "777858048",
@@ -613,7 +613,7 @@
       "aiDescription": "Reproductor de código abierto de YouTube para Android TV que bloquea anuncios y ofrece funciones avanzadas de reproducción y personalización.",
       "category": "🎵 Música",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/smarttube_beta_32_80_universal.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/smarttube_beta_32_80_universal.png"
     },
     {
       "id": "745645044",
@@ -632,7 +632,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/4065",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SPORTV_3.9.VIP.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/sportv_3_9_vip.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/sportv_3_9_vip.png"
     },
     {
       "id": "745645208",
@@ -651,7 +651,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/5280",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Sportz.X.VERSION.3.2.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/sportz_x_version_3_2.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/sportz_x_version_3_2.png"
     },
     {
       "id": "745645628",
@@ -670,7 +670,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/2915",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Surfshark.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/surfshark.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/surfshark.png"
     },
     {
       "id": "760356323",
@@ -690,7 +690,7 @@
       "aiDescription": "Con esta aplicación podrás ver videos de YouTube en tu televisor con soporte 4K y sin anuncios molestos.",
       "category": "🎵 Música",
       "author": "TizenTube Project",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/tizentube_icon_name_youtube_dark.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/tizentube_icon_name_youtube_dark.png"
     },
     {
       "id": "753517643",
@@ -711,7 +711,7 @@
       "editKey": "U7NsoPTqYkfQ",
       "manageUrl": "https://browsy.app/manage?code=3893&key=U7NsoPTqYkfQ",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/tsuzuku_v4_1_4_android_tv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/tsuzuku_v4_1_4_android_tv.png"
     },
     {
       "id": "761731600",
@@ -731,7 +731,7 @@
       "aiDescription": "Con esta aplicación podrás reasignar los botones del control remoto y añadir herramientas avanzadas en dispositivos con Android TV.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/tvquickactions_pro_v3_7_0_modded.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/tvquickactions_pro_v3_7_0_modded.png"
     },
     {
       "id": "760444352",
@@ -752,7 +752,7 @@
       "editKey": "z6HQ2KCpjNZR",
       "manageUrl": "https://browsy.app/manage?code=6015&key=z6HQ2KCpjNZR",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Watched.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/watched.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/watched.png"
     },
     {
       "id": "745652066",
@@ -771,7 +771,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9290",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/WiwyXuper.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/wiwyxuper.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/wiwyxuper.png"
     },
     {
       "id": "745656986",
@@ -790,7 +790,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/7242",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Wolf.Launcher.0.1.9.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/wolf_launcher_0_1_9.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/wolf_launcher_0_1_9.png"
     },
     {
       "id": "776984108",
@@ -810,7 +810,7 @@
       "aiDescription": "Con esta aplicación puedes ver tus archivos internos para gestionar almacenamiento, además de poder acceder a tus archivos en la nube directamente en el televisor.",
       "category": "🛠️ Utilitarios",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/x_plore_v4_53_05_premium.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/x_plore_v4_53_05_premium.png"
     },
     {
       "id": "779778707",
@@ -830,7 +830,7 @@
       "aiDescription": "Plataforma deportiva prémium para Android TV con transmisiones en directo de fútbol internacional, boxeo, UFC, baloncesto y las mejores disciplinas.",
       "category": "⚽ Deportes",
       "author": "Oficial",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/x_sports.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/x_sports.png"
     },
     {
       "id": "779254087",
@@ -849,7 +849,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/6603",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XTREMETV.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xtremetv.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/xtremetv.png"
     },
     {
       "id": "759665730",
@@ -869,7 +869,7 @@
       "aiDescription": "Con esta aplicación podrás acceder a televisión en directo, señales exclusivas y entretenimiento con servidor integrado.",
       "category": "📺 TV en Vivo",
       "author": "ModByNF",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xuper_tv_nf_4_99_20_modbynf.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/xuper_tv_nf_4_99_20_modbynf.png"
     },
     {
       "id": "745659301",
@@ -888,7 +888,7 @@
       "status": "active",
       "shortUrl": "https://browsy.app/9249",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XUPER.TV.v4.99.20.Android.TV.Original.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xuper_tv_v4_99_20_android_tv_original.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/xuper_tv_v4_99_20_android_tv_original.png"
     },
     {
       "id": "759663505",
@@ -908,7 +908,7 @@
       "aiDescription": "Con esta aplicación podrás acceder a televisión en directo, señales exclusivas y entretenimiento con servidor integrado.",
       "category": "📺 TV en Vivo",
       "author": "Xuper Dev",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xuperhydra_4_99_20.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/xuperhydra_4_99_20.png"
     },
     {
       "id": "747488097",
@@ -927,13 +927,13 @@
       "status": "active",
       "shortUrl": "https://browsy.app/7522",
       "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XuperTv-NF-v4.35.1-ModByNF.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xupertv_nf_v4_35_1_modbynf.png"
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/xupertv_nf_v4_35_1_modbynf.png"
     },
     {
       "id": "780496111",
       "cleanName": "Xuper Focuz 5 2 0",
       "fileName": "Xuper_Focuz_5.2.0.apk",
-      "iconUrl": "https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/icons/xuper_focuz_5_2_0.png",
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/xuper_focuz_5_2_0.png",
       "browsyCode": "8418",
       "shortUrl": "https://browsy.app/8418",
       "browsyShortUrl": "https://browsy.app/8418",
