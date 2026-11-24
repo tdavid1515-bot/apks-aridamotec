@@ -42,6 +42,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      max-width: 100vw;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
 
     /* ================= LOGIN ================= */
@@ -927,371 +931,255 @@
       }
     }
 
-    /* ================= ESTILOS CREADOR WHATSAPP ================= */
-    .wa-sticky-bar {
-      position: sticky;
-      top: 104px;
-      z-index: 85;
-      background: rgba(5, 7, 14, 0.98);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 8px 0 10px 0;
-      margin-bottom: 14px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.25);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.65);
-    }
-    .wa-toolbar {
-      background: #090e1c;
-      border: 1px solid var(--border-cyan);
-      border-radius: 12px;
-      padding: 10px 14px;
+    /* ================= ACCIONES DE DISPOSITIVOS MAC (ORGANIZADAS Y SEGURAS) ================= */
+    .dev-actions-cluster {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 8px;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 170px;
     }
-    .wa-toggle-downloader {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-    .wa-toggle-label {
+    .dev-act-apps {
+      width: 100%;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 7px;
+      padding: 6px 10px;
       font-size: 11.5px;
       font-weight: 700;
-      color: #e2e8f0;
       cursor: pointer;
-    }
-    .switch-container {
-      position: relative;
-      display: inline-block;
-      width: 38px;
-      height: 20px;
-    }
-    .switch-container input { opacity: 0; width: 0; height: 0; }
-    .switch-slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background-color: #334155;
-      border-radius: 20px;
-      transition: .25s;
-    }
-    .switch-slider:before {
-      position: absolute;
-      content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      border-radius: 50%;
-      transition: .25s;
-    }
-    .switch-container input:checked + .switch-slider {
-      background-color: #10b981;
-    }
-    .switch-container input:checked + .switch-slider:before {
-      transform: translateX(18px);
-    }
-    .wa-toolbar-right {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-wa-action {
-      background: #111a2e;
-      border: 1px solid var(--border-cyan);
-      color: #e2e8f0;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 6px 11px;
-      border-radius: 8px;
-      cursor: pointer;
+      justify-content: center;
+      gap: 6px;
       transition: all 0.2s;
     }
-    .btn-wa-action:hover {
+    .dev-act-apps:hover {
+      background: rgba(0, 229, 255, 0.22);
       border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
     }
-    .btn-wa-action:active { transform: scale(0.96); }
-    .wa-counter {
-      font-size: 11px;
-      font-weight: 800;
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      padding: 5px 9px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
-    .wa-greeting-box {
+    .dev-act-tools {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      background: #090e1c;
-      border: 1px solid var(--border-cyan);
-      border-radius: 12px;
-      padding: 10px 14px;
-      margin-bottom: 0;
-    }
-    .wa-greeting-label {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--accent-cyan);
-      letter-spacing: 0.5px;
-    }
-    .wa-greeting-input {
+      gap: 5px;
       width: 100%;
-      background: #060a14;
-      border: 1px solid rgba(0, 229, 255, 0.2);
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #fff;
-      font-size: 12px;
-      outline: none;
-      transition: border-color 0.2s;
     }
-    .wa-greeting-input:focus {
-      border-color: var(--accent-cyan);
-    }
-    .wa-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-    @media(min-width: 820px) {
-      .wa-layout {
-        grid-template-columns: 1.15fr 0.85fr;
-        align-items: start;
-      }
-      .wa-preview-container {
-        position: sticky;
-        top: 245px;
-        max-height: calc(100vh - 265px);
-        overflow-y: auto;
-      }
-    }
-    .wa-list-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .wa-list-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #94a3b8;
-    }
-    .wa-filter-input {
-      padding: 6px 12px;
-      background: #090e1c;
-      border: 1px solid var(--border-cyan);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 11px;
-      outline: none;
-      max-width: 180px;
-    }
-    .wa-apk-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 600px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-    .wa-item-card {
-      background: #0b1120;
-      border: 1px solid rgba(0, 229, 255, 0.15);
-      border-radius: 12px;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .wa-item-card:hover {
-      border-color: rgba(0, 229, 255, 0.35);
-    }
-    .wa-item-card.selected {
-      border-color: #10b981;
-      background: rgba(16, 185, 129, 0.08);
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
-    }
-    .wa-item-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .wa-item-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .dev-act-btn {
       flex: 1;
-      overflow: hidden;
-    }
-    .wa-item-checkbox {
-      width: 18px;
-      height: 18px;
-      accent-color: #10b981;
+      padding: 5px 6px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      border: 1px solid transparent;
     }
-    .wa-item-name {
-      font-size: 12.5px;
+    .dev-act-btn:hover {
+      transform: translateY(-1px);
+    }
+    .dev-act-block {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    .dev-act-block:hover {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: #f59e0b;
+    }
+    .dev-act-unblock {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .dev-act-unblock:hover {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #10b981;
+    }
+    .dev-act-edit {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+    .dev-act-edit:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+    }
+    .dev-act-del {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+    .dev-act-del:hover {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: #ef4444;
+    }
+
+    /* ================= MODAL SEGURO DE DOBLE COMPROBACIÓN ================= */
+    .confirm-modal-card {
+      max-width: 480px;
+      width: 92%;
+      background: #090e1c;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      box-sizing: border-box;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+    .confirm-icon-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .confirm-title {
+      font-size: 17px;
       font-weight: 800;
       color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin: 0;
     }
-    .wa-item-code-badge {
+    .confirm-device-card {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       font-size: 12px;
-      font-weight: 900;
+      box-sizing: border-box;
+    }
+    .confirm-dev-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .confirm-dev-lbl {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .confirm-dev-val {
+      color: #fff;
+      font-weight: 700;
+    }
+    .confirm-dev-val.mono {
       font-family: monospace;
       color: var(--accent-cyan);
-      background: rgba(0, 229, 255, 0.12);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      padding: 2px 7px;
-      border-radius: 6px;
-      letter-spacing: 1px;
-      white-space: nowrap;
     }
-    .wa-item-desc-wrapper {
-      position: relative;
-    }
-    .wa-item-desc-input {
-      width: 100%;
-      background: #060a14;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      padding: 6px 36px 6px 8px;
+    .confirm-msg-text {
+      font-size: 12.5px;
       color: #cbd5e1;
-      font-size: 11px;
-      resize: vertical;
-      min-height: 42px;
-      outline: none;
-      font-family: inherit;
-      line-height: 1.4;
-    }
-    .wa-item-desc-input:focus {
-      border-color: var(--accent-cyan);
-      color: #fff;
-    }
-    .wa-btn-regen-ai {
-      position: absolute;
-      right: 6px;
-      bottom: 8px;
-      background: #0f172a;
-      border: 1px solid var(--border-cyan);
-      color: var(--accent-cyan);
-      font-size: 10px;
-      font-weight: 800;
-      padding: 3px 6px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .wa-btn-regen-ai:hover {
-      background: var(--accent-cyan);
-      color: #030814;
-    }
-    .wa-preview-container {
-      background: #090e1c;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 14px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: sticky;
-      top: 150px;
-      max-height: calc(100vh - 170px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    }
-    .wa-preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-      padding-bottom: 8px;
-    }
-    .wa-preview-title {
-      font-size: 13px;
-      font-weight: 800;
-      color: #34d399;
-    }
-    .wa-format-pill {
-      font-size: 9px;
-      font-weight: 800;
-      color: #10b981;
-      background: rgba(16, 185, 129, 0.15);
-      padding: 2px 6px;
-      border-radius: 6px;
-    }
-    .wa-chat-bubble {
-      background: #0b141a;
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 11.5px;
       line-height: 1.5;
-      color: #e9edef;
-      white-space: pre-wrap;
-      overflow-y: auto;
-      flex: 1;
-      font-family: inherit;
+      margin: 0;
     }
-    .wa-actions-footer {
+    .confirm-actions-row {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .btn-wa-copy {
       width: 100%;
-      padding: 11px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #fff;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    /* INVERTIDO: Confirmar a la IZQUIERDA, Cancelar a la DERECHA */
+    .btn-confirm-proceed {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 10px;
       font-size: 13px;
       font-weight: 800;
       border: none;
-      border-radius: 10px;
       cursor: pointer;
+      transition: all 0.2s;
+      min-height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+    }
+    .btn-confirm-proceed.danger {
+      background: #ef4444;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    }
+    .btn-confirm-proceed.danger:hover {
+      background: #dc2626;
+    }
+    .btn-confirm-proceed.warning {
+      background: #f59e0b;
+      color: #000;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+    }
+    .btn-confirm-proceed.success {
+      background: #10b981;
+      color: #fff;
       box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+    .btn-confirm-proceed.info {
+      background: var(--accent-cyan);
+      color: #000;
+      box-shadow: 0 4px 14px rgba(0, 229, 255, 0.35);
+    }
+    .btn-confirm-cancel {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      min-height: 44px;
       transition: all 0.2s;
     }
-    .btn-wa-copy:active { transform: scale(0.98); }
-    .btn-wa-send {
-      width: 100%;
-      padding: 9px;
-      background: #111b21;
-      border: 1px solid #10b981;
-      color: #25d366;
+    .btn-confirm-cancel:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    /* Pestañas para selector móvil en modal de Apps */
+    .dev-apps-mobile-tabs {
+      display: none;
+    }
+    .dev-apps-tab-btn {
+      flex: 1;
+      padding: 8px 6px;
+      border-radius: 8px;
       font-size: 12px;
       font-weight: 700;
-      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #070b14;
+      color: #94a3b8;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s;
+      min-height: 40px;
     }
-    .btn-wa-send:hover {
-      background: rgba(37, 211, 102, 0.15);
+    .dev-apps-tab-btn.active {
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+    }
+    .dev-apps-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
     }
 
     /* ================= CONTENIDO PRINCIPAL ================= */
@@ -1851,38 +1739,44 @@
       animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    /* ================= OPTIMIZACIONES MÓVILES (PANTALLAS PEQUEÑAS / CELULARES) ================= */
-    @media (max-width: 600px) {
+    /* ================= OPTIMIZACIONES SMARTPHONES (ANDROID E IOS <= 900px) ================= */
+    @media (max-width: 900px) {
       .header-top {
-        padding: 8px 10px;
+        padding: 8px 12px;
         gap: 6px;
       }
       .brand-logo-img {
-        height: 30px;
-        width: 30px;
+        height: 32px;
+        width: 32px;
         border-radius: 6px;
       }
       .badge-247, .badge-guest {
         font-size: 8px;
         padding: 1px 5px;
       }
+      .brand-title {
+        font-size: 15px;
+      }
       .brand-subtitle {
         font-size: 9.5px;
       }
       .btn-header {
-        padding: 5px 8px;
+        padding: 6px 9px;
         font-size: 11px;
         gap: 4px;
+        min-height: 36px;
       }
       .btn-admin-switch {
-        padding: 5px 8px;
+        padding: 6px 9px;
         font-size: 10.5px;
         gap: 4px;
+        min-height: 36px;
       }
 
       .controls-nav {
-        padding: 4px 10px 8px 10px;
-        gap: 6px;
+        padding: 6px 12px 10px;
+        gap: 8px;
+        flex-direction: column;
       }
       .search-box {
         flex: 1 1 100% !important;
@@ -1890,27 +1784,29 @@
         min-width: 0 !important;
       }
       .search-input {
-        font-size: 12px;
-        padding: 7px 28px 7px 32px;
+        font-size: 16px !important; /* Previene auto-zoom molesto en iOS Safari */
+        padding: 8px 30px 8px 34px;
+        min-height: 42px;
       }
       .tabs-group {
         width: 100%;
-        order: 2;
-        gap: 2px;
+        display: flex;
+        gap: 6px;
         padding: 2px;
       }
       .tab-button {
         flex: 1;
-        font-size: 9.5px;
-        padding: 6px 2px;
-        gap: 3px;
+        font-size: 12px;
+        padding: 10px 4px;
+        gap: 4px;
+        min-height: 44px;
+        justify-content: center;
       }
       .tab-pill {
-        font-size: 8.5px;
-        padding: 1px 4px;
+        font-size: 9.5px;
+        padding: 2px 6px;
       }
       .sort-row {
-        order: 3;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -1918,167 +1814,182 @@
         gap: 6px;
       }
       .sort-label {
-        font-size: 10px;
+        font-size: 11px;
         flex-shrink: 0;
       }
       .sort-select {
         flex: 1;
-        font-size: 10px;
-        padding: 4px 6px;
+        font-size: 12px;
+        padding: 6px 8px;
+        min-height: 38px;
       }
 
       .banner-status {
-        padding: 7px 10px;
+        padding: 8px 12px;
         flex-direction: column;
         align-items: stretch;
         gap: 6px;
       }
-      .banner-sync-config {
-        width: 100%;
-        justify-content: space-between;
-        font-size: 10px;
-        gap: 4px;
-      }
-      .sync-config-label {
-        font-size: 10px;
-      }
-      .sync-config-select {
-        font-size: 9.5px;
-        padding: 2px 4px;
-      }
-      .sync-cloud-tag {
-        font-size: 9px;
-        padding: 1px 5px;
-      }
-      .banner-status-right {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 4px;
-      }
-      #statusInfo {
-        font-size: 10px;
-      }
-      .btn-empty-trash, .btn-restore-all {
-        font-size: 9.5px;
-        padding: 3px 7px;
-        gap: 3px;
-      }
-      .guest-live-status {
-        font-size: 10px;
-        padding: 3px 8px;
-        width: 100%;
-        justify-content: center;
-        box-sizing: border-box;
-      }
-
       .cards-grid {
-        gap: 10px;
+        grid-template-columns: 1fr;
+        gap: 12px;
       }
       .apk-card {
-        padding: 10px 12px;
-        border-radius: 12px;
-        gap: 8px;
-      }
-      .apk-title {
-        font-size: 13.5px;
-        line-height: 1.25;
-      }
-      .badge-status {
-        font-size: 8px;
-        padding: 2px 5px;
-      }
-      .apk-filename {
-        font-size: 9.5px;
-        margin-top: 2px;
-      }
-      .browsy-box {
-        padding: 6px 10px;
-        margin-top: 6px;
-        border-radius: 9px;
-      }
-      .browsy-label {
-        font-size: 8px;
-      }
-      .browsy-code-val {
-        font-size: 18px;
-        letter-spacing: 1px;
-      }
-      .browsy-pending {
-        font-size: 10.5px;
-      }
-      .btn-card-copy {
-        font-size: 10px;
-        padding: 4px 8px;
-      }
-      .btn-card-gen {
-        font-size: 10px;
-        padding: 4px 8px;
-      }
-      .card-footer-actions {
-        gap: 5px;
-      }
-      .btn-whatsapp {
-        font-size: 10.5px;
-        padding: 7px 4px;
-        border-radius: 7px;
-      }
-      .sub-buttons-row {
-        gap: 4px;
-      }
-      .btn-sub-action {
-        font-size: 9.5px;
-        padding: 5px 2px;
-        border-radius: 6px;
-        gap: 2px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        gap: 10px;
       }
 
-      /* Creador WhatsApp */
-      .wa-toolbar {
-        padding: 6px 8px;
-        gap: 6px;
+      /* Dispositivos MAC - Métricas en Grid 2x2 para celular */
+      .device-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
       }
-      .wa-toggle-label {
-        font-size: 10px;
+      .device-stat-card {
+        padding: 10px 12px;
       }
-      .btn-wa-action {
-        font-size: 9px;
-        padding: 3px 6px;
+      .device-stat-title {
+        font-size: 11px;
       }
-      .wa-counter {
-        font-size: 9px;
-        padding: 2px 5px;
+      .device-stat-value {
+        font-size: 18px;
       }
-      .wa-card {
-        padding: 8px 10px;
-        border-radius: 10px;
-        gap: 6px;
+
+      /* Barra de herramientas de dispositivos */
+      .device-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
       }
-      .wa-item-title {
-        font-size: 12px;
+      .device-toolbar-left {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
       }
-      .wa-item-desc-input {
-        font-size: 10.5px;
-        padding: 4px 6px;
+      .device-search-input, .device-filter-select {
+        width: 100%;
+        min-height: 44px;
+        font-size: 14px;
+        box-sizing: border-box;
       }
-      .wa-btn-regen-ai {
-        font-size: 9px;
-        padding: 3px 6px;
+      .btn-new-device {
+        width: 100%;
+        min-height: 44px;
+        font-size: 13px;
+        justify-content: center;
       }
-      .wa-preview-container {
-        padding: 8px 10px;
-        border-radius: 10px;
+
+      /* TRANSFORMACIÓN COMPLETA DE TABLA A TARJETAS MÓVILES (SIN DESBORDAMIENTOS) */
+      .device-table-container {
+        border: none !important;
+        background: transparent !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
       }
-      .wa-chat-bubble {
-        font-size: 10.5px;
-        line-height: 1.35;
-        padding: 8px 10px;
+      .device-table {
+        display: block !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        width: 100% !important;
       }
-      .wa-btn-copy-full, .wa-btn-send-chat {
-        font-size: 10.5px;
-        padding: 7px 4px;
+      .device-table thead {
+        display: none !important; /* Ocultar cabecera tabular en móvil */
+      }
+      .device-table tbody {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+        width: 100% !important;
+      }
+      .device-table tr {
+        display: flex !important;
+        flex-direction: column !important;
+        background: #090e1c !important;
+        border: 1px solid rgba(0, 229, 255, 0.25) !important;
+        border-radius: 14px !important;
+        padding: 14px !important;
+        gap: 10px !important;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .device-table td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 6px 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        font-size: 12.5px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .device-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #94a3b8;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-right: 12px;
+        flex-shrink: 0;
+      }
+      .device-table td:last-child {
+        border-bottom: none !important;
+        padding-top: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .device-table td:last-child::before {
+        display: none !important;
+      }
+      .dev-actions-cluster {
+        width: 100% !important;
+        gap: 8px !important;
+      }
+      .dev-act-apps {
+        width: 100% !important;
+        min-height: 44px !important;
+        font-size: 13px !important;
+        border-radius: 9px !important;
+      }
+      .dev-act-tools {
+        display: flex !important;
+        width: 100% !important;
+        gap: 6px !important;
+      }
+      .dev-act-btn {
+        flex: 1 !important;
+        min-height: 44px !important;
+        font-size: 12px !important;
+        border-radius: 8px !important;
+      }
+
+      /* Modal de Asistencia Remota en celular */
+      .modal-card {
+        width: 95% !important;
+        padding: 14px !important;
+        max-height: 94vh !important;
+      }
+      .dev-apps-main-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        grid-template-columns: 1fr !important;
+      }
+      .dev-apps-mobile-tabs {
+        display: flex !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+      }
+      .dev-apps-col-installed, .dev-apps-col-catalog {
+        height: auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        flex: 1 !important;
       }
     }
   </style>
@@ -2215,9 +2126,7 @@
         <button onclick="setTab('devices')" id="tabDevicesBtn" class="tab-button">
           🛡️ Dispositivos / MAC <span id="countDevices" class="tab-pill">0</span>
         </button>
-        <button onclick="setTab('whatsapp')" id="tabWaBtn" class="tab-button">
-          💬 Creador WhatsApp <span id="countWaSelected" class="tab-pill">0</span>
-        </button>
+        
       </div>
 
       <div class="sort-row">
@@ -2246,7 +2155,7 @@
       <div class="banner-status">
         <div class="admin-live-status">
           <span class="admin-live-dot">●</span>
-          <span class="admin-live-text">Sincronizado con GitHub Releases (SSOT)</span>
+          <span class="admin-live-text">Sincronizado con ARIDAMOTEC Cloud CDN (SSOT)</span>
         </div>
         <div class="banner-status-right">
           <div id="statusInfo">Cargando catálogo...</div>
@@ -2262,62 +2171,7 @@
       </div>
     </div>
 
-    <!-- NUEVA SECCIÓN INDEPENDIENTE: CREADOR DE MENSAJES WHATSAPP -->
-    <div id="waSection" style="display:none;">
-      <div class="wa-sticky-bar">
-        <!-- Herramientas superiores WhatsApp -->
-        <div class="wa-toolbar">
-          <div class="wa-toolbar-left">
-            <label class="wa-toggle-downloader" for="waIncludeDownloader">
-              <span class="switch-container">
-                <input type="checkbox" id="waIncludeDownloader" onchange="renderWhatsAppPreview()">
-                <span class="switch-slider"></span>
-              </span>
-              <span class="wa-toggle-label">Incluir opción Downloader (browsy.app/XXXX)</span>
-            </label>
-          </div>
-          <div class="wa-toolbar-right">
-            <button type="button" class="btn-wa-action" onclick="waSelectAll()">✅ Seleccionar Todo</button>
-            <button type="button" class="btn-wa-action" onclick="waDeselectAll()">❌ Deseleccionar</button>
-            <span class="wa-counter" id="waCounterBadge">0 seleccionadas</span>
-          </div>
-        </div>
-
-        <!-- Saludo editable -->
-        <div class="wa-greeting-box">
-          <label class="wa-greeting-label" for="waGreetingInput">📝 Saludo / Encabezado del Mensaje:</label>
-          <input type="text" id="waGreetingInput" class="wa-greeting-input" value="👋 ¡Hola estimado cliente! Aquí tienes las aplicaciones preparadas para instalar en tu Android TV / Fire TV:" oninput="renderWhatsAppPreview()">
-        </div>
-      </div>
-
-      <!-- Layout de dos columnas: Selector de APKs y Preview de WhatsApp -->
-      <div class="wa-layout">
-        <!-- Columna 1: Lista de APKs para elegir -->
-        <div class="wa-list-container">
-          <div class="wa-list-header">
-            <span>Selecciona las aplicaciones:</span>
-            <input type="text" id="waFilterInput" class="wa-filter-input" placeholder="Filtrar por nombre..." oninput="drawWaList()">
-          </div>
-          <div id="waApkList" class="wa-apk-list">
-            <!-- Renderizado dinámico de tarjetas seleccionables -->
-          </div>
-        </div>
-
-        <!-- Columna 2: Preview WhatsApp -->
-        <div class="wa-preview-container">
-          <div class="wa-preview-header">
-            <span class="wa-preview-title">💬 Vista Previa WhatsApp (En vivo)</span>
-            <span class="wa-format-pill">Formato WhatsApp</span>
-          </div>
-          <div class="wa-chat-bubble" id="waChatBubble">
-            <!-- Texto formateado en vivo -->
-          </div>
-          <div class="wa-actions-footer">
-            <button class="btn-wa-copy" onclick="copyFullWaMessage()">📋 Copiar Mensaje Completo</button>
-            <button class="btn-wa-send" onclick="openWhatsAppChat()">📲 Abrir en WhatsApp</button>
-          </div>
-        </div>
-      </div>
+    
     </div>
 
     <!-- ================= SECCIÓN GESTIÓN DE DISPOSITIVOS / MAC ================= -->
@@ -2347,10 +2201,20 @@
         <div class="device-toolbar-left">
           <input type="text" id="deviceSearchInput" class="device-search-input" placeholder="Buscar por MAC, Cliente, Equipo o Notas..." oninput="renderDevices()">
           <select id="deviceStatusFilter" class="device-filter-select" onchange="renderDevices()">
-            <option value="all">Todos los Estados</option>
+            <option value="all">🛡️ Todos los Estados</option>
             <option value="ACTIVO">✅ Solo Activos</option>
             <option value="PENDIENTE">⏳ Solo Pendientes</option>
             <option value="BLOQUEADO">🚫 Solo Bloqueados</option>
+          </select>
+          <select id="deviceSortFilter" class="device-filter-select" onchange="onDeviceSortChange()" title="Ordenar dispositivos">
+            <option value="connection-desc">🕒 Última Conexión (Más reciente)</option>
+            <option value="connection-asc">⏳ Última Conexión (Más antigua)</option>
+            <option value="client-asc">🔤 Cliente / Titular (A - Z)</option>
+            <option value="client-desc">🔤 Cliente / Titular (Z - A)</option>
+            <option value="status-asc">✅ Estado (Activos primero)</option>
+            <option value="status-desc">⏳ Estado (Pendientes primero)</option>
+            <option value="mac-asc">🔢 Dirección MAC (A - Z)</option>
+            <option value="mac-desc">🔢 Dirección MAC (Z - A)</option>
           </select>
         </div>
         <div class="device-toolbar-right">
@@ -2368,11 +2232,11 @@
         <table class="device-table">
           <thead>
             <tr>
-              <th>DIRECCIÓN MAC / ID</th>
-              <th>CLIENTE / TITULAR</th>
+              <th onclick="toggleDeviceSort('mac')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por MAC">DIRECCIÓN MAC / ID <span id="sortIndicator-mac" style="font-size:11px; opacity:0.8;">⇅</span></th>
+              <th onclick="toggleDeviceSort('client')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por Cliente">CLIENTE / TITULAR <span id="sortIndicator-client" style="font-size:11px; opacity:0.8;">⇅</span></th>
               <th>EQUIPO / MODELO</th>
-              <th>ESTADO</th>
-              <th>ÚLTIMA CONEXIÓN</th>
+              <th onclick="toggleDeviceSort('status')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por Estado">ESTADO <span id="sortIndicator-status" style="font-size:11px; opacity:0.8;">⇅</span></th>
+              <th onclick="toggleDeviceSort('connection')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por Última Conexión">ÚLTIMA CONEXIÓN <span id="sortIndicator-connection" style="font-size:11px; opacity:0.8;">⇅</span></th>
               <th>NOTAS</th>
               <th>ACCIONES</th>
             </tr>
@@ -2427,28 +2291,167 @@
     </div>
   </div>
 
-  <!-- ================= MODAL APPS INSTALADAS POR CLIENTE (TELEMETRÍA TV) ================= -->
+  <!-- ================= MODAL DE ASISTENCIA REMOTA Y GESTIÓN DE APPS (2 COLUMNAS + TELEMETRÍA) ================= -->
   <div id="deviceAppsModal" class="modal-overlay" onclick="closeDeviceAppsModal()">
-    <div class="modal-card" onclick="event.stopPropagation()" style="max-width:680px; width:94%; max-height:85vh; display:flex; flex-direction:column;">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width:1120px; width:96%; max-height:92vh; display:flex; flex-direction:column; padding:20px; background:#0b1120; border:1px solid rgba(0,229,255,0.3); border-radius:18px; box-shadow:0 25px 60px rgba(0,0,0,0.85);">
+      <!-- Header del Modal -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:10px;">
         <div>
-          <h3 id="devAppsModalTitle" style="font-size:16px; font-weight:800; color:var(--accent-cyan); margin:0 0 4px 0;">📱 Aplicaciones Instaladas</h3>
-          <p id="devAppsModalSubtitle" style="font-size:12px; color:#94a3b8; margin:0;">Cliente: -- | MAC: --</p>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:20px;">⚡</span>
+            <h3 id="devAppsModalTitle" style="font-size:17px; font-weight:800; color:#fff; margin:0;">Gestión Remota de Aplicaciones</h3>
+            <span style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; background:rgba(0,229,255,0.15); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.3);">ASISTENCIA EN VIVO</span>
+          </div>
+          <p id="devAppsModalSubtitle" style="font-size:12px; color:#94a3b8; margin:4px 0 0 0;">Cliente: -- | MAC: -- | Modelo: --</p>
         </div>
-        <button class="modal-close" onclick="closeDeviceAppsModal()" style="position:static;">✕</button>
+        <button class="modal-close" onclick="closeDeviceAppsModal()" style="position:static; background:rgba(255,255,255,0.08); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; border:none; cursor:pointer;">✕</button>
       </div>
 
-      <div style="margin-bottom:12px; display:flex; gap:10px;">
-        <input type="text" id="devAppsSearchInput" oninput="filterDeviceApps()" placeholder="🔍 Buscar entre las apps instaladas..." style="flex:1; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:#0c1220; color:#fff; font-size:12.5px;">
-        <span id="devAppsBadgeCount" style="padding:8px 12px; border-radius:8px; background:rgba(0,229,255,0.1); color:var(--accent-cyan); font-weight:bold; font-size:12px; white-space:nowrap;">0 Apps</span>
+      <!-- Barra de Telemetría de Almacenamiento en Tiempo Real -->
+      <div id="devStorageCard" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px 16px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:14px;">💾</span>
+            <span style="font-size:12.5px; font-weight:700; color:#e2e8f0;">Espacio en Disco del TV Box:</span>
+            <span id="devStorageText" style="font-size:12px; font-weight:800; color:var(--accent-cyan); font-family:monospace;">Calculando...</span>
+          </div>
+          <div id="devStoragePill" style="font-size:11px; padding:2px 10px; border-radius:10px; background:rgba(34,197,94,0.15); color:#4ade80; font-weight:700; border:1px solid rgba(34,197,94,0.3);">
+            Suficiente
+          </div>
+        </div>
+        <!-- Barra de progreso de almacenamiento -->
+        <div style="width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; display:flex;">
+          <div id="devStorageBarUsed" style="width:50%; background:linear-gradient(90deg, #3b82f6, #06b6d4); height:100%; transition:width 0.3s ease;"></div>
+          <div id="devStorageBarProjected" style="width:0%; background:#f59e0b; height:100%; transition:width 0.3s ease;"></div>
+        </div>
+        <!-- Resumen dinámico preventivo -->
+        <div id="devStorageDynamicWarning" style="margin-top:8px; font-size:11.5px; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
+          <span id="devStoragePlanText">Selecciona aplicaciones para estimar el espacio a ocupar.</span>
+          <span id="devStorageFreeLeft" style="font-weight:700; color:#cbd5e1;">--</span>
+        </div>
       </div>
 
-      <div id="devAppsContainer" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; padding-right:4px;">
-        <!-- Tarjetas dinámicas de apps instaladas -->
+      <!-- Contenedor Principal de Dos Columnas -->
+      <!-- Pestañas Selectoras para Móvil (Ocultas en Desktop) -->
+      <div id="devAppsMobileTabs" class="dev-apps-mobile-tabs">
+        <button id="devAppsMobileTabInstalled" class="dev-apps-tab-btn active" onclick="switchDevAppsMobileTab('installed')">
+          📱 Apps en TV (<span id="mobAppsInstalledCount">0</span>)
+        </button>
+        <button id="devAppsMobileTabCatalog" class="dev-apps-tab-btn" onclick="switchDevAppsMobileTab('catalog')">
+          📦 Catálogo (<span id="mobAppsCatalogCount">47</span>)
+        </button>
       </div>
 
-      <div style="display:flex; justify-content:flex-end; margin-top:14px; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;">
-        <button onclick="closeDeviceAppsModal()" style="padding:8px 18px; border-radius:8px; background:rgba(255,255,255,0.1); color:#fff; border:none; cursor:pointer; font-size:12px; font-weight:bold;">Cerrar</button>
+      <!-- Contenedor Principal de Dos Columnas -->
+      <div id="devAppsMainGrid" class="dev-apps-main-grid">
+        
+        <!-- ================= COLUMNA IZQUIERDA: APPS EN EL TV BOX ================= -->
+        <div id="devAppsColInstalled" class="dev-apps-col-installed" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:14px; display:flex; flex-direction:column; overflow:hidden; padding:12px;">
+          <!-- Encabezado Columna Izquierda -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:16px;">📱</span>
+              <span style="font-size:13.5px; font-weight:800; color:#fff;">Apps en TV Box</span>
+              <span id="devAppsBadgeCount" style="padding:2px 8px; border-radius:8px; background:rgba(239,68,68,0.15); color:#f87171; font-weight:700; font-size:11px;">0</span>
+            </div>
+            <label style="display:flex; align-items:center; gap:5px; font-size:11.5px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+              <input type="checkbox" id="chkSelectAllInstalled" onchange="toggleSelectAllInstalled(this.checked)" style="accent-color:#ef4444; cursor:pointer;">
+              <span>Seleccionar todas</span>
+            </label>
+          </div>
+
+          <!-- Buscador Apps Instaladas -->
+          <div style="margin-bottom:8px;">
+            <input type="text" id="devAppsSearchInput" oninput="filterDeviceApps()" placeholder="🔍 Filtrar apps en TV Box..." style="width:100%; box-sizing:border-box; padding:7px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:#070b14; color:#fff; font-size:12px;">
+          </div>
+
+          <!-- Lista con Scroll Apps Instaladas -->
+          <div id="devAppsContainer" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:6px; padding-right:4px;">
+            <!-- Tarjetas de apps instaladas -->
+          </div>
+
+          <!-- Pie Columna Izquierda (Acción Desinstalar) -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+            <span id="lblSelectedInstalledCount" style="font-size:11.5px; color:#94a3b8;">0 seleccionadas</span>
+            <button id="btnBulkUninstall" onclick="executeBulkUninstall()" disabled style="padding:7px 14px; border-radius:8px; background:#ef4444; color:#fff; border:none; cursor:pointer; font-size:12px; font-weight:700; opacity:0.5; transition:all 0.2s;" title="Desinstalar aplicaciones seleccionadas en el TV Box">
+              🗑️ Desinstalar (0)
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= COLUMNA DERECHA: CATÁLOGO OFICIAL ================= -->
+        <div id="devAppsColCatalog" class="dev-apps-col-catalog" style="background:rgba(255,255,255,0.02); border:1px solid rgba(0,229,255,0.12); border-radius:14px; display:flex; flex-direction:column; overflow:hidden; padding:12px;">
+          <!-- Encabezado Columna Derecha -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:16px;">📦</span>
+              <span style="font-size:13.5px; font-weight:800; color:var(--accent-cyan);">Catálogo Oficial</span>
+              <span id="catAppsBadgeCount" style="padding:2px 8px; border-radius:8px; background:rgba(0,229,255,0.15); color:var(--accent-cyan); font-weight:700; font-size:11px;">47</span>
+            </div>
+            <label style="display:flex; align-items:center; gap:5px; font-size:11.5px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+              <input type="checkbox" id="chkSelectAllCatalog" onchange="toggleSelectAllCatalog(this.checked)" style="accent-color:var(--accent-cyan); cursor:pointer;">
+              <span>Seleccionar disponibles</span>
+            </label>
+          </div>
+
+          <!-- Buscador Catálogo -->
+          <div style="margin-bottom:8px;">
+            <input type="text" id="catAppsSearchInput" oninput="filterCatalogApps()" placeholder="🔍 Filtrar por nombre o categoría..." style="width:100%; box-sizing:border-box; padding:7px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:#070b14; color:#fff; font-size:12px;">
+          </div>
+
+          <!-- Lista con Scroll Catálogo -->
+          <div id="catAppsContainer" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:6px; padding-right:4px;">
+            <!-- Tarjetas de catálogo para instalar -->
+          </div>
+
+          <!-- Pie Columna Derecha (Acción Instalar) -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:11.5px; color:#94a3b8;">
+              <span id="lblSelectedCatalogCount">0 seleccionadas</span>
+              <span id="lblSelectedCatalogSize" style="color:var(--accent-cyan); font-weight:700; margin-left:4px;">(0 MB)</span>
+            </div>
+            <button id="btnBulkInstall" onclick="executeBulkInstall()" disabled style="padding:7px 14px; border-radius:8px; background:linear-gradient(135deg, var(--accent-cyan), #0099ff); color:#000; border:none; cursor:pointer; font-size:12px; font-weight:800; opacity:0.5; transition:all 0.2s;" title="Instalar aplicaciones seleccionadas en el TV Box">
+              ⬇️ Instalar (0)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pie del Modal General -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;">
+        <span style="font-size:11px; color:#64748b;">
+          💡 Las órdenes son ejecutadas en segundo plano por el televisor de forma silenciosa e inmediata.
+        </span>
+        <button onclick="closeDeviceAppsModal()" style="padding:7px 18px; border-radius:8px; background:rgba(255,255,255,0.08); color:#e2e8f0; border:1px solid rgba(255,255,255,0.15); cursor:pointer; font-size:12px; font-weight:700;">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ================= MODAL SEGURO DE DOBLE COMPROBACIÓN (ANTI-ERROR / ANTI-DOBLE CLIC) ================= -->
+  <div id="actionConfirmModal" class="modal-overlay" style="display:none;" onclick="closeConfirmModal()">
+    <div class="modal-card confirm-modal-card" onclick="event.stopPropagation()">
+      <div id="confirmModalIconBox" class="confirm-icon-box">
+        <span id="confirmModalIcon" class="confirm-icon">⚠️</span>
+      </div>
+      <h3 id="confirmModalTitle" class="confirm-title">Confirmar Acción</h3>
+      
+      <div id="confirmModalDeviceInfo" class="confirm-device-card">
+        <div class="confirm-dev-row"><span class="confirm-dev-lbl">MAC:</span> <span id="confirmModalMac" class="confirm-dev-val mono">--</span></div>
+        <div class="confirm-dev-row"><span class="confirm-dev-lbl">Cliente:</span> <span id="confirmModalClient" class="confirm-dev-val">--</span></div>
+        <div class="confirm-dev-row"><span class="confirm-dev-lbl">Modelo:</span> <span id="confirmModalModel" class="confirm-dev-val">--</span></div>
+      </div>
+
+      <p id="confirmModalMsg" class="confirm-msg-text">¿Estás seguro de que deseas proceder con esta acción?</p>
+      
+      <div class="confirm-actions-row">
+        <!-- BOTÓN DE CONFIRMACIÓN INVERTIDO (LADO OPUESTO / IZQUIERDA) PARA EVITAR MISCLICK ACCIDENTAL -->
+        <button id="btnConfirmProceed" class="btn-confirm-proceed" type="button">Sí, Proceder</button>
+        <!-- BOTÓN CANCELAR EN EL LUGAR HABITUAL (DERECHA) -->
+        <button id="btnConfirmCancel" class="btn-confirm-cancel" type="button" onclick="closeConfirmModal()">❌ Cancelar</button>
       </div>
     </div>
   </div>
@@ -2472,7 +2475,21 @@
     let isGuestMode = false;
     let guestCatalogData = [];
     let currentResetToken = '';
-    let activeTab = 'active';
+    function getInitialTab() {
+      try {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (hash.includes('device') || hash.includes('mac') || hash.includes('dispositivo')) {
+          return 'devices';
+        }
+        if (hash.includes('catalog') || hash.includes('catalogo')) {
+          return 'active';
+        }
+        const saved = (typeof safeStorage !== 'undefined' ? safeStorage.getItem('arida_admin_active_tab') : null) || sessionStorage.getItem('arida_admin_active_tab');
+        if (saved === 'devices') return 'devices';
+      } catch (e) {}
+      return 'active';
+    }
+    let activeTab = getInitialTab();
     let apksData = { active: [], deleted: [] };
     
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec';
@@ -2585,6 +2602,14 @@
         deduplicate(pwd) {
           this._call(GAS_URL + '?action=deduplicate&pwd=' + encodeURIComponent(pwd));
         }
+        sendRemoteCommand(pwd, mac, cmd) {
+          let q = '&mac=' + encodeURIComponent(mac) +
+                  '&cmdAction=' + encodeURIComponent(cmd.action || '') +
+                  '&cmdFile=' + encodeURIComponent(cmd.fileName || '') +
+                  '&cmdPackage=' + encodeURIComponent(cmd.packageName || '') +
+                  '&cmdUrl=' + encodeURIComponent(cmd.downloadUrl || '');
+          this._call(GAS_URL + '?action=sendRemoteCommand&pwd=' + encodeURIComponent(pwd) + q);
+        }
       }
       return new GasCallAdapter();
     }
@@ -2614,6 +2639,7 @@
     };
     let savedPwd = safeStorage.getItem('arida_pwd') || '';
     let currentSort = safeStorage.getItem('arida_sort') || 'newest';
+    let currentDeviceSort = safeStorage.getItem('arida_device_sort') || sessionStorage.getItem('arida_device_sort') || 'connection-desc';
 
     function handleSortChange() {
       currentSort = document.getElementById('sortSelect').value;
@@ -2665,6 +2691,15 @@
     onReady(() => {
       const sortEl = document.getElementById('sortSelect');
       if (sortEl) sortEl.value = currentSort;
+
+      const devSortEl = document.getElementById('deviceSortFilter');
+      if (devSortEl) devSortEl.value = currentDeviceSort;
+      if (typeof updateSortIndicators === 'function') updateSortIndicators();
+
+      const initialTab = getInitialTab();
+      if (initialTab === 'devices') {
+        setTab('devices');
+      }
 
       if (savedPwd) {
         const pwdIn = document.getElementById('pwdInput');
@@ -2908,6 +2943,13 @@
                        (fileName && (localSavedCategories[fileName] || localSavedCategories[fileName.toLowerCase()]));
       if (localCat) cat = localCat;
 
+      let cdnDirect = '';
+      if (fileName) {
+        cdnDirect = 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fileName);
+      } else if (item.directDownloadUrl || item.directUrl) {
+        cdnDirect = String(item.directDownloadUrl || item.directUrl).replace(/https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\/[^/]+\//, 'https://aridamotec-cdn.aridamotec.workers.dev/apk/');
+      }
+
       return {
         ...item,
         id: assignedId,
@@ -2916,7 +2958,7 @@
         fileName: fileName,
         browsyCode: (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '',
         browsyShortUrl: String(item.browsyShortUrl || ''),
-        directDownloadUrl: String(item.directDownloadUrl || ''),
+        directDownloadUrl: cdnDirect,
         aiDescription: desc,
         category: cat,
         author: item.author || detectAuthor(cleanName, fileName),
@@ -2949,16 +2991,13 @@
       const sInfo = document.getElementById('statusInfo');
       if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (GitHub Releases)';
 
-      initWaData();
       renderAdminCategoryChips();
       try { loadDevices(); } catch (e) {}
 
-      if (activeTab === 'whatsapp') {
-        drawWaList();
-      } else if (activeTab === 'devices') {
-        renderDevices();
+      if (activeTab === 'devices') {
+        setTab('devices');
       } else {
-        drawCards();
+        setTab('active');
       }
     }
 
@@ -3058,24 +3097,33 @@
 
     function setTab(tab) {
       activeTab = tab;
+      try {
+        if (typeof safeStorage !== 'undefined') safeStorage.setItem('arida_admin_active_tab', tab);
+        sessionStorage.setItem('arida_admin_active_tab', tab);
+        const targetHash = tab === 'devices' ? '#dispositivos' : '#catalogo';
+        if (window.location.hash !== targetHash) {
+          if (history && history.replaceState) {
+            history.replaceState(null, '', targetHash);
+          } else {
+            window.location.hash = targetHash;
+          }
+        }
+      } catch (e) {}
+
       const bAct = document.getElementById('tabActiveBtn');
       const bDev = document.getElementById('tabDevicesBtn');
-      const bWa = document.getElementById('tabWaBtn');
       const catSec = document.getElementById('catalogSection');
       const devSec = document.getElementById('devicesSection');
-      const waSec = document.getElementById('waSection');
       const sortRow = document.querySelector('.sort-row');
       const catBar = document.getElementById('adminCategoryChips');
 
       if (bAct) bAct.className = 'tab-button';
       if (bDev) bDev.className = 'tab-button';
-      if (bWa) bWa.className = 'tab-button';
 
       if (tab === 'active') {
         if (bAct) bAct.className = 'tab-button active';
         if (catSec) catSec.style.display = 'block';
         if (devSec) devSec.style.display = 'none';
-        if (waSec) waSec.style.display = 'none';
         if (sortRow) { sortRow.style.visibility = 'visible'; sortRow.style.pointerEvents = 'auto'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'flex';
         renderAdminCategoryChips();
@@ -3084,63 +3132,31 @@
         if (bDev) bDev.className = 'tab-button active-dev';
         if (catSec) catSec.style.display = 'none';
         if (devSec) devSec.style.display = 'block';
-        if (waSec) waSec.style.display = 'none';
         if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.display = 'inline-flex'; }
         if (catBar) catBar.style.display = 'none';
         loadDevices();
-      } else if (tab === 'whatsapp') {
-        if (bWa) bWa.className = 'tab-button active-wa';
-        if (catSec) catSec.style.display = 'none';
-        if (devSec) devSec.style.display = 'none';
-        if (waSec) waSec.style.display = 'block';
-        if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.display = 'inline-flex'; }
-        if (catBar) catBar.style.display = 'none';
-
-        // Anclar barra de WhatsApp exactamente bajo el header sticky
-        function updateWaSticky() {
-          const header = document.querySelector('.sticky-header-container');
-          const waSticky = document.querySelector('.wa-sticky-bar');
-          if (header && waSticky) {
-            const h = Math.round(header.getBoundingClientRect().height || header.offsetHeight || 104);
-            waSticky.style.top = h + 'px';
-            const preview = document.querySelector('.wa-preview-container');
-            if (preview && window.innerWidth >= 820) {
-              const barH = waSticky.offsetHeight || 110;
-              preview.style.top = (h + barH + 10) + 'px';
-              preview.style.maxHeight = 'calc(100vh - ' + (h + barH + 25) + 'px)';
-            }
-          }
-        }
-        setTimeout(updateWaSticky, 30);
-        window.addEventListener('resize', updateWaSticky, { passive: true });
-
-        initWaData();
-        drawWaList();
       }
     }
+
+    window.addEventListener('hashchange', () => {
+      const h = (window.location.hash || '').toLowerCase();
+      if (h.includes('device') || h.includes('mac') || h.includes('dispositivo')) {
+        if (activeTab !== 'devices') setTab('devices');
+      } else if (h.includes('catalog') || h.includes('catalogo') || h === '') {
+        if (activeTab !== 'active') setTab('active');
+      }
+    });
 
     function handleSearch() {
       const q = document.getElementById('searchInput').value;
       document.getElementById('searchClearBtn').style.display = q ? 'block' : 'none';
-      if (activeTab === 'whatsapp') {
-        const waFilter = document.getElementById('waFilterInput');
-        if (waFilter) waFilter.value = q;
-        drawWaList();
-      } else {
-        drawCards();
-      }
+      drawCards();
     }
 
     function clearSearch() {
       document.getElementById('searchInput').value = '';
       document.getElementById('searchClearBtn').style.display = 'none';
-      if (activeTab === 'whatsapp') {
-        const waFilter = document.getElementById('waFilterInput');
-        if (waFilter) waFilter.value = '';
-        drawWaList();
-      } else {
-        drawCards();
-      }
+      drawCards();
     }
 
     
@@ -3346,11 +3362,7 @@
           </div>
 
           <div class="card-footer-actions">
-            ${hasCode ? `
-              <button class="btn-whatsapp" onclick="copyWhatsApp('${escapeJs(cleanName)}', '${codeStr}', '${shortUrl}')">
-                💬 Copiar Mensaje WhatsApp
-              </button>
-            ` : ''}
+            
 
             <div class="sub-buttons-row">
               ${hasCode ? `
@@ -3390,14 +3402,7 @@
       }).catch(() => showToast('Código: ' + code));
     }
 
-    function copyWhatsApp(name, code, shortUrl) {
-      const fallbackBrowsy = 'https:' + '/' + '/browsy.app/' + code;
-      const cleanUrl = (shortUrl || fallbackBrowsy).replace('https:' + '/' + '/', '').replace('http:' + '/' + '/', '');
-      const msg = `👋 *¡Hola estimado cliente!*\n\nPara instalar *${name}* en tu Android TV o Google TV tienes 2 opciones:\n\n📺 *Opción 1 (App Browsy):*\n1️⃣ Abre *Browsy* en tu TV.\n2️⃣ Ingresa este código: *${code}*\n3️⃣ Presiona *'Go'*.\n\n🔥 *Opción 2 (App Downloader):*\n1️⃣ Abre *Downloader* en tu TV.\n2️⃣ En la barra de dirección escribe: *${cleanUrl}*\n3️⃣ Presiona *'Go'*.\n\nCualquier consulta estamos a la orden. ¡Que lo disfrutes!`;
-      navigator.clipboard.writeText(msg).then(() => {
-        showToast('¡Mensaje para WhatsApp copiado! (Browsy + Downloader)');
-      }).catch(() => showToast('Texto preparado'));
-    }
+
 
     function openQr(title, url, code) {
       document.getElementById('qrTitle').textContent = title;
@@ -3425,9 +3430,6 @@
       localSavedDescriptions[fileId] = newDesc;
       if (fileName) localSavedDescriptions[fileName.toLowerCase()] = newDesc;
       if (targetItem) targetItem.aiDescription = newDesc;
-      if (typeof waDescriptions !== 'undefined') {
-        waDescriptions[fileId] = newDesc;
-      }
       try {
         safeStorage.setItem('arida_saved_descriptions', JSON.stringify(localSavedDescriptions));
       } catch (e) {}
@@ -3448,9 +3450,6 @@
           }
           showToast('¡Descripción actualizada en tiempo real!');
           if (targetItem) targetItem.aiDescription = newDesc;
-          if (typeof waDescriptions !== 'undefined') {
-            waDescriptions[fileId] = newDesc;
-          }
         } else {
           if (statusEl) {
             statusEl.textContent = 'Error: ' + (res ? res.error : 'Fallo al guardar');
@@ -3530,11 +3529,12 @@
       const icon = document.getElementById('syncIconText');
       if (btn && !silent) btn.disabled = true;
       if (icon && !silent) icon.innerHTML = '<span class="spinner"></span>';
-      if (!silent) showToast('🔍 Escaneando GitHub Releases en vivo...');
+      if (!silent) showToast('🔍 Escaneando CDN de ARIDAMOTEC en vivo...');
 
       try {
-        // 1. Consultar directamente el CDN Gateway de Releases para ver archivos reales
-        const ghUrl = 'https://aridamotec-cdn.aridamotec.workers.dev/releases';
+        // 1. Consultar a través del Cloudflare Worker enmascarado (sin exponer GitHub)
+        const cdnBase = 'https://aridamotec-cdn.aridamotec.workers.dev';
+        const ghUrl = cdnBase + '/releases';
         let liveAssets = [];
         try {
           const ghRes = await fetch(ghUrl);
@@ -3556,10 +3556,10 @@
           console.warn('Fallo consultando CDN Releases:', eGh);
         }
 
-        // 2. Consultar el archivo catalog.json más reciente con bypass de caché
+        // 2. Consultar el archivo catalog.json a través del CDN
         let remoteCatalog = [];
         try {
-          const catRes = await fetch('catalog.json?t=' + Date.now()).catch(() => fetch('https://aridamotec-cdn.aridamotec.workers.dev/catalog?t=' + Date.now()));
+          const catRes = await fetch(cdnBase + '/catalog?t=' + Date.now()).catch(() => fetch('catalog.json?t=' + Date.now()));
           if (catRes.ok) {
             const catJson = await catRes.json();
             remoteCatalog = catJson.catalog || [];
@@ -3590,13 +3590,13 @@
               browsyCode: 'Pendiente',
               shortUrl: '',
               browsyShortUrl: '',
-              directUrl: asset.browser_download_url,
-              directDownloadUrl: asset.browser_download_url,
+              directUrl: `${cdnBase}/apk/${encodeURIComponent(asset.name)}`,
+              directDownloadUrl: `${cdnBase}/apk/${encodeURIComponent(asset.name)}`,
               size: asset.size || 0,
               sizeFormatted: formatBytes(asset.size || 0),
               status: 'active',
               createdAt: asset.created_at,
-              aiDescription: 'Aplicación recién detectada en GitHub Releases.',
+              aiDescription: 'Aplicación oficial disponible en catálogo.',
               category: classifyCategory(asset.name, asset.name, ''),
               author: detectAuthor(asset.name, asset.name)
             };
@@ -3612,23 +3612,23 @@
           const cAct = document.getElementById('countActive');
           if (cAct) cAct.textContent = apksData.active.length;
           const sInfo = document.getElementById('statusInfo');
-          if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (GitHub Releases)';
+          if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (ARIDAMOTEC Cloud CDN)';
         }
 
         if (btn) btn.disabled = false;
         if (icon) icon.textContent = '🔄';
 
         if (newDetectedCount > 0) {
-          showToast(`⚡ ¡Detectada(s) ${newDetectedCount} nueva(s) APK en GitHub! Mostrando en catálogo.`);
+          showToast(`⚡ ¡Detectada(s) ${newDetectedCount} nueva(s) APK en CDN! Mostrando en catálogo.`);
         } else if (!silent) {
-          showToast(`✅ Catálogo 100% sincronizado con GitHub Releases (${liveAssets.length || remoteCatalog.length} APKs).`);
+          showToast(`✅ Catálogo 100% sincronizado con CDN Oficial (${liveAssets.length || remoteCatalog.length} APKs).`);
         }
 
       } catch (err) {
-        console.warn('Error en escaneo directo GitHub:', err);
+        console.warn('Error en escaneo directo CDN:', err);
         if (btn) btn.disabled = false;
         if (icon) icon.textContent = '🔄';
-        if (!silent) showToast('Error al conectar con GitHub Releases: ' + err.message, true);
+        if (!silent) showToast('Error al conectar con CDN: ' + err.message, true);
         loadApks();
       }
     }
@@ -3791,196 +3791,6 @@
         .emptyTrash(savedPwd);
     }
 
-    // ================= FUNCIONES CREADOR WHATSAPP =================
-    let waSelectedIds = new Set();
-    let waDescriptions = {};
-
-    function initWaData() {
-      const list = apksData.active || [];
-      list.forEach(item => {
-        if (!waDescriptions[item.driveFileId]) {
-          waDescriptions[item.driveFileId] = item.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
-        }
-      });
-      updateWaCounters();
-    }
-
-    function drawWaList() {
-      const container = document.getElementById('waApkList');
-      if (!container) return;
-      const filter = (document.getElementById('waFilterInput') ? document.getElementById('waFilterInput').value : '').toLowerCase().trim();
-      const list = apksData.active || [];
-
-      container.innerHTML = '';
-      let visibleCount = 0;
-
-      list.forEach(item => {
-        const cleanName = String(item.cleanName || '');
-        if (filter && !cleanName.toLowerCase().includes(filter)) return;
-        visibleCount++;
-
-        const isSelected = waSelectedIds.has(item.driveFileId);
-        const desc = waDescriptions[item.driveFileId] || item.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
-        const codeStr = (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '';
-
-        const card = document.createElement('div');
-        card.className = 'wa-item-card' + (isSelected ? ' selected' : '');
-        card.onclick = (e) => {
-          if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON' || e.target.type === 'checkbox') return;
-          toggleWaSelection(item.driveFileId);
-        };
-
-        card.innerHTML = `
-          <div class="wa-item-top">
-            <div class="wa-item-left">
-              <input type="checkbox" class="wa-item-checkbox" ${isSelected ? 'checked' : ''} onchange="toggleWaSelection('${item.driveFileId}')">
-              <span class="wa-item-name" title="${escapeHtml(cleanName)}">${escapeHtml(cleanName)}</span>
-            </div>
-            <span class="wa-item-code-badge">${codeStr || 'Pendiente'}</span>
-          </div>
-          <div class="wa-item-desc-wrapper">
-            <textarea class="wa-item-desc-input" rows="2" placeholder="Mini descripción comercial..." oninput="updateWaDesc('${item.driveFileId}', this.value)">${escapeHtml(desc)}</textarea>
-            <button type="button" class="wa-btn-regen-ai" onclick="regenAiDesc('${item.driveFileId}', '${escapeJs(cleanName)}', event)" title="Regenerar con IA">✨ IA</button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-
-      if (visibleCount === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:28px 16px; color:#94a3b8; font-size:12px;">No se encontraron aplicaciones que coincidan con la búsqueda.</div>';
-      }
-
-      updateWaCounters();
-      renderWhatsAppPreview();
-    }
-
-    function toggleWaSelection(driveId) {
-      if (waSelectedIds.has(driveId)) {
-        waSelectedIds.delete(driveId);
-      } else {
-        waSelectedIds.add(driveId);
-      }
-      drawWaList();
-    }
-
-    function waSelectAll() {
-      const list = apksData.active || [];
-      list.forEach(i => waSelectedIds.add(i.driveFileId));
-      drawWaList();
-    }
-
-    function waDeselectAll() {
-      waSelectedIds.clear();
-      drawWaList();
-    }
-
-    function updateWaDesc(driveId, text) {
-      waDescriptions[driveId] = text;
-      renderWhatsAppPreview();
-    }
-
-    function regenAiDesc(driveId, name, ev) {
-      if (ev) ev.stopPropagation();
-      showToast('Consultando IA para "' + name + '"...');
-      const gas = getGas();
-      if (!gas) { showToast('Servicio no disponible', true); return; }
-      gas.withSuccessHandler(res => {
-          if (res && res.success && res.description) {
-            waDescriptions[driveId] = res.description;
-            showToast('¡Mini-descripción IA actualizada!');
-            drawWaList();
-          } else {
-            showToast(res ? res.error : 'No se pudo generar descripción', true);
-          }
-        })
-        .withFailureHandler(e => showToast('Error: ' + (e.message || e), true))
-        .generateApkDescription(savedPwd, name);
-    }
-
-    function updateWaCounters() {
-      const badge = document.getElementById('waCounterBadge');
-      const countPill = document.getElementById('countWaSelected');
-      const total = (apksData.active || []).length;
-      const count = waSelectedIds.size;
-      if (badge) badge.textContent = count + ' de ' + total + ' seleccionadas';
-      if (countPill) countPill.textContent = count;
-    }
-
-    function buildWhatsAppMessage() {
-      const list = apksData.active || [];
-      const selectedList = list.filter(i => waSelectedIds.has(i.driveFileId));
-      const incDownloader = document.getElementById('waIncludeDownloader') ? document.getElementById('waIncludeDownloader').checked : false;
-      const greeting = (document.getElementById('waGreetingInput') ? document.getElementById('waGreetingInput').value : '').trim() ||
-        '👋 *¡Hola estimado cliente!*\nAquí tienes las aplicaciones preparadas para instalar en tu Android TV / Fire TV:';
-
-      if (selectedList.length === 0) {
-        return '*(No has seleccionado ninguna aplicación todavía)*\n\nMarca las aplicaciones que deseas en la columna izquierda para generar el mensaje consolidado para el cliente.';
-      }
-
-      let text = greeting + '\n\n';
-
-      selectedList.forEach((it) => {
-        const code = (it.browsyCode !== undefined && it.browsyCode !== null && String(it.browsyCode).trim() !== '') ? String(it.browsyCode).trim() : 'Pendiente';
-        const cleanName = String(it.cleanName || '');
-        const desc = waDescriptions[it.driveFileId] || it.aiDescription || 'Con esta aplicación podrás disfrutar del mejor contenido en tu Android TV.';
-        let shortUrl = '';
-        if (it.browsyShortUrl) {
-          shortUrl = String(it.browsyShortUrl);
-        } else if (code !== 'Pendiente') {
-          shortUrl = 'https:' + '/' + '/browsy.app/' + code;
-        }
-        const cleanUrl = shortUrl.replace('https:' + '/' + '/', '').replace('http:' + '/' + '/', '');
-
-        text += `━━━━━━━━━━━━━━━━━━━━\n`;
-        text += `📺 *${cleanName}*\n`;
-        text += `🔑 Código Browsy: *${code}*\n`;
-        text += `✨ ${desc}\n`;
-        if (incDownloader) {
-          text += `📥 En Downloader: *${cleanUrl}*\n`;
-        }
-      });
-
-      text += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-      text += `💡 *Instrucciones rápidas para tu TV:*\n`;
-      text += `1️⃣ Abre la app *Browsy* en tu Android TV o Fire TV.\n`;
-      text += `2️⃣ Escribe el código numérico de la app que deseas y pulsa *'Go'*.\n`;
-      if (incDownloader) {
-        text += `3️⃣ Si usas *Downloader*, escribe la dirección indicada arriba y presiona *'Go'*.\n`;
-      }
-      text += `\nCualquier duda o consulta estamos a tu entera disposición. ¡Que lo disfrutes! 😊`;
-
-      return text;
-    }
-
-    function renderWhatsAppPreview() {
-      const bubble = document.getElementById('waChatBubble');
-      if (!bubble) return;
-      const msg = buildWhatsAppMessage();
-      bubble.textContent = msg;
-    }
-
-    function copyFullWaMessage() {
-      const msg = buildWhatsAppMessage();
-      if (waSelectedIds.size === 0) {
-        showToast('Selecciona al menos una aplicación para copiar', true);
-        return;
-      }
-      navigator.clipboard.writeText(msg).then(() => {
-        showToast('¡Mensaje de WhatsApp copiado al portapapeles!');
-      }).catch(() => showToast('Texto preparado'));
-    }
-
-    function openWhatsAppChat() {
-      const msg = buildWhatsAppMessage();
-      if (waSelectedIds.size === 0) {
-        showToast('Selecciona al menos una aplicación para enviar', true);
-        return;
-      }
-      const waBase = 'https:' + '/' + '/wa.me/?text=';
-      const url = waBase + encodeURIComponent(msg);
-      window.open(url, '_blank');
-    }
-
     function showToast(msg, isError = false) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -4069,7 +3879,7 @@
       if (gLive) gLive.style.display = 'inline-flex';
 
       document.getElementById('catalogSection').style.display = 'block';
-      document.getElementById('waSection').style.display = 'none';
+      
 
       // Alternar botones del header
       document.getElementById('adminHeaderBtns').style.display = 'none';
@@ -4445,6 +4255,60 @@
       if (countDev) countDev.textContent = total;
     }
 
+    function onDeviceSortChange() {
+      const select = document.getElementById('deviceSortFilter');
+      if (select) {
+        currentDeviceSort = select.value;
+        try {
+          if (typeof safeStorage !== 'undefined') safeStorage.setItem('arida_device_sort', currentDeviceSort);
+          sessionStorage.setItem('arida_device_sort', currentDeviceSort);
+        } catch (e) {}
+        updateSortIndicators();
+        renderDevices();
+      }
+    }
+
+    function toggleDeviceSort(col) {
+      if (col === 'client') {
+        currentDeviceSort = (currentDeviceSort === 'client-asc') ? 'client-desc' : 'client-asc';
+      } else if (col === 'connection') {
+        currentDeviceSort = (currentDeviceSort === 'connection-desc') ? 'connection-asc' : 'connection-desc';
+      } else if (col === 'status') {
+        currentDeviceSort = (currentDeviceSort === 'status-asc') ? 'status-desc' : 'status-asc';
+      } else if (col === 'mac') {
+        currentDeviceSort = (currentDeviceSort === 'mac-asc') ? 'mac-desc' : 'mac-asc';
+      }
+      const select = document.getElementById('deviceSortFilter');
+      if (select) select.value = currentDeviceSort;
+      try {
+        if (typeof safeStorage !== 'undefined') safeStorage.setItem('arida_device_sort', currentDeviceSort);
+        sessionStorage.setItem('arida_device_sort', currentDeviceSort);
+      } catch (e) {}
+      updateSortIndicators();
+      renderDevices();
+    }
+
+    function updateSortIndicators() {
+      const indicators = {
+        'mac': document.getElementById('sortIndicator-mac'),
+        'client': document.getElementById('sortIndicator-client'),
+        'status': document.getElementById('sortIndicator-status'),
+        'connection': document.getElementById('sortIndicator-connection')
+      };
+      for (const k in indicators) {
+        if (!indicators[k]) continue;
+        if (currentDeviceSort.startsWith(k)) {
+          indicators[k].textContent = currentDeviceSort.endsWith('-asc') ? ' ▲' : ' ▼';
+          indicators[k].style.color = 'var(--accent-cyan)';
+          indicators[k].style.opacity = '1';
+        } else {
+          indicators[k].textContent = ' ⇅';
+          indicators[k].style.color = 'var(--text-muted)';
+          indicators[k].style.opacity = '0.6';
+        }
+      }
+    }
+
     function renderDevices() {
       const tbody = document.getElementById('deviceTableBody');
       const empty = document.getElementById('deviceEmptyState');
@@ -4468,6 +4332,74 @@
           return mac.includes(q) || cli.includes(q) || mod.includes(q) || not.includes(q);
         }
         return true;
+      });
+
+      // Ordenamiento dinámico de dispositivos
+      const sortSelect = document.getElementById('deviceSortFilter');
+      const sortVal = sortSelect ? sortSelect.value : (currentDeviceSort || 'connection-desc');
+
+      const parseDateMs = (dStr) => {
+        if (!dStr) return 0;
+        const ts = new Date(dStr).getTime();
+        return isNaN(ts) ? 0 : ts;
+      };
+
+      filtered.sort((a, b) => {
+        if (sortVal === 'client-asc') {
+          const nameA = (a.client || a.clientName || '').trim();
+          const nameB = (b.client || b.clientName || '').trim();
+          if (!nameA && !nameB) return 0;
+          if (!nameA) return 1;
+          if (!nameB) return -1;
+          return nameA.localeCompare(nameB, 'es', { sensitivity: 'base' });
+        }
+        if (sortVal === 'client-desc') {
+          const nameA = (a.client || a.clientName || '').trim();
+          const nameB = (b.client || b.clientName || '').trim();
+          if (!nameA && !nameB) return 0;
+          if (!nameA) return 1;
+          if (!nameB) return -1;
+          return nameB.localeCompare(nameA, 'es', { sensitivity: 'base' });
+        }
+        if (sortVal === 'connection-desc') {
+          const tA = parseDateMs(a.lastCheck || a.lastConnection || a.registerDate);
+          const tB = parseDateMs(b.lastCheck || b.lastConnection || b.registerDate);
+          return tB - tA;
+        }
+        if (sortVal === 'connection-asc') {
+          const tA = parseDateMs(a.lastCheck || a.lastConnection || a.registerDate);
+          const tB = parseDateMs(b.lastCheck || b.lastConnection || b.registerDate);
+          return tA - tB;
+        }
+        if (sortVal === 'status-asc') {
+          const weight = s => {
+            const up = (s || '').toUpperCase();
+            if (up === 'ACTIVO' || up === 'ACTIVE') return 1;
+            if (up === 'PENDIENTE') return 2;
+            return 3;
+          };
+          const diff = weight(a.status) - weight(b.status);
+          if (diff !== 0) return diff;
+          return parseDateMs(b.lastCheck || b.registerDate) - parseDateMs(a.lastCheck || a.registerDate);
+        }
+        if (sortVal === 'status-desc') {
+          const weight = s => {
+            const up = (s || '').toUpperCase();
+            if (up === 'PENDIENTE') return 1;
+            if (up === 'BLOQUEADO' || up === 'INACTIVO') return 2;
+            return 3;
+          };
+          const diff = weight(a.status) - weight(b.status);
+          if (diff !== 0) return diff;
+          return parseDateMs(b.lastCheck || b.registerDate) - parseDateMs(a.lastCheck || a.registerDate);
+        }
+        if (sortVal === 'mac-asc') {
+          return (a.mac || '').localeCompare(b.mac || '');
+        }
+        if (sortVal === 'mac-desc') {
+          return (b.mac || '').localeCompare(a.mac || '');
+        }
+        return parseDateMs(b.lastCheck || b.registerDate) - parseDateMs(a.lastCheck || a.registerDate);
       });
 
       tbody.innerHTML = '';
@@ -4499,42 +4431,97 @@
           }
         } catch (e) {}
 
+        let storageBadge = '';
+        if (d.storageFreeMb && d.storageTotalMb) {
+          const fGb = (d.storageFreeMb / 1024).toFixed(1);
+          storageBadge = `<div style="font-size:10px; color:var(--accent-cyan); margin-top:2px;">💾 ${fGb} GB libres</div>`;
+        }
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>
+          <td data-label="MAC">
             <div class="mac-badge">
               <span>${escapeHtml(d.mac)}</span>
               <button onclick="copyToClipboard('${escapeJs(d.mac)}', 'MAC copiada')" title="Copiar MAC" style="background:none; border:none; cursor:pointer; font-size:12px; color:var(--accent-cyan); padding:0;">📋</button>
             </div>
           </td>
-          <td><strong>${escapeHtml(d.client || 'Sin Asignar')}</strong></td>
-          <td><span style="font-size:12px; color:#cbd5e1;">${escapeHtml(d.model || 'Android TV')}</span></td>
-          <td>${statusBadge}</td>
-          <td><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.lastCheck || d.registerDate || '--')}</span></td>
-          <td><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.notes || '--')}</span></td>
-          <td>
-            <button class="dev-btn-toggle" style="background:rgba(0,229,255,0.12); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.3); font-size:11px; padding:3px 8px; border-radius:6px; cursor:pointer; font-weight:600; margin-right:4px;" onclick="openDeviceAppsModal('${escapeJs(d.mac)}')">📱 Apps (${appsCount})</button>
-            ${isAct ? `
-              <button class="dev-btn-toggle dev-btn-block" onclick="toggleDeviceStatus('${escapeJs(d.mac)}', 'BLOQUEADO')">⏸️ Bloquear</button>
-            ` : `
-              <button class="dev-btn-toggle dev-btn-act" onclick="toggleDeviceStatus('${escapeJs(d.mac)}', 'ACTIVO')">✅ Activar</button>
-            `}
-            <button class="dev-btn-toggle dev-btn-edit" onclick="openEditDeviceModal('${escapeJs(d.mac)}')">✏️</button>
-            <button class="dev-btn-toggle dev-btn-del" onclick="confirmDeleteDevice('${escapeJs(d.mac)}')">🗑️</button>
+          <td data-label="Cliente"><strong>${escapeHtml(d.client || 'Sin Asignar')}</strong></td>
+          <td data-label="Modelo / Espacio">
+            <span style="font-size:12px; color:#cbd5e1;">${escapeHtml(d.model || 'Android TV')}</span>
+            ${storageBadge}
+          </td>
+          <td data-label="Estado">${statusBadge}</td>
+          <td data-label="Último Acceso"><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.lastCheck || d.registerDate || '--')}</span></td>
+          <td data-label="Notas"><span style="font-size:11px; color:#94a3b8;">${escapeHtml(d.notes || '--')}</span></td>
+          <td data-label="Acciones">
+            <div class="dev-actions-cluster">
+              <button class="dev-act-apps" onclick="openDeviceAppsModal('${escapeJs(d.mac)}')" title="Ver aplicaciones instaladas y catálogo">
+                <span>📱 Ver Apps (${appsCount})</span>
+              </button>
+              <div class="dev-act-tools">
+                ${isAct ? `
+                  <button class="dev-act-btn dev-act-block" onclick="promptActionConfirm('${escapeJs(d.mac)}', 'block')" title="Bloquear acceso del TV Box">
+                    <span>⏸️ Bloquear</span>
+                  </button>
+                ` : `
+                  <button class="dev-act-btn dev-act-unblock" onclick="promptActionConfirm('${escapeJs(d.mac)}', 'activate')" title="Activar y autorizar TV Box">
+                    <span>✅ Activar</span>
+                  </button>
+                `}
+                <button class="dev-act-btn dev-act-edit" onclick="promptActionConfirm('${escapeJs(d.mac)}', 'edit')" title="Editar datos del dispositivo">
+                  <span>✏️ Editar</span>
+                </button>
+                <button class="dev-act-btn dev-act-del" onclick="promptActionConfirm('${escapeJs(d.mac)}', 'delete')" title="Eliminar dispositivo">
+                  <span>🗑️ Borrar</span>
+                </button>
+              </div>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
+    let currentDevice = null;
     let currentDeviceApps = [];
+    let selectedInstalledApps = new Set();
+    let selectedCatalogApps = new Set();
+
+    function parseSizeMb(item) {
+      if (!item) return 25.0;
+      if (typeof item === 'number') return item / (1024 * 1024);
+      if (typeof item === 'object') {
+        if (item.size && !isNaN(Number(item.size))) return Number(item.size) / (1024 * 1024);
+        if (item.fileSize && !isNaN(Number(item.fileSize))) return Number(item.fileSize) / (1024 * 1024);
+        if (item.sizeFormatted) {
+          const m = String(item.sizeFormatted).match(/([\d.]+)\s*(MB|GB|KB|B)/i);
+          if (m) {
+            const val = parseFloat(m[1]);
+            const unit = m[2].toUpperCase();
+            if (unit === 'GB') return val * 1024;
+            if (unit === 'MB') return val;
+            if (unit === 'KB') return val / 1024;
+            return val / (1024 * 1024);
+          }
+        }
+      }
+      return 25.0;
+    }
 
     function openDeviceAppsModal(mac) {
       const dev = devicesData.find(d => d.mac === mac);
       if (!dev) return;
+      currentDevice = dev;
 
-      document.getElementById('devAppsModalTitle').textContent = '📱 Aplicaciones Instaladas en Dispositivo TV';
+      document.getElementById('devAppsModalTitle').textContent = 'Gestión Remota de Aplicaciones';
       document.getElementById('devAppsModalSubtitle').textContent = 'Cliente: ' + (dev.client || 'Sin Asignar') + ' | MAC: ' + dev.mac + ' | Modelo: ' + (dev.model || 'Android TV');
+
+      selectedInstalledApps.clear();
+      selectedCatalogApps.clear();
+      const chkInst = document.getElementById('chkSelectAllInstalled');
+      const chkCat = document.getElementById('chkSelectAllCatalog');
+      if (chkInst) chkInst.checked = false;
+      if (chkCat) chkCat.checked = false;
 
       let apps = [];
       try {
@@ -4547,12 +4534,123 @@
       currentDeviceApps = Array.isArray(apps) ? apps : [];
 
       document.getElementById('devAppsSearchInput').value = '';
+      if (document.getElementById('catAppsSearchInput')) document.getElementById('catAppsSearchInput').value = '';
+
       renderDeviceAppsList(currentDeviceApps);
+      renderCatalogAppsList(apksData.active || []);
+      updateStorageMetrics();
+
       document.getElementById('deviceAppsModal').style.display = 'flex';
+      const mInst = document.getElementById('mobAppsInstalledCount');
+      if (mInst) mInst.textContent = currentDeviceApps.length;
+      const mCat = document.getElementById('mobAppsCatalogCount');
+      if (mCat) mCat.textContent = (apksData.active || []).length;
+      switchDevAppsMobileTab('installed');
     }
 
     function closeDeviceAppsModal() {
       document.getElementById('deviceAppsModal').style.display = 'none';
+      currentDevice = null;
+    }
+
+    function updateStorageMetrics() {
+      if (!currentDevice) return;
+      const elText = document.getElementById('devStorageText');
+      const elPill = document.getElementById('devStoragePill');
+      const barUsed = document.getElementById('devStorageBarUsed');
+      const barProj = document.getElementById('devStorageBarProjected');
+      const planText = document.getElementById('devStoragePlanText');
+      const freeLeft = document.getElementById('devStorageFreeLeft');
+      const btnInstall = document.getElementById('btnBulkInstall');
+
+      const freeMb = Number(currentDevice.storageFreeMb) || 0;
+      const totalMb = Number(currentDevice.storageTotalMb) || 0;
+
+      let totalSelectedMb = 0;
+      const catList = apksData.active || [];
+      selectedCatalogApps.forEach(id => {
+        const item = catList.find(x => (x.id === id || x.fileName === id));
+        if (item) {
+          totalSelectedMb += parseSizeMb(item);
+        }
+      });
+
+      const lblCatCount = document.getElementById('lblSelectedCatalogCount');
+      const lblCatSize = document.getElementById('lblSelectedCatalogSize');
+      if (lblCatCount) lblCatCount.textContent = selectedCatalogApps.size + ' seleccionadas';
+      if (lblCatSize) lblCatSize.textContent = '(' + totalSelectedMb.toFixed(1) + ' MB)';
+
+      if (totalMb <= 0) {
+        if (elText) elText.textContent = freeMb > 0 ? (freeMb.toFixed(0) + ' MB libres') : 'Pendiente de primer reporte desde TV';
+        if (elPill) {
+          elPill.textContent = 'En espera de datos';
+          elPill.style.background = 'rgba(255,255,255,0.08)';
+          elPill.style.color = '#94a3b8';
+          elPill.style.borderColor = 'rgba(255,255,255,0.15)';
+        }
+        if (barUsed) barUsed.style.width = '30%';
+        if (barProj) barProj.style.width = '0%';
+        if (planText) planText.textContent = selectedCatalogApps.size > 0 ? (selectedCatalogApps.size + ' apps seleccionadas (' + totalSelectedMb.toFixed(1) + ' MB).') : 'Selecciona aplicaciones para instalar.';
+        if (freeLeft) freeLeft.textContent = '--';
+        if (btnInstall) {
+          btnInstall.disabled = (selectedCatalogApps.size === 0);
+          btnInstall.style.opacity = selectedCatalogApps.size > 0 ? '1' : '0.5';
+          btnInstall.textContent = '⬇️ Instalar (' + selectedCatalogApps.size + ')';
+        }
+        return;
+      }
+
+      const usedMb = Math.max(0, totalMb - freeMb);
+      const usedPct = Math.min(100, Math.round((usedMb / totalMb) * 100));
+      const projPct = Math.min(100 - usedPct, Math.round((totalSelectedMb / totalMb) * 100));
+
+      const freeGb = (freeMb / 1024).toFixed(1);
+      const totalGb = (totalMb / 1024).toFixed(1);
+
+      if (elText) elText.textContent = freeGb + ' GB libres de ' + totalGb + ' GB (' + (100 - usedPct) + '% libre)';
+      if (barUsed) barUsed.style.width = usedPct + '%';
+      if (barProj) barProj.style.width = projPct + '%';
+
+      const projectedRemainingMb = freeMb - totalSelectedMb;
+
+      if (totalSelectedMb > freeMb) {
+        if (elPill) {
+          elPill.textContent = '⚠️ Capacidad Excedida';
+          elPill.style.background = 'rgba(239,68,68,0.2)';
+          elPill.style.color = '#f87171';
+          elPill.style.borderColor = 'rgba(239,68,68,0.4)';
+        }
+        if (planText) {
+          planText.innerHTML = '<strong style="color:#f87171;">⚠️ Espacio insuficiente:</strong> Se requieren ' + totalSelectedMb.toFixed(1) + ' MB pero solo quedan ' + freeMb.toFixed(1) + ' MB libres.';
+        }
+        if (freeLeft) freeLeft.textContent = 'Faltan ' + (totalSelectedMb - freeMb).toFixed(1) + ' MB';
+        if (btnInstall) {
+          btnInstall.disabled = true;
+          btnInstall.style.opacity = '0.4';
+          btnInstall.textContent = '⚠️ Espacio Insuficiente';
+        }
+      } else {
+        const remainingGb = (projectedRemainingMb / 1024).toFixed(2);
+        if (elPill) {
+          elPill.textContent = projectedRemainingMb > 1024 ? '✅ Espacio Óptimo' : '⚡ Espacio Ajustado';
+          elPill.style.background = projectedRemainingMb > 1024 ? 'rgba(34,197,94,0.15)' : 'rgba(245,158,11,0.15)';
+          elPill.style.color = projectedRemainingMb > 1024 ? '#4ade80' : '#fbbf24';
+          elPill.style.borderColor = projectedRemainingMb > 1024 ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)';
+        }
+        if (planText) {
+          if (selectedCatalogApps.size > 0) {
+            planText.textContent = selectedCatalogApps.size + ' apps seleccionadas (' + totalSelectedMb.toFixed(1) + ' MB). Quedarán ' + remainingGb + ' GB libres.';
+          } else {
+            planText.textContent = 'Selecciona aplicaciones del catálogo para calcular el espacio.';
+          }
+        }
+        if (freeLeft) freeLeft.textContent = 'Restante: ' + remainingGb + ' GB';
+        if (btnInstall) {
+          btnInstall.disabled = (selectedCatalogApps.size === 0);
+          btnInstall.style.opacity = selectedCatalogApps.size > 0 ? '1' : '0.5';
+          btnInstall.textContent = '⬇️ Instalar (' + selectedCatalogApps.size + ')';
+        }
+      }
     }
 
     function filterDeviceApps() {
@@ -4574,14 +4672,14 @@
       const container = document.getElementById('devAppsContainer');
       const badge = document.getElementById('devAppsBadgeCount');
       if (!container) return;
-      if (badge) badge.textContent = apps.length + ' Apps';
+      if (badge) badge.textContent = apps.length;
 
       if (!apps || apps.length === 0) {
         container.innerHTML = `
-          <div style="text-align:center; padding:32px 16px; color:#94a3b8;">
-            <div style="font-size:32px; margin-bottom:8px;">⏳</div>
-            <p style="font-size:13px; margin:0 0 4px 0; color:#e2e8f0; font-weight:600;">Sin reporte de aplicaciones todavía</p>
-            <p style="font-size:11.5px; margin:0;">El reporte se generará y enviará automáticamente cuando el usuario abra la aplicación ARIDAMOTEC TV en su televisor.</p>
+          <div style="text-align:center; padding:32px 12px; color:#94a3b8;">
+            <div style="font-size:28px; margin-bottom:6px;">⏳</div>
+            <p style="font-size:12.5px; margin:0 0 4px 0; color:#e2e8f0; font-weight:700;">Sin reporte de apps aún</p>
+            <p style="font-size:11px; margin:0;">El televisor reportará su lista automáticamente al iniciar.</p>
           </div>
         `;
         return;
@@ -4589,28 +4687,323 @@
 
       let html = '';
       apps.forEach(a => {
-        const name = escapeHtml(a.name || a.pkg || 'App Desconocida');
-        const pkg = escapeHtml(a.pkg || '--');
+        const name = escapeHtml(a.name || a.pkg || 'App');
+        const pkg = escapeHtml(a.pkg || '');
         const ver = escapeHtml(a.ver || 'v?.?');
-        const code = a.code ? ('(Build ' + escapeHtml(a.code) + ')') : '';
+        const isChecked = selectedInstalledApps.has(pkg) ? 'checked' : '';
 
         html += `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:10px 14px;">
-            <div style="min-width:0; flex:1; margin-right:12px;">
-              <div style="font-size:13.5px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
-              <div style="font-size:11px; color:var(--text-muted); font-family:monospace; margin-top:2px;">${pkg}</div>
+          <label style="display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:8px 10px; cursor:pointer; gap:10px; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+            <input type="checkbox" ${isChecked} onchange="toggleSelectInstalledApp('${escapeJs(pkg)}', this.checked)" style="accent-color:#ef4444; width:16px; height:16px; cursor:pointer; flex-shrink:0;">
+            <div style="min-width:0; flex:1;">
+              <div style="font-size:12.5px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
+              <div style="font-size:10.5px; color:#94a3b8; font-family:monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${pkg}</div>
             </div>
-            <div style="text-align:right; flex-shrink:0;">
-              <span style="display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px; background:rgba(0,229,255,0.1); color:var(--accent-cyan); font-family:monospace;">${ver}</span>
-              <div style="font-size:9.5px; color:#64748b; margin-top:2px;">${code}</div>
-            </div>
-          </div>
+            <span style="font-size:10.5px; font-weight:700; padding:2px 6px; border-radius:5px; background:rgba(255,255,255,0.08); color:#cbd5e1; flex-shrink:0;">${ver}</span>
+          </label>
         `;
       });
       container.innerHTML = html;
+      updateInstalledSelectionUI();
     }
 
-    function toggleDeviceStatus(mac, newStatus) {
+    function toggleSelectInstalledApp(pkg, isChecked) {
+      if (!pkg) return;
+      if (isChecked) selectedInstalledApps.add(pkg);
+      else selectedInstalledApps.delete(pkg);
+      updateInstalledSelectionUI();
+    }
+
+    function toggleSelectAllInstalled(checked) {
+      selectedInstalledApps.clear();
+      if (checked) {
+        currentDeviceApps.forEach(a => {
+          if (a.pkg) selectedInstalledApps.add(a.pkg);
+        });
+      }
+      renderDeviceAppsList(currentDeviceApps);
+    }
+
+    function updateInstalledSelectionUI() {
+      const lbl = document.getElementById('lblSelectedInstalledCount');
+      const btn = document.getElementById('btnBulkUninstall');
+      const count = selectedInstalledApps.size;
+      if (lbl) lbl.textContent = count + ' seleccionadas';
+      if (btn) {
+        btn.disabled = (count === 0);
+        btn.style.opacity = count > 0 ? '1' : '0.5';
+        btn.textContent = '🗑️ Desinstalar (' + count + ')';
+      }
+    }
+
+    function renderCatalogAppsList(catalogItems) {
+      const container = document.getElementById('catAppsContainer');
+      const badge = document.getElementById('catAppsBadgeCount');
+      if (!container) return;
+      const list = catalogItems || [];
+      if (badge) badge.textContent = list.length;
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:32px 12px; color:#94a3b8;">
+            <div style="font-size:28px; margin-bottom:6px;">📦</div>
+            <p style="font-size:12.5px; margin:0; color:#e2e8f0; font-weight:700;">Catálogo vacío</p>
+          </div>
+        `;
+        return;
+      }
+
+      const installedPkgMap = new Map();
+      currentDeviceApps.forEach(a => {
+        if (a.pkg) installedPkgMap.set(a.pkg.toLowerCase(), a);
+      });
+
+      let html = '';
+      list.forEach(item => {
+        const id = escapeHtml(item.id || item.fileName || '');
+        const name = escapeHtml(item.cleanName || item.fileName || 'App');
+        const cat = escapeHtml(item.category || 'General');
+        const sizeStr = item.sizeFormatted || (item.size ? formatBytes(item.size) : '25 MB');
+        const pkg = (item.packageName || '').toLowerCase();
+        
+        const isInstalled = pkg && installedPkgMap.has(pkg);
+        const isChecked = selectedCatalogApps.has(id) ? 'checked' : '';
+
+        let statusPill = '';
+        if (isInstalled) {
+          statusPill = '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; background:rgba(34,197,94,0.15); color:#4ade80;">Instalada</span>';
+        } else {
+          statusPill = '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; background:rgba(0,229,255,0.1); color:var(--accent-cyan);">Disponible</span>';
+        }
+
+        html += `
+          <label style="display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:8px 10px; cursor:pointer; gap:10px; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+            <input type="checkbox" ${isChecked} onchange="toggleSelectCatalogApp('${escapeJs(id)}', this.checked)" style="accent-color:var(--accent-cyan); width:16px; height:16px; cursor:pointer; flex-shrink:0;">
+            <div style="min-width:0; flex:1;">
+              <div style="font-size:12.5px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
+              <div style="font-size:10.5px; color:#94a3b8; display:flex; gap:6px; margin-top:2px;">
+                <span>${cat}</span>
+                <span>•</span>
+                <span style="color:var(--accent-cyan); font-weight:600;">${sizeStr}</span>
+              </div>
+            </div>
+            ${statusPill}
+          </label>
+        `;
+      });
+      container.innerHTML = html;
+      updateStorageMetrics();
+    }
+
+    function toggleSelectCatalogApp(id, isChecked) {
+      if (!id) return;
+      if (isChecked) selectedCatalogApps.add(id);
+      else selectedCatalogApps.delete(id);
+      updateStorageMetrics();
+    }
+
+    function toggleSelectAllCatalog(checked) {
+      selectedCatalogApps.clear();
+      if (checked) {
+        (apksData.active || []).forEach(item => {
+          const id = item.id || item.fileName;
+          if (id) selectedCatalogApps.add(id);
+        });
+      }
+      renderCatalogAppsList(apksData.active || []);
+    }
+
+    function filterCatalogApps() {
+      const q = (document.getElementById('catAppsSearchInput').value || '').toLowerCase().trim();
+      const list = apksData.active || [];
+      if (!q) {
+        renderCatalogAppsList(list);
+        return;
+      }
+      const filtered = list.filter(item => {
+        const n = (item.cleanName || '').toLowerCase();
+        const f = (item.fileName || '').toLowerCase();
+        const c = (item.category || '').toLowerCase();
+        return n.includes(q) || f.includes(q) || c.includes(q);
+      });
+      renderCatalogAppsList(filtered);
+    }
+
+    function executeBulkUninstall() {
+      if (!currentDevice || selectedInstalledApps.size === 0) return;
+      const count = selectedInstalledApps.size;
+      const confirmMsg = `¿Confirmas que deseas desinstalar remotamente ${count} aplicación(es) en el TV Box de "${currentDevice.client || currentDevice.mac}"?\n\nLa orden se ejecutará en segundo plano de manera silenciosa.`;
+      if (!confirm(confirmMsg)) return;
+
+      showToast(`⚡ Enviando orden remota para desinstalar ${count} app(s)...`);
+      const appsToUninstall = Array.from(selectedInstalledApps);
+
+      appsToUninstall.forEach(pkg => {
+        dispatchRemoteCommand(currentDevice.mac, 'uninstall', '', pkg, '');
+      });
+
+      showToast(`✅ Órdenes de desinstalación despachadas exitosamente.`);
+      selectedInstalledApps.clear();
+      updateInstalledSelectionUI();
+    }
+
+    function executeBulkInstall() {
+      if (!currentDevice || selectedCatalogApps.size === 0) return;
+      const count = selectedCatalogApps.size;
+      const catList = apksData.active || [];
+      const selectedItems = [];
+      let totalMb = 0;
+
+      selectedCatalogApps.forEach(id => {
+        const item = catList.find(x => (x.id === id || x.fileName === id));
+        if (item) {
+          selectedItems.push(item);
+          totalMb += parseSizeMb(item);
+        }
+      });
+
+      const freeMb = Number(currentDevice.storageFreeMb) || 0;
+      if (freeMb > 0 && totalMb > freeMb) {
+        alert(`❌ No es posible proceder:\n\nLas aplicaciones seleccionadas pesan ${totalMb.toFixed(1)} MB, pero el TV Box solo dispone de ${freeMb.toFixed(1)} MB libres.\n\nPor favor, deselecciona algunas aplicaciones o desinstala otras para liberar espacio.`);
+        return;
+      }
+
+      const confirmMsg = `¿Confirmas la instalación remota de ${count} aplicación(es) (${totalMb.toFixed(1)} MB) en el TV Box de "${currentDevice.client || currentDevice.mac}"?`;
+      if (!confirm(confirmMsg)) return;
+
+      showToast(`⚡ Enviando orden remota para instalar ${count} app(s)...`);
+
+      selectedItems.forEach(item => {
+        const dlUrl = item.directDownloadUrl || item.downloadUrl || '';
+        dispatchRemoteCommand(currentDevice.mac, 'install', item.fileName, item.packageName || '', dlUrl);
+      });
+
+      showToast(`✅ Órdenes de instalación despachadas exitosamente.`);
+      selectedCatalogApps.clear();
+      updateStorageMetrics();
+      renderCatalogAppsList(catList);
+    }
+
+    function dispatchRemoteCommand(mac, action, fileName, packageName, downloadUrl) {
+      if (!mac || !action) return;
+      console.log(`[REMOTE COMMAND] MAC: ${mac}, Action: ${action}, File: ${fileName}, Pkg: ${packageName}`);
+      const cmdPayload = {
+        action: action,
+        fileName: fileName || '',
+        packageName: packageName || '',
+        downloadUrl: downloadUrl || ''
+      };
+      try {
+        const gas = getGas();
+        if (gas && typeof gas.sendRemoteCommand === 'function') {
+          gas.sendRemoteCommand(savedPwd, mac, cmdPayload);
+          return;
+        }
+      } catch (e) {
+        console.warn('Error al despachar orden por adaptador GAS:', e);
+      }
+
+      // Respaldo HTTP Fetch directo para pruebas o entornos desacoplados
+      if (typeof GAS_URL !== 'undefined' && GAS_URL) {
+        fetch(GAS_URL + '?action=sendRemoteCommand&pwd=' + encodeURIComponent(savedPwd || '') + '&mac=' + encodeURIComponent(mac) + '&cmd=' + encodeURIComponent(JSON.stringify(cmdPayload)))
+          .then(r => r.json())
+          .then(res => console.log('[REMOTE COMMAND RESPONSE]', res))
+          .catch(err => console.warn('[REMOTE COMMAND ERROR]', err));
+      }
+    }
+
+
+    // ================= SISTEMA SEGURO DE DOBLE COMPROBACIÓN (ANTI-ERROR) =================
+    let pendingConfirmAction = null;
+    let confirmArmed = false;
+
+    function promptActionConfirm(mac, action) {
+      const dev = (devicesData || []).find(d => d.mac === mac) || { mac: mac, client: 'Sin Asignar', model: 'Android TV' };
+      const modal = document.getElementById('actionConfirmModal');
+      const icon = document.getElementById('confirmModalIcon');
+      const iconBox = document.getElementById('confirmModalIconBox');
+      const title = document.getElementById('confirmModalTitle');
+      const msg = document.getElementById('confirmModalMsg');
+      const btnProceed = document.getElementById('btnConfirmProceed');
+      
+      document.getElementById('confirmModalMac').textContent = dev.mac;
+      document.getElementById('confirmModalClient').textContent = dev.client || 'Sin Asignar';
+      document.getElementById('confirmModalModel').textContent = dev.model || 'Android TV';
+
+      btnProceed.className = 'btn-confirm-proceed';
+      btnProceed.style.pointerEvents = 'none';
+      btnProceed.style.opacity = '0.6';
+      confirmArmed = false;
+
+      if (action === 'delete') {
+        icon.textContent = '🚨';
+        iconBox.style.background = 'rgba(239, 68, 68, 0.15)';
+        iconBox.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+        title.textContent = '¿Eliminar dispositivo definitivamente?';
+        msg.innerHTML = '⚠️ <strong>Atención crítica:</strong> Esta acción borrará permanentemente este dispositivo de la base de datos de Google Sheets. El TV Box perderá acceso a la tienda y asistencia remota.';
+        btnProceed.innerHTML = '🗑️ Sí, Eliminar';
+        btnProceed.classList.add('danger');
+        pendingConfirmAction = () => executeDeleteDevice(mac);
+      } else if (action === 'block') {
+        icon.textContent = '⏸️';
+        iconBox.style.background = 'rgba(245, 158, 11, 0.15)';
+        iconBox.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+        title.textContent = '¿Bloquear acceso al dispositivo?';
+        msg.innerHTML = 'El dispositivo será cambiado a estado <strong>BLOQUEADO</strong>. Al encenderse o abrir la aplicación mostrará pantalla de bloqueo.';
+        btnProceed.innerHTML = '⏸️ Sí, Bloquear';
+        btnProceed.classList.add('warning');
+        pendingConfirmAction = () => executeToggleDeviceStatus(mac, 'BLOQUEADO');
+      } else if (action === 'activate') {
+        icon.textContent = '✅';
+        iconBox.style.background = 'rgba(16, 185, 129, 0.15)';
+        iconBox.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        title.textContent = '¿Autorizar y activar dispositivo?';
+        msg.innerHTML = 'El dispositivo será cambiado a estado <strong>ACTIVO</strong>. Tendrá acceso completo al catálogo y funciones de asistencia remota.';
+        btnProceed.innerHTML = '✅ Sí, Activar';
+        btnProceed.classList.add('success');
+        pendingConfirmAction = () => executeToggleDeviceStatus(mac, 'ACTIVO');
+      } else if (action === 'edit') {
+        icon.textContent = '✏️';
+        iconBox.style.background = 'rgba(0, 229, 255, 0.15)';
+        iconBox.style.borderColor = 'rgba(0, 229, 255, 0.4)';
+        title.textContent = '¿Modificar datos del dispositivo?';
+        msg.innerHTML = 'Se abrirá el editor para modificar cliente, modelo, estado o notas de este dispositivo.';
+        btnProceed.innerHTML = '✏️ Sí, Abrir Editor';
+        btnProceed.classList.add('info');
+        pendingConfirmAction = () => openEditDeviceModal(mac);
+      }
+
+      modal.style.display = 'flex';
+
+      // Anti-doble clic / Anti-misclick: Cooldown de 350ms para neutralizar doble toque accidental
+      setTimeout(() => {
+        btnProceed.style.pointerEvents = 'auto';
+        btnProceed.style.opacity = '1';
+        confirmArmed = true;
+      }, 350);
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('actionConfirmModal');
+      if (modal) modal.style.display = 'none';
+      pendingConfirmAction = null;
+      confirmArmed = false;
+    }
+
+    // Configurar listener seguro del botón proceder
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('btnConfirmProceed');
+      if (btn) {
+        btn.onclick = function() {
+          if (!confirmArmed || !pendingConfirmAction) return;
+          const act = pendingConfirmAction;
+          closeConfirmModal();
+          act();
+        };
+      }
+    });
+
+    function executeToggleDeviceStatus(mac, newStatus) {
       if (!savedPwd) return;
       showToast((newStatus === 'ACTIVO' ? 'Activando' : 'Bloqueando') + ' dispositivo ' + mac + '...');
       const gas = getGas();
@@ -4626,22 +5019,49 @@
 
       try {
         if (gas && typeof gas.withSuccessHandler === 'function') {
-          const handler = gas.withSuccessHandler(onResult).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
-          if (handler && typeof handler.toggleMac === 'function') {
-            handler.toggleMac(savedPwd, mac, newStatus);
-            return;
-          } else if (handler && typeof handler.toggleMacStatus === 'function') {
-            handler.toggleMacStatus(savedPwd, mac, newStatus);
-            return;
-          }
+          gas.withSuccessHandler(onResult)
+            .withFailureHandler(err => showToast('Error: ' + (err.message || err), true))
+            .toggleMacStatus(savedPwd, mac, newStatus);
+          return;
         }
       } catch (e) {
-        console.warn('Error toggleDeviceStatus via gas:', e);
+        console.warn('Error executeToggleDeviceStatus via gas:', e);
       }
 
       fetch(GAS_URL + '?action=toggleMac&pwd=' + encodeURIComponent(savedPwd) + '&mac=' + encodeURIComponent(mac) + '&status=' + encodeURIComponent(newStatus))
         .then(r => r.json())
         .then(onResult)
+        .catch(err => showToast('Error: ' + (err.message || err), true));
+    }
+
+    function executeDeleteDevice(mac) {
+      if (!savedPwd) return;
+      showToast('Eliminando dispositivo ' + mac + '...');
+      const gas = getGas();
+
+      const onDelResult = (res) => {
+        if (res && res.success) {
+          showToast('Dispositivo ' + mac + ' eliminado permanentemente.');
+          loadDevices();
+        } else {
+          showToast(res ? res.error : 'Error al eliminar dispositivo', true);
+        }
+      };
+
+      try {
+        if (gas && typeof gas.withSuccessHandler === 'function') {
+          gas.withSuccessHandler(onDelResult)
+            .withFailureHandler(err => showToast('Error: ' + (err.message || err), true))
+            .deleteMacDevice(savedPwd, mac);
+          return;
+        }
+      } catch (e) {
+        console.warn('Error executeDeleteDevice via gas:', e);
+      }
+
+      fetch(GAS_URL + '?action=deleteMac&pwd=' + encodeURIComponent(savedPwd) + '&mac=' + encodeURIComponent(mac))
+        .then(r => r.json())
+        .then(onDelResult)
         .catch(err => showToast('Error: ' + (err.message || err), true));
     }
 
@@ -4657,7 +5077,7 @@
     }
 
     function openEditDeviceModal(mac) {
-      const dev = devicesData.find(d => d.mac === mac);
+      const dev = (devicesData || []).find(d => d.mac === mac);
       if (!dev) return;
       document.getElementById('deviceModalTitle').textContent = '✏️ Editar Dispositivo MAC';
       document.getElementById('devModalMac').value = dev.mac;
@@ -4723,42 +5143,45 @@
         .catch(err => showToast('Error: ' + (err.message || err), true));
     }
 
-    function confirmDeleteDevice(mac) {
-      if (!confirm('¿Estás seguro de que deseas eliminar definitivamente el dispositivo con MAC ' + mac + '?')) {
-        return;
-      }
-      showToast('Eliminando dispositivo...');
-      const gas = getGas();
-
-      const onDelResult = (res) => {
-        if (res && res.success) {
-          showToast('Dispositivo ' + mac + ' eliminado.');
-          loadDevices();
+    function switchDevAppsMobileTab(tab) {
+      const colInst = document.getElementById('devAppsColInstalled');
+      const colCat = document.getElementById('devAppsColCatalog');
+      const btnInst = document.getElementById('devAppsMobileTabInstalled');
+      const btnCat = document.getElementById('devAppsMobileTabCatalog');
+      if (window.innerWidth <= 900) {
+        if (tab === 'installed') {
+          if (colInst) colInst.style.display = 'flex';
+          if (colCat) colCat.style.display = 'none';
+          if (btnInst) btnInst.classList.add('active');
+          if (btnCat) btnCat.classList.remove('active');
         } else {
-          showToast(res ? res.error : 'Error al eliminar', true);
+          if (colInst) colInst.style.display = 'none';
+          if (colCat) colCat.style.display = 'flex';
+          if (btnInst) btnInst.classList.remove('active');
+          if (btnCat) btnCat.classList.add('active');
         }
-      };
-
-      try {
-        if (gas && typeof gas.withSuccessHandler === 'function') {
-          const handler = gas.withSuccessHandler(onDelResult).withFailureHandler(err => showToast('Error: ' + (err.message || err), true));
-          if (handler && typeof handler.deleteMac === 'function') {
-            handler.deleteMac(savedPwd, mac);
-            return;
-          } else if (handler && typeof handler.deleteMacDevice === 'function') {
-            handler.deleteMacDevice(savedPwd, mac);
-            return;
-          }
-        }
-      } catch (e) {
-        console.warn('Error confirmDeleteDevice via gas:', e);
+      } else {
+        if (colInst) colInst.style.display = 'flex';
+        if (colCat) colCat.style.display = 'flex';
       }
-
-      fetch(GAS_URL + '?action=deleteMac&pwd=' + encodeURIComponent(savedPwd) + '&mac=' + encodeURIComponent(mac))
-        .then(r => r.json())
-        .then(onDelResult)
-        .catch(err => showToast('Error: ' + (err.message || err), true));
     }
+
+    window.addEventListener('resize', () => {
+      const modal = document.getElementById('deviceAppsModal');
+      if (modal && modal.style.display === 'flex') {
+        if (window.innerWidth > 900) {
+          const colInst = document.getElementById('devAppsColInstalled');
+          const colCat = document.getElementById('devAppsColCatalog');
+          if (colInst) colInst.style.display = 'flex';
+          if (colCat) colCat.style.display = 'flex';
+        } else {
+          const btnInst = document.getElementById('devAppsMobileTabInstalled');
+          const isInst = btnInst && btnInst.classList.contains('active');
+          switchDevAppsMobileTab(isInst ? 'installed' : 'catalog');
+        }
+      }
+    });
+
 
     // Explicit global bindings for iframe sandboxes
     window.handleLogin = handleLogin;
@@ -4780,7 +5203,6 @@
     window.handleSearch = handleSearch;
     window.clearSearch = clearSearch;
     window.copyCode = copyCode;
-    window.copyWhatsApp = copyWhatsApp;
     window.openQr = openQr;
     window.closeQrModal = closeQrModal;
     window.generateCode = generateCode;
@@ -4792,25 +5214,23 @@
     window.handleIntervalChange = handleIntervalChange;
     window.saveApkDesc = saveApkDesc;
     window.regenAdminAiDesc = regenAdminAiDesc;
-    window.waSelectAll = waSelectAll;
-    window.waDeselectAll = waDeselectAll;
-    window.toggleWaSelection = toggleWaSelection;
-    window.updateWaDesc = updateWaDesc;
-    window.regenAiDesc = regenAiDesc;
-    window.renderWhatsAppPreview = renderWhatsAppPreview;
-    window.copyFullWaMessage = copyFullWaMessage;
-    window.openWhatsAppChat = openWhatsAppChat;
     window.loadDevices = loadDevices;
     window.renderDevices = renderDevices;
-    window.toggleDeviceStatus = toggleDeviceStatus;
+    window.promptActionConfirm = promptActionConfirm;
+    window.closeConfirmModal = closeConfirmModal;
+    window.executeToggleDeviceStatus = executeToggleDeviceStatus;
+    window.executeDeleteDevice = executeDeleteDevice;
+    window.switchDevAppsMobileTab = switchDevAppsMobileTab;
     window.openNewDeviceModal = openNewDeviceModal;
     window.openEditDeviceModal = openEditDeviceModal;
     window.closeDeviceModal = closeDeviceModal;
     window.submitSaveDevice = submitSaveDevice;
-    window.confirmDeleteDevice = confirmDeleteDevice;
     window.selectAdminCategory = selectAdminCategory;
     window.renderAdminCategoryChips = renderAdminCategoryChips;
     window.copyToClipboard = copyToClipboard;
+    window.onDeviceSortChange = onDeviceSortChange;
+    window.toggleDeviceSort = toggleDeviceSort;
+    window.updateSortIndicators = updateSortIndicators;
   </script>
 </body>
 </html>

@@ -48,7 +48,7 @@ export default {
     }
 
     // Ruta de estado / Ping
-    if (pathname === '/' || pathname === '/status' || pathname === '/health') {
+    if (pathname === '/status' || pathname === '/health' || pathname === '/ping' || pathname === '/api') {
       return new Response(JSON.stringify({
         status: 'online',
         service: CONFIG.BRAND_NAME,
@@ -61,6 +61,18 @@ export default {
           'Access-Control-Allow-Origin': '*'
         }
       });
+    }
+
+    // Ruta Web Visitante / Catálogo Oficial Público
+    // Ejemplo: / o /index.html o /catalogo o /cliente
+    if (pathname === '/' || pathname === '/index.html' || pathname === '/catalogo' || pathname === '/cliente') {
+      return handleServeHtml(request, 'index.html');
+    }
+
+    // Ruta Web Administrador / Panel de Control Maestro
+    // Ejemplo: /admin o /admin.html o /panel
+    if (pathname === '/admin' || pathname === '/admin.html' || pathname === '/panel') {
+      return handleServeHtml(request, 'admin.html');
     }
 
     // Validar token de acceso si está configurado
@@ -403,5 +415,33 @@ async function handleSanitizedReleases(request, currentUrl) {
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+  }
+}
+
+/**
+ * Sirve páginas web HTML completas directamente desde el CDN Gateway de Cloudflare
+ */
+async function handleServeHtml(request, filename) {
+  const originHtmlUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/${filename}?t=${Date.now()}`;
+  try {
+    const res = await fetch(originHtmlUrl, {
+      headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
+      cf: { cacheEverything: false }
+    });
+    if (!res.ok) {
+      return new Response('Error cargando página web desde origen', { status: 502 });
+    }
+    const html = await res.text();
+    return new Response(html, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Server': CONFIG.SERVER_HEADER,
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      }
+    });
+  } catch (e) {
+    return new Response('Error interno al servir página: ' + e.message, { status: 500 });
   }
 }
