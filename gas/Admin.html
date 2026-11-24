@@ -2864,11 +2864,66 @@
           });
       };
 
+      // 3. Fusión en tiempo real con GitHub Releases (a través de Cloudflare CDN enmascarado)
+      const mergeLiveReleases = async (res) => {
+        try {
+          const relRes = await fetch('https://aridamotec-cdn.aridamotec.workers.dev/releases?t=' + Date.now());
+          if (relRes.ok) {
+            const releases = await relRes.json();
+            const relList = Array.isArray(releases) ? releases : [releases];
+            const liveMap = new Map();
+            for (const r of relList) {
+              if (r && Array.isArray(r.assets)) {
+                for (const a of r.assets) {
+                  const fn = (a.name || '').trim();
+                  const l = fn.toLowerCase();
+                  if ((l.endsWith('.apk') || l.endsWith('.xapk')) && !l.startsWith('aridamotec_tv')) {
+                    liveMap.set(l, a);
+                  }
+                }
+              }
+            }
+            if (liveMap.size > 0) {
+              let activeList = Array.isArray(res.catalog) ? res.catalog : (res.active || []);
+              const existingNames = new Set(activeList.map(x => (x.fileName || '').toLowerCase()));
+              liveMap.forEach((asset, lowerName) => {
+                if (!existingNames.has(lowerName)) {
+                  const clean = cleanApkName(asset.name);
+                  const iconName = asset.name.toLowerCase().replace(/\.apk$/i, '').replace(/[^a-z0-9_]/g, '_') + '.png';
+                  activeList.unshift({
+                    id: String(asset.id || Date.now()),
+                    cleanName: clean,
+                    fileName: asset.name,
+                    iconUrl: `https://aridamotec-cdn.aridamotec.workers.dev/icons/${iconName}`,
+                    downloadUrl: `https://aridamotec-cdn.aridamotec.workers.dev/apk/${encodeURIComponent(asset.name)}`,
+                    directUrl: `https://aridamotec-cdn.aridamotec.workers.dev/apk/${encodeURIComponent(asset.name)}`,
+                    directDownloadUrl: `https://aridamotec-cdn.aridamotec.workers.dev/apk/${encodeURIComponent(asset.name)}`,
+                    size: asset.size || 0,
+                    sizeFormatted: asset.size ? (asset.size / 1048576).toFixed(1) + ' MB' : '0 MB',
+                    status: 'active',
+                    category: '🎮 Juegos',
+                    author: 'Oficial',
+                    createdAt: asset.updated_at || new Date().toISOString()
+                  });
+                }
+              });
+              activeList = activeList.filter(x => !x.fileName || liveMap.has(x.fileName.toLowerCase()));
+              if (Array.isArray(res.catalog)) res.catalog = activeList;
+              if (Array.isArray(res.active)) res.active = activeList;
+            }
+          }
+        } catch (eRel) {
+          console.warn('Nota: validación live releases omitida:', eRel);
+        }
+        return res;
+      };
+
       fetchGAS()
         .catch(errGas => {
           console.warn('Fallo consultando GAS en admin, intentando CDN de respaldo:', errGas);
           return fetchCDN();
         })
+        .then(res => mergeLiveReleases(res))
         .then(res => {
           if (res && (res.success || Array.isArray(res.catalog))) {
             const isEditing = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT');

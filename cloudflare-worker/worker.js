@@ -268,60 +268,113 @@ async function handleApkDownload(request, fileName, ctx) {
 }
 
 /**
- * Retorna el catálogo sanitizado con URLs enmascaradas
+ * Retorna el catálogo sanitizado con URLs enmascaradas y sincronización instantánea con GitHub Releases
  */
 async function handleSanitizedCatalog(request, currentUrl) {
-  const originCatalogUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/catalog.json`;
+  const originCatalogUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/catalog.json?t=${Date.now()}`;
+  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
+  const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
   
   try {
-    const res = await fetch(originCatalogUrl, {
-      headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
-      cf: { cacheTtl: 300 } // Cachear 5 minutos
+    // 1. Consultar catalog.json y GitHub Releases en paralelo en tiempo real (CERO CACHÉ)
+    const [resCatalog, resReleases] = await Promise.all([
+      fetch(originCatalogUrl, {
+        headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
+        cf: { cacheTtl: 0, cacheEverything: false }
+      }).catch(() => null),
+      fetch(originReleasesUrl, {
+        headers: {
+          'User-Agent': 'Aridamotec-CDN/1.0',
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        cf: { cacheTtl: 0, cacheEverything: false }
+      }).catch(() => null)
+    ]);
+
+    let data = { success: true, count: 0, total: 0, catalog: [] };
+    if (resCatalog && resCatalog.ok) {
+      try { data = await resCatalog.json(); } catch (e) {}
+    }
+    if (!data.catalog || !Array.isArray(data.catalog)) {
+      data.catalog = [];
+    }
+
+    // 2. Sanitizar URLs existentes en el catálogo
+    const catalogMap = new Map();
+    data.catalog = data.catalog.map(item => {
+      const cleanItem = { ...item };
+      if (cleanItem.fileName) {
+        const directUrl = `${hostBase}/apk/${encodeURIComponent(cleanItem.fileName)}`;
+        cleanItem.downloadUrl = directUrl;
+        cleanItem.directUrl = directUrl;
+        cleanItem.directDownloadUrl = directUrl;
+      }
+      const rawIcon = cleanItem.iconUrl || cleanItem.icon || '';
+      if (rawIcon && String(rawIcon).includes('github')) {
+        const parts = String(rawIcon).split('/');
+        const cleanIcon = `${hostBase}/icons/${parts[parts.length - 1]}`;
+        cleanItem.iconUrl = cleanIcon;
+        if (cleanItem.icon) cleanItem.icon = cleanIcon;
+      }
+      if (cleanItem.fileName) {
+        catalogMap.set(cleanItem.fileName.toLowerCase(), cleanItem);
+      }
+      return cleanItem;
     });
 
-    if (!res.ok) {
-      return new Response(JSON.stringify({ error: 'Error cargando catálogo' }), { status: 502 });
+    // 3. Fusión en tiempo real con GitHub Releases (para APKs recién subidas como igames-psp.apk)
+    if (resReleases && resReleases.ok) {
+      try {
+        const releases = await resReleases.json();
+        const releaseList = Array.isArray(releases) ? releases : [releases];
+        for (const rel of releaseList) {
+          if (rel && Array.isArray(rel.assets)) {
+            for (const a of rel.assets) {
+              const fname = (a.name || '').trim();
+              const lower = fname.toLowerCase();
+              if ((lower.endsWith('.apk') || lower.endsWith('.xapk')) && !lower.startsWith('aridamotec_tv')) {
+                if (!catalogMap.has(lower)) {
+                  // Nueva APK en Releases que aún no estaba en catalog.json: incorporarla de inmediato
+                  const cleanName = fname.replace(/\.(apk|xapk)$/i, '').replace(/[-_.]+/g, ' ').replace(/\b(v?\d+(\.\d+)+)\b/gi, '').trim() || fname;
+                  const directUrl = `${hostBase}/apk/${encodeURIComponent(fname)}`;
+                  const iconName = fname.toLowerCase().replace(/\.apk$/i, '').replace(/[^a-z0-9_]/g, '_') + '.png';
+                  const newItem = {
+                    id: String(a.id || Date.now()),
+                    cleanName: cleanName,
+                    fileName: fname,
+                    iconUrl: `${hostBase}/icons/${iconName}`,
+                    downloadUrl: directUrl,
+                    directUrl: directUrl,
+                    directDownloadUrl: directUrl,
+                    size: a.size || 0,
+                    sizeFormatted: a.size ? (a.size / 1048576).toFixed(1) + ' MB' : '0 MB',
+                    status: 'active',
+                    createdAt: a.updated_at || new Date().toISOString(),
+                    aiDescription: `${cleanName}: Aplicación oficial disponible en catálogo.`,
+                    category: '🎮 Juegos',
+                    author: 'Oficial'
+                  };
+                  data.catalog.unshift(newItem);
+                  catalogMap.set(lower, newItem);
+                }
+              }
+            }
+          }
+        }
+      } catch (eRel) {
+        console.warn('Error fusionando releases en catálogo edge:', eRel);
+      }
     }
 
-    const data = await res.json();
-    const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
-
-    // Sanitizar URLs en el catálogo para que apunten al Worker
-    if (data.catalog && Array.isArray(data.catalog)) {
-      data.catalog = data.catalog.map(item => {
-        const cleanItem = { ...item };
-        const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
-        
-        // Enmascarar URL de descarga
-        if (cleanItem.fileName) {
-          const directUrl = `${hostBase}/apk/${encodeURIComponent(cleanItem.fileName)}`;
-          cleanItem.downloadUrl = directUrl;
-          cleanItem.directUrl = directUrl;
-          cleanItem.directDownloadUrl = directUrl;
-        } else if (cleanItem.directDownloadUrl) {
-          cleanItem.directDownloadUrl = cleanItem.directDownloadUrl.replace(/https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\/[^/]+\//, `${hostBase}/apk/`);
-          cleanItem.directUrl = cleanItem.directDownloadUrl;
-          cleanItem.downloadUrl = cleanItem.directDownloadUrl;
-        }
-
-        // Enmascarar URL de icono
-        const rawIcon = cleanItem.iconUrl || cleanItem.icon || '';
-        if (rawIcon && String(rawIcon).includes('github')) {
-          const parts = String(rawIcon).split('/');
-          const cleanIcon = `${hostBase}/icons/${parts[parts.length - 1]}`;
-          cleanItem.iconUrl = cleanIcon;
-          if (cleanItem.icon) cleanItem.icon = cleanIcon;
-        }
-        return cleanItem;
-      });
-    }
+    data.count = data.catalog.length;
+    data.total = data.catalog.length;
 
     return new Response(JSON.stringify(data, null, 2), {
       headers: {
         'Content-Type': 'application/json',
         'Server': CONFIG.SERVER_HEADER,
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=300'
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
       }
     });
   } catch (err) {
@@ -333,12 +386,12 @@ async function handleSanitizedCatalog(request, currentUrl) {
  * Consulta de versión sanitizada
  */
 async function handleVersionCheck(request) {
-  const originVersionUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH || 'main'}/version.json`;
+  const originVersionUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH || 'main'}/version.json?t=${Date.now()}`;
   
   try {
     const res = await fetch(originVersionUrl, {
       headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
-      cf: { cacheTtl: 60 } // Cachear 1 minuto
+      cf: { cacheTtl: 0, cacheEverything: false }
     });
 
     if (!res.ok) {
@@ -358,7 +411,7 @@ async function handleVersionCheck(request) {
         'Content-Type': 'application/json',
         'Server': CONFIG.SERVER_HEADER,
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=60'
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
       }
     });
   } catch (err) {
@@ -368,6 +421,7 @@ async function handleVersionCheck(request) {
 
 /**
  * Consulta de releases sanitizada (elimina URLs de GitHub para sincronización en Web Admin)
+ * Sincronización en tiempo real directo con GitHub Releases API
  */
 async function handleSanitizedReleases(request, currentUrl) {
   const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
@@ -378,7 +432,7 @@ async function handleSanitizedReleases(request, currentUrl) {
         'User-Agent': 'Aridamotec-CDN/1.0',
         'Accept': 'application/vnd.github.v3+json'
       },
-      cf: { cacheTtl: 120 }
+      cf: { cacheTtl: 0, cacheEverything: false }
     });
 
     if (!res.ok) {
@@ -410,7 +464,7 @@ async function handleSanitizedReleases(request, currentUrl) {
         'Content-Type': 'application/json',
         'Server': CONFIG.SERVER_HEADER,
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=120'
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
       }
     });
   } catch (err) {
