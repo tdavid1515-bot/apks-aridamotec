@@ -2604,6 +2604,7 @@
         }
         sendRemoteCommand(pwd, mac, cmd) {
           let q = '&mac=' + encodeURIComponent(mac) +
+                  '&cmd=' + encodeURIComponent(JSON.stringify(cmd)) +
                   '&cmdAction=' + encodeURIComponent(cmd.action || '') +
                   '&cmdFile=' + encodeURIComponent(cmd.fileName || '') +
                   '&cmdPackage=' + encodeURIComponent(cmd.packageName || '') +
@@ -4838,9 +4839,17 @@
       showToast(`⚡ Enviando orden remota para desinstalar ${count} app(s)...`);
       const appsToUninstall = Array.from(selectedInstalledApps);
 
-      appsToUninstall.forEach(pkg => {
-        dispatchRemoteCommand(currentDevice.mac, 'uninstall', '', pkg, '');
-      });
+      if (appsToUninstall.length === 1) {
+        dispatchRemoteCommand(currentDevice.mac, 'uninstall', '', appsToUninstall[0], '');
+      } else {
+        const batch = appsToUninstall.map(pkg => ({
+          action: 'uninstall',
+          fileName: '',
+          packageName: pkg,
+          downloadUrl: ''
+        }));
+        dispatchRemoteCommand(currentDevice.mac, 'uninstall', '', '', '', batch);
+      }
 
       showToast(`✅ Órdenes de desinstalación despachadas exitosamente.`);
       selectedInstalledApps.clear();
@@ -4873,10 +4882,19 @@
 
       showToast(`⚡ Enviando orden remota para instalar ${count} app(s)...`);
 
-      selectedItems.forEach(item => {
+      if (selectedItems.length === 1) {
+        const item = selectedItems[0];
         const dlUrl = item.directDownloadUrl || item.downloadUrl || '';
         dispatchRemoteCommand(currentDevice.mac, 'install', item.fileName, item.packageName || '', dlUrl);
-      });
+      } else {
+        const batch = selectedItems.map(item => ({
+          action: 'install',
+          fileName: item.fileName,
+          packageName: item.packageName || '',
+          downloadUrl: item.directDownloadUrl || item.downloadUrl || ''
+        }));
+        dispatchRemoteCommand(currentDevice.mac, 'install', '', '', '', batch);
+      }
 
       showToast(`✅ Órdenes de instalación despachadas exitosamente.`);
       selectedCatalogApps.clear();
@@ -4884,15 +4902,15 @@
       renderCatalogAppsList(catList);
     }
 
-    function dispatchRemoteCommand(mac, action, fileName, packageName, downloadUrl) {
+    function dispatchRemoteCommand(mac, action, fileName, packageName, downloadUrl, batchPayload) {
       if (!mac || !action) return;
-      console.log(`[REMOTE COMMAND] MAC: ${mac}, Action: ${action}, File: ${fileName}, Pkg: ${packageName}`);
-      const cmdPayload = {
+      const cmdPayload = batchPayload || {
         action: action,
         fileName: fileName || '',
         packageName: packageName || '',
         downloadUrl: downloadUrl || ''
       };
+      console.log(`[REMOTE COMMAND] MAC: ${mac}, Payload:`, cmdPayload);
       try {
         const gas = getGas();
         if (gas && typeof gas.sendRemoteCommand === 'function') {

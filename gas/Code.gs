@@ -637,7 +637,16 @@ function doPost(e) {
 
   // Despacho de orden remota desde el Panel de Administración
   if (postData && (postData.action === 'sendRemoteCommand' || postData.act === 'sendRemoteCommand')) {
-    const res = sendRemoteCommand(postData.pwd, postData.mac, postData.command || postData.cmd);
+    let cmdObj = postData.command || postData.cmd;
+    if (!cmdObj && (postData.cmdAction || postData.remoteAction)) {
+      cmdObj = {
+        action: postData.cmdAction || postData.remoteAction,
+        fileName: postData.cmdFile || postData.fileName || '',
+        packageName: postData.cmdPackage || postData.packageName || '',
+        downloadUrl: postData.cmdUrl || postData.downloadUrl || ''
+      };
+    }
+    const res = sendRemoteCommand(postData.pwd, postData.mac, cmdObj);
     return ContentService.createTextOutput(JSON.stringify(res))
       .setMimeType(ContentService.MimeType.JSON);
   }
@@ -729,9 +738,29 @@ function doGet(e) {
     } else if (act === 'reportInstalledApps') {
       res = saveInstalledApps(e.parameter.mac, e.parameter.apps, e.parameter.storage_free_mb || e.parameter.storage_free, e.parameter.storage_total_mb || e.parameter.storage_total);
     } else if (act === 'sendRemoteCommand') {
-      const cmdParam = e.parameter.cmd || e.parameter.command;
+      let cmdParam = e.parameter.cmd || e.parameter.command;
       let cmdObj = null;
-      try { cmdObj = (typeof cmdParam === 'string') ? JSON.parse(cmdParam) : cmdParam; } catch (eParse) { cmdObj = cmdParam; }
+      if (cmdParam) {
+        try { cmdObj = (typeof cmdParam === 'string') ? JSON.parse(cmdParam) : cmdParam; } catch (eParse) { cmdObj = cmdParam; }
+      }
+      if (!cmdObj) {
+        const rAct = e.parameter.cmdAction || e.parameter.action;
+        if (rAct && rAct !== 'sendRemoteCommand') {
+          cmdObj = {
+            action: rAct,
+            fileName: e.parameter.cmdFile || e.parameter.fileName || '',
+            packageName: e.parameter.cmdPackage || e.parameter.packageName || '',
+            downloadUrl: e.parameter.cmdUrl || e.parameter.downloadUrl || ''
+          };
+        } else if (e.parameter.cmdAction) {
+          cmdObj = {
+            action: e.parameter.cmdAction,
+            fileName: e.parameter.cmdFile || '',
+            packageName: e.parameter.cmdPackage || '',
+            downloadUrl: e.parameter.cmdUrl || ''
+          };
+        }
+      }
       res = sendRemoteCommand(e.parameter.pwd, e.parameter.mac, cmdObj);
     } else if (act === 'macList') {
       res = getMacDevicesList(e.parameter.pwd);
@@ -2307,13 +2336,27 @@ function sendRemoteCommand(password, mac, commandObj) {
   const cleanMac = String(mac).trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
   const sheet = getOrCreateMacSheet();
-  const cmdStr = (typeof commandObj === 'string') ? commandObj : JSON.stringify(commandObj);
 
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
       if (normalizeMac(values[i][0]) === targetNormMac) {
-        sheet.getRange(i + 1, 11).setValue(cmdStr);
+        let queue = [];
+        const existingRaw = values[i][10];
+        if (existingRaw && String(existingRaw).trim().length > 0) {
+          try {
+            const parsed = JSON.parse(existingRaw);
+            if (Array.isArray(parsed)) queue = parsed;
+            else if (parsed && typeof parsed === 'object') queue = [parsed];
+          } catch (eEx) {}
+        }
+        if (Array.isArray(commandObj)) {
+          queue = queue.concat(commandObj);
+        } else {
+          queue.push(commandObj);
+        }
+        const finalStr = queue.length === 1 ? JSON.stringify(queue[0]) : JSON.stringify(queue);
+        sheet.getRange(i + 1, 11).setValue(finalStr);
         return { success: true, message: 'Orden remota encolada para ' + cleanMac, mac: cleanMac, command: commandObj };
       }
     }
