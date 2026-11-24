@@ -4435,7 +4435,8 @@
         let storageBadge = '';
         if (d.storageFreeMb && d.storageTotalMb) {
           const fGb = (d.storageFreeMb / 1024).toFixed(1);
-          storageBadge = `<div style="font-size:10px; color:var(--accent-cyan); margin-top:2px;">💾 ${fGb} GB libres</div>`;
+          const uGb = Math.max(0, (d.storageTotalMb - d.storageFreeMb) / 1024).toFixed(1);
+          storageBadge = `<div style="font-size:10px; color:var(--accent-cyan); margin-top:2px;">💾 Usado: ${uGb} GB | Libre: ${fGb} GB</div>`;
         }
 
         const tr = document.createElement('tr');
@@ -4607,8 +4608,9 @@
 
       const freeGb = (freeMb / 1024).toFixed(1);
       const totalGb = (totalMb / 1024).toFixed(1);
+      const usedGb = (usedMb / 1024).toFixed(1);
 
-      if (elText) elText.textContent = freeGb + ' GB libres de ' + totalGb + ' GB (' + (100 - usedPct) + '% libre)';
+      if (elText) elText.textContent = 'Usado: ' + usedGb + ' GB | Libre: ' + freeGb + ' GB (Total: ' + totalGb + ' GB)';
       if (barUsed) barUsed.style.width = usedPct + '%';
       if (barProj) barProj.style.width = projPct + '%';
 
