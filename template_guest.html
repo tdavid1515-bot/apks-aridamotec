@@ -1163,11 +1163,11 @@
           });
       };
 
-      // Validación en vivo contra GitHub Releases para reflejo instantáneo de altas y bajas
+      // Validación en vivo contra Releases para reflejo instantáneo de altas y bajas
       const verifyLiveReleases = async (catalogList) => {
         try {
-          const ghRes = await fetch('https://api.github.com/repos/tdavid1515-bot/apks-aridamotec/releases?per_page=100', {
-            headers: { 'Accept': 'application/vnd.github.v3+json' }
+          const ghRes = await fetch('https://aridamotec-cdn.aridamotec.workers.dev/releases', {
+            headers: { 'Accept': 'application/json' }
           });
           if (ghRes.ok) {
             const ghData = await ghRes.json();
@@ -1240,7 +1240,7 @@
 
       const fetchLocal = () => fetch('version.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error('Local 404'); return r.json(); });
       const fetchGAS = () => fetch(GAS_URL + '?action=appVersion&_t=' + Date.now()).then(r => { if (!r.ok) throw new Error('GAS ' + r.status); return r.json(); });
-      const fetchGH = () => fetch('https://raw.githubusercontent.com/tdavid1515-bot/apks-aridamotec/main/version.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error('GH ' + r.status); return r.json(); });
+      const fetchGH = () => fetch('https://aridamotec-cdn.aridamotec.workers.dev/version?t=' + Date.now()).then(r => { if (!r.ok) throw new Error('CDN ' + r.status); return r.json(); });
 
       fetchLocal()
         .catch(() => fetchGAS())
@@ -1248,7 +1248,7 @@
         .then(data => {
           if (data && data.latestVersionName) {
             const vName = data.latestVersionName;
-            const vUrl = data.downloadUrl || ('https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_' + vName + '.apk');
+            const vUrl = data.downloadUrl || ('https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_' + vName + '.apk');
             btn.href = vUrl;
             span.textContent = vName;
             btn.title = 'Descargar instalador oficial para Android TV / TV Box (v' + vName + ')';

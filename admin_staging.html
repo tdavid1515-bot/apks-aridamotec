@@ -2155,7 +2155,7 @@
       <div class="banner-status">
         <div class="admin-live-status">
           <span class="admin-live-dot">●</span>
-          <span class="admin-live-text">Sincronizado con GitHub Releases (SSOT)</span>
+          <span class="admin-live-text">Sincronizado con ARIDAMOTEC Cloud CDN (SSOT)</span>
         </div>
         <div class="banner-status-right">
           <div id="statusInfo">Cargando catálogo...</div>
@@ -2201,10 +2201,20 @@
         <div class="device-toolbar-left">
           <input type="text" id="deviceSearchInput" class="device-search-input" placeholder="Buscar por MAC, Cliente, Equipo o Notas..." oninput="renderDevices()">
           <select id="deviceStatusFilter" class="device-filter-select" onchange="renderDevices()">
-            <option value="all">Todos los Estados</option>
+            <option value="all">🛡️ Todos los Estados</option>
             <option value="ACTIVO">✅ Solo Activos</option>
             <option value="PENDIENTE">⏳ Solo Pendientes</option>
             <option value="BLOQUEADO">🚫 Solo Bloqueados</option>
+          </select>
+          <select id="deviceSortFilter" class="device-filter-select" onchange="onDeviceSortChange()" title="Ordenar dispositivos">
+            <option value="connection-desc">🕒 Última Conexión (Más reciente)</option>
+            <option value="connection-asc">⏳ Última Conexión (Más antigua)</option>
+            <option value="client-asc">🔤 Cliente / Titular (A - Z)</option>
+            <option value="client-desc">🔤 Cliente / Titular (Z - A)</option>
+            <option value="status-asc">✅ Estado (Activos primero)</option>
+            <option value="status-desc">⏳ Estado (Pendientes primero)</option>
+            <option value="mac-asc">🔢 Dirección MAC (A - Z)</option>
+            <option value="mac-desc">🔢 Dirección MAC (Z - A)</option>
           </select>
         </div>
         <div class="device-toolbar-right">
@@ -2222,11 +2232,11 @@
         <table class="device-table">
           <thead>
             <tr>
-              <th>DIRECCIÓN MAC / ID</th>
-              <th>CLIENTE / TITULAR</th>
+              <th onclick="toggleDeviceSort('mac')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por MAC">DIRECCIÓN MAC / ID <span id="sortIndicator-mac" style="font-size:11px; opacity:0.8;">⇅</span></th>
+              <th onclick="toggleDeviceSort('client')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por Cliente">CLIENTE / TITULAR <span id="sortIndicator-client" style="font-size:11px; opacity:0.8;">⇅</span></th>
               <th>EQUIPO / MODELO</th>
-              <th>ESTADO</th>
-              <th>ÚLTIMA CONEXIÓN</th>
+              <th onclick="toggleDeviceSort('status')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por Estado">ESTADO <span id="sortIndicator-status" style="font-size:11px; opacity:0.8;">⇅</span></th>
+              <th onclick="toggleDeviceSort('connection')" style="cursor:pointer; user-select:none;" title="Clic para ordenar por Última Conexión">ÚLTIMA CONEXIÓN <span id="sortIndicator-connection" style="font-size:11px; opacity:0.8;">⇅</span></th>
               <th>NOTAS</th>
               <th>ACCIONES</th>
             </tr>
@@ -2465,7 +2475,21 @@
     let isGuestMode = false;
     let guestCatalogData = [];
     let currentResetToken = '';
-    let activeTab = 'active';
+    function getInitialTab() {
+      try {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (hash.includes('device') || hash.includes('mac') || hash.includes('dispositivo')) {
+          return 'devices';
+        }
+        if (hash.includes('catalog') || hash.includes('catalogo')) {
+          return 'active';
+        }
+        const saved = (typeof safeStorage !== 'undefined' ? safeStorage.getItem('arida_admin_active_tab') : null) || sessionStorage.getItem('arida_admin_active_tab');
+        if (saved === 'devices') return 'devices';
+      } catch (e) {}
+      return 'active';
+    }
+    let activeTab = getInitialTab();
     let apksData = { active: [], deleted: [] };
     
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec';
@@ -2615,6 +2639,7 @@
     };
     let savedPwd = safeStorage.getItem('arida_pwd') || '';
     let currentSort = safeStorage.getItem('arida_sort') || 'newest';
+    let currentDeviceSort = safeStorage.getItem('arida_device_sort') || sessionStorage.getItem('arida_device_sort') || 'connection-desc';
 
     function handleSortChange() {
       currentSort = document.getElementById('sortSelect').value;
@@ -2666,6 +2691,15 @@
     onReady(() => {
       const sortEl = document.getElementById('sortSelect');
       if (sortEl) sortEl.value = currentSort;
+
+      const devSortEl = document.getElementById('deviceSortFilter');
+      if (devSortEl) devSortEl.value = currentDeviceSort;
+      if (typeof updateSortIndicators === 'function') updateSortIndicators();
+
+      const initialTab = getInitialTab();
+      if (initialTab === 'devices') {
+        setTab('devices');
+      }
 
       if (savedPwd) {
         const pwdIn = document.getElementById('pwdInput');
@@ -2909,6 +2943,13 @@
                        (fileName && (localSavedCategories[fileName] || localSavedCategories[fileName.toLowerCase()]));
       if (localCat) cat = localCat;
 
+      let cdnDirect = '';
+      if (fileName) {
+        cdnDirect = 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fileName);
+      } else if (item.directDownloadUrl || item.directUrl) {
+        cdnDirect = String(item.directDownloadUrl || item.directUrl).replace(/https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\/[^/]+\//, 'https://aridamotec-cdn.aridamotec.workers.dev/apk/');
+      }
+
       return {
         ...item,
         id: assignedId,
@@ -2917,7 +2958,7 @@
         fileName: fileName,
         browsyCode: (item.browsyCode !== undefined && item.browsyCode !== null) ? String(item.browsyCode).trim() : '',
         browsyShortUrl: String(item.browsyShortUrl || ''),
-        directDownloadUrl: String(item.directDownloadUrl || ''),
+        directDownloadUrl: cdnDirect,
         aiDescription: desc,
         category: cat,
         author: item.author || detectAuthor(cleanName, fileName),
@@ -2954,9 +2995,9 @@
       try { loadDevices(); } catch (e) {}
 
       if (activeTab === 'devices') {
-        renderDevices();
+        setTab('devices');
       } else {
-        drawCards();
+        setTab('active');
       }
     }
 
@@ -3056,6 +3097,19 @@
 
     function setTab(tab) {
       activeTab = tab;
+      try {
+        if (typeof safeStorage !== 'undefined') safeStorage.setItem('arida_admin_active_tab', tab);
+        sessionStorage.setItem('arida_admin_active_tab', tab);
+        const targetHash = tab === 'devices' ? '#dispositivos' : '#catalogo';
+        if (window.location.hash !== targetHash) {
+          if (history && history.replaceState) {
+            history.replaceState(null, '', targetHash);
+          } else {
+            window.location.hash = targetHash;
+          }
+        }
+      } catch (e) {}
+
       const bAct = document.getElementById('tabActiveBtn');
       const bDev = document.getElementById('tabDevicesBtn');
       const catSec = document.getElementById('catalogSection');
@@ -3083,6 +3137,15 @@
         loadDevices();
       }
     }
+
+    window.addEventListener('hashchange', () => {
+      const h = (window.location.hash || '').toLowerCase();
+      if (h.includes('device') || h.includes('mac') || h.includes('dispositivo')) {
+        if (activeTab !== 'devices') setTab('devices');
+      } else if (h.includes('catalog') || h.includes('catalogo') || h === '') {
+        if (activeTab !== 'active') setTab('active');
+      }
+    });
 
     function handleSearch() {
       const q = document.getElementById('searchInput').value;
@@ -3466,14 +3529,15 @@
       const icon = document.getElementById('syncIconText');
       if (btn && !silent) btn.disabled = true;
       if (icon && !silent) icon.innerHTML = '<span class="spinner"></span>';
-      if (!silent) showToast('🔍 Escaneando GitHub Releases en vivo...');
+      if (!silent) showToast('🔍 Escaneando CDN de ARIDAMOTEC en vivo...');
 
       try {
-        // 1. Consultar directamente la API pública de GitHub Releases para ver archivos reales
-        const ghUrl = 'https://api.github.com/repos/tdavid1515-bot/apks-aridamotec/releases?per_page=100';
+        // 1. Consultar a través del Cloudflare Worker enmascarado (sin exponer GitHub)
+        const cdnBase = 'https://aridamotec-cdn.aridamotec.workers.dev';
+        const ghUrl = cdnBase + '/releases';
         let liveAssets = [];
         try {
-          const ghRes = await fetch(ghUrl, { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+          const ghRes = await fetch(ghUrl);
           if (ghRes.ok) {
             const ghData = await ghRes.json();
             const releases = Array.isArray(ghData) ? ghData : [ghData];
@@ -3489,13 +3553,13 @@
             }
           }
         } catch (eGh) {
-          console.warn('Fallo consultando GitHub Releases API:', eGh);
+          console.warn('Fallo consultando CDN Releases:', eGh);
         }
 
-        // 2. Consultar el archivo catalog.json más reciente con bypass de caché
+        // 2. Consultar el archivo catalog.json a través del CDN
         let remoteCatalog = [];
         try {
-          const catRes = await fetch('catalog.json?t=' + Date.now()).catch(() => fetch('https://tdavid1515-bot.github.io/apks-aridamotec/catalog.json?t=' + Date.now()));
+          const catRes = await fetch(cdnBase + '/catalog?t=' + Date.now()).catch(() => fetch('catalog.json?t=' + Date.now()));
           if (catRes.ok) {
             const catJson = await catRes.json();
             remoteCatalog = catJson.catalog || [];
@@ -3526,13 +3590,13 @@
               browsyCode: 'Pendiente',
               shortUrl: '',
               browsyShortUrl: '',
-              directUrl: asset.browser_download_url,
-              directDownloadUrl: asset.browser_download_url,
+              directUrl: `${cdnBase}/apk/${encodeURIComponent(asset.name)}`,
+              directDownloadUrl: `${cdnBase}/apk/${encodeURIComponent(asset.name)}`,
               size: asset.size || 0,
               sizeFormatted: formatBytes(asset.size || 0),
               status: 'active',
               createdAt: asset.created_at,
-              aiDescription: 'Aplicación recién detectada en GitHub Releases.',
+              aiDescription: 'Aplicación oficial disponible en catálogo.',
               category: classifyCategory(asset.name, asset.name, ''),
               author: detectAuthor(asset.name, asset.name)
             };
@@ -3548,23 +3612,23 @@
           const cAct = document.getElementById('countActive');
           if (cAct) cAct.textContent = apksData.active.length;
           const sInfo = document.getElementById('statusInfo');
-          if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (GitHub Releases)';
+          if (sInfo) sInfo.textContent = 'Total: ' + apksData.active.length + ' aplicaciones oficiales (ARIDAMOTEC Cloud CDN)';
         }
 
         if (btn) btn.disabled = false;
         if (icon) icon.textContent = '🔄';
 
         if (newDetectedCount > 0) {
-          showToast(`⚡ ¡Detectada(s) ${newDetectedCount} nueva(s) APK en GitHub! Mostrando en catálogo.`);
+          showToast(`⚡ ¡Detectada(s) ${newDetectedCount} nueva(s) APK en CDN! Mostrando en catálogo.`);
         } else if (!silent) {
-          showToast(`✅ Catálogo 100% sincronizado con GitHub Releases (${liveAssets.length || remoteCatalog.length} APKs).`);
+          showToast(`✅ Catálogo 100% sincronizado con CDN Oficial (${liveAssets.length || remoteCatalog.length} APKs).`);
         }
 
       } catch (err) {
-        console.warn('Error en escaneo directo GitHub:', err);
+        console.warn('Error en escaneo directo CDN:', err);
         if (btn) btn.disabled = false;
         if (icon) icon.textContent = '🔄';
-        if (!silent) showToast('Error al conectar con GitHub Releases: ' + err.message, true);
+        if (!silent) showToast('Error al conectar con CDN: ' + err.message, true);
         loadApks();
       }
     }
@@ -4191,6 +4255,60 @@
       if (countDev) countDev.textContent = total;
     }
 
+    function onDeviceSortChange() {
+      const select = document.getElementById('deviceSortFilter');
+      if (select) {
+        currentDeviceSort = select.value;
+        try {
+          if (typeof safeStorage !== 'undefined') safeStorage.setItem('arida_device_sort', currentDeviceSort);
+          sessionStorage.setItem('arida_device_sort', currentDeviceSort);
+        } catch (e) {}
+        updateSortIndicators();
+        renderDevices();
+      }
+    }
+
+    function toggleDeviceSort(col) {
+      if (col === 'client') {
+        currentDeviceSort = (currentDeviceSort === 'client-asc') ? 'client-desc' : 'client-asc';
+      } else if (col === 'connection') {
+        currentDeviceSort = (currentDeviceSort === 'connection-desc') ? 'connection-asc' : 'connection-desc';
+      } else if (col === 'status') {
+        currentDeviceSort = (currentDeviceSort === 'status-asc') ? 'status-desc' : 'status-asc';
+      } else if (col === 'mac') {
+        currentDeviceSort = (currentDeviceSort === 'mac-asc') ? 'mac-desc' : 'mac-asc';
+      }
+      const select = document.getElementById('deviceSortFilter');
+      if (select) select.value = currentDeviceSort;
+      try {
+        if (typeof safeStorage !== 'undefined') safeStorage.setItem('arida_device_sort', currentDeviceSort);
+        sessionStorage.setItem('arida_device_sort', currentDeviceSort);
+      } catch (e) {}
+      updateSortIndicators();
+      renderDevices();
+    }
+
+    function updateSortIndicators() {
+      const indicators = {
+        'mac': document.getElementById('sortIndicator-mac'),
+        'client': document.getElementById('sortIndicator-client'),
+        'status': document.getElementById('sortIndicator-status'),
+        'connection': document.getElementById('sortIndicator-connection')
+      };
+      for (const k in indicators) {
+        if (!indicators[k]) continue;
+        if (currentDeviceSort.startsWith(k)) {
+          indicators[k].textContent = currentDeviceSort.endsWith('-asc') ? ' ▲' : ' ▼';
+          indicators[k].style.color = 'var(--accent-cyan)';
+          indicators[k].style.opacity = '1';
+        } else {
+          indicators[k].textContent = ' ⇅';
+          indicators[k].style.color = 'var(--text-muted)';
+          indicators[k].style.opacity = '0.6';
+        }
+      }
+    }
+
     function renderDevices() {
       const tbody = document.getElementById('deviceTableBody');
       const empty = document.getElementById('deviceEmptyState');
@@ -4214,6 +4332,74 @@
           return mac.includes(q) || cli.includes(q) || mod.includes(q) || not.includes(q);
         }
         return true;
+      });
+
+      // Ordenamiento dinámico de dispositivos
+      const sortSelect = document.getElementById('deviceSortFilter');
+      const sortVal = sortSelect ? sortSelect.value : (currentDeviceSort || 'connection-desc');
+
+      const parseDateMs = (dStr) => {
+        if (!dStr) return 0;
+        const ts = new Date(dStr).getTime();
+        return isNaN(ts) ? 0 : ts;
+      };
+
+      filtered.sort((a, b) => {
+        if (sortVal === 'client-asc') {
+          const nameA = (a.client || a.clientName || '').trim();
+          const nameB = (b.client || b.clientName || '').trim();
+          if (!nameA && !nameB) return 0;
+          if (!nameA) return 1;
+          if (!nameB) return -1;
+          return nameA.localeCompare(nameB, 'es', { sensitivity: 'base' });
+        }
+        if (sortVal === 'client-desc') {
+          const nameA = (a.client || a.clientName || '').trim();
+          const nameB = (b.client || b.clientName || '').trim();
+          if (!nameA && !nameB) return 0;
+          if (!nameA) return 1;
+          if (!nameB) return -1;
+          return nameB.localeCompare(nameA, 'es', { sensitivity: 'base' });
+        }
+        if (sortVal === 'connection-desc') {
+          const tA = parseDateMs(a.lastCheck || a.lastConnection || a.registerDate);
+          const tB = parseDateMs(b.lastCheck || b.lastConnection || b.registerDate);
+          return tB - tA;
+        }
+        if (sortVal === 'connection-asc') {
+          const tA = parseDateMs(a.lastCheck || a.lastConnection || a.registerDate);
+          const tB = parseDateMs(b.lastCheck || b.lastConnection || b.registerDate);
+          return tA - tB;
+        }
+        if (sortVal === 'status-asc') {
+          const weight = s => {
+            const up = (s || '').toUpperCase();
+            if (up === 'ACTIVO' || up === 'ACTIVE') return 1;
+            if (up === 'PENDIENTE') return 2;
+            return 3;
+          };
+          const diff = weight(a.status) - weight(b.status);
+          if (diff !== 0) return diff;
+          return parseDateMs(b.lastCheck || b.registerDate) - parseDateMs(a.lastCheck || a.registerDate);
+        }
+        if (sortVal === 'status-desc') {
+          const weight = s => {
+            const up = (s || '').toUpperCase();
+            if (up === 'PENDIENTE') return 1;
+            if (up === 'BLOQUEADO' || up === 'INACTIVO') return 2;
+            return 3;
+          };
+          const diff = weight(a.status) - weight(b.status);
+          if (diff !== 0) return diff;
+          return parseDateMs(b.lastCheck || b.registerDate) - parseDateMs(a.lastCheck || a.registerDate);
+        }
+        if (sortVal === 'mac-asc') {
+          return (a.mac || '').localeCompare(b.mac || '');
+        }
+        if (sortVal === 'mac-desc') {
+          return (b.mac || '').localeCompare(a.mac || '');
+        }
+        return parseDateMs(b.lastCheck || b.registerDate) - parseDateMs(a.lastCheck || a.registerDate);
       });
 
       tbody.innerHTML = '';
@@ -5042,6 +5228,9 @@
     window.selectAdminCategory = selectAdminCategory;
     window.renderAdminCategoryChips = renderAdminCategoryChips;
     window.copyToClipboard = copyToClipboard;
+    window.onDeviceSortChange = onDeviceSortChange;
+    window.toggleDeviceSort = toggleDeviceSort;
+    window.updateSortIndicators = updateSortIndicators;
   </script>
 </body>
 </html>

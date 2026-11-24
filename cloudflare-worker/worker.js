@@ -102,6 +102,35 @@ export default {
       return handleVersionCheck(request);
     }
 
+    // Ruta 4: Consulta de Releases enmascarada (para sincronización de Web Admin)
+    // Ejemplo: /releases o /api/releases
+    if (pathname === '/releases' || pathname === '/api/releases') {
+      return handleSanitizedReleases(request, url);
+    }
+
+    // Ruta 5: Iconos enmascarados
+    // Ejemplo: /icons/ak47sports_v1_6.png
+    if (pathname.startsWith('/icons/')) {
+      const rawIconName = pathname.replace(/^\/icons\//, '').trim();
+      const iconName = decodeURIComponent(rawIconName);
+      const iconUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/icons/${encodeURIComponent(iconName)}`;
+      try {
+        const iconRes = await fetch(iconUrl, {
+          cf: { cacheEverything: true, cacheTtl: 2592000 }
+        });
+        if (iconRes.ok) {
+          const cleanH = new Headers();
+          cleanH.set('Content-Type', iconRes.headers.get('content-type') || 'image/png');
+          const cl = iconRes.headers.get('content-length');
+          if (cl) cleanH.set('Content-Length', cl);
+          cleanH.set('Server', CONFIG.SERVER_HEADER);
+          cleanH.set('Access-Control-Allow-Origin', '*');
+          cleanH.set('Cache-Control', 'public, max-age=2592000, immutable');
+          return new Response(iconRes.body, { status: 200, headers: cleanH });
+        }
+      } catch (e) {}
+    }
+
     // 404 para cualquier otra ruta
     return new Response(JSON.stringify({ error: 'Recurso no encontrado' }), {
       status: 404,
@@ -114,47 +143,83 @@ export default {
  * Descarga y streaming de APK enmascarado
  */
 async function handleApkDownload(request, fileName, ctx) {
-  // URLs internas de origen (GitHub Releases y GitHub Raw Fallback)
-  // El cliente NUNCA ve estas URLs
-  const releaseUrl = `https://github.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases/download/${CONFIG.RELEASE_TAG}/${encodeURIComponent(fileName)}`;
-  const rawUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/${encodeURIComponent(fileName)}`;
-
-  // Intentar primero desde GitHub Releases
-  let originResponse = await fetch(releaseUrl, {
-    method: request.method,
-    headers: {
-      'User-Agent': 'Aridamotec-CDN-Client/1.0',
-      'Accept': '*/*'
-    },
-    redirect: 'follow',
-    cf: {
-      cacheEverything: true,
-      cacheTtl: CONFIG.CACHE_TTL
-    }
-  });
-
-  // Si no está en Release, intentar en el repositorio raw
-  if (!originResponse.ok && originResponse.status === 404) {
-    originResponse = await fetch(rawUrl, {
-      method: request.method,
-      headers: {
-        'User-Agent': 'Aridamotec-CDN-Client/1.0',
-        'Accept': '*/*'
-      },
-      cf: {
-        cacheEverything: true,
-        cacheTtl: CONFIG.CACHE_TTL
-      }
-    });
+  const hostBase = `${new URL(request.url).protocol}//${new URL(request.url).host}`;
+  const candidates = [fileName];
+  if (fileName.includes(' ')) {
+    candidates.push(fileName.replace(/ /g, '.'));
+    candidates.push(fileName.replace(/ /g, '_'));
+  }
+  if (fileName.includes('.')) {
+    candidates.push(fileName.replace(/\./g, ' ').replace(/ apk$/i, '.apk'));
   }
 
-  if (!originResponse.ok) {
+  let originResponse = null;
+  let matchedName = fileName;
+
+  // 1. Probar en releases por tag configurado (v1.0.0)
+  for (const cand of candidates) {
+    const rUrl = `https://github.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases/download/${CONFIG.RELEASE_TAG}/${encodeURIComponent(cand)}`;
+    try {
+      const res = await fetch(rUrl, {
+        method: request.method,
+        headers: { 'User-Agent': 'Aridamotec-CDN-Client/1.0', 'Accept': '*/*' },
+        redirect: 'follow',
+        cf: { cacheEverything: true, cacheTtl: CONFIG.CACHE_TTL }
+      });
+      if (res.ok) {
+        originResponse = res;
+        matchedName = cand;
+        break;
+      }
+    } catch (e) {}
+  }
+
+  // 2. Probar en releases/latest
+  if (!originResponse || !originResponse.ok) {
+    for (const cand of candidates) {
+      const latestUrl = `https://github.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases/latest/download/${encodeURIComponent(cand)}`;
+      try {
+        const res = await fetch(latestUrl, {
+          method: request.method,
+          headers: { 'User-Agent': 'Aridamotec-CDN-Client/1.0', 'Accept': '*/*' },
+          redirect: 'follow',
+          cf: { cacheEverything: true, cacheTtl: CONFIG.CACHE_TTL }
+        });
+        if (res.ok) {
+          originResponse = res;
+          matchedName = cand;
+          break;
+        }
+      } catch (e) {}
+    }
+  }
+
+  // 3. Fallback a rama principal raw
+  if (!originResponse || !originResponse.ok) {
+    for (const cand of candidates) {
+      const rawUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/${encodeURIComponent(cand)}`;
+      try {
+        const res = await fetch(rawUrl, {
+          method: request.method,
+          headers: { 'User-Agent': 'Aridamotec-CDN-Client/1.0', 'Accept': '*/*' },
+          cf: { cacheEverything: true, cacheTtl: CONFIG.CACHE_TTL }
+        });
+        if (res.ok) {
+          originResponse = res;
+          matchedName = cand;
+          break;
+        }
+      } catch (e) {}
+    }
+  }
+
+  if (!originResponse || !originResponse.ok) {
     return new Response(JSON.stringify({
       error: 'Archivo APK no encontrado',
       file: fileName,
-      status: originResponse.status
+      status: originResponse ? originResponse.status : 404
     }), {
-      status: originResponse.status,
+      status: originResponse ? originResponse.status : 404,
       headers: {
         'Content-Type': 'application/json',
         'Server': CONFIG.SERVER_HEADER
@@ -213,13 +278,27 @@ async function handleSanitizedCatalog(request, currentUrl) {
     if (data.catalog && Array.isArray(data.catalog)) {
       data.catalog = data.catalog.map(item => {
         const cleanItem = { ...item };
+        const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
+        
         // Enmascarar URL de descarga
         if (cleanItem.fileName) {
-          cleanItem.downloadUrl = `${hostBase}/apk/${encodeURIComponent(cleanItem.fileName)}`;
+          const directUrl = `${hostBase}/apk/${encodeURIComponent(cleanItem.fileName)}`;
+          cleanItem.downloadUrl = directUrl;
+          cleanItem.directUrl = directUrl;
+          cleanItem.directDownloadUrl = directUrl;
+        } else if (cleanItem.directDownloadUrl) {
+          cleanItem.directDownloadUrl = cleanItem.directDownloadUrl.replace(/https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\/[^/]+\//, `${hostBase}/apk/`);
+          cleanItem.directUrl = cleanItem.directDownloadUrl;
+          cleanItem.downloadUrl = cleanItem.directDownloadUrl;
         }
-        // Enmascarar URL de icono si apunta a GitHub
-        if (cleanItem.icon && cleanItem.icon.includes('github')) {
-          cleanItem.icon = cleanItem.icon.replace(/https:\/\/(raw\.githubusercontent\.com|cdn\.jsdelivr\.net\/gh)\/[^/]+\/[^/]+(@[^/]+|\/[^/]+)?/, hostBase);
+
+        // Enmascarar URL de icono
+        const rawIcon = cleanItem.iconUrl || cleanItem.icon || '';
+        if (rawIcon && String(rawIcon).includes('github')) {
+          const parts = String(rawIcon).split('/');
+          const cleanIcon = `${hostBase}/icons/${parts[parts.length - 1]}`;
+          cleanItem.iconUrl = cleanIcon;
+          if (cleanItem.icon) cleanItem.icon = cleanIcon;
         }
         return cleanItem;
       });
@@ -242,7 +321,7 @@ async function handleSanitizedCatalog(request, currentUrl) {
  * Consulta de versión sanitizada
  */
 async function handleVersionCheck(request) {
-  const originVersionUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULTBRANCH || 'main'}/version.json`;
+  const originVersionUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH || 'main'}/version.json`;
   
   try {
     const res = await fetch(originVersionUrl, {
@@ -255,12 +334,71 @@ async function handleVersionCheck(request) {
     }
 
     const data = await res.json();
+    const hostBase = `${new URL(request.url).protocol}//${new URL(request.url).host}`;
+    if (data.downloadUrl) {
+      const parts = data.downloadUrl.split('/');
+      const apkName = parts[parts.length - 1];
+      data.downloadUrl = `${hostBase}/apk/${apkName}`;
+    }
+
     return new Response(JSON.stringify(data, null, 2), {
       headers: {
         'Content-Type': 'application/json',
         'Server': CONFIG.SERVER_HEADER,
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'public, max-age=60'
+      }
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+  }
+}
+
+/**
+ * Consulta de releases sanitizada (elimina URLs de GitHub para sincronización en Web Admin)
+ */
+async function handleSanitizedReleases(request, currentUrl) {
+  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
+  
+  try {
+    const res = await fetch(originReleasesUrl, {
+      headers: {
+        'User-Agent': 'Aridamotec-CDN/1.0',
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      cf: { cacheTtl: 120 }
+    });
+
+    if (!res.ok) {
+      return new Response(JSON.stringify({ error: 'Error consultando releases' }), { status: 502 });
+    }
+
+    const releases = await res.json();
+    const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
+
+    const sanitized = (Array.isArray(releases) ? releases : [releases]).map(rel => {
+      const cleanRel = {
+        id: rel.id,
+        tag_name: rel.tag_name,
+        name: rel.name,
+        published_at: rel.published_at,
+        assets: (rel.assets || []).map(a => ({
+          id: a.id,
+          name: a.name,
+          size: a.size,
+          updated_at: a.updated_at,
+          browser_download_url: `${hostBase}/apk/${encodeURIComponent(a.name)}`
+        }))
+      };
+      return cleanRel;
+    });
+
+    return new Response(JSON.stringify(sanitized, null, 2), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Server': CONFIG.SERVER_HEADER,
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'public, max-age=120'
       }
     });
   } catch (err) {

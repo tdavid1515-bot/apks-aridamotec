@@ -3,8 +3,8 @@ const fs = require('fs');
 const b64 = fs.readFileSync('public/logo_thumb_b64.txt', 'utf8').trim();
 
 // Cargar metadatos dinámicos de versión oficial de la App TV desde version.json
-let tvVersionName = '1.3.5';
-let tvDownloadUrl = `https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_${tvVersionName}.apk`;
+let tvVersionName = '1.4.4';
+let tvDownloadUrl = `https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_${tvVersionName}.apk`;
 
 try {
   if (fs.existsSync('version.json')) {

@@ -1,10 +1,10 @@
 {
   "success": true,
-  "latestVersionCode": 27,
-  "latestVersionName": "1.4.3",
-  "downloadUrl": "https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.3.apk",
-  "changelog": "• Asistente interactivo guiado de Patch NF con limpieza automática.\n• Corrección de detección de herramientas utilitarias vs reproductores.\n• Prevención de solicitudes dobles de activación MAC.\n• Mayor compatibilidad con TV Boxes y Android TV 10+.",
+  "latestVersionCode": 28,
+  "latestVersionName": "1.4.4",
+  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.4.apk",
+  "changelog": "• Máxima fluidez en la navegación con control remoto y foco estático estable.\n• Asistente inteligente de Patch NF: detección de parches ya aplicados con auto-salida y limpieza automática del instalador.\n• Conexión directa y segura a través de ARIDAMOTEC Anycast Cloud CDN con alta disponibilidad.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-24T13:10:20Z"
+  "updatedAt": "2026-11-24T18:55:00Z"
 }

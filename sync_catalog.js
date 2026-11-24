@@ -273,25 +273,29 @@ async function runSync() {
   let codesGenerated = 0;
   const updatedCatalog = [];
 
+  const CDN_HOST = 'https://aridamotec-cdn.aridamotec.workers.dev';
+
   for (const asset of apkAssets) {
     const fnLower = asset.name.toLowerCase();
     const existing = catalogMap.get(fnLower);
-    const downloadUrl = asset.browser_download_url;
+    const rawDownloadUrl = asset.browser_download_url;
+    const maskedDownloadUrl = `${CDN_HOST}/apk/${encodeURIComponent(asset.name)}`;
 
     const sanitizedFn = asset.name.replace(/\.apk$/i, '').replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase().replace(/_+/g, '_').replace(/^_+|_+$/g, '');
-    const defaultIconUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/icons/${sanitizedFn}.png`;
+    const defaultIconUrl = `${CDN_HOST}/icons/${sanitizedFn}.png`;
 
     if (existing && existing.browsyCode && existing.browsyCode !== 'Pendiente') {
       // Ya tiene código válido
       existing.id = String(asset.id);
-      existing.directDownloadUrl = downloadUrl;
-      existing.directUrl = downloadUrl;
+      existing.directDownloadUrl = maskedDownloadUrl;
+      existing.directUrl = maskedDownloadUrl;
+      existing.downloadUrl = maskedDownloadUrl;
       if (asset.size) {
         existing.size = asset.size;
         existing.sizeFormatted = formatBytes(asset.size);
       }
       existing.author = detectAuthor(existing.cleanName, asset.name);
-      if (!existing.iconUrl) existing.iconUrl = defaultIconUrl;
+      if (!existing.iconUrl || existing.iconUrl.includes('github')) existing.iconUrl = defaultIconUrl;
       if (isGenericDescription(existing.aiDescription)) {
         existing.aiDescription = getContextualDescription(existing.cleanName, asset.name, existing.category || classifyCategory(existing.cleanName, asset.name));
       }
@@ -299,7 +303,7 @@ async function runSync() {
     } else {
       // Es una APK nueva o carece de código Browsy -> Invocar API de Browsy
       console.log(`⚡ Generando código Browsy automático para: ${asset.name}`);
-      const browsy = await requestBrowsyCode(downloadUrl);
+      const browsy = await requestBrowsyCode(rawDownloadUrl);
       
       const cleanName = existing && existing.cleanName ? existing.cleanName : cleanApkName(asset.name);
       const category = existing && existing.category ? existing.category : classifyCategory(cleanName, asset.name);
@@ -310,12 +314,13 @@ async function runSync() {
         id: String(asset.id),
         cleanName: cleanName,
         fileName: asset.name,
-        iconUrl: existing && existing.iconUrl ? existing.iconUrl : defaultIconUrl,
+        iconUrl: existing && existing.iconUrl && !existing.iconUrl.includes('github') ? existing.iconUrl : defaultIconUrl,
         browsyCode: browsy ? browsy.code : (existing ? existing.browsyCode : 'Pendiente'),
         shortUrl: browsy ? browsy.shortUrl : (existing && existing.shortUrl ? existing.shortUrl : ''),
         browsyShortUrl: browsy ? browsy.shortUrl : (existing && existing.browsyShortUrl ? existing.browsyShortUrl : ''),
-        directUrl: downloadUrl,
-        directDownloadUrl: downloadUrl,
+        directUrl: maskedDownloadUrl,
+        directDownloadUrl: maskedDownloadUrl,
+        downloadUrl: maskedDownloadUrl,
         size: asset.size || (existing && existing.size) || null,
         sizeFormatted: asset.size ? formatBytes(asset.size) : ((existing && existing.sizeFormatted) || null),
         status: 'active',
@@ -418,7 +423,7 @@ async function runSync() {
         success: true,
         latestVersionCode: vCode,
         latestVersionName: latestTvName,
-        downloadUrl: `https://cdn.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@main/ARIDAMOTEC_TV_${latestTvName}.apk`,
+        downloadUrl: `${CDN_HOST}/apk/ARIDAMOTEC_TV_${latestTvName}.apk`,
         changelog: casualChangelog,
         minSupportedVersionCode: 1,
         mandatory: false,

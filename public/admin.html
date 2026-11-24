@@ -3533,11 +3533,11 @@
       if (!silent) showToast('🔍 Escaneando GitHub Releases en vivo...');
 
       try {
-        // 1. Consultar directamente la API pública de GitHub Releases para ver archivos reales
-        const ghUrl = 'https://api.github.com/repos/tdavid1515-bot/apks-aridamotec/releases?per_page=100';
+        // 1. Consultar directamente el CDN Gateway de Releases para ver archivos reales
+        const ghUrl = 'https://aridamotec-cdn.aridamotec.workers.dev/releases';
         let liveAssets = [];
         try {
-          const ghRes = await fetch(ghUrl, { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+          const ghRes = await fetch(ghUrl);
           if (ghRes.ok) {
             const ghData = await ghRes.json();
             const releases = Array.isArray(ghData) ? ghData : [ghData];
@@ -3553,13 +3553,13 @@
             }
           }
         } catch (eGh) {
-          console.warn('Fallo consultando GitHub Releases API:', eGh);
+          console.warn('Fallo consultando CDN Releases:', eGh);
         }
 
         // 2. Consultar el archivo catalog.json más reciente con bypass de caché
         let remoteCatalog = [];
         try {
-          const catRes = await fetch('catalog.json?t=' + Date.now()).catch(() => fetch('https://tdavid1515-bot.github.io/apks-aridamotec/catalog.json?t=' + Date.now()));
+          const catRes = await fetch('catalog.json?t=' + Date.now()).catch(() => fetch('https://aridamotec-cdn.aridamotec.workers.dev/catalog?t=' + Date.now()));
           if (catRes.ok) {
             const catJson = await catRes.json();
             remoteCatalog = catJson.catalog || [];

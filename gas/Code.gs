@@ -22,7 +22,7 @@ const CONFIG = {
   GEMINI_API_KEY: '',
   TV_APP_VERSION: '1.4.3',
   TV_APP_VERSION_CODE: 27,
-  TV_APP_DOWNLOAD_URL: 'https://cdn.jsdelivr.net/gh/tdavid1515-bot/apks-aridamotec@main/ARIDAMOTEC_TV_1.4.3.apk',
+  TV_APP_DOWNLOAD_URL: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.3.apk',
   TV_APP_CHANGELOG: 'Asistente interactivo guiado de Patch NF, deduplicación MAC y mejoras de compatibilidad.'
 };
 
@@ -36,14 +36,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver tus series y películas de anime favoritas en excelente resolución.",
     "browsyCode": "2943",
     "browsyShortUrl": "https://browsy.app/2943",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ANIMXL.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ANIMXL.apk",
     "size": 33064720,
     "sizeFormatted": "31.5 MB",
     "createdAt": "2026-11-16T04:58:59Z",
     "updatedAt": "2026-11-16T04:59:06Z",
     "status": "active",
     "shortUrl": "https://browsy.app/2943",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ANIMXL.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ANIMXL.apk"
   },
   {
     "id": "753501528",
@@ -54,7 +54,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás personalizar la interfaz de tu Android TV con un inicio rápido, limpio y sin publicidad.",
     "browsyCode": "7346",
     "browsyShortUrl": "https://browsy.app/7346",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ATV.LAUNCHER.v0.1.42-pro.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ATV.LAUNCHER.v0.1.42-pro.apk",
     "size": 8982550,
     "sizeFormatted": "8.6 MB",
     "createdAt": "2026-11-16T04:52:13Z",
@@ -63,7 +63,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/7346",
     "editKey": "rCPb9e6uMhHP",
     "manageUrl": "https://browsy.app/manage?code=7346&key=rCPb9e6uMhHP",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ATV.LAUNCHER.v0.1.42-pro.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ATV.LAUNCHER.v0.1.42-pro.apk"
   },
   {
     "id": "753559487",
@@ -74,7 +74,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, señales internacionales y entretenimiento continuo.",
     "browsyCode": "4368",
     "browsyShortUrl": "https://browsy.app/4368",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/BIXPLUS_V2.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/BIXPLUS_V2.apk",
     "size": 30296295,
     "sizeFormatted": "28.9 MB",
     "createdAt": "2026-11-16T05:16:13Z",
@@ -83,7 +83,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/4368",
     "editKey": "86qKjauK6FAB",
     "manageUrl": "https://browsy.app/manage?code=4368&key=86qKjauK6FAB",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/BIXPLUS_V2.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/BIXPLUS_V2.apk"
   },
   {
     "id": "745633982",
@@ -94,14 +94,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás abrir códigos numéricos directos en tu televisor Android TV o Fire TV.",
     "browsyCode": "2461",
     "browsyShortUrl": "https://browsy.app/2461",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.xapk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Browsy_1.5.0_APKPure.xapk",
     "size": 4748428,
     "sizeFormatted": "4.5 MB",
     "createdAt": "2026-11-13T23:53:30Z",
     "updatedAt": "2026-11-13T23:53:32Z",
     "status": "active",
     "shortUrl": "https://browsy.app/2461",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Browsy_1.5.0_APKPure.xapk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Browsy_1.5.0_APKPure.xapk"
   },
   {
     "id": "745634088",
@@ -112,14 +112,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver estrenos de cine y series completas en alta calidad y sin cortes comerciales.",
     "browsyCode": "9594",
     "browsyShortUrl": "https://browsy.app/9594",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ClipBox.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ClipBox.apk",
     "size": 35155514,
     "sizeFormatted": "33.5 MB",
     "createdAt": "2026-11-13T23:53:32Z",
     "updatedAt": "2026-11-13T23:53:41Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9594",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/ClipBox.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ClipBox.apk"
   },
   {
     "id": "745640371",
@@ -130,14 +130,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás proteger tu conexión y navegar de forma segura y privada.",
     "browsyCode": "9813",
     "browsyShortUrl": "https://browsy.app/9813",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/com.wireguard.android-1.0.20260315.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/com.wireguard.android-1.0.20260315.apk",
     "size": 16943472,
     "sizeFormatted": "16.2 MB",
     "createdAt": "2026-11-13T23:55:51Z",
     "updatedAt": "2026-11-13T23:56:02Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9813",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/com.wireguard.android-1.0.20260315.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/com.wireguard.android-1.0.20260315.apk"
   },
   {
     "id": "745634574",
@@ -148,14 +148,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás seguir eventos deportivos internacionales y partidos en vivo.",
     "browsyCode": "9985",
     "browsyShortUrl": "https://browsy.app/9985",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/CricZ.TV.v7.3.apk",
     "size": 12787278,
     "sizeFormatted": "12.2 MB",
     "createdAt": "2026-11-13T23:53:41Z",
     "updatedAt": "2026-11-13T23:53:45Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9985",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/CricZ.TV.v7.3.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/CricZ.TV.v7.3.apk"
   },
   {
     "id": "745634804",
@@ -166,14 +166,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás gestionar descargas directas e instalar apps de forma rápida y segura.",
     "browsyCode": "3959",
     "browsyShortUrl": "https://browsy.app/3959",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
     "size": 5995174,
     "sizeFormatted": "5.7 MB",
     "createdAt": "2026-11-13T23:53:45Z",
     "updatedAt": "2026-11-13T23:53:47Z",
     "status": "active",
     "shortUrl": "https://browsy.app/3959",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk"
   },
   {
     "id": "753529004",
@@ -184,7 +184,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, señales internacionales y entretenimiento continuo.",
     "browsyCode": "5866",
     "browsyShortUrl": "https://browsy.app/5866",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/FlyStream.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/FlyStream.apk",
     "size": 8577095,
     "sizeFormatted": "8.2 MB",
     "createdAt": "2026-11-16T05:04:25Z",
@@ -193,7 +193,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/5866",
     "editKey": "rCdbKULSZE58",
     "manageUrl": "https://browsy.app/manage?code=5866&key=rCdbKULSZE58",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/FlyStream.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/FlyStream.apk"
   },
   {
     "id": "753507081",
@@ -204,14 +204,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver todos los deportes en vivo que te gustan y sus repeticiones.",
     "browsyCode": "4584",
     "browsyShortUrl": "https://browsy.app/4584",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GeeSports_.v3.9.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/GeeSports_.v3.9.apk",
     "size": 14519985,
     "sizeFormatted": "13.8 MB",
     "createdAt": "2026-11-16T04:54:53Z",
     "updatedAt": "2026-11-16T04:54:56Z",
     "status": "active",
     "shortUrl": "https://browsy.app/4584",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/GeeSports_.v3.9.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/GeeSports_.v3.9.apk"
   },
   {
     "id": "745635705",
@@ -222,14 +222,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas.",
     "browsyCode": "7827",
     "browsyShortUrl": "https://browsy.app/7827",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/LokuraTv.apk",
     "size": 79560318,
     "sizeFormatted": "75.9 MB",
     "createdAt": "2026-11-13T23:54:06Z",
     "updatedAt": "2026-11-13T23:54:59Z",
     "status": "active",
     "shortUrl": "https://browsy.app/7827",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/LokuraTv.apk"
   },
   {
     "id": "745638099",
@@ -240,14 +240,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas.",
     "browsyCode": "7827",
     "browsyShortUrl": "https://browsy.app/7827",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv_Pro_Ultra.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/LokuraTv_Pro_Ultra.apk",
     "size": 47971108,
     "sizeFormatted": "45.7 MB",
     "createdAt": "2026-11-13T23:54:59Z",
     "updatedAt": "2026-11-13T23:55:18Z",
     "status": "active",
     "shortUrl": "https://browsy.app/7827",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/LokuraTv_Pro_Ultra.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/LokuraTv_Pro_Ultra.apk"
   },
   {
     "id": "745639055",
@@ -258,14 +258,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de televisión latina en vivo, cine y contenido familiar.",
     "browsyCode": "2360",
     "browsyShortUrl": "https://browsy.app/2360",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/luma-tv.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/luma-tv.apk",
     "size": 6978135,
     "sizeFormatted": "6.7 MB",
     "createdAt": "2026-11-13T23:55:18Z",
     "updatedAt": "2026-11-13T23:55:23Z",
     "status": "active",
     "shortUrl": "https://browsy.app/2360",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/luma-tv.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/luma-tv.apk"
   },
   {
     "id": "755470039",
@@ -274,8 +274,8 @@ const SEED_APKS = [
     "browsyCode": "7887",
     "shortUrl": "https://browsy.app/7887",
     "browsyShortUrl": "https://browsy.app/7887",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus.armeabi-v7a.apk",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MoviePlus.armeabi-v7a.apk",
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/MoviePlus.armeabi-v7a.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/MoviePlus.armeabi-v7a.apk",
     "editKey": "Bjcns8kDDU79",
     "manageUrl": "https://browsy.app/manage?code=7887&key=Bjcns8kDDU79",
     "status": "active",
@@ -293,7 +293,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, señales internacionales y entretenimiento continuo.",
     "browsyCode": "8524",
     "browsyShortUrl": "https://browsy.app/8524",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.IPTV.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/MXL.IPTV.apk",
     "size": 37363644,
     "sizeFormatted": "35.6 MB",
     "createdAt": "2026-11-16T04:58:42Z",
@@ -302,7 +302,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/8524",
     "editKey": "ydBgN8fDqPmY",
     "manageUrl": "https://browsy.app/manage?code=8524&key=ydBgN8fDqPmY",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.IPTV.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/MXL.IPTV.apk"
   },
   {
     "id": "753516744",
@@ -313,7 +313,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás acceder a un completo catálogo de cine, estrenos exclusivos y temporadas de series.",
     "browsyCode": "4225",
     "browsyShortUrl": "https://browsy.app/4225",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.MOVIES.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/MXL.MOVIES.apk",
     "size": 40372693,
     "sizeFormatted": "38.5 MB",
     "createdAt": "2026-11-16T04:58:51Z",
@@ -322,7 +322,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/4225",
     "editKey": "awGbdN5hBKGb",
     "manageUrl": "https://browsy.app/manage?code=4225&key=awGbdN5hBKGb",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/MXL.MOVIES.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/MXL.MOVIES.apk"
   },
   {
     "id": "745643533",
@@ -333,14 +333,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de televisión en vivo, películas y series con servicio IPTV estable y su propio servidor integrado.",
     "browsyCode": "2270",
     "browsyShortUrl": "https://browsy.app/2270",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PLayer_Pro_base.2.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/PLayer_Pro_base.2.apk",
     "size": 35098925,
     "sizeFormatted": "33.5 MB",
     "createdAt": "2026-11-13T23:57:18Z",
     "updatedAt": "2026-11-13T23:57:26Z",
     "status": "active",
     "shortUrl": "https://browsy.app/2270",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PLayer_Pro_base.2.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/PLayer_Pro_base.2.apk"
   },
   {
     "id": "745643792",
@@ -351,14 +351,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de una gran variedad de canales en vivo y entretenimiento prémium.",
     "browsyCode": "3114",
     "browsyShortUrl": "https://browsy.app/3114",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PlayTV_Premium_20.1.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/PlayTV_Premium_20.1.apk",
     "size": 12213247,
     "sizeFormatted": "11.6 MB",
     "createdAt": "2026-11-13T23:57:26Z",
     "updatedAt": "2026-11-13T23:57:42Z",
     "status": "active",
     "shortUrl": "https://browsy.app/3114",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PlayTV_Premium_20.1.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/PlayTV_Premium_20.1.apk"
   },
   {
     "id": "745644418",
@@ -369,14 +369,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás personalizar y acelerar la pantalla de inicio de tu Android TV.",
     "browsyCode": "7624",
     "browsyShortUrl": "https://browsy.app/7624",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PROJJECTIVY.launcher.v4.72.Premium.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/PROJJECTIVY.launcher.v4.72.Premium.apk",
     "size": 12779842,
     "sizeFormatted": "12.2 MB",
     "createdAt": "2026-11-13T23:57:42Z",
     "updatedAt": "2026-11-13T23:57:53Z",
     "status": "active",
     "shortUrl": "https://browsy.app/7624",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/PROJJECTIVY.launcher.v4.72.Premium.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/PROJJECTIVY.launcher.v4.72.Premium.apk"
   },
   {
     "id": "745644814",
@@ -387,14 +387,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás sintonizar eventos deportivos en directo como fútbol internacional, béisbol, baloncesto y boxeo.",
     "browsyCode": "7812",
     "browsyShortUrl": "https://browsy.app/7812",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RBTV.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/RBTV.apk",
     "size": 26868995,
     "sizeFormatted": "25.6 MB",
     "createdAt": "2026-11-13T23:57:53Z",
     "updatedAt": "2026-11-13T23:58:01Z",
     "status": "active",
     "shortUrl": "https://browsy.app/7812",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/RBTV.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/RBTV.apk"
   },
   {
     "id": "745645044",
@@ -405,14 +405,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás vivir la pasión del fútbol internacional y los mejores canales deportivos.",
     "browsyCode": "4065",
     "browsyShortUrl": "https://browsy.app/4065",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SPORTV_3.9.VIP.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/SPORTV_3.9.VIP.apk",
     "size": 15771573,
     "sizeFormatted": "15.0 MB",
     "createdAt": "2026-11-13T23:58:01Z",
     "updatedAt": "2026-11-13T23:58:06Z",
     "status": "active",
     "shortUrl": "https://browsy.app/4065",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/SPORTV_3.9.VIP.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/SPORTV_3.9.VIP.apk"
   },
   {
     "id": "745645208",
@@ -423,14 +423,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás sintonizar transmisiones deportivas de todo el mundo en tiempo real.",
     "browsyCode": "5280",
     "browsyShortUrl": "https://browsy.app/5280",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Sportz.X.VERSION.3.2.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Sportz.X.VERSION.3.2.apk",
     "size": 20929342,
     "sizeFormatted": "20.0 MB",
     "createdAt": "2026-11-13T23:58:06Z",
     "updatedAt": "2026-11-13T23:58:15Z",
     "status": "active",
     "shortUrl": "https://browsy.app/5280",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Sportz.X.VERSION.3.2.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Sportz.X.VERSION.3.2.apk"
   },
   {
     "id": "745645628",
@@ -441,14 +441,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás navegar seguro, proteger tu privacidad y desbloquear contenidos globales.",
     "browsyCode": "2915",
     "browsyShortUrl": "https://browsy.app/2915",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Surfshark.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Surfshark.apk",
     "size": 156381378,
     "sizeFormatted": "149.1 MB",
     "createdAt": "2026-11-13T23:58:15Z",
     "updatedAt": "2026-11-13T23:59:02Z",
     "status": "active",
     "shortUrl": "https://browsy.app/2915",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Surfshark.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Surfshark.apk"
   },
   {
     "id": "753500137",
@@ -459,14 +459,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver YouTube en tu televisor con tema oscuro y sin interrupciones.",
     "browsyCode": "9360",
     "browsyShortUrl": "https://browsy.app/9360",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/TizenTube_v2.03_YouTube_arm.apk",
     "size": 80570825,
     "sizeFormatted": "76.8 MB",
     "createdAt": "2026-11-16T04:51:31Z",
     "updatedAt": "2026-11-16T05:18:31Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9360",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/TizenTube_v2.03_YouTube_arm.apk"
   },
   {
     "id": "753498273",
@@ -477,14 +477,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver YouTube en tu televisor con tema oscuro y sin interrupciones.",
     "browsyCode": "9360",
     "browsyShortUrl": "https://browsy.app/9360",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm64.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/TizenTube_v2.03_YouTube_arm64.apk",
     "size": 153048724,
     "sizeFormatted": "146.0 MB",
     "createdAt": "2026-11-16T04:50:38Z",
     "updatedAt": "2026-11-16T05:18:31Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9360",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/TizenTube_v2.03_YouTube_arm64.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/TizenTube_v2.03_YouTube_arm64.apk"
   },
   {
     "id": "753517643",
@@ -495,7 +495,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de estrenos de anime en máxima calidad, series completas y películas animadas.",
     "browsyCode": "3893",
     "browsyShortUrl": "https://browsy.app/3893",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Tsuzuku.v4.1.4.Android.TV.apk",
     "size": 11438058,
     "sizeFormatted": "10.9 MB",
     "createdAt": "2026-11-16T04:59:20Z",
@@ -504,7 +504,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/3893",
     "editKey": "U7NsoPTqYkfQ",
     "manageUrl": "https://browsy.app/manage?code=3893&key=U7NsoPTqYkfQ",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Tsuzuku.v4.1.4.Android.TV.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Tsuzuku.v4.1.4.Android.TV.apk"
   },
   {
     "id": "753528905",
@@ -515,7 +515,7 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás acceder a un completo catálogo de cine, estrenos exclusivos y temporadas de series.",
     "browsyCode": "6015",
     "browsyShortUrl": "https://browsy.app/6015",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Watched.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Watched.apk",
     "size": 3163906,
     "sizeFormatted": "3.0 MB",
     "createdAt": "2026-11-16T05:04:23Z",
@@ -524,7 +524,7 @@ const SEED_APKS = [
     "shortUrl": "https://browsy.app/6015",
     "editKey": "z6HQ2KCpjNZR",
     "manageUrl": "https://browsy.app/manage?code=6015&key=z6HQ2KCpjNZR",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Watched.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Watched.apk"
   },
   {
     "id": "745652066",
@@ -535,14 +535,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás disfrutar de canales de televisión en vivo, series y películas.",
     "browsyCode": "9290",
     "browsyShortUrl": "https://browsy.app/9290",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/WiwyXuper.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/WiwyXuper.apk",
     "size": 41462808,
     "sizeFormatted": "39.5 MB",
     "createdAt": "2026-11-14T00:00:55Z",
     "updatedAt": "2026-11-14T00:01:51Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9290",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/WiwyXuper.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/WiwyXuper.apk"
   },
   {
     "id": "745656986",
@@ -553,14 +553,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás transformar el menú de tu TV con un diseño elegante, limpio y veloz.",
     "browsyCode": "7242",
     "browsyShortUrl": "https://browsy.app/7242",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Wolf.Launcher.0.1.9.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Wolf.Launcher.0.1.9.apk",
     "size": 3272501,
     "sizeFormatted": "3.1 MB",
     "createdAt": "2026-11-14T00:02:53Z",
     "updatedAt": "2026-11-14T00:02:55Z",
     "status": "active",
     "shortUrl": "https://browsy.app/7242",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/Wolf.Launcher.0.1.9.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Wolf.Launcher.0.1.9.apk"
   },
   {
     "id": "753545640",
@@ -571,14 +571,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver televisión prémium, eventos especiales y contenido bajo demanda.",
     "browsyCode": "6603",
     "browsyShortUrl": "https://browsy.app/6603",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XTREMETV.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/XTREMETV.apk",
     "size": 5777641,
     "sizeFormatted": "5.5 MB",
     "createdAt": "2026-11-16T05:11:11Z",
     "updatedAt": "2026-11-16T05:11:17Z",
     "status": "active",
     "shortUrl": "https://browsy.app/6603",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XTREMETV.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/XTREMETV.apk"
   },
   {
     "id": "745659301",
@@ -589,14 +589,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver TV en vivo, series, películas y anime que te gustan.",
     "browsyCode": "9249",
     "browsyShortUrl": "https://browsy.app/9249",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XUPER.TV.v4.99.20.Android.TV.Original.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/XUPER.TV.v4.99.20.Android.TV.Original.apk",
     "size": 35705638,
     "sizeFormatted": "34.1 MB",
     "createdAt": "2026-11-14T00:03:53Z",
     "updatedAt": "2026-11-16T05:18:31Z",
     "status": "active",
     "shortUrl": "https://browsy.app/9249",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XUPER.TV.v4.99.20.Android.TV.Original.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/XUPER.TV.v4.99.20.Android.TV.Original.apk"
   },
   {
     "id": "747488097",
@@ -607,14 +607,14 @@ const SEED_APKS = [
     "aiDescription": "Con esta aplicación podrás ver TV en vivo, películas, series y anime con carga ultrarrápida.",
     "browsyCode": "7522",
     "browsyShortUrl": "https://browsy.app/7522",
-    "directDownloadUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XuperTv-NF-v4.35.1-ModByNF.apk",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/XuperTv-NF-v4.35.1-ModByNF.apk",
     "size": 51374730,
     "sizeFormatted": "49.0 MB",
     "createdAt": "2026-11-14T12:53:29Z",
     "updatedAt": "2026-11-14T12:56:25Z",
     "status": "active",
     "shortUrl": "https://browsy.app/7522",
-    "directUrl": "https://github.com/tdavid1515-bot/apks-aridamotec/releases/download/v1.0.0/XuperTv-NF-v4.35.1-ModByNF.apk"
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/XuperTv-NF-v4.35.1-ModByNF.apk"
   }
 ];
 
@@ -1021,6 +1021,24 @@ function overlaySheetMetadata(items) {
         if (meta.directDownloadUrl && !it.directDownloadUrl) it.directDownloadUrl = meta.directDownloadUrl;
       }
     });
+
+    // Sanitización hermética de Cloudflare Worker CDN (cero exposición de GitHub)
+    items.forEach(it => {
+      const fn = it.fileName || '';
+      if (fn) {
+        it.directDownloadUrl = 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fn);
+        it.directUrl = it.directDownloadUrl;
+        it.downloadUrl = it.directDownloadUrl;
+      } else if (it.directDownloadUrl) {
+        it.directDownloadUrl = it.directDownloadUrl.replace(/https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\/[^/]+\//, 'https://aridamotec-cdn.aridamotec.workers.dev/apk/');
+        it.directUrl = it.directDownloadUrl;
+        it.downloadUrl = it.directDownloadUrl;
+      }
+      if (it.iconUrl && String(it.iconUrl).includes('github')) {
+        const parts = String(it.iconUrl).split('/');
+        it.iconUrl = 'https://aridamotec-cdn.aridamotec.workers.dev/icons/' + parts[parts.length - 1];
+      }
+    });
   } catch (eM) {
     Logger.log('Error superponiendo metadatos de hoja: ' + eM);
   }
@@ -1069,7 +1087,7 @@ function getUnifiedCatalogList() {
   // 1. Superponer metadatos de Google Sheets (categoría, descripción, códigos)
   const enriched = overlaySheetMetadata(catalog);
 
-  // 2. Normalizar todas las fechas createdAt a formato estricto ISO 8601 UTC
+  // 2. Normalizar todas las fechas createdAt a formato estricto ISO 8601 UTC y garantizar CDN sanitizado
   enriched.forEach(item => {
     if (item.createdAt) {
       try {
@@ -1078,6 +1096,21 @@ function getUnifiedCatalogList() {
           item.createdAt = d.toISOString();
         }
       } catch (e) {}
+    }
+    // Salvaguarda final: CDN Cloudflare Worker
+    const fn = item.fileName || '';
+    if (fn) {
+      item.directDownloadUrl = 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fn);
+      item.directUrl = item.directDownloadUrl;
+      item.downloadUrl = item.directDownloadUrl;
+    } else if (item.directDownloadUrl && String(item.directDownloadUrl).includes('github')) {
+      item.directDownloadUrl = item.directDownloadUrl.replace(/https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\/[^/]+\//, 'https://aridamotec-cdn.aridamotec.workers.dev/apk/');
+      item.directUrl = item.directDownloadUrl;
+      item.downloadUrl = item.directDownloadUrl;
+    }
+    if (item.iconUrl && String(item.iconUrl).includes('github')) {
+      const parts = String(item.iconUrl).split('/');
+      item.iconUrl = 'https://aridamotec-cdn.aridamotec.workers.dev/icons/' + parts[parts.length - 1];
     }
   });
 
@@ -2169,34 +2202,29 @@ function checkDeviceMac(mac, model, storageFree, storageTotal) {
 
     if (sheet.getLastRow() > 1) {
       const data = sheet.getDataRange().getValues();
+      let matchedIndices = [];
       let activeIndex = -1;
-      let duplicateIndices = [];
 
       for (let i = 1; i < data.length; i++) {
         const rowNormMac = normalizeMac(data[i][0]);
         if (rowNormMac === targetNormMac) {
+          matchedIndices.push(i);
           const st = String(data[i][3] || '').trim().toUpperCase();
-          if (st === 'ACTIVO' || st === 'ACTIVE') {
-            if (activeIndex === -1) {
-              activeIndex = i;
-            } else {
-              duplicateIndices.push(i);
-            }
-          } else {
-            duplicateIndices.push(i);
+          if ((st === 'ACTIVO' || st === 'ACTIVE') && activeIndex === -1) {
+            activeIndex = i;
           }
         }
       }
 
-      // Si hay un registro ACTIVO y registros duplicados PENDIENTES, purgar los duplicados
-      if (activeIndex !== -1 && duplicateIndices.length > 0) {
-        duplicateIndices.sort(function(a, b) { return b - a; });
-        for (let d = 0; d < duplicateIndices.length; d++) {
-          sheet.deleteRow(duplicateIndices[d] + 1);
+      // Si hay registros duplicados para esta misma MAC, conservar solo el principal (preferir ACTIVO si existe)
+      const primaryIndex = (activeIndex !== -1) ? activeIndex : (matchedIndices.length > 0 ? matchedIndices[0] : -1);
+      if (matchedIndices.length > 1) {
+        let toDelete = matchedIndices.filter(function(idx) { return idx !== primaryIndex; });
+        toDelete.sort(function(a, b) { return b - a; });
+        for (let d = 0; d < toDelete.length; d++) {
+          sheet.deleteRow(toDelete[d] + 1);
         }
       }
-
-      const primaryIndex = (activeIndex !== -1) ? activeIndex : (duplicateIndices.length > 0 ? duplicateIndices[0] : -1);
       if (primaryIndex !== -1) {
         const row = primaryIndex + 1;
         sheet.getRange(row, 6).setValue(nowStr);
