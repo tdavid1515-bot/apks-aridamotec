@@ -1,10 +1,10 @@
 {
   "success": true,
   "latestVersionCode": 32,
-  "latestVersionName": "1.4.5",
-  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.5.apk",
-  "changelog": "• Sincronización instantánea en segundo plano de aplicaciones instaladas y desinstaladas.\n• Reporte automático a Web Admin tras cualquier orden de instalación o desinstalación remota.\n• Mayor velocidad de respuesta y estabilidad de conexión con Cloudflare Anycast CDN.",
+  "latestVersionName": "1.4.8",
+  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.8.apk",
+  "changelog": "• Integración oficial de EpicTV tele (código Browsy 5583, logo nativo EPIC+ y descripción).\n• Catálogo oficial ampliado a 50 aplicaciones con Edge Cache Fallback contra límites de tasa.\n• Nueva sincronización remota de estado de aplicaciones para TV Box en tiempo real.\n• Almacenamiento optimizado y categorización dinámica de TV en Vivo.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-24T13:10:20Z"
+  "updatedAt": "2026-11-25T04:24:00Z"
 }
