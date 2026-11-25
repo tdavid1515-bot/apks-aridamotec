@@ -1,8 +1,8 @@
 {
   "success": true,
-  "latestVersionCode": 31,
-  "latestVersionName": "1.4.7",
-  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.7.apk",
+  "latestVersionCode": 32,
+  "latestVersionName": "1.4.5",
+  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.5.apk",
   "changelog": "• Sincronización instantánea en segundo plano de aplicaciones instaladas y desinstaladas.\n• Reporte automático a Web Admin tras cualquier orden de instalación o desinstalación remota.\n• Mayor velocidad de respuesta y estabilidad de conexión con Cloudflare Anycast CDN.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
