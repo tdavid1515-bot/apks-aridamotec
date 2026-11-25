@@ -47,8 +47,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          if [ -n "$(git status --porcelain catalog.json data/catalog.json version.json data/version.json icons/ app/src/main/assets/icons/ app/src/main/assets/apk_metadata.json index.html admin.html invitado.html gas/Index.html gas/Admin.html)" ]; then
-            git add catalog.json data/catalog.json version.json data/version.json icons/ app/src/main/assets/icons/ app/src/main/assets/apk_metadata.json index.html admin.html invitado.html gas/Index.html gas/Admin.html
+          git add -A catalog.json data/catalog.json version.json data/version.json icons/ app/src/main/assets/icons/ app/src/main/assets/apk_metadata.json index.html admin.html gas/Admin.html
+          if ! git diff --cached --quiet; then
             git commit -m "Auto-sync: sincronización automática de catálogo, códigos Browsy, iconos y versión [skip ci]"
             git push origin main
             echo "✅ Catálogo y versión actualizados y publicados en GitHub Pages."

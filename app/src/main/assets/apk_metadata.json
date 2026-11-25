@@ -345,5 +345,12 @@
     "versionName": "10.0.2",
     "versionCode": "13004",
     "iconAsset": "icons/igames_psp.png"
+  },
+  "EpicTV-tele.apk": {
+    "cleanName": "EpicTV tele",
+    "packageName": "com.streamapp.mirror.tele",
+    "versionName": "7.34 tele",
+    "versionCode": "186",
+    "iconAsset": "icons/epictv_tele.png"
   }
 }

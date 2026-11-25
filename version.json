@@ -6,5 +6,5 @@
   "changelog": "• Sincronización instantánea en segundo plano de aplicaciones instaladas y desinstaladas.\n• Reporte automático a Web Admin tras cualquier orden de instalación o desinstalación remota.\n• Mayor velocidad de respuesta y estabilidad de conexión con Cloudflare Anycast CDN.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-24T22:20:00Z"
+  "updatedAt": "2026-11-24T13:10:20Z"
 }

@@ -11,6 +11,7 @@ function sleep(ms) {
 }
 
 function cleanApkName(fileName) {
+  if (fileName.toLowerCase().includes('epictv')) return 'Epic+ TV';
   let name = fileName.replace(/\.(apk|xapk)$/i, '');
   name = name.replace(/[-_.]+/g, ' ');
   name = name.replace(/\b(v?\d+(\.\d+)+)\b/gi, '').trim();
@@ -48,6 +49,7 @@ function detectAuthor(cleanName, fileName) {
   if (combined.includes('zuper')) return 'Züper Tech';
   if (combined.includes('tsuzuku')) return 'Tsuzuku Team';
   if (combined.includes('bixplus')) return 'BixPlus Dev';
+  if (combined.includes('epic')) return 'Epic Stream Dev';
   if (combined.includes('flystream')) return 'FlyStream Live';
   if (combined.includes('watched')) return 'Watched Project';
   return 'Oficial';
@@ -57,7 +59,7 @@ function classifyCategory(cleanName, fileName) {
   const norm = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const combined = norm(cleanName) + ' ' + norm(fileName);
 
-  if (combined.includes('sport') || combined.includes('deport') || combined.includes('futbol') || combined.includes('cricz') || combined.includes('geesports') || combined.includes('ak47')) {
+  if (combined.includes('sport') || combined.includes('deport') || combined.includes('futbol') || combined.includes('cricz') || combined.includes('geesports') || combined.includes('ak47') || combined.includes('epic')) {
     return '⚽ Deportes';
   }
   if (combined.includes('animxl') || combined.includes('anime') || combined.includes('tsuzuku') || combined.includes('clipbox') || combined.includes('movie') || combined.includes('cine') || combined.includes('series') || combined.includes('cinehax') || combined.includes('watched')) {
@@ -96,6 +98,7 @@ function getContextualDescription(cleanName, fileName, category) {
   if (combined.includes('retrojuegos')) return 'Centro de emulación retro para revivir clásicos de consolas de Arcade, Nintendo y Sega directamente con tu mando.';
   if (combined.includes('crexify')) return 'Plataforma deportiva para ver eventos en directo, partidos de fútbol internacional y canales en alta definición.';
   if (combined.includes('ak47')) return 'Señales deportivas en directo para seguir partidos de fútbol internacional, eventos de combate y torneos mundiales.';
+  if (combined.includes('epic')) return 'Plataforma prémium de televisión en vivo y eventos deportivos internacionales en alta definición, con transmisión fluida de fútbol, ligas mundiales y canales en directo optimizada para Android TV.';
   if (combined.includes('cricz')) return 'Transmisiones deportivas en directo de ligas internacionales y eventos deportivos globales en alta calidad.';
   if (combined.includes('geesports')) return 'Cobertura y streaming en vivo de eventos deportivos internacionales, fútbol y canales prémium.';
   if (combined.includes('sportv')) return 'Canales deportivos prémium en directo para disfrutar de ligas de fútbol, campeonatos y torneos en tu televisor.';
@@ -143,8 +146,11 @@ function isGenericDescription(d) {
 
 async function requestBrowsyCode(directUrl) {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
     const res = await fetch('https://browsy.app/api/shorten', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json, text/plain, */*',
@@ -154,6 +160,7 @@ async function requestBrowsyCode(directUrl) {
       },
       body: JSON.stringify({ url: directUrl })
     });
+    clearTimeout(timeoutId);
 
     if (res.status === 200 || res.status === 201) {
       const data = await res.json();
@@ -303,7 +310,7 @@ async function runSync() {
     } else {
       // Es una APK nueva o carece de código Browsy -> Invocar API de Browsy
       console.log(`⚡ Generando código Browsy automático para: ${asset.name}`);
-      const browsy = await requestBrowsyCode(rawDownloadUrl);
+      const browsy = await requestBrowsyCode(maskedDownloadUrl);
       
       const cleanName = existing && existing.cleanName ? existing.cleanName : cleanApkName(asset.name);
       const category = existing && existing.category ? existing.category : classifyCategory(cleanName, asset.name);

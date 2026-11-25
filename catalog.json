@@ -1,8 +1,28 @@
 {
   "success": true,
-  "count": 49,
-  "total": 49,
+  "count": 50,
+  "total": 50,
   "catalog": [
+    {
+      "id": "789702645",
+      "cleanName": "EpicTV tele",
+      "fileName": "EpicTV-tele.apk",
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/epictv_tele.png",
+      "browsyCode": "5583",
+      "shortUrl": "https://browsy.app/5583",
+      "browsyShortUrl": "https://browsy.app/5583",
+      "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EpicTV-tele.apk",
+      "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EpicTV-tele.apk",
+      "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EpicTV-tele.apk",
+      "size": 13570486,
+      "sizeFormatted": "12.9 MB",
+      "status": "active",
+      "createdAt": "2026-11-25T02:16:34Z",
+      "updatedAt": "2026-11-25T03:58:49Z",
+      "aiDescription": "Epic+ TV sirve para ver partidos en vivo, películas y series gratis en tu TV Box o Android TV, cambiando de señal automáticamente si una transmisión se cae para que nunca te pierdas nada.",
+      "category": "📺 TV en Vivo",
+      "author": "Epic Stream Dev"
+    },
     {
       "id": "759604072",
       "cleanName": "AK47Sports V1 6",
@@ -393,7 +413,7 @@
       "sizeFormatted": "22 MB",
       "status": "active",
       "createdAt": "2026-11-24T22:10:24Z",
-      "aiDescription": "igames psp por Oficial: Aplicación prémium de juegos optimizada para Android TV con navegación ágil mediante control remoto y reproducción fluida.",
+      "aiDescription": "IGAMES PSP es una app para TV Box y Android TV con más de 1.000 juegos clásicos de PSP optimizados para funcionar sin conexión y compatibles con mandos inalámbricos.",
       "category": "🎮 Juegos",
       "author": "Oficial"
     },

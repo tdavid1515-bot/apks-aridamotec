@@ -176,6 +176,24 @@ const SEED_APKS = [
     "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk"
   },
   {
+    "id": "789702645",
+    "fileName": "EpicTV-tele.apk",
+    "cleanName": "Epic+ TV",
+    "category": "⚽ Deportes",
+    "author": "Epic Stream Dev",
+    "aiDescription": "Plataforma prémium de televisión en vivo y eventos deportivos internacionales en alta definición, con transmisión fluida de fútbol, ligas mundiales y canales en directo optimizada para Android TV.",
+    "browsyCode": "1930",
+    "browsyShortUrl": "https://browsy.app/1930",
+    "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EpicTV-tele.apk",
+    "size": 13570486,
+    "sizeFormatted": "12.9 MB",
+    "createdAt": "2026-11-25T02:16:34Z",
+    "updatedAt": "2026-11-25T02:16:50Z",
+    "status": "active",
+    "shortUrl": "https://browsy.app/1930",
+    "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EpicTV-tele.apk"
+  },
+  {
     "id": "753529004",
     "fileName": "FlyStream.apk",
     "cleanName": "FlyStream (TV en Vivo)",
