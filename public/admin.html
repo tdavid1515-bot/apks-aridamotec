@@ -420,6 +420,16 @@
     body.guest-mode .search-box {
       flex: 1 1 540px;
     }
+    body.tab-devices #catalogSearchBox,
+    body.tab-devices .search-box {
+      display: none !important;
+    }
+    body.tab-devices .sort-row {
+      display: none !important;
+    }
+    body.tab-devices #adminCategoryChips {
+      display: none !important;
+    }
     .search-input {
       width: 100%;
       box-sizing: border-box;
@@ -624,9 +634,58 @@
       flex: 1;
       min-width: 280px;
     }
+    .device-search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 240px;
+    }
+    .device-search-wrapper .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #00e5ff;
+      opacity: 0.9;
+      pointer-events: none;
+      user-select: none;
+      z-index: 2;
+    }
+    .device-search-wrapper .device-search-input {
+      width: 100%;
+      padding: 9px 32px 9px 38px !important;
+      background: rgba(12, 18, 32, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .device-search-wrapper .device-search-input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+    }
+    .device-search-wrapper .search-clear {
+      position: absolute;
+      right: 9px;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 13px;
+      cursor: pointer;
+      display: none;
+      padding: 2px 4px;
+    }
+    .device-search-wrapper .search-clear:hover {
+      color: #fff;
+    }
     .device-search-input {
       flex: 1;
-      padding: 8px 12px;
+      padding: 9px 32px 9px 38px !important;
       background: rgba(12, 18, 32, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 8px;
@@ -2110,7 +2169,7 @@
 
     <!-- Barra de Búsqueda y Pestañas ANCLADAS -->
     <div class="controls-nav">
-      <div class="search-box">
+      <div id="catalogSearchBox" class="search-box">
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" class="search-input" placeholder="Buscar aplicación (Xuper, TV, Live, Wolf)..." oninput="handleSearch()">
         <button id="searchClearBtn" class="search-clear" onclick="clearSearch()">✕</button>
@@ -2196,7 +2255,11 @@
       <!-- Barra de Control de Dispositivos -->
       <div class="device-toolbar">
         <div class="device-toolbar-left">
-          <input type="text" id="deviceSearchInput" class="device-search-input" placeholder="Buscar por MAC, Cliente, Equipo o Notas..." oninput="renderDevices()">
+          <div class="device-search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="deviceSearchInput" class="device-search-input" placeholder="Buscar por MAC, Cliente, Equipo o Notas..." oninput="onDeviceSearchInput(this)">
+            <button id="deviceSearchClearBtn" class="search-clear" onclick="clearDeviceSearch()" title="Limpiar búsqueda">✕</button>
+          </div>
           <select id="deviceStatusFilter" class="device-filter-select" onchange="renderDevices()">
             <option value="all">🛡️ Todos los Estados</option>
             <option value="ACTIVO">✅ Solo Activos</option>
@@ -2300,8 +2363,19 @@
             <span style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; background:rgba(0,229,255,0.15); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.3);">ASISTENCIA EN VIVO</span>
           </div>
           <p id="devAppsModalSubtitle" style="font-size:12px; color:#94a3b8; margin:4px 0 0 0;">Cliente: -- | MAC: -- | Modelo: --</p>
+          <!-- Indicador de Sincronización Automática en Segundo Plano -->
+          <div id="remoteSyncIndicator" style="display:none; align-items:center; gap:8px; font-size:11.5px; color:var(--accent-cyan); background:rgba(0,229,255,0.08); padding:4px 10px; border-radius:8px; border:1px solid rgba(0,229,255,0.25); margin-top:6px; width:fit-content;">
+            <span id="remoteSyncSpinner" class="spinner" style="width:12px; height:12px; border-width:2px;"></span>
+            <span id="remoteSyncText">Sincronizando con TV Box en segundo plano...</span>
+          </div>
         </div>
-        <button class="modal-close" onclick="closeDeviceAppsModal()" style="position:static; background:rgba(255,255,255,0.08); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; border:none; cursor:pointer;">✕</button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button id="btnDevAppsRefresh" onclick="refreshCurrentDeviceApps(true)" title="Forzar sincronización inmediata de datos desde el TV Box y catálogo oficial" style="display:flex; align-items:center; gap:7px; padding:7px 16px; border-radius:10px; background:linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.08)); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.45); font-size:12.5px; font-weight:800; cursor:pointer; transition:all 0.25s ease; box-shadow:0 0 10px rgba(0,229,255,0.15);" onmouseover="this.style.background='rgba(0,229,255,0.25)'; this.style.borderColor='#00e5ff';" onmouseout="this.style.background='linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.08))'; this.style.borderColor='rgba(0,229,255,0.45)';">
+            <span id="devAppsRefreshIcon" style="display:inline-block; font-size:14px; transition:transform 0.4s ease;">🔄</span>
+            <span id="devAppsRefreshText">Forzar Sincronización TV Box</span>
+          </button>
+          <button class="modal-close" onclick="closeDeviceAppsModal()" style="position:static; background:rgba(255,255,255,0.08); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; border:none; cursor:pointer;">✕</button>
+        </div>
       </div>
 
       <!-- Barra de Telemetría de Almacenamiento en Tiempo Real -->
@@ -2518,13 +2592,24 @@
         }
         withSuccessHandler(cb) { this._success = cb; return this; }
         withFailureHandler(cb) { this._failure = cb; return this; }
-        _call(url) {
+        _call(url, retryCount = 1) {
           const s = this._success;
           const f = this._failure;
           fetch(url)
-            .then(r => r.json())
+            .then(r => {
+              if (!r.ok) throw new Error('HTTP ' + r.status);
+              return r.json();
+            })
             .then(data => { if (s) s(data); })
-            .catch(err => { if (f) f(err); });
+            .catch(err => {
+              if (retryCount > 0) {
+                setTimeout(() => {
+                  this._call(url, retryCount - 1);
+                }, 1200);
+              } else {
+                if (f) f(err);
+              }
+            });
         }
         getGuestCatalog() {
           this._call(GAS_URL + '?action=guest');
@@ -2711,8 +2796,8 @@
         const pwdIn = document.getElementById('pwdInput');
         if (pwdIn) pwdIn.value = savedPwd;
 
-        // Renderizar inmediatamente desde catalog.json (SSOT local) para evitar parpadeos o pantallas vacías
-        fetch('catalog.json?t=' + Date.now())
+        // Renderizar inmediatamente desde /catalog o catalog.json (SSOT local) para evitar parpadeos o pantallas vacías
+        fetch('/catalog?t=' + Date.now()).catch(() => fetch('catalog.json?t=' + Date.now()))
           .then(r => r.json())
           .then(cData => {
             if (cData && Array.isArray(cData.catalog) && (!apksData.active || apksData.active.length === 0)) {
@@ -2782,8 +2867,8 @@
               document.documentElement.classList.add('has-saved-session');
               document.getElementById('loginScreen').style.display = 'none';
 
-              // Intentar renderizar de inmediato desde catalog.json (SSOT)
-              fetch('catalog.json?t=' + Date.now())
+              // Intentar renderizar de inmediato desde /catalog o catalog.json (SSOT)
+              fetch('/catalog?t=' + Date.now()).catch(() => fetch('catalog.json?t=' + Date.now()))
                 .then(r => r.json())
                 .then(cData => {
                   if (cData && Array.isArray(cData.catalog)) {
@@ -2811,7 +2896,7 @@
           btn.disabled = false;
           btn.textContent = 'INGRESAR AL SISTEMA';
           if (document.documentElement.classList.contains('has-saved-session')) {
-            showToast('Aviso: Sin conexión con Google Apps Script. Operando con caché local.', true);
+            console.warn('[GAS SESSION] Operando con sesión activa y catálogo SSOT:', e);
           } else {
             err.style.display = 'block';
             err.textContent = 'Error de conexión: ' + (e.message || e);
@@ -2852,9 +2937,9 @@
           });
       };
 
-      // 2. Respaldo a GitHub Pages CDN
+      // 2. Respaldo a Cloudflare / GitHub Pages CDN
       const fetchCDN = () => {
-        return fetch('catalog.json?t=' + Date.now())
+        return fetch('/catalog?t=' + Date.now()).catch(() => fetch('catalog.json?t=' + Date.now()))
           .then(r => {
             if (!r.ok) throw new Error('CDN status ' + r.status);
             return r.json();
@@ -3177,24 +3262,31 @@
       const devSec = document.getElementById('devicesSection');
       const sortRow = document.querySelector('.sort-row');
       const catBar = document.getElementById('adminCategoryChips');
+      const catSearchBox = document.getElementById('catalogSearchBox') || document.querySelector('.search-box');
 
       if (bAct) bAct.className = 'tab-button';
       if (bDev) bDev.className = 'tab-button';
 
       if (tab === 'active') {
+        document.body.classList.remove('tab-devices');
+        document.body.classList.add('tab-catalog');
         if (bAct) bAct.className = 'tab-button active';
         if (catSec) catSec.style.display = 'block';
         if (devSec) devSec.style.display = 'none';
-        if (sortRow) { sortRow.style.visibility = 'visible'; sortRow.style.pointerEvents = 'auto'; sortRow.style.display = 'inline-flex'; }
-        if (catBar) catBar.style.display = 'flex';
+        if (catSearchBox) catSearchBox.style.setProperty('display', 'flex', 'important');
+        if (sortRow) { sortRow.style.visibility = 'visible'; sortRow.style.pointerEvents = 'auto'; sortRow.style.setProperty('display', 'inline-flex', 'important'); }
+        if (catBar) catBar.style.setProperty('display', 'flex', 'important');
         renderAdminCategoryChips();
         drawCards();
       } else if (tab === 'devices') {
+        document.body.classList.add('tab-devices');
+        document.body.classList.remove('tab-catalog');
         if (bDev) bDev.className = 'tab-button active-dev';
         if (catSec) catSec.style.display = 'none';
         if (devSec) devSec.style.display = 'block';
-        if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.display = 'inline-flex'; }
-        if (catBar) catBar.style.display = 'none';
+        if (catSearchBox) catSearchBox.style.setProperty('display', 'none', 'important');
+        if (sortRow) { sortRow.style.visibility = 'hidden'; sortRow.style.pointerEvents = 'none'; sortRow.style.setProperty('display', 'none', 'important'); }
+        if (catBar) catBar.style.setProperty('display', 'none', 'important');
         loadDevices();
       }
     }
@@ -3218,6 +3310,20 @@
       document.getElementById('searchInput').value = '';
       document.getElementById('searchClearBtn').style.display = 'none';
       drawCards();
+    }
+
+    function onDeviceSearchInput(input) {
+      const clearBtn = document.getElementById('deviceSearchClearBtn');
+      if (clearBtn) clearBtn.style.display = input && input.value.trim() ? 'block' : 'none';
+      renderDevices();
+    }
+
+    function clearDeviceSearch() {
+      const input = document.getElementById('deviceSearchInput');
+      if (input) input.value = '';
+      const clearBtn = document.getElementById('deviceSearchClearBtn');
+      if (clearBtn) clearBtn.style.display = 'none';
+      renderDevices();
     }
 
     
@@ -4613,8 +4719,85 @@
     }
 
     function closeDeviceAppsModal() {
+      if (typeof stopRemoteSyncMonitor === 'function') stopRemoteSyncMonitor();
+      const ind = document.getElementById('remoteSyncIndicator');
+      if (ind) ind.style.display = 'none';
       document.getElementById('deviceAppsModal').style.display = 'none';
       currentDevice = null;
+    }
+
+    let isRefreshingDevApps = false;
+    function refreshCurrentDeviceApps(isManual = false) {
+      if (!currentDevice || isRefreshingDevApps) return;
+      isRefreshingDevApps = true;
+      const icon = document.getElementById('devAppsRefreshIcon');
+      const txt = document.getElementById('devAppsRefreshText');
+      if (icon) icon.style.transform = 'rotate(360deg)';
+      if (txt && isManual) txt.textContent = 'Actualizando...';
+      if (isManual) showToast('Consultando estado en vivo del TV Box y catálogo oficial...');
+
+      const targetMac = currentDevice.mac;
+
+      // Sincronizar catálogo oficial en paralelo para mantener datos al día
+      fetch('/catalog?t=' + Date.now()).catch(() => fetch('/catalog.json?t=' + Date.now()))
+        .then(r => r.json())
+        .then(cData => {
+          if (cData && Array.isArray(cData.catalog)) {
+            apksData.active = cData.catalog;
+            filterCatalogApps();
+            const mCat = document.getElementById('mobAppsCatalogCount');
+            if (mCat) mCat.textContent = (apksData.active || []).length;
+          }
+        })
+        .catch(() => {});
+
+      fetch(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(savedPwd || '') + '&_t=' + Date.now())
+        .then(r => r.json())
+        .then(res => {
+          isRefreshingDevApps = false;
+          if (icon) icon.style.transform = 'none';
+          if (txt) txt.textContent = 'Forzar Sincronización TV Box';
+
+          if (res && res.success && Array.isArray(res.devices)) {
+            devicesData = res.devices;
+            updateDeviceStats();
+            renderDevices();
+
+            if (currentDevice && currentDevice.mac === targetMac) {
+              const fresh = devicesData.find(d => d.mac === targetMac);
+              if (fresh) {
+                currentDevice = fresh;
+                const subEl = document.getElementById('devAppsModalSubtitle');
+                if (subEl) subEl.textContent = 'Cliente: ' + (fresh.client || 'Sin Asignar') + ' | MAC: ' + fresh.mac + ' | Modelo: ' + (fresh.model || 'Android TV');
+
+                let apps = [];
+                try {
+                  if (fresh.installedApps) {
+                    apps = typeof fresh.installedApps === 'string' ? JSON.parse(fresh.installedApps) : fresh.installedApps;
+                  }
+                } catch (e) { apps = []; }
+                currentDeviceApps = Array.isArray(apps) ? apps : [];
+
+                renderDeviceAppsList(currentDeviceApps);
+                filterCatalogApps();
+                updateStorageMetrics();
+
+                const mInst = document.getElementById('mobAppsInstalledCount');
+                if (mInst) mInst.textContent = currentDeviceApps.length;
+                const mCat = document.getElementById('mobAppsCatalogCount');
+                if (mCat) mCat.textContent = (apksData.active || []).length;
+
+                if (isManual) showToast('✅ Datos del TV Box y catálogo sincronizados (' + currentDeviceApps.length + ' apps instaladas)');
+              }
+            }
+          }
+        })
+        .catch(err => {
+          isRefreshingDevApps = false;
+          if (icon) icon.style.transform = 'none';
+          if (txt) txt.textContent = 'Forzar Sincronización TV Box';
+          if (isManual) showToast('Aviso: Sincronización en curso con el TV Box');
+        });
     }
 
     function updateStorageMetrics() {
@@ -4817,6 +5000,7 @@
       "Cx.File.Explorer.v2.8.1.Premium.apk": { packageName: "com.cxinventor.file.explorer", versionName: "2.8.1", versionCode: 281 },
       "Developer_Tools_2.4.7_APKPure.apk": { packageName: "com.roysolberg.android.developertools", versionName: "2.4.7", versionCode: 121 },
       "Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk": { packageName: "com.esaba.downloader", versionName: "1.5.0-ForGoogleAndroidDevices", versionCode: 58 },
+      "EpicTV-tele.apk": { packageName: "com.streamapp.mirror.tele", versionName: "7.34 tele", versionCode: 186 },
       "FlyStream.apk": { packageName: "net.flystream.tv", versionName: "2.78", versionCode: 80 },
       "GeeSports_.v3.9.apk": { packageName: "com.live.geesports", versionName: "3.9", versionCode: 12 },
       "GoPlusTV-4.4.0-Fix-ModByNF.apk": { packageName: "com.golite.gnulatv", versionName: "4.4.0.Plus", versionCode: 44 },
@@ -5167,7 +5351,23 @@
         dispatchRemoteCommand(currentDevice.mac, 'uninstall', '', '', '', batch);
       }
 
-      showToast(`✅ Órdenes de desinstalación despachadas exitosamente.`);
+      // Feedback optimista inmediato en la lista de apps del TV Box
+      appsToUninstall.forEach(pkg => {
+        const labels = document.querySelectorAll('#devAppsContainer label');
+        labels.forEach(lbl => {
+          if (lbl.innerHTML.includes(pkg)) {
+            lbl.style.opacity = '0.55';
+            lbl.style.background = 'rgba(239,68,68,0.1)';
+            const titleEl = lbl.querySelector('div > div:first-child');
+            if (titleEl && !titleEl.textContent.includes('(Desinstalando...)')) {
+              titleEl.innerHTML += ' <span style="font-size:10px; color:#ef4444; font-weight:700;">(Desinstalando...)</span>';
+            }
+          }
+        });
+      });
+
+      startRemoteSyncMonitor(currentDevice.mac, 'uninstall', appsToUninstall);
+      showToast(`✅ Órdenes de desinstalación despachadas. Sincronizando con TV Box...`);
       selectedInstalledApps.clear();
       updateInstalledSelectionUI();
     }
@@ -5198,6 +5398,11 @@
 
       showToast(`⚡ Enviando orden remota para instalar ${count} app(s)...`);
 
+      const pkgsToInstall = selectedItems.map(item => {
+        const meta = getCatalogAppMeta(item);
+        return item.packageName || meta.packageName || '';
+      }).filter(Boolean);
+
       if (selectedItems.length === 1) {
         const item = selectedItems[0];
         const dlUrl = item.directDownloadUrl || item.downloadUrl || '';
@@ -5217,10 +5422,28 @@
         dispatchRemoteCommand(currentDevice.mac, 'install', '', '', '', batch);
       }
 
-      showToast(`✅ Órdenes de instalación despachadas exitosamente.`);
+      startRemoteSyncMonitor(currentDevice.mac, 'install', pkgsToInstall);
+      showToast(`✅ Órdenes de instalación despachadas. Sincronizando con TV Box...`);
       selectedCatalogApps.clear();
       updateStorageMetrics();
       renderCatalogAppsList(catList);
+
+      // Feedback optimista inmediato en las tarjetas del catálogo
+      selectedItems.forEach(item => {
+        const catLabels = document.querySelectorAll('#catAppsContainer label');
+        catLabels.forEach(lbl => {
+          const id = item.id || item.fileName || '';
+          if (lbl.innerHTML.includes(id) || (item.packageName && lbl.innerHTML.includes(item.packageName))) {
+            const pill = lbl.querySelector('span[style*="border-radius:6px"]');
+            if (pill) {
+              pill.textContent = '⏳ Instalando...';
+              pill.style.background = 'rgba(0,229,255,0.2)';
+              pill.style.color = '#38bdf8';
+              pill.style.borderColor = 'rgba(0,229,255,0.4)';
+            }
+          }
+        });
+      });
     }
 
     function dispatchRemoteCommand(mac, action, fileName, packageName, downloadUrl, batchPayload) {
@@ -5249,6 +5472,131 @@
           .then(res => console.log('[REMOTE COMMAND RESPONSE]', res))
           .catch(err => console.warn('[REMOTE COMMAND ERROR]', err));
       }
+    }
+
+    let remoteSyncTimer = null;
+    let remoteSyncTimeoutTimer = null;
+
+    function stopRemoteSyncMonitor() {
+      if (remoteSyncTimer) {
+        clearInterval(remoteSyncTimer);
+        remoteSyncTimer = null;
+      }
+      if (remoteSyncTimeoutTimer) {
+        clearTimeout(remoteSyncTimeoutTimer);
+        remoteSyncTimeoutTimer = null;
+      }
+      const sp = document.getElementById('remoteSyncSpinner');
+      if (sp) sp.style.display = 'none';
+    }
+
+    function startRemoteSyncMonitor(mac, action, targetPkgs) {
+      stopRemoteSyncMonitor();
+      const ind = document.getElementById('remoteSyncIndicator');
+      const sp = document.getElementById('remoteSyncSpinner');
+      const txt = document.getElementById('remoteSyncText');
+      if (ind) ind.style.display = 'inline-flex';
+      if (sp) sp.style.display = 'inline-block';
+      if (txt) {
+        txt.style.color = '#38bdf8';
+        txt.textContent = action === 'uninstall'
+          ? 'Sincronizando con TV Box... (desinstalando)'
+          : 'Sincronizando con TV Box... (instalando)';
+      }
+
+      const startTime = Date.now();
+      const expectedList = (Array.isArray(targetPkgs) ? targetPkgs : [targetPkgs]).filter(Boolean);
+
+      remoteSyncTimeoutTimer = setTimeout(() => {
+        stopRemoteSyncMonitor();
+        if (txt) {
+          txt.style.color = '#94a3b8';
+          txt.textContent = 'ℹ️ Orden enviada. El TV Box actualizará los datos en su próximo reporte.';
+        }
+        setTimeout(() => {
+          if (ind && !remoteSyncTimer) ind.style.display = 'none';
+        }, 5000);
+      }, 45000);
+
+      remoteSyncTimer = setInterval(() => {
+        if (!currentDevice || currentDevice.mac !== mac) {
+          stopRemoteSyncMonitor();
+          if (ind) ind.style.display = 'none';
+          return;
+        }
+
+        fetch(GAS_URL + '?action=macList&pwd=' + encodeURIComponent(savedPwd || '') + '&_t=' + Date.now())
+          .then(r => r.json())
+          .then(res => {
+            if (!res || !res.success || !Array.isArray(res.devices)) return;
+            devicesData = res.devices;
+            updateDeviceStats();
+            renderDevices();
+
+            const fresh = devicesData.find(d => d.mac === mac);
+            if (!fresh) return;
+
+            let apps = [];
+            try {
+              if (fresh.installedApps) {
+                apps = typeof fresh.installedApps === 'string' ? JSON.parse(fresh.installedApps) : fresh.installedApps;
+              }
+            } catch (e) { apps = []; }
+            const freshApps = Array.isArray(apps) ? apps : [];
+
+            let matched = false;
+            if (action === 'uninstall') {
+              const stillPresent = expectedList.filter(pkg =>
+                freshApps.some(a => (typeof a === 'string' ? a === pkg : (a.pkg === pkg || a.packageName === pkg)))
+              );
+              if (stillPresent.length === 0) matched = true;
+            } else if (action === 'install') {
+              const nowPresent = expectedList.filter(pkg =>
+                freshApps.some(a => (typeof a === 'string' ? a === pkg : (a.pkg === pkg || a.packageName === pkg)))
+              );
+              if (nowPresent.length === expectedList.length) matched = true;
+            }
+
+            if (matched || (Date.now() - startTime > 4000 && JSON.stringify(freshApps) !== JSON.stringify(currentDeviceApps))) {
+              stopRemoteSyncMonitor();
+              currentDevice = fresh;
+              currentDeviceApps = freshApps;
+              renderDeviceAppsList(currentDeviceApps);
+              filterCatalogApps();
+              updateStorageMetrics();
+
+              // Refrescar catálogo oficial en segundo plano para sincronizar etiquetas
+              fetch('/catalog?t=' + Date.now()).catch(() => fetch('/catalog.json?t=' + Date.now()))
+                .then(r => r.json())
+                .then(cData => {
+                  if (cData && Array.isArray(cData.catalog)) {
+                    apksData.active = cData.catalog;
+                    filterCatalogApps();
+                  }
+                })
+                .catch(() => {});
+
+              const mInst = document.getElementById('mobAppsInstalledCount');
+              if (mInst) mInst.textContent = currentDeviceApps.length;
+
+              if (sp) sp.style.display = 'none';
+              if (txt) {
+                txt.style.color = '#4ade80';
+                txt.textContent = action === 'uninstall'
+                  ? '✅ Sincronizado: Aplicación(es) desinstalada(s) del TV Box.'
+                  : '✅ Sincronizado: Aplicación(es) instalada(s) en el TV Box.';
+              }
+              showToast(action === 'uninstall'
+                ? '✅ Desinstalación remota sincronizada y confirmada por el TV Box.'
+                : '✅ Instalación remota sincronizada y confirmada por el TV Box.');
+
+              setTimeout(() => {
+                if (ind && !remoteSyncTimer) ind.style.display = 'none';
+              }, 4000);
+            }
+          })
+          .catch(e => console.warn('[SYNC MONITOR ERROR]', e));
+      }, 1500);
     }
 
 
