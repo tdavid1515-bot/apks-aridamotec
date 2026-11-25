@@ -127,24 +127,35 @@ export default {
     // Ruta 5: Iconos enmascarados
     // Ejemplo: /icons/ak47sports_v1_6.png
     if (pathname.startsWith('/icons/')) {
-      const rawIconName = pathname.replace(/^\/icons\//, '').trim();
+      const rawIconName = pathname.replace(/^\/icons\//, '').split('?')[0].trim();
       const iconName = decodeURIComponent(rawIconName);
-      const iconUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/icons/${encodeURIComponent(iconName)}`;
-      try {
-        const iconRes = await fetch(iconUrl, {
-          cf: { cacheEverything: true, cacheTtl: 2592000 }
-        });
-        if (iconRes.ok) {
-          const cleanH = new Headers();
-          cleanH.set('Content-Type', iconRes.headers.get('content-type') || 'image/png');
-          const cl = iconRes.headers.get('content-length');
-          if (cl) cleanH.set('Content-Length', cl);
-          cleanH.set('Server', CONFIG.SERVER_HEADER);
-          cleanH.set('Access-Control-Allow-Origin', '*');
-          cleanH.set('Cache-Control', 'public, max-age=2592000, immutable');
-          return new Response(iconRes.body, { status: 200, headers: cleanH });
-        }
-      } catch (e) {}
+      const candidates = [
+        iconName,
+        iconName.toLowerCase(),
+        iconName.replace(/-/g, '_'),
+        iconName.replace(/_/g, '-')
+      ];
+      const uniqueCandidates = Array.from(new Set(candidates));
+
+      for (const cand of uniqueCandidates) {
+        const iconUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/icons/${encodeURIComponent(cand)}`;
+        try {
+          const iconRes = await fetch(iconUrl, {
+            headers: { 'User-Agent': 'Aridamotec-CDN-Client/1.0', 'Accept': '*/*' },
+            cf: { cacheEverything: true, cacheTtl: 2592000 }
+          });
+          if (iconRes.ok) {
+            const cleanH = new Headers();
+            cleanH.set('Content-Type', iconRes.headers.get('content-type') || 'image/png');
+            const cl = iconRes.headers.get('content-length');
+            if (cl) cleanH.set('Content-Length', cl);
+            cleanH.set('Server', CONFIG.SERVER_HEADER);
+            cleanH.set('Access-Control-Allow-Origin', '*');
+            cleanH.set('Cache-Control', 'public, max-age=2592000, immutable');
+            return new Response(iconRes.body, { status: 200, headers: cleanH });
+          }
+        } catch (e) {}
+      }
     }
 
     // 404 para cualquier otra ruta
@@ -440,6 +451,17 @@ async function handleSanitizedCatalog(request, currentUrl) {
     }
 
     const finalCatalog = Array.from(catalogMap.values());
+    if (finalCatalog.length === 0 && edgeCatalogCache.data) {
+      return new Response(JSON.stringify(edgeCatalogCache.data, null, 2), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Server': CONFIG.SERVER_HEADER,
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
+        }
+      });
+    }
+
     const finalData = {
       success: true,
       count: finalCatalog.length,
