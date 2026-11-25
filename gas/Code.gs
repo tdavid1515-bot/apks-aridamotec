@@ -2168,6 +2168,38 @@ function normalizeMac(mac) {
   return String(mac).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
 }
 
+function getBlacklistedMacs() {
+  try {
+    const raw = PropertiesService.getScriptProperties().getProperty('BLACKLISTED_MACS');
+    if (!raw) return [];
+    return JSON.parse(raw);
+  } catch (e) {
+    return [];
+  }
+}
+
+function blacklistMac(normMac) {
+  if (!normMac) return;
+  const list = getBlacklistedMacs();
+  if (list.indexOf(normMac) === -1) {
+    list.push(normMac);
+    PropertiesService.getScriptProperties().setProperty('BLACKLISTED_MACS', JSON.stringify(list));
+  }
+}
+
+function unblacklistMac(normMac) {
+  if (!normMac) return;
+  let list = getBlacklistedMacs();
+  list = list.filter(function(m) { return m !== normMac; });
+  PropertiesService.getScriptProperties().setProperty('BLACKLISTED_MACS', JSON.stringify(list));
+}
+
+function isMacBlacklisted(normMac) {
+  if (!normMac) return false;
+  const list = getBlacklistedMacs();
+  return list.indexOf(normMac) !== -1;
+}
+
 function saveInstalledApps(mac, appsJson, storageFree, storageTotal) {
   if (!mac) return { success: false, error: 'MAC requerida' };
   const cleanMac = String(mac).trim().toUpperCase();
@@ -2217,6 +2249,18 @@ function checkDeviceMac(mac, model, storageFree, storageTotal) {
   const cleanMac = String(mac).trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
   const cleanModel = String(model || 'Android TV').trim();
+
+  // Si la MAC ha sido eliminada por el Administrador, no permitir su auto-registro ni acceso
+  if (isMacBlacklisted(targetNormMac)) {
+    return {
+      success: true,
+      authorized: false,
+      status: 'BLOQUEADO',
+      client: 'Dispositivo Restringido',
+      mac: cleanMac,
+      message: 'Este dispositivo ha sido eliminado o no está autorizado por el Administrador.'
+    };
+  }
 
   const lock = LockService.getScriptLock();
   try {
@@ -2441,6 +2485,9 @@ function saveOrUpdateMac(password, data) {
   const sheet = getOrCreateMacSheet();
   let foundRow = -1;
   const targetNormMac = normalizeMac(mac);
+  if (status === 'ACTIVO') {
+    unblacklistMac(targetNormMac);
+  }
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
@@ -2470,6 +2517,9 @@ function toggleMacStatus(password, mac, newStatus) {
   const cleanMac = String(mac || '').trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
   const status = String(newStatus || 'ACTIVO').trim().toUpperCase();
+  if (status === 'ACTIVO') {
+    unblacklistMac(targetNormMac);
+  }
   const sheet = getOrCreateMacSheet();
   if (sheet.getLastRow() > 1) {
     const values = sheet.getDataRange().getValues();
@@ -2491,6 +2541,9 @@ function deleteMacDevice(password, mac) {
   }
   const cleanMac = String(mac || '').trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
+  // Bloquear de forma permanente para que no vuelva a auto-registrarse
+  blacklistMac(targetNormMac);
+
   const sheet = getOrCreateMacSheet();
   const lock = LockService.getScriptLock();
   try {
