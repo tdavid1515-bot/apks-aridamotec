@@ -107,8 +107,8 @@ export default {
     }
 
     // Ruta 2: Consulta del catálogo sanitizado (sin enlaces de GitHub)
-    // Ejemplo: /catalog o /api/catalog
-    if (pathname === '/catalog' || pathname === '/api/catalog') {
+    // Ejemplo: /catalog o /catalog.json o /api/catalog
+    if (pathname === '/catalog' || pathname === '/catalog.json' || pathname === '/api/catalog') {
       return handleSanitizedCatalog(request, url);
     }
 
