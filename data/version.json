@@ -3,8 +3,8 @@
   "latestVersionCode": 32,
   "latestVersionName": "1.4.8",
   "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.8.apk",
-  "changelog": "• Integración oficial de EpicTV tele (código Browsy 5583, logo nativo EPIC+ y descripción).\n• Catálogo oficial ampliado a 50 aplicaciones con Edge Cache Fallback contra límites de tasa.\n• Nueva sincronización remota de estado de aplicaciones para TV Box en tiempo real.\n• Almacenamiento optimizado y categorización dinámica de TV en Vivo.",
+  "changelog": "• Mejoras visuales en la pantalla y tarjetas de aplicaciones.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-25T04:24:00Z"
+  "updatedAt": "2026-11-24T13:10:20Z"
 }
