@@ -22,6 +22,9 @@ const CONFIG = {
   BRAND_NAME: 'ARIDAMOTEC CDN Gateway',
   SERVER_HEADER: 'Aridamotec-Edge-Vault/1.0',
   
+  // URL de la API de Google Apps Script (Single Source of Truth para descripciones y metadatos editados en Web Admin)
+  GAS_API_URL: 'https://script.google.com/macros/s/AKfycbx_z7mqkuftzUnC8a4cHRfuApHsoMoqQDT6kC85yDCeuf7H6YUw2gbehvU0jSdwOmKenA/exec',
+
   // Cache TTL en segundos (7 días para APKs inmutables)
   CACHE_TTL: 604800,
   
@@ -63,10 +66,11 @@ export default {
       });
     }
 
-    // Ruta Web Visitante / Catálogo Oficial Público
-    // Ejemplo: / o /index.html o /catalogo o /cliente
-    if (pathname === '/' || pathname === '/index.html' || pathname === '/catalogo' || pathname === '/cliente') {
-      return handleServeHtml(request, 'index.html');
+    // Redirección definitiva: Eliminación de Web Visitante (El sistema opera exclusivamente con Web Admin y Android TV)
+    // Ejemplo: / o /index.html o /catalogo o /cliente o /invitado.html
+    if (pathname === '/' || pathname === '/index.html' || pathname === '/catalogo' || pathname === '/cliente' || pathname === '/invitado.html') {
+      const hostBase = `${url.protocol}//${url.host}`;
+      return Response.redirect(`${hostBase}/admin`, 302);
     }
 
     // Ruta Web Administrador / Panel de Control Maestro
@@ -267,62 +271,112 @@ async function handleApkDownload(request, fileName, ctx) {
   });
 }
 
+// Caché en memoria perimetral para ultra-alta velocidad y resiliencia (TTL 10 segundos)
+let edgeCatalogCache = {
+  data: null,
+  timestamp: 0
+};
+
 /**
- * Retorna el catálogo sanitizado con URLs enmascaradas y sincronización instantánea con GitHub Releases
+ * Retorna el catálogo sanitizado con URLs enmascaradas, sincronización en tiempo real
+ * con Google Sheets (descripciones y categorías editadas en Web Admin) y GitHub Releases.
  */
 async function handleSanitizedCatalog(request, currentUrl) {
-  const originCatalogUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/catalog.json?t=${Date.now()}`;
-  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
   const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
-  
+  const now = Date.now();
+
+  // Si la caché perimetral está fresca (menos de 10 segundos), retornarla de inmediato (0ms de latencia)
+  if (edgeCatalogCache.data && (now - edgeCatalogCache.timestamp < 10000)) {
+    return new Response(JSON.stringify(edgeCatalogCache.data, null, 2), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Server': CONFIG.SERVER_HEADER,
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
+      }
+    });
+  }
+
+  const originGasUrl = `${CONFIG.GAS_API_URL}?action=guest&_t=${now}`;
+  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
+  const originCatalogUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/catalog.json?t=${now}`;
+
   try {
-    // 1. Consultar catalog.json y GitHub Releases en paralelo en tiempo real (CERO CACHÉ)
-    const [resCatalog, resReleases] = await Promise.all([
-      fetch(originCatalogUrl, {
+    // Consultar GAS (Google Sheets SSOT), GitHub Releases y catalog.json en paralelo
+    const [resGas, resReleases, resCatalog] = await Promise.all([
+      fetch(originGasUrl, {
         headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
         cf: { cacheTtl: 0, cacheEverything: false }
-      }).catch(() => null),
+      }).catch(e => { console.warn('Aviso: GAS timeout o error:', e); return null; }),
       fetch(originReleasesUrl, {
         headers: {
           'User-Agent': 'Aridamotec-CDN/1.0',
           'Accept': 'application/vnd.github.v3+json'
         },
         cf: { cacheTtl: 0, cacheEverything: false }
-      }).catch(() => null)
+      }).catch(e => { console.warn('Aviso: Releases error:', e); return null; }),
+      fetch(originCatalogUrl, {
+        headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
+        cf: { cacheTtl: 0, cacheEverything: false }
+      }).catch(e => { console.warn('Aviso: Catalog fallback error:', e); return null; })
     ]);
 
-    let data = { success: true, count: 0, total: 0, catalog: [] };
-    if (resCatalog && resCatalog.ok) {
-      try { data = await resCatalog.json(); } catch (e) {}
-    }
-    if (!data.catalog || !Array.isArray(data.catalog)) {
-      data.catalog = [];
+    let baseItems = [];
+    let gasCatalogWorked = false;
+
+    // 1. Intentar primero con GAS (contiene las descripciones y categorías reales de Google Sheets)
+    if (resGas && resGas.ok) {
+      try {
+        const gasData = await resGas.json();
+        if (gasData && Array.isArray(gasData.catalog) && gasData.catalog.length > 0) {
+          baseItems = gasData.catalog;
+          gasCatalogWorked = true;
+        }
+      } catch (eGas) {
+        console.warn('Error parseando JSON de GAS:', eGas);
+      }
     }
 
-    // 2. Sanitizar URLs existentes en el catálogo
-    const catalogMap = new Map();
-    data.catalog = data.catalog.map(item => {
-      const cleanItem = { ...item };
-      if (cleanItem.fileName) {
-        const directUrl = `${hostBase}/apk/${encodeURIComponent(cleanItem.fileName)}`;
-        cleanItem.downloadUrl = directUrl;
-        cleanItem.directUrl = directUrl;
-        cleanItem.directDownloadUrl = directUrl;
+    // 2. Respaldo a catalog.json si GAS no respondió o falló
+    if (!gasCatalogWorked && resCatalog && resCatalog.ok) {
+      try {
+        const catData = await resCatalog.json();
+        if (catData && Array.isArray(catData.catalog)) {
+          baseItems = catData.catalog;
+        }
+      } catch (eCat) {
+        console.warn('Error parseando catalog.json:', eCat);
       }
+    }
+
+    // 3. Crear mapa base indexado por nombre de archivo minúscula
+    const catalogMap = new Map();
+    for (const item of baseItems) {
+      if (!item || !item.fileName) continue;
+      const lower = String(item.fileName).trim().toLowerCase();
+      const cleanItem = { ...item };
+
+      // Enmascarar URLs de descarga y de iconos a través de este CDN
+      const directUrl = `${hostBase}/apk/${encodeURIComponent(cleanItem.fileName)}`;
+      cleanItem.downloadUrl = directUrl;
+      cleanItem.directUrl = directUrl;
+      cleanItem.directDownloadUrl = directUrl;
+
       const rawIcon = cleanItem.iconUrl || cleanItem.icon || '';
       if (rawIcon && String(rawIcon).includes('github')) {
         const parts = String(rawIcon).split('/');
-        const cleanIcon = `${hostBase}/icons/${parts[parts.length - 1]}`;
-        cleanItem.iconUrl = cleanIcon;
-        if (cleanItem.icon) cleanItem.icon = cleanIcon;
+        cleanItem.iconUrl = `${hostBase}/icons/${parts[parts.length - 1]}`;
+        if (cleanItem.icon) cleanItem.icon = cleanItem.iconUrl;
+      } else if (!cleanItem.iconUrl) {
+        const iconName = lower.replace(/\.(apk|xapk)$/i, '').replace(/[^a-z0-9_]/g, '_') + '.png';
+        cleanItem.iconUrl = `${hostBase}/icons/${iconName}`;
       }
-      if (cleanItem.fileName) {
-        catalogMap.set(cleanItem.fileName.toLowerCase(), cleanItem);
-      }
-      return cleanItem;
-    });
 
-    // 3. Fusión en tiempo real con GitHub Releases (para APKs recién subidas como igames-psp.apk)
+      catalogMap.set(lower, cleanItem);
+    }
+
+    // 4. Sincronización en vivo contra GitHub Releases (SSOT de archivos binarios reales)
+    let liveReleaseSet = new Set();
     if (resReleases && resReleases.ok) {
       try {
         const releases = await resReleases.json();
@@ -333,12 +387,14 @@ async function handleSanitizedCatalog(request, currentUrl) {
               const fname = (a.name || '').trim();
               const lower = fname.toLowerCase();
               if ((lower.endsWith('.apk') || lower.endsWith('.xapk')) && !lower.startsWith('aridamotec_tv')) {
+                liveReleaseSet.add(lower);
+
                 if (!catalogMap.has(lower)) {
-                  // Nueva APK en Releases que aún no estaba en catalog.json: incorporarla de inmediato
+                  // Nueva APK en Releases que aún no estaba en el catálogo: incorporarla de inmediato
                   const cleanName = fname.replace(/\.(apk|xapk)$/i, '').replace(/[-_.]+/g, ' ').replace(/\b(v?\d+(\.\d+)+)\b/gi, '').trim() || fname;
                   const directUrl = `${hostBase}/apk/${encodeURIComponent(fname)}`;
-                  const iconName = fname.toLowerCase().replace(/\.apk$/i, '').replace(/[^a-z0-9_]/g, '_') + '.png';
-                  const newItem = {
+                  const iconName = lower.replace(/\.(apk|xapk)$/i, '').replace(/[^a-z0-9_]/g, '_') + '.png';
+                  catalogMap.set(lower, {
                     id: String(a.id || Date.now()),
                     cleanName: cleanName,
                     fileName: fname,
@@ -353,11 +409,28 @@ async function handleSanitizedCatalog(request, currentUrl) {
                     aiDescription: `${cleanName}: Aplicación oficial disponible en catálogo.`,
                     category: '🎮 Juegos',
                     author: 'Oficial'
-                  };
-                  data.catalog.unshift(newItem);
-                  catalogMap.set(lower, newItem);
+                  });
+                } else {
+                  // Actualizar tamaño exacto de bytes desde GitHub Releases
+                  const existing = catalogMap.get(lower);
+                  if (a.size) {
+                    existing.size = a.size;
+                    existing.sizeFormatted = (a.size / 1048576).toFixed(1) + ' MB';
+                  }
+                  if (a.updated_at && !existing.createdAt) {
+                    existing.createdAt = a.updated_at;
+                  }
                 }
               }
+            }
+          }
+        }
+
+        // Si tenemos un set confiable de releases en vivo, excluir las APKs que fueron borradas de GitHub Releases
+        if (liveReleaseSet.size > 0) {
+          for (const [key] of catalogMap) {
+            if (!liveReleaseSet.has(key)) {
+              catalogMap.delete(key);
             }
           }
         }
@@ -366,10 +439,21 @@ async function handleSanitizedCatalog(request, currentUrl) {
       }
     }
 
-    data.count = data.catalog.length;
-    data.total = data.catalog.length;
+    const finalCatalog = Array.from(catalogMap.values());
+    const finalData = {
+      success: true,
+      count: finalCatalog.length,
+      total: finalCatalog.length,
+      catalog: finalCatalog
+    };
 
-    return new Response(JSON.stringify(data, null, 2), {
+    // Actualizar caché perimetral fresca
+    edgeCatalogCache = {
+      data: finalData,
+      timestamp: Date.now()
+    };
+
+    return new Response(JSON.stringify(finalData, null, 2), {
       headers: {
         'Content-Type': 'application/json',
         'Server': CONFIG.SERVER_HEADER,
@@ -378,6 +462,16 @@ async function handleSanitizedCatalog(request, currentUrl) {
       }
     });
   } catch (err) {
+    if (edgeCatalogCache.data) {
+      return new Response(JSON.stringify(edgeCatalogCache.data, null, 2), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Server': CONFIG.SERVER_HEADER,
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
+        }
+      });
+    }
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
   }
 }

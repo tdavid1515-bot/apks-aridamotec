@@ -3,7 +3,7 @@ const fs = require('fs');
 const b64 = fs.readFileSync('public/logo_thumb_b64.txt', 'utf8').trim();
 
 // Cargar metadatos dinámicos de versión oficial de la App TV desde version.json
-let tvVersionName = '1.4.4';
+let tvVersionName = '1.4.6';
 let tvDownloadUrl = `https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_${tvVersionName}.apk`;
 
 try {
@@ -16,22 +16,34 @@ try {
   console.warn('Aviso: no se pudo leer version.json en build.js:', e.message);
 }
 
-// 1. COMPILAR VISTA DE INVITADOS (CATÁLOGO PÚBLICO)
-const guestTemplate = fs.readFileSync('template_guest.html', 'utf8');
-const guestOutput = guestTemplate
-  .split('{{LOGO_B64}}').join(b64)
-  .split('{{TV_APP_VERSION}}').join(tvVersionName)
-  .split('{{TV_APP_DOWNLOAD_URL}}').join(tvDownloadUrl);
+// 1. ELIMINACIÓN DE WEB VISITANTE: REDIRECCIÓN INSTANTÁNEA A WEB ADMIN
+const redirectHtml = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=admin.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARIDAMOTEC | Redirigiendo a Administración...</title>
+  <script>window.location.replace("admin.html" + window.location.hash);</script>
+</head>
+<body style="background:#05070e;color:#00e5ff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+  <p style="font-size:1.1rem;letter-spacing:0.5px;">Redirigiendo al Panel de Administración ARIDAMOTEC...</p>
+</body>
+</html>`;
 
-fs.writeFileSync('index.html', guestOutput, 'utf8');
-fs.writeFileSync('invitado.html', guestOutput, 'utf8');
-fs.writeFileSync('gas/Index.html', guestOutput, 'utf8');
-fs.writeFileSync('public/index.html', guestOutput, 'utf8');
-console.log(`Catálogo de Invitados generado (TV App v${tvVersionName}):`);
-console.log(' - index.html (GitHub Pages raíz):', guestOutput.length, 'bytes');
-console.log(' - invitado.html (GitHub Pages alias):', guestOutput.length, 'bytes');
-console.log(' - gas/Index.html (Google Apps Script):', guestOutput.length, 'bytes');
-console.log(' - public/index.html (Servidor local):', guestOutput.length, 'bytes');
+fs.writeFileSync('index.html', redirectHtml, 'utf8');
+fs.writeFileSync('public/index.html', redirectHtml, 'utf8');
+
+// Eliminar archivos obsoletos de modo invitado
+if (fs.existsSync('invitado.html')) {
+  fs.unlinkSync('invitado.html');
+  console.log(' - invitado.html eliminado.');
+}
+if (fs.existsSync('gas/Index.html')) {
+  fs.unlinkSync('gas/Index.html');
+  console.log(' - gas/Index.html eliminado.');
+}
+console.log('Web Visitante eliminada exitosamente. index.html configurado como redirección a admin.html.');
 
 // 2. COMPILAR PANEL DE ADMINISTRADOR
 const adminTemplate = fs.readFileSync('template_admin.html', 'utf8');
@@ -43,7 +55,7 @@ const adminOutput = adminTemplate
 fs.writeFileSync('admin.html', adminOutput, 'utf8');
 fs.writeFileSync('gas/Admin.html', adminOutput, 'utf8');
 fs.writeFileSync('public/admin.html', adminOutput, 'utf8');
-console.log('\nPanel de Administrador generado:');
+console.log('\nPanel de Administrador generado (TV App v' + tvVersionName + '):');
 console.log(' - admin.html (GitHub Pages):', adminOutput.length, 'bytes');
 console.log(' - gas/Admin.html (Google Apps Script):', adminOutput.length, 'bytes');
 console.log(' - public/admin.html (Servidor local):', adminOutput.length, 'bytes');

@@ -691,7 +691,7 @@ function doGet(e) {
     const act = e.parameter.action;
     let res = null;
 
-    if (act === 'guest') {
+    if (act === 'guest' || act === 'catalog') {
       res = getGuestCatalog();
     } else if (act === 'apks') {
       res = getApksList(e.parameter.pwd);
@@ -784,11 +784,11 @@ function doGet(e) {
     }
   }
 
-  const isModeAdmin = (e && e.parameter && (e.parameter.mode === 'admin' || e.parameter.view === 'admin' || e.parameter.admin !== undefined));
-  const fileToServe = isModeAdmin ? 'Admin' : 'Index';
+  // Servir exclusivamente el Panel de Administración (Web Visitante eliminada)
+  const fileToServe = 'Admin';
 
   return HtmlService.createHtmlOutputFromFile(fileToServe)
-    .setTitle(isModeAdmin ? 'ARIDAMOTEC | Panel de Administración' : 'ARIDAMOTEC | Catálogo Oficial de Aplicaciones')
+    .setTitle('ARIDAMOTEC | Panel de Administración')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
@@ -1102,12 +1102,41 @@ function getUnifiedCatalogList() {
     catalog = SEED_APKS.slice();
   }
 
-  // Filtrado estricto en tiempo real contra los archivos existentes en GitHub Releases (SSOT)
+  // Sincronización bidireccional en tiempo real contra GitHub Releases (SSOT)
   try {
     const liveFiles = getRepositoryFilesList(false);
     if (liveFiles && liveFiles.length > 0) {
       const liveSet = new Set(liveFiles.map(f => (f.name || f.fileName || '').toLowerCase()));
+      // 1. Filtrar los que ya no existen en GitHub Releases
       catalog = catalog.filter(item => item.fileName && liveSet.has(item.fileName.toLowerCase()));
+
+      // 2. Incorporar de inmediato los recién subidos a GitHub Releases que aún no estén en catalog
+      const catalogSet = new Set(catalog.map(item => (item.fileName || '').toLowerCase()));
+      liveFiles.forEach(f => {
+        const fname = (f.name || f.fileName || '').trim();
+        const flower = fname.toLowerCase();
+        if ((flower.endsWith('.apk') || flower.endsWith('.xapk')) && !flower.startsWith('aridamotec_tv') && !catalogSet.has(flower)) {
+          const cleanName = cleanApkName(fname);
+          const iconName = flower.replace(/\.(apk|xapk)$/i, '').replace(/[^a-z0-9_]/g, '_') + '.png';
+          catalog.unshift({
+            id: String(f.id || Date.now()),
+            cleanName: cleanName,
+            fileName: fname,
+            iconUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/icons/' + iconName,
+            directDownloadUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fname),
+            directUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fname),
+            downloadUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/' + encodeURIComponent(fname),
+            size: f.size || 0,
+            sizeFormatted: f.size ? (f.size / 1048576).toFixed(1) + ' MB' : '0 MB',
+            status: 'active',
+            createdAt: f.updated_at || new Date().toISOString(),
+            aiDescription: cleanName + ': Aplicación oficial disponible en catálogo.',
+            category: classifyCategory(cleanName, fname),
+            author: 'Oficial'
+          });
+          catalogSet.add(flower);
+        }
+      });
     }
   } catch (errLive) {
     Logger.log('Aviso: Falló filtrado live de releases en getUnifiedCatalogList: ' + errLive);
