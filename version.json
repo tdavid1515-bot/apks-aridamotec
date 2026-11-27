@@ -1,10 +1,10 @@
 {
   "success": true,
-  "latestVersionCode": 35,
-  "latestVersionName": "1.5.0",
-  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.0.apk",
-  "changelog": "• Control remoto de aplicaciones por dispositivo individual (Bloqueo en Tienda y Suspensión de Apps instaladas).\n• Barra de controles optimizada y compacta en Panel de Administración.\n• Corrección integral de conectividad y sincronización 24/7.\n• Optimizaciones generales de estabilidad y funcionamiento.",
+  "latestVersionCode": 36,
+  "latestVersionName": "1.5.1",
+  "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.1.apk",
+  "changelog": "• Refresco automático en tiempo real en segundo plano sin reiniciar la aplicación.\n• Sincronización instantánea de aplicaciones habilitadas, deshabilitadas y en mantenimiento.\n• Mantenimiento continuo del foco del control remoto en pantalla.\n• Optimizaciones generales de estabilidad y conectividad.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-24T13:10:20Z"
+  "updatedAt": "2026-11-26T22:20:00Z"
 }

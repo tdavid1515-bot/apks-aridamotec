@@ -2356,7 +2356,7 @@
 
       <div id="adminHeaderBtns" class="header-btns">
         <button onclick="downloadLatestTvApp()" id="btnDownloadTvApp" class="btn-header" style="border-color:rgba(0,229,255,0.45); background:rgba(0,229,255,0.12); color:#00e5ff;" title="Descargar última versión oficial de ARIDAMOTEC TV APK (para ADB / TV Box)">
-          📺 App TV <span id="headerTvAppVer">v1.5.0</span> ⬇️
+          📺 App TV <span id="headerTvAppVer">v1.5.1</span> ⬇️
         </button>
         <button onclick="triggerSync()" id="syncBtn" class="btn-header" title="Sincronizar con Repositorio GitHub">
           <span id="syncIconText">🔄</span> Sincronizar
@@ -3889,8 +3889,8 @@
     }
 
     let latestTvAppInfo = {
-      version: '1.5.0',
-      downloadUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.0.apk'
+      version: '1.5.1',
+      downloadUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.1.apk'
     };
 
     function refreshLatestTvAppInfo() {
@@ -3923,7 +3923,7 @@
         .catch(() => {})
         .finally(() => {
           if (btn) btn.disabled = false;
-          const url = latestTvAppInfo.downloadUrl || 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.0.apk';
+          const url = latestTvAppInfo.downloadUrl || 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.1.apk';
           showToast('⬇️ Descargando ARIDAMOTEC TV v' + latestTvAppInfo.version + '...');
           const a = document.createElement('a');
           a.href = url;
