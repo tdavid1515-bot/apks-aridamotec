@@ -2264,11 +2264,15 @@
         gap: 6px !important;
         flex-shrink: 0 !important;
       }
+      #btnDevAppsRefresh #devAppsRefreshText {
+        display: none !important;
+      }
       #btnDevAppsRefresh {
         padding: 8px 12px !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
         min-height: 38px !important;
         border-radius: 9px !important;
+        flex-shrink: 0 !important;
       }
       .dev-apps-desktop-close {
         display: none !important;
@@ -2341,7 +2345,7 @@
         gap: 0 !important;
       }
       .dev-apps-col-installed, .dev-apps-col-catalog {
-        flex: 1 !important;
+        flex: 1 1 auto !important;
         min-height: 0 !important;
         height: 100% !important;
         max-height: 100% !important;
@@ -2351,6 +2355,23 @@
         border: none !important;
         background: transparent !important;
         overflow: hidden !important;
+      }
+      .dev-apps-col-installed.mobile-tab-hidden,
+      .dev-apps-col-catalog.mobile-tab-hidden {
+        display: none !important;
+      }
+      #catStatusFilterRow {
+        display: flex !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 2px 0 4px 0 !important;
+        flex-shrink: 0 !important;
+      }
+      #catStatusFilterRow button {
+        flex-shrink: 0 !important;
+        min-height: 28px !important;
       }
       #devAppsSearchInput, #catAppsSearchInput {
         min-height: 40px !important;
@@ -2856,7 +2877,7 @@
               <span style="font-size:13.5px; font-weight:800; color:#fff;">Apps en TV Box</span>
               <span id="devAppsBadgeCount" style="padding:2px 8px; border-radius:8px; background:rgba(239,68,68,0.15); color:#f87171; font-weight:700; font-size:11px;">0</span>
             </div>
-            <label style="display:flex; align-items:center; gap:5px; font-size:11.5px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+            <label style="display:flex; align-items:center; gap:5px; font-size:11px; color:#cbd5e1; cursor:pointer; font-weight:600; white-space:nowrap; flex-shrink:0;">
               <input type="checkbox" id="chkSelectAllInstalled" onchange="toggleSelectAllInstalled(this.checked)" style="accent-color:#ef4444; cursor:pointer;">
               <span>Seleccionar todas</span>
             </label>
@@ -2890,7 +2911,7 @@
               <span style="font-size:13.5px; font-weight:800; color:var(--accent-cyan);">Catálogo Oficial</span>
               <span id="catAppsBadgeCount" style="padding:2px 8px; border-radius:8px; background:rgba(0,229,255,0.15); color:var(--accent-cyan); font-weight:700; font-size:11px;">47</span>
             </div>
-            <label style="display:flex; align-items:center; gap:5px; font-size:11.5px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+            <label style="display:flex; align-items:center; gap:5px; font-size:11px; color:#cbd5e1; cursor:pointer; font-weight:600; white-space:nowrap; flex-shrink:0;">
               <input type="checkbox" id="chkSelectAllCatalog" onchange="toggleSelectAllCatalog(this.checked)" style="accent-color:var(--accent-cyan); cursor:pointer;">
               <span>Seleccionar disponibles</span>
             </label>
@@ -6598,19 +6619,19 @@
       const btnCat = document.getElementById('devAppsMobileTabCatalog');
       if (window.innerWidth <= 900) {
         if (tab === 'installed') {
-          if (colInst) colInst.style.display = 'flex';
-          if (colCat) colCat.style.display = 'none';
+          if (colInst) { colInst.classList.remove('mobile-tab-hidden'); colInst.style.display = 'flex'; }
+          if (colCat) { colCat.classList.add('mobile-tab-hidden'); colCat.style.display = 'none'; }
           if (btnInst) btnInst.classList.add('active');
           if (btnCat) btnCat.classList.remove('active');
         } else {
-          if (colInst) colInst.style.display = 'none';
-          if (colCat) colCat.style.display = 'flex';
+          if (colInst) { colInst.classList.add('mobile-tab-hidden'); colInst.style.display = 'none'; }
+          if (colCat) { colCat.classList.remove('mobile-tab-hidden'); colCat.style.display = 'flex'; }
           if (btnInst) btnInst.classList.remove('active');
           if (btnCat) btnCat.classList.add('active');
         }
       } else {
-        if (colInst) colInst.style.display = 'flex';
-        if (colCat) colCat.style.display = 'flex';
+        if (colInst) { colInst.classList.remove('mobile-tab-hidden'); colInst.style.display = 'flex'; }
+        if (colCat) { colCat.classList.remove('mobile-tab-hidden'); colCat.style.display = 'flex'; }
       }
     }
 
