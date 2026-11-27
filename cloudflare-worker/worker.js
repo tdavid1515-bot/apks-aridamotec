@@ -289,6 +289,88 @@ let edgeCatalogCache = {
 };
 
 /**
+ * Obtiene la lista de releases y assets desde GitHub API, con respaldo automático
+ * al endpoint HTML expanded_assets cuando la IP compartida de Cloudflare alcanza el rate-limit de api.github.com.
+ */
+async function fetchGitHubReleasesReliable() {
+  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
+  try {
+    const res = await fetch(originReleasesUrl, {
+      headers: {
+        'User-Agent': 'Aridamotec-CDN/1.0',
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      cf: { cacheTtl: 0, cacheEverything: false }
+    });
+    if (res && res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) return data;
+    }
+  } catch (e) {
+    console.warn('Aviso: GitHub API releases falló, usando fallback expanded_assets:', e);
+  }
+
+  // Fallback sin límite de rate-limit: expanded_assets HTML de GitHub Releases
+  try {
+    const expandedUrl = `https://github.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases/expanded_assets/${CONFIG.RELEASE_TAG}?t=${Date.now()}`;
+    const resExp = await fetch(expandedUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Aridamotec-CDN/1.0)' },
+      cf: { cacheTtl: 0, cacheEverything: false }
+    });
+    if (!resExp || !resExp.ok) return null;
+    const html = await resExp.text();
+    const assets = [];
+    const liRegex = /<li[^>]*>([\s\S]*?)<\/li>/gi;
+    let liMatch;
+    while ((liMatch = liRegex.exec(html)) !== null) {
+      const block = liMatch[1];
+      const hrefMatch = block.match(/href="\/[^/]+\/[^/]+\/releases\/download\/[^/]+\/([^"]+)"/);
+      if (!hrefMatch) continue;
+      const name = decodeURIComponent(hrefMatch[1]).trim();
+      if (!name) continue;
+
+      let sizeBytes = 0;
+      const sizeMatch = block.match(/>([\d.]+)\s*(Bytes|KB|MB|GB)<\/span>/i);
+      if (sizeMatch) {
+        const val = parseFloat(sizeMatch[1]);
+        const unit = sizeMatch[2].toUpperCase();
+        if (unit === 'GB') sizeBytes = Math.round(val * 1024 * 1024 * 1024);
+        else if (unit === 'MB') sizeBytes = Math.round(val * 1024 * 1024);
+        else if (unit === 'KB') sizeBytes = Math.round(val * 1024);
+        else sizeBytes = Math.round(val);
+      }
+
+      const timeMatch = block.match(/datetime="([^"]+)"/);
+      const updatedAt = timeMatch ? timeMatch[1] : new Date().toISOString();
+
+      // Generar ID numérico determinista a partir del nombre para evitar colisiones
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
+      }
+      assets.push({
+        id: Math.abs(hash) + 100000000,
+        name: name,
+        size: sizeBytes,
+        updated_at: updatedAt
+      });
+    }
+    if (assets.length > 0) {
+      return [{
+        id: 1,
+        tag_name: CONFIG.RELEASE_TAG,
+        name: CONFIG.RELEASE_TAG,
+        published_at: assets[0].updated_at,
+        assets: assets
+      }];
+    }
+  } catch (eExp) {
+    console.warn('Error en fallback expanded_assets:', eExp);
+  }
+  return null;
+}
+
+/**
  * Retorna el catálogo sanitizado con URLs enmascaradas, sincronización en tiempo real
  * con Google Sheets (descripciones y categorías editadas en Web Admin) y GitHub Releases.
  */
@@ -309,23 +391,16 @@ async function handleSanitizedCatalog(request, currentUrl) {
   }
 
   const originGasUrl = `${CONFIG.GAS_API_URL}?action=guest&_t=${now}`;
-  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
   const originCatalogUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/${CONFIG.DEFAULT_BRANCH}/catalog.json?t=${now}`;
 
   try {
-    // Consultar GAS (Google Sheets SSOT), GitHub Releases y catalog.json en paralelo
-    const [resGas, resReleases, resCatalog] = await Promise.all([
+    // Consultar GAS (Google Sheets SSOT), GitHub Releases (con fallback sin rate-limit) y catalog.json en paralelo
+    const [resGas, releasesData, resCatalog] = await Promise.all([
       fetch(originGasUrl, {
         headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
         cf: { cacheTtl: 0, cacheEverything: false }
       }).catch(e => { console.warn('Aviso: GAS timeout o error:', e); return null; }),
-      fetch(originReleasesUrl, {
-        headers: {
-          'User-Agent': 'Aridamotec-CDN/1.0',
-          'Accept': 'application/vnd.github.v3+json'
-        },
-        cf: { cacheTtl: 0, cacheEverything: false }
-      }).catch(e => { console.warn('Aviso: Releases error:', e); return null; }),
+      fetchGitHubReleasesReliable().catch(e => { console.warn('Aviso: Releases error:', e); return null; }),
       fetch(originCatalogUrl, {
         headers: { 'User-Agent': 'Aridamotec-CDN/1.0' },
         cf: { cacheTtl: 0, cacheEverything: false }
@@ -388,10 +463,9 @@ async function handleSanitizedCatalog(request, currentUrl) {
 
     // 4. Sincronización en vivo contra GitHub Releases (SSOT de archivos binarios reales)
     let liveReleaseSet = new Set();
-    if (resReleases && resReleases.ok) {
+    if (releasesData && Array.isArray(releasesData) && releasesData.length > 0) {
       try {
-        const releases = await resReleases.json();
-        const releaseList = Array.isArray(releases) ? releases : [releases];
+        const releaseList = releasesData;
         for (const rel of releaseList) {
           if (rel && Array.isArray(rel.assets)) {
             for (const a of rel.assets) {
@@ -540,22 +614,13 @@ async function handleVersionCheck(request) {
  * Sincronización en tiempo real directo con GitHub Releases API
  */
 async function handleSanitizedReleases(request, currentUrl) {
-  const originReleasesUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/releases`;
-  
   try {
-    const res = await fetch(originReleasesUrl, {
-      headers: {
-        'User-Agent': 'Aridamotec-CDN/1.0',
-        'Accept': 'application/vnd.github.v3+json'
-      },
-      cf: { cacheTtl: 0, cacheEverything: false }
-    });
+    const releases = await fetchGitHubReleasesReliable();
 
-    if (!res.ok) {
+    if (!releases) {
       return new Response(JSON.stringify({ error: 'Error consultando releases' }), { status: 502 });
     }
 
-    const releases = await res.json();
     const hostBase = `${currentUrl.protocol}//${currentUrl.host}`;
 
     const sanitized = (Array.isArray(releases) ? releases : [releases]).map(rel => {
