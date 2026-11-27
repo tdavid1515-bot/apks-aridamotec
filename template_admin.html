@@ -323,23 +323,23 @@
     .header-top {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 7px 24px;
+      padding: 4px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .brand-logo-img {
-      height: 30px;
-      width: 30px;
-      border-radius: 7px;
+      height: 24px;
+      width: 24px;
+      border-radius: 6px;
       display: block;
-      filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4));
+      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.4));
     }
     .brand-info {
       display: flex;
@@ -348,41 +348,41 @@
     .brand-badge-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .badge-247 {
-      font-size: 9px;
+      font-size: 8.5px;
       font-weight: 800;
       color: #34d399;
       background: rgba(16, 185, 129, 0.15);
       border: 1px solid rgba(16, 185, 129, 0.35);
-      padding: 2px 7px;
+      padding: 1px 6px;
       border-radius: 99px;
       letter-spacing: 0.5px;
     }
     .brand-subtitle {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
-      margin-top: 1px;
+      margin-top: 0px;
     }
 
     .header-btns {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .btn-header {
       background: #0f172a;
       border: 1px solid var(--border-cyan);
       color: #e2e8f0;
-      border-radius: 8px;
-      padding: 5px 10px;
-      font-size: 11.5px;
+      border-radius: 7px;
+      padding: 3px 8px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: all 0.2s;
     }
     .btn-header:hover {
@@ -395,27 +395,27 @@
     .controls-nav {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 5px 24px 8px;
+      padding: 3px 20px 4px;
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
       justify-content: flex-start;
-      gap: 12px;
+      gap: 8px;
       position: relative;
     }
     .tabs-group {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-shrink: 0;
     }
 
     .search-box {
       position: relative;
-      flex: 0 0 320px;
-      width: 320px;
-      min-width: 240px;
-      max-width: 320px;
+      flex: 0 0 280px;
+      width: 280px;
+      min-width: 200px;
+      max-width: 300px;
     }
     body.guest-mode .search-box {
       flex: 1 1 540px;
@@ -433,18 +433,19 @@
       display: none !important;
     }
     .sticky-header-container .categories-bar {
-      padding: 4px 24px 7px;
-      gap: 6px;
+      padding: 2px 20px 4px;
+      gap: 4px;
     }
     .sticky-header-container .cat-chip {
-      padding: 4px 10px;
-      font-size: 11.5px;
+      padding: 2px 8px;
+      font-size: 10.5px;
+      border-radius: 6px;
     }
     .sticky-header-container .banner-status {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 5px 24px;
-      font-size: 11.5px;
+      padding: 3px 20px;
+      font-size: 10.5px;
       border-radius: 0;
       border-left: none;
       border-right: none;
@@ -455,16 +456,16 @@
     .sticky-header-container .batch-toolbar {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 6px 24px 7px;
+      padding: 3px 20px 4px;
       border-radius: 0;
       border: none;
       background: transparent;
-      gap: 8px;
+      gap: 6px;
     }
     .sticky-header-container .btn-batch {
-      padding: 4px 10px;
-      font-size: 11.5px;
-      border-radius: 7px;
+      padding: 3px 8px;
+      font-size: 10.5px;
+      border-radius: 6px;
     }
     .search-input {
       width: 100%;
@@ -2910,6 +2911,20 @@
                   '&cmdUrl=' + encodeURIComponent(cmd.downloadUrl || '');
           this._call(GAS_URL + '?action=sendRemoteCommand&pwd=' + encodeURIComponent(pwd) + q);
         }
+        toggleApkStatus(pwd, fileId, status, fileName) {
+          let u = GAS_URL + '?action=toggleApkStatus&pwd=' + encodeURIComponent(pwd) + '&fileId=' + encodeURIComponent(fileId || '') + '&status=' + encodeURIComponent(status || '');
+          if (fileName) u += '&fileName=' + encodeURIComponent(fileName);
+          this._call(u);
+        }
+        batchToggleApkStatus(pwd, items, status) {
+          let itemsStr = typeof items === 'string' ? items : JSON.stringify(items);
+          let u = GAS_URL + '?action=batchToggleApkStatus&pwd=' + encodeURIComponent(pwd) + '&items=' + encodeURIComponent(itemsStr) + '&status=' + encodeURIComponent(status || '');
+          this._call(u);
+        }
+        toggleDeviceCatalogRestriction(pwd, mac, fileName, block) {
+          let u = GAS_URL + '?action=toggleDeviceCatalogRestriction&pwd=' + encodeURIComponent(pwd) + '&mac=' + encodeURIComponent(mac || '') + '&fileName=' + encodeURIComponent(fileName || '') + '&block=' + encodeURIComponent(block ? 'true' : 'false');
+          this._call(u);
+        }
       }
       return new GasCallAdapter();
     }
@@ -3955,7 +3970,7 @@
       const gas = getGas();
       if (gas && typeof gas.withSuccessHandler === 'function') {
         try {
-          const h = gas.withSuccessHandler(onDone).withFailureHandler(() => onDone({ success: false, error: 'Error de conexión GAS' }));
+          const h = gas.withSuccessHandler(onDone).withFailureHandler(err => onDone({ success: false, error: (err && err.message) ? err.message : 'Error de conexión GAS' }));
           if (actionName === 'toggleApkStatus' && typeof h.toggleApkStatus === 'function') {
             h.toggleApkStatus(savedPwd, payloadParams.fileId, payloadParams.status, payloadParams.fileName);
             return;
@@ -3967,28 +3982,21 @@
         } catch (e) {}
       }
 
+      let qs;
       if (actionName === 'batchToggleApkStatus') {
-        fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'batchToggleApkStatus',
-            pwd: savedPwd || '',
-            items: payloadParams.items,
-            status: payloadParams.status
-          })
-        })
-          .then(r => r.json())
-          .then(onDone)
-          .catch(() => onDone({ success: false, error: 'Error de red' }));
-        return;
+        const itemsStr = typeof payloadParams.items === 'string' ? payloadParams.items : JSON.stringify(payloadParams.items);
+        qs = new URLSearchParams({ action: actionName, pwd: savedPwd || '', items: itemsStr, status: payloadParams.status || '' });
+      } else {
+        qs = new URLSearchParams({ action: actionName, pwd: savedPwd || '', ...payloadParams });
       }
 
-      const qs = new URLSearchParams({ action: actionName, pwd: savedPwd || '', ...payloadParams });
       fetch(GAS_URL + '?' + qs.toString())
-        .then(r => r.json())
+        .then(r => {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
         .then(onDone)
-        .catch(() => onDone({ success: false, error: 'Error de red' }));
+        .catch(err => onDone({ success: false, error: 'Error de red: ' + (err.message || err) }));
     }
 
     function toggleSingleApkStatus(fileId, fileName, nextStatus, btnEl) {
@@ -5354,32 +5362,35 @@
       }
       showToast((suspend ? '🔒 Suspendiendo ' : '🔓 Habilitando ') + pkg + ' en ' + mac + '...');
 
-      const cmd = { action: actionName, packageName: pkg };
-      fetch(GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          action: 'sendRemoteCommand',
-          pwd: savedPwd || '',
-          mac: mac,
-          command: cmd
-        })
-      })
-        .then(r => r.json())
-        .then(res => {
-          if (res && res.success) {
-            showToast((suspend ? '🔒 Orden enviada: Aplicación suspendida' : '🔓 Orden enviada: Aplicación habilitada') + ' en el TV Box.');
-            const match = currentDeviceApps.find(x => x.pkg === pkg);
-            if (match) match.suspended = suspend;
-            renderDeviceAppsList(currentDeviceApps);
-          } else {
-            showToast('❌ ' + (res && res.error ? res.error : 'No se pudo enviar la orden remota'));
-            if (btnEl) {
-              btnEl.disabled = false;
-              btnEl.textContent = suspend ? '🔒 Suspender' : '🔓 Habilitar';
-            }
+      const cmd = { action: actionName, packageName: pkg, suspend: suspend };
+      const onDone = (res) => {
+        if (res && res.success) {
+          showToast((suspend ? '🔒 Orden enviada: Aplicación suspendida' : '🔓 Orden enviada: Aplicación habilitada') + ' en el TV Box.');
+          const match = currentDeviceApps.find(x => x.pkg === pkg);
+          if (match) match.suspended = suspend;
+          renderDeviceAppsList(currentDeviceApps);
+        } else {
+          showToast('❌ ' + (res && res.error ? res.error : 'No se pudo enviar la orden remota'));
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = suspend ? '🔒 Suspender' : '🔓 Habilitar';
           }
-        })
+        }
+      };
+
+      const gas = getGas();
+      if (gas && typeof gas.withSuccessHandler === 'function') {
+        gas.withSuccessHandler(onDone).withFailureHandler(() => onDone({ success: false, error: 'Error de conexión GAS' })).sendRemoteCommand(savedPwd, mac, cmd);
+        return;
+      }
+
+      let q = '&mac=' + encodeURIComponent(mac) +
+              '&cmd=' + encodeURIComponent(JSON.stringify(cmd)) +
+              '&cmdAction=' + encodeURIComponent(cmd.action || '') +
+              '&cmdPackage=' + encodeURIComponent(cmd.packageName || '');
+      fetch(GAS_URL + '?action=sendRemoteCommand&pwd=' + encodeURIComponent(savedPwd || '') + q)
+        .then(r => r.json())
+        .then(onDone)
         .catch(() => {
           showToast('❌ Error de conexión al enviar orden remota');
           if (btnEl) {
@@ -5721,33 +5732,31 @@
       }
       showToast((shouldBlock ? '🔒 Bloqueando ' : '✅ Permitiendo ') + fileName + ' en ' + mac + '...');
 
-      fetch(GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          action: 'toggleDeviceCatalogRestriction',
-          pwd: savedPwd || '',
-          mac: mac,
-          fileName: fileName,
-          block: shouldBlock
-        })
-      })
-        .then(r => r.json())
-        .then(res => {
-          if (res && res.success) {
-            showToast((shouldBlock ? '🔒 Bloqueada en tienda de esta TV: ' : '✅ Permitida en tienda de esta TV: ') + fileName);
-            currentDevice.disabledApks = res.disabledApks || [];
-            const dMatch = devicesData.find(x => x.mac === mac);
-            if (dMatch) dMatch.disabledApks = currentDevice.disabledApks;
-            filterCatalogApps();
-          } else {
-            showToast('❌ ' + (res && res.error ? res.error : 'No se pudo actualizar la restricción'));
-            if (btnEl) {
-              btnEl.disabled = false;
-              btnEl.textContent = shouldBlock ? '🔒 Bloquear en TV' : '✅ Permitir';
-            }
+      const onDone = (res) => {
+        if (res && res.success) {
+          showToast((shouldBlock ? '🔒 Bloqueada en tienda de esta TV: ' : '✅ Permitida en tienda de esta TV: ') + fileName);
+          currentDevice.disabledApks = res.disabledApks || [];
+          const dMatch = devicesData.find(x => x.mac === mac);
+          if (dMatch) dMatch.disabledApks = currentDevice.disabledApks;
+          filterCatalogApps();
+        } else {
+          showToast('❌ ' + (res && res.error ? res.error : 'No se pudo actualizar la restricción'));
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = shouldBlock ? '🔒 Bloquear en TV' : '✅ Permitir';
           }
-        })
+        }
+      };
+
+      const gas = getGas();
+      if (gas && typeof gas.withSuccessHandler === 'function') {
+        gas.withSuccessHandler(onDone).withFailureHandler(() => onDone({ success: false, error: 'Error de conexión GAS' })).toggleDeviceCatalogRestriction(savedPwd, mac, fileName, shouldBlock);
+        return;
+      }
+
+      fetch(GAS_URL + '?action=toggleDeviceCatalogRestriction&pwd=' + encodeURIComponent(savedPwd || '') + '&mac=' + encodeURIComponent(mac) + '&fileName=' + encodeURIComponent(fileName) + '&block=' + encodeURIComponent(shouldBlock ? 'true' : 'false'))
+        .then(r => r.json())
+        .then(onDone)
         .catch(() => {
           showToast('❌ Error de conexión al actualizar restricción');
           if (btnEl) {
