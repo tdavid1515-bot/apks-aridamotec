@@ -5316,7 +5316,16 @@
         const name = escapeHtml(a.name || a.pkg || 'App');
         const pkg = escapeHtml(a.pkg || '');
         const ver = escapeHtml(a.ver || 'v?.?');
+        const isSuspended = !!a.suspended;
         const isChecked = selectedInstalledApps.has(pkg) ? 'checked' : '';
+
+        const statusBadge = isSuspended
+          ? `<span style="font-size:10px; font-weight:800; padding:2px 7px; border-radius:6px; background:rgba(239,68,68,0.18); color:#f87171; border:1px solid rgba(239,68,68,0.35); flex-shrink:0;">🔒 Suspendida</span>`
+          : `<span style="font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px; background:rgba(34,197,94,0.14); color:#4ade80; border:1px solid rgba(34,197,94,0.3); flex-shrink:0;">✅ Activa</span>`;
+
+        const actionBtn = isSuspended
+          ? `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleSuspendInstalledApp('${escapeJs(pkg)}', false, this);" style="background:#10b981; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; padding:5px 10px; cursor:pointer; flex-shrink:0; transition:all 0.2s;" title="Reactivar acceso a esta aplicación en el televisor">🔓 Habilitar</button>`
+          : `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleSuspendInstalledApp('${escapeJs(pkg)}', true, this);" style="background:rgba(239,68,68,0.18); color:#fca5a5; border:1px solid rgba(239,68,68,0.4); border-radius:6px; font-size:11px; font-weight:700; padding:5px 10px; cursor:pointer; flex-shrink:0; transition:all 0.2s;" title="Suspender y bloquear uso de esta app en el televisor">🔒 Suspender</button>`;
 
         html += `
           <label style="display:flex; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:8px 10px; cursor:pointer; gap:10px; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
@@ -5325,12 +5334,59 @@
               <div style="font-size:12.5px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
               <div style="font-size:10.5px; color:#94a3b8; font-family:monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${pkg}</div>
             </div>
+            ${statusBadge}
             <span style="font-size:10.5px; font-weight:700; padding:2px 6px; border-radius:5px; background:rgba(255,255,255,0.08); color:#cbd5e1; flex-shrink:0;">${ver}</span>
+            ${actionBtn}
           </label>
         `;
       });
       container.innerHTML = html;
       updateInstalledSelectionUI();
+    }
+
+    function toggleSuspendInstalledApp(pkg, suspend, btnEl) {
+      if (!currentDevice || !currentDevice.mac || !pkg) return;
+      const mac = currentDevice.mac;
+      const actionName = suspend ? 'suspend_app' : 'unsuspend_app';
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = '⏳...';
+      }
+      showToast((suspend ? '🔒 Suspendiendo ' : '🔓 Habilitando ') + pkg + ' en ' + mac + '...');
+
+      const cmd = { action: actionName, packageName: pkg };
+      fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'sendRemoteCommand',
+          pwd: savedPwd || '',
+          mac: mac,
+          command: cmd
+        })
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (res && res.success) {
+            showToast((suspend ? '🔒 Orden enviada: Aplicación suspendida' : '🔓 Orden enviada: Aplicación habilitada') + ' en el TV Box.');
+            const match = currentDeviceApps.find(x => x.pkg === pkg);
+            if (match) match.suspended = suspend;
+            renderDeviceAppsList(currentDeviceApps);
+          } else {
+            showToast('❌ ' + (res && res.error ? res.error : 'No se pudo enviar la orden remota'));
+            if (btnEl) {
+              btnEl.disabled = false;
+              btnEl.textContent = suspend ? '🔒 Suspender' : '🔓 Habilitar';
+            }
+          }
+        })
+        .catch(() => {
+          showToast('❌ Error de conexión al enviar orden remota');
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = suspend ? '🔒 Suspender' : '🔓 Habilitar';
+          }
+        });
     }
 
     function toggleSelectInstalledApp(pkg, isChecked) {
@@ -5619,6 +5675,21 @@
           detailHtml = `<span style="color:#94a3b8;">• v${st.meta.versionName || '1.0'}</span>`;
         }
 
+        const fLower = String(item.fileName || '').trim().toLowerCase();
+        const devDisabled = (currentDevice && Array.isArray(currentDevice.disabledApks))
+          ? currentDevice.disabledApks.map(x => String(x).toLowerCase())
+          : [];
+        const isDeviceBlocked = devDisabled.includes(fLower);
+
+        let devRestrictionBadge = '';
+        let devRestrictionBtn = '';
+        if (isDeviceBlocked) {
+          devRestrictionBadge = `<span style="font-size:10px; font-weight:800; padding:2px 7px; border-radius:6px; background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.4); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔒 Bloqueada en esta TV</span>`;
+          devRestrictionBtn = `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleDeviceCatalogAppRestriction('${escapeJs(item.fileName)}', false, this);" style="background:#10b981; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; padding:4px 8px; cursor:pointer; flex-shrink:0; transition:all 0.2s;" title="Permitir en la tienda de este TV Box">✅ Permitir</button>`;
+        } else {
+          devRestrictionBtn = `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleDeviceCatalogAppRestriction('${escapeJs(item.fileName)}', true, this);" style="background:rgba(239,68,68,0.15); color:#fca5a5; border:1px solid rgba(239,68,68,0.35); border-radius:6px; font-size:11px; font-weight:700; padding:4px 8px; cursor:pointer; flex-shrink:0; transition:all 0.2s;" title="Bloquear solo en este TV Box (En Mantenimiento)">🔒 Bloquear en TV</button>`;
+        }
+
         html += `
           <label style="display:flex; align-items:center; background:${cardBg}; border:1px solid ${cardBorder}; border-radius:10px; padding:8px 10px; cursor:pointer; gap:10px; transition:all 0.2s;" onmouseover="this.style.background='${cardHover}'" onmouseout="this.style.background='${cardBg}'">
             <input type="checkbox" ${isChecked} onchange="toggleSelectCatalogApp('${escapeJs(id)}', this.checked)" style="accent-color:var(--accent-cyan); width:16px; height:16px; cursor:pointer; flex-shrink:0;">
@@ -5629,14 +5700,61 @@
                 <span>•</span>
                 <span style="color:var(--accent-cyan); font-weight:600;">${sizeStr}</span>
                 ${detailHtml}
+                ${devRestrictionBadge}
               </div>
             </div>
             ${statusPill}
+            ${devRestrictionBtn}
           </label>
         `;
       });
       container.innerHTML = html;
       updateStorageMetrics();
+    }
+
+    function toggleDeviceCatalogAppRestriction(fileName, shouldBlock, btnEl) {
+      if (!currentDevice || !currentDevice.mac || !fileName) return;
+      const mac = currentDevice.mac;
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = '⏳...';
+      }
+      showToast((shouldBlock ? '🔒 Bloqueando ' : '✅ Permitiendo ') + fileName + ' en ' + mac + '...');
+
+      fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'toggleDeviceCatalogRestriction',
+          pwd: savedPwd || '',
+          mac: mac,
+          fileName: fileName,
+          block: shouldBlock
+        })
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (res && res.success) {
+            showToast((shouldBlock ? '🔒 Bloqueada en tienda de esta TV: ' : '✅ Permitida en tienda de esta TV: ') + fileName);
+            currentDevice.disabledApks = res.disabledApks || [];
+            const dMatch = devicesData.find(x => x.mac === mac);
+            if (dMatch) dMatch.disabledApks = currentDevice.disabledApks;
+            filterCatalogApps();
+          } else {
+            showToast('❌ ' + (res && res.error ? res.error : 'No se pudo actualizar la restricción'));
+            if (btnEl) {
+              btnEl.disabled = false;
+              btnEl.textContent = shouldBlock ? '🔒 Bloquear en TV' : '✅ Permitir';
+            }
+          }
+        })
+        .catch(() => {
+          showToast('❌ Error de conexión al actualizar restricción');
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = shouldBlock ? '🔒 Bloquear en TV' : '✅ Permitir';
+          }
+        });
     }
 
     function toggleSelectCatalogApp(id, isChecked) {

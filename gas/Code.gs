@@ -676,6 +676,26 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 
+  // Restricción de catálogo por dispositivo MAC específico
+  if (postData && (postData.action === 'toggleDeviceCatalogRestriction' || postData.act === 'toggleDeviceCatalogRestriction')) {
+    const res = toggleDeviceCatalogRestriction(postData.pwd, postData.mac, postData.fileName, postData.block);
+    return ContentService.createTextOutput(JSON.stringify(res))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Enviar orden remota vía POST
+  if (postData && (postData.action === 'sendRemoteCommand' || postData.act === 'sendRemoteCommand')) {
+    const cmd = postData.command || postData.cmdObj || {
+      action: postData.cmdAction || postData.actionName,
+      packageName: postData.cmdPackage || postData.packageName,
+      fileName: postData.cmdFile || postData.fileName,
+      downloadUrl: postData.cmdUrl || postData.downloadUrl
+    };
+    const res = sendRemoteCommand(postData.pwd, postData.mac, cmd);
+    return ContentService.createTextOutput(JSON.stringify(res))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   // Manejar Webhooks de GitHub (Releases, assets, push o ping)
   if (postData) {
     Logger.log('GitHub Webhook recibido en doPost. Acción: ' + (postData.action || 'evento'));
@@ -797,6 +817,8 @@ function doGet(e) {
       res = saveOrUpdateMac(e.parameter.pwd, e.parameter);
     } else if (act === 'toggleMac') {
       res = toggleMacStatus(e.parameter.pwd, e.parameter.mac, e.parameter.status);
+    } else if (act === 'toggleDeviceCatalogRestriction') {
+      res = toggleDeviceCatalogRestriction(e.parameter.pwd, e.parameter.mac, e.parameter.fileName, e.parameter.block);
     } else if (act === 'deleteMac') {
       res = deleteMacDevice(e.parameter.pwd, e.parameter.mac);
     } else if (act === 'recoveryRequest') {
@@ -2314,12 +2336,13 @@ function getOrCreateMacSheet() {
       'Apps_Instaladas',
       'Espacio_Libre_MB',
       'Espacio_Total_MB',
-      'Comando_Pendiente'
+      'Comando_Pendiente',
+      'Apks_Deshabilitadas_JSON'
     ]);
-    sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     sheet.setFrozenRows(1);
   } else {
-    // Si la hoja ya existe, asegurar cabeceras de columnas 8 a 11
+    // Si la hoja ya existe, asegurar cabeceras de columnas 8 a 12
     if (sheet.getLastColumn() < 8) {
       sheet.getRange(1, 8).setValue('Apps_Instaladas').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     }
@@ -2331,6 +2354,9 @@ function getOrCreateMacSheet() {
     }
     if (sheet.getLastColumn() < 11) {
       sheet.getRange(1, 11).setValue('Comando_Pendiente').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
+    }
+    if (sheet.getLastColumn() < 12) {
+      sheet.getRange(1, 12).setValue('Apks_Deshabilitadas_JSON').setFontWeight('bold').setBackground('#0f172a').setFontColor('#00e5ff');
     }
   }
   return sheet;
@@ -2500,12 +2526,23 @@ function checkDeviceMac(mac, model, storageFree, storageTotal) {
           }
         }
 
+        // Consultar APKs deshabilitadas para este dispositivo en particular
+        let disabledApks = [];
+        const rawDisabled = data[primaryIndex][11];
+        if (rawDisabled && String(rawDisabled).trim().length > 0) {
+          try {
+            const parsedD = (typeof rawDisabled === 'string') ? JSON.parse(rawDisabled) : rawDisabled;
+            if (Array.isArray(parsedD)) disabledApks = parsedD;
+          } catch (eD) {}
+        }
+
         const resp = {
           success: true,
           authorized: isAuth,
           status: status,
           client: client,
           mac: cleanMac,
+          disabled_apks: disabledApks,
           message: isAuth ? 'Dispositivo autorizado' : ('Dispositivo en estado: ' + status)
         };
         if (pendingCommand) {
@@ -2527,7 +2564,8 @@ function checkDeviceMac(mac, model, storageFree, storageTotal) {
       '[]',
       Number(storageFree) || 0,
       Number(storageTotal) || 0,
-      ''
+      '',
+      '[]'
     ]);
 
     return {
@@ -2617,6 +2655,15 @@ function getMacDevicesList(password) {
       const norm = normalizeMac(mac);
       const status = String(row[3] || 'PENDIENTE').toUpperCase();
 
+      const rawDisabled = row[11];
+      let disabledApks = [];
+      if (rawDisabled && String(rawDisabled).trim().length > 0) {
+        try {
+          const parsedD = (typeof rawDisabled === 'string') ? JSON.parse(rawDisabled) : rawDisabled;
+          if (Array.isArray(parsedD)) disabledApks = parsedD;
+        } catch (eD) {}
+      }
+
       const item = {
         mac: mac,
         client: String(row[1] || ''),
@@ -2628,7 +2675,8 @@ function getMacDevicesList(password) {
         installedApps: String(row[7] || '[]'),
         storageFreeMb: Number(row[8]) || 0,
         storageTotalMb: Number(row[9]) || 0,
-        pendingCommand: String(row[10] || '')
+        pendingCommand: String(row[10] || ''),
+        disabledApks: disabledApks
       };
 
       if (!macMap[norm]) {
@@ -2759,6 +2807,64 @@ function deleteMacDevice(password, mac) {
   } finally {
     try { lock.releaseLock(); } catch (eRel) {}
   }
+}
+
+function toggleDeviceCatalogRestriction(password, mac, fileName, block) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'No autorizado' };
+  }
+  if (!mac || !fileName) {
+    return { success: false, error: 'MAC y archivo requeridos' };
+  }
+  const cleanMac = String(mac || '').trim().toUpperCase();
+  const targetNormMac = normalizeMac(cleanMac);
+  const targetFile = String(fileName || '').trim().toLowerCase();
+  const shouldBlock = (block === true || String(block) === 'true' || block === 1 || String(block) === '1');
+
+  const sheet = getOrCreateMacSheet();
+  if (sheet.getLastRow() > 1) {
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      if (normalizeMac(values[i][0]) === targetNormMac) {
+        let disabledList = [];
+        const raw = values[i][11];
+        if (raw && String(raw).trim().length > 0) {
+          try {
+            const p = (typeof raw === 'string') ? JSON.parse(raw) : raw;
+            if (Array.isArray(p)) disabledList = p.map(x => String(x).toLowerCase());
+          } catch (e) {}
+        }
+
+        if (shouldBlock) {
+          if (!disabledList.includes(targetFile)) {
+            disabledList.push(targetFile);
+          }
+        } else {
+          disabledList = disabledList.filter(x => x !== targetFile);
+        }
+
+        const jsonStr = JSON.stringify(disabledList);
+        sheet.getRange(i + 1, 12).setValue(jsonStr);
+
+        // Encolar orden remota inmediata de sincronización de catálogo al televisor
+        const syncCmd = {
+          action: 'sync_catalog_restrictions',
+          disabled_apks: disabledList
+        };
+        sendRemoteCommand(password, cleanMac, syncCmd);
+
+        return {
+          success: true,
+          mac: cleanMac,
+          fileName: fileName,
+          blocked: shouldBlock,
+          disabledApks: disabledList,
+          message: shouldBlock ? 'Aplicación bloqueada en la tienda de este TV' : 'Aplicación permitida en la tienda de este TV'
+        };
+      }
+    }
+  }
+  return { success: false, error: 'Dispositivo MAC no encontrado' };
 }
 
 // ================= ALIAS DIRECTOS PARA GOOGLE.SCRIPT.RUN =================
