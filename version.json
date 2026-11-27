@@ -3,8 +3,8 @@
   "latestVersionCode": 36,
   "latestVersionName": "1.5.1",
   "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.5.1.apk",
-  "changelog": "• Refresco automático en tiempo real en segundo plano sin reiniciar la aplicación.\n• Sincronización instantánea de aplicaciones habilitadas, deshabilitadas y en mantenimiento.\n• Mantenimiento continuo del foco del control remoto en pantalla.\n• Optimizaciones generales de estabilidad y conectividad.",
+  "changelog": "• Mejoras visuales en la pantalla y tarjetas de aplicaciones.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-26T22:20:00Z"
+  "updatedAt": "2026-11-24T13:10:20Z"
 }
