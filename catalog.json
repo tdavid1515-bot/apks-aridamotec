@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 49,
-  "total": 49,
+  "count": 50,
+  "total": 50,
   "catalog": [
     {
       "id": "759604072",
@@ -293,6 +293,25 @@
       "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk",
       "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/downloader_by_aftvnews_1_5_0_forgoogleandroiddevices_apkpure.png",
       "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/Downloader.by.AFTVnews_1.5.0-ForGoogleAndroidDevices_APKPure.apk"
+    },
+    {
+      "id": "801968938",
+      "cleanName": "EloTv 1 0 0",
+      "fileName": "EloTv_1.0.0.apk",
+      "iconUrl": "https://aridamotec-cdn.aridamotec.workers.dev/icons/elotv_1_0_0.png",
+      "browsyCode": "8641",
+      "shortUrl": "https://browsy.app/8641",
+      "browsyShortUrl": "https://browsy.app/8641",
+      "directUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EloTv_1.0.0.apk",
+      "directDownloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EloTv_1.0.0.apk",
+      "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/EloTv_1.0.0.apk",
+      "size": 2928996,
+      "sizeFormatted": "2.8 MB",
+      "status": "active",
+      "createdAt": "2026-11-27T20:34:24Z",
+      "aiDescription": "EloTv 1 0 0 (v1.0.0) por Oficial: Aplicación prémium de tv en vivo optimizada para Android TV con navegación ágil mediante control remoto y reproducción fluida.",
+      "category": "📺 TV en Vivo",
+      "author": "Oficial"
     },
     {
       "id": "789702645",
