@@ -1559,6 +1559,90 @@
       color: #fb7185;
       border: 1px solid rgba(225, 29, 72, 0.3);
     }
+    .badge-maint {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.45);
+    }
+    .apk-card.apk-disabled {
+      border-color: rgba(245, 158, 11, 0.45);
+      background: linear-gradient(180deg, rgba(30, 22, 12, 0.92), rgba(15, 20, 34, 0.96));
+    }
+    .apk-select-chk {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-right: 8px;
+      margin-top: 2px;
+    }
+    .batch-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+    }
+    .batch-toolbar-left, .batch-toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-batch {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(30, 41, 59, 0.9);
+      color: #e2e8f0;
+      transition: all 0.18s ease;
+    }
+    .btn-batch:hover { border-color: var(--accent-cyan); color: #fff; }
+    .btn-batch-disable {
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+    }
+    .btn-batch-enable {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    .btn-toggle-status {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid;
+      transition: all 0.2s ease;
+    }
+    .btn-toggle-status.to-disable {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+    .btn-toggle-status.to-disable:hover {
+      background: rgba(245, 158, 11, 0.24);
+    }
+    .btn-toggle-status.to-enable {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    .btn-toggle-status.to-enable:hover {
+      background: rgba(16, 185, 129, 0.26);
+    }
 
     .apk-filename {
       font-size: 11px;
@@ -2050,6 +2134,77 @@
         box-sizing: border-box !important;
         flex: 1 !important;
       }
+      .dev-apps-modal-header {
+        flex-direction: column !important;
+        gap: 10px !important;
+        position: relative !important;
+        padding-right: 42px !important;
+      }
+      .dev-apps-title-row {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+      }
+      .dev-apps-title-row h3 {
+        font-size: 15.5px !important;
+      }
+      .dev-apps-header-actions {
+        width: calc(100% + 42px) !important;
+        margin-right: -42px !important;
+      }
+      #btnDevAppsRefresh {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 9px 12px !important;
+        font-size: 12.5px !important;
+      }
+      #deviceAppsModal .modal-close {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+      }
+      .dev-storage-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 6px !important;
+      }
+      .dev-storage-info-row {
+        flex-wrap: wrap !important;
+      }
+      #devStorageDynamicWarning {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+      }
+      .header-btns {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        justify-content: flex-end !important;
+      }
+      .btn-header {
+        padding: 6px 10px !important;
+        font-size: 11.5px !important;
+        white-space: nowrap !important;
+      }
+      .batch-toolbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+      }
+      .batch-toolbar-left, .batch-toolbar-right {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+      .btn-batch {
+        width: 100% !important;
+        text-align: center !important;
+        padding: 9px 8px !important;
+      }
+      .sub-buttons-row {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+      }
     }
   </style>
 </head>
@@ -2160,6 +2315,9 @@
       </div>
 
       <div id="adminHeaderBtns" class="header-btns">
+        <button onclick="downloadLatestTvApp()" id="btnDownloadTvApp" class="btn-header" style="border-color:rgba(0,229,255,0.45); background:rgba(0,229,255,0.12); color:#00e5ff;" title="Descargar última versión oficial de ARIDAMOTEC TV APK (para ADB / TV Box)">
+          📺 App TV <span id="headerTvAppVer">v1.4.9</span> ⬇️
+        </button>
         <button onclick="triggerSync()" id="syncBtn" class="btn-header" title="Sincronizar con Repositorio GitHub">
           <span id="syncIconText">🔄</span> Sincronizar
         </button>
@@ -2215,6 +2373,17 @@
         </div>
         <div class="banner-status-right">
           <div id="statusInfo">Cargando catálogo...</div>
+        </div>
+      </div>
+
+      <div id="batchCatalogToolbar" class="batch-toolbar">
+        <div class="batch-toolbar-left">
+          <button type="button" class="btn-batch" onclick="selectAllVisibleApks()">☑️ Seleccionar visibles</button>
+          <button type="button" class="btn-batch" onclick="clearApkSelection()">✕ Limpiar (<span id="batchSelectedCount">0</span>)</button>
+        </div>
+        <div class="batch-toolbar-right">
+          <button type="button" class="btn-batch btn-batch-disable" onclick="executeBatchStatus('disabled')">🔒 Deshabilitar seleccionadas</button>
+          <button type="button" class="btn-batch btn-batch-enable" onclick="executeBatchStatus('active')">✅ Habilitar seleccionadas</button>
         </div>
       </div>
 
@@ -2355,12 +2524,12 @@
   <div id="deviceAppsModal" class="modal-overlay">
     <div class="modal-card" style="max-width:1120px; width:96%; max-height:92vh; display:flex; flex-direction:column; padding:20px; background:#0b1120; border:1px solid rgba(0,229,255,0.3); border-radius:18px; box-shadow:0 25px 60px rgba(0,0,0,0.85);">
       <!-- Header del Modal -->
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:10px;">
+      <div class="dev-apps-modal-header" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:10px;">
         <div>
-          <div style="display:flex; align-items:center; gap:8px;">
+          <div class="dev-apps-title-row" style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:20px;">⚡</span>
             <h3 id="devAppsModalTitle" style="font-size:17px; font-weight:800; color:#fff; margin:0;">Gestión Remota de Aplicaciones</h3>
-            <span style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; background:rgba(0,229,255,0.15); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.3);">ASISTENCIA EN VIVO</span>
+            <span style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; background:rgba(0,229,255,0.15); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.3); white-space:nowrap;">ASISTENCIA EN VIVO</span>
           </div>
           <p id="devAppsModalSubtitle" style="font-size:12px; color:#94a3b8; margin:4px 0 0 0;">Cliente: -- | MAC: -- | Modelo: --</p>
           <!-- Indicador de Sincronización Automática en Segundo Plano -->
@@ -2369,19 +2538,19 @@
             <span id="remoteSyncText">Sincronizando con TV Box en segundo plano...</span>
           </div>
         </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button id="btnDevAppsRefresh" onclick="refreshCurrentDeviceApps(true)" title="Forzar sincronización inmediata de datos desde el TV Box y catálogo oficial" style="display:flex; align-items:center; gap:7px; padding:7px 16px; border-radius:10px; background:linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.08)); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.45); font-size:12.5px; font-weight:800; cursor:pointer; transition:all 0.25s ease; box-shadow:0 0 10px rgba(0,229,255,0.15);" onmouseover="this.style.background='rgba(0,229,255,0.25)'; this.style.borderColor='#00e5ff';" onmouseout="this.style.background='linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.08))'; this.style.borderColor='rgba(0,229,255,0.45)';">
+        <div class="dev-apps-header-actions" style="display:flex; align-items:center; gap:8px;">
+          <button id="btnDevAppsRefresh" onclick="refreshCurrentDeviceApps(true)" title="Forzar sincronización inmediata de datos desde el TV Box y catálogo oficial" style="display:flex; align-items:center; gap:7px; padding:7px 16px; border-radius:10px; background:linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.08)); color:var(--accent-cyan); border:1px solid rgba(0,229,255,0.45); font-size:12.5px; font-weight:800; cursor:pointer; transition:all 0.25s ease; box-shadow:0 0 10px rgba(0,229,255,0.15); white-space:nowrap;" onmouseover="this.style.background='rgba(0,229,255,0.25)'; this.style.borderColor='#00e5ff';" onmouseout="this.style.background='linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.08))'; this.style.borderColor='rgba(0,229,255,0.45)';">
             <span id="devAppsRefreshIcon" style="display:inline-block; font-size:14px; transition:transform 0.4s ease;">🔄</span>
             <span id="devAppsRefreshText">Forzar Sincronización TV Box</span>
           </button>
-          <button class="modal-close" onclick="closeDeviceAppsModal()" style="position:static; background:rgba(255,255,255,0.08); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; border:none; cursor:pointer;">✕</button>
+          <button class="modal-close" onclick="closeDeviceAppsModal()" style="position:static; background:rgba(255,255,255,0.08); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; border:none; cursor:pointer; flex-shrink:0;">✕</button>
         </div>
       </div>
 
       <!-- Barra de Telemetría de Almacenamiento en Tiempo Real -->
       <div id="devStorageCard" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px 16px; margin-bottom:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <div style="display:flex; align-items:center; gap:6px;">
+        <div class="dev-storage-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <div class="dev-storage-info-row" style="display:flex; align-items:center; gap:6px;">
             <span style="font-size:14px;">💾</span>
             <span style="font-size:12.5px; font-weight:700; color:#e2e8f0;">Espacio en Disco del TV Box:</span>
             <span id="devStorageText" style="font-size:12px; font-weight:800; color:var(--accent-cyan); font-family:monospace;">Calculando...</span>
@@ -3467,19 +3636,24 @@
         const hasCode = codeStr !== '';
         const cleanName = String(it.cleanName || '');
         const fileName = String(it.fileName || '');
+        const isDisabled = String(it.status || '').toLowerCase() === 'disabled';
+        const isSelected = selectedCatalogApks.has(fileName.toLowerCase());
         const shortUrl = String(it.browsyShortUrl || (hasCode ? ('https:' + '/' + '/browsy.app/' + codeStr) : ''));
 
         const card = document.createElement('div');
-        card.className = 'apk-card';
+        card.className = 'apk-card' + (isDisabled ? ' apk-disabled' : '');
         card.innerHTML = `
           <div>
             <div class="card-head">
-              <div class="apk-title" title="${escapeHtml(cleanName)}">
-                ${escapeHtml(cleanName)}
-                ${isApkNew(it.createdAt) ? `<span class="badge-new-72h" title="Cargada hace menos de 3 días">✨ NUEVO</span>` : ''}
+              <div style="display:flex; align-items:flex-start; flex:1; min-width:0;">
+                <input type="checkbox" class="apk-select-chk" ${isSelected ? 'checked' : ''} onchange="toggleApkSelection('${escapeJs(fileName)}', this.checked)" title="Seleccionar para acción en lote">
+                <div class="apk-title" title="${escapeHtml(cleanName)}">
+                  ${escapeHtml(cleanName)}
+                  ${isApkNew(it.createdAt) ? `<span class="badge-new-72h" title="Cargada hace menos de 3 días">✨ NUEVO</span>` : ''}
+                </div>
               </div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-                <span class="badge-status badge-act">Activo</span>
+                <span class="badge-status ${isDisabled ? 'badge-maint' : 'badge-act'}">${isDisabled ? '🔒 Mantenimiento' : 'Activo'}</span>
                 <select class="admin-cat-select" onchange="changeApkCategory('${escapeJs(it.driveFileId)}', this.value, event, '${escapeJs(it.fileName)}')" title="Reasignar categoría">
                   <option value="📺 TV en Vivo" ${(it.category === '📺 TV en Vivo') ? 'selected' : ''}>📺 TV en Vivo</option>
                   <option value="⚽ Deportes" ${(it.category === '⚽ Deportes') ? 'selected' : ''}>⚽ Deportes</option>
@@ -3532,6 +3706,9 @@
             
 
             <div class="sub-buttons-row">
+              <button type="button" class="btn-toggle-status ${isDisabled ? 'to-enable' : 'to-disable'}" onclick="toggleSingleApkStatus('${escapeJs(it.driveFileId || it.id || '')}', '${escapeJs(fileName)}', '${isDisabled ? 'active' : 'disabled'}', this)">
+                ${isDisabled ? '✅ Habilitar' : '🔒 Deshabilitar'}
+              </button>
               ${hasCode ? `
                 <button class="btn-sub-action" onclick="openQr('${escapeJs(cleanName)}', '${shortUrl}', '${codeStr}')">
                   📲 QR
@@ -3546,6 +3723,8 @@
         `;
         container.appendChild(card);
       });
+      lastRenderedFilteredApks = filtered;
+      updateBatchToolbar();
     }
 
     function escapeHtml(str) {
@@ -3652,6 +3831,148 @@
             statusEl.style.color = '#ef4444';
           }
         });
+    }
+
+    let latestTvAppInfo = {
+      version: '1.4.9',
+      downloadUrl: 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.9.apk'
+    };
+
+    function refreshLatestTvAppInfo() {
+      fetch('/version.json?t=' + Date.now())
+        .then(r => r.ok ? r.json() : null)
+        .then(v => {
+          if (v && v.downloadUrl) {
+            latestTvAppInfo.version = v.latestVersionName || latestTvAppInfo.version;
+            latestTvAppInfo.downloadUrl = v.downloadUrl;
+            const verEl = document.getElementById('headerTvAppVer');
+            if (verEl) verEl.textContent = 'v' + latestTvAppInfo.version;
+          }
+        })
+        .catch(() => {});
+    }
+
+    function downloadLatestTvApp() {
+      const btn = document.getElementById('btnDownloadTvApp');
+      if (btn) btn.disabled = true;
+      fetch('/version.json?t=' + Date.now())
+        .then(r => r.ok ? r.json() : null)
+        .then(v => {
+          if (v && v.downloadUrl) {
+            latestTvAppInfo.version = v.latestVersionName || latestTvAppInfo.version;
+            latestTvAppInfo.downloadUrl = v.downloadUrl;
+            const verEl = document.getElementById('headerTvAppVer');
+            if (verEl) verEl.textContent = 'v' + latestTvAppInfo.version;
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (btn) btn.disabled = false;
+          const url = latestTvAppInfo.downloadUrl || 'https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.9.apk';
+          showToast('⬇️ Descargando ARIDAMOTEC TV v' + latestTvAppInfo.version + '...');
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'ARIDAMOTEC_TV_' + latestTvAppInfo.version + '.apk';
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', refreshLatestTvAppInfo);
+
+    let selectedCatalogApks = new Set();
+    let lastRenderedFilteredApks = [];
+
+    function updateBatchToolbar() {
+      const cntEl = document.getElementById('batchSelectedCount');
+      if (cntEl) cntEl.textContent = selectedCatalogApks.size;
+    }
+
+    function toggleApkSelection(fileName, checked) {
+      const key = String(fileName || '').toLowerCase();
+      if (!key) return;
+      if (checked) selectedCatalogApks.add(key);
+      else selectedCatalogApks.delete(key);
+      updateBatchToolbar();
+    }
+
+    function selectAllVisibleApks() {
+      (lastRenderedFilteredApks || []).forEach(it => {
+        if (it && it.fileName) selectedCatalogApks.add(String(it.fileName).toLowerCase());
+      });
+      renderCatalogCards();
+    }
+
+    function clearApkSelection() {
+      selectedCatalogApks.clear();
+      renderCatalogCards();
+    }
+
+    function callApkStatusApi(actionName, payloadParams, onDone) {
+      const gas = getGas();
+      if (gas && typeof gas.withSuccessHandler === 'function') {
+        try {
+          const h = gas.withSuccessHandler(onDone).withFailureHandler(() => onDone({ success: false, error: 'Error de conexión GAS' }));
+          if (actionName === 'toggleApkStatus' && typeof h.toggleApkStatus === 'function') {
+            h.toggleApkStatus(savedPwd, payloadParams.fileId, payloadParams.status, payloadParams.fileName);
+            return;
+          }
+          if (actionName === 'batchToggleApkStatus' && typeof h.batchToggleApkStatus === 'function') {
+            h.batchToggleApkStatus(savedPwd, payloadParams.items, payloadParams.status);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      const qs = new URLSearchParams({ action: actionName, pwd: savedPwd || '', ...payloadParams });
+      fetch(GAS_URL + '?' + qs.toString())
+        .then(r => r.json())
+        .then(onDone)
+        .catch(() => onDone({ success: false, error: 'Error de red' }));
+    }
+
+    function toggleSingleApkStatus(fileId, fileName, nextStatus, btnEl) {
+      if (btnEl) { btnEl.disabled = true; btnEl.textContent = '⏳...'; }
+      callApkStatusApi('toggleApkStatus', { fileId: fileId, fileName: fileName, status: nextStatus }, res => {
+        if (btnEl) btnEl.disabled = false;
+        if (res && res.success) {
+          const match = (apksData.active || []).find(x => String(x.fileName || '').toLowerCase() === String(fileName || '').toLowerCase());
+          if (match) match.status = nextStatus;
+          showToast(nextStatus === 'disabled' ? '🔒 APK marcada en mantenimiento (bloqueada en TV).' : '✅ APK habilitada nuevamente.');
+          renderCatalogCards();
+        } else {
+          showToast('❌ ' + (res && res.error ? res.error : 'No se pudo cambiar el estado'));
+          renderCatalogCards();
+        }
+      });
+    }
+
+    function executeBatchStatus(nextStatus) {
+      if (selectedCatalogApks.size === 0) {
+        showToast('⚠️ Selecciona al menos una aplicación primero.');
+        return;
+      }
+      const items = (apksData.active || [])
+        .filter(x => x && x.fileName && selectedCatalogApks.has(String(x.fileName).toLowerCase()))
+        .map(x => ({ fileId: x.driveFileId || x.id || '', fileName: x.fileName }));
+
+      showToast('⏳ Aplicando cambio en lote a ' + items.length + ' aplicaciones...');
+      callApkStatusApi('batchToggleApkStatus', { items: JSON.stringify(items), status: nextStatus }, res => {
+        if (res && res.success) {
+          items.forEach(it => {
+            const m = (apksData.active || []).find(x => String(x.fileName || '').toLowerCase() === String(it.fileName).toLowerCase());
+            if (m) m.status = nextStatus;
+          });
+          selectedCatalogApks.clear();
+          showToast((nextStatus === 'disabled' ? '🔒 ' : '✅ ') + 'Actualizadas ' + (res.updatedCount || items.length) + ' aplicaciones.');
+          renderCatalogCards();
+        } else {
+          showToast('❌ ' + (res && res.error ? res.error : 'Error en acción por lote'));
+        }
+      });
     }
 
     function regenAdminAiDesc(fileId, cleanName, event) {

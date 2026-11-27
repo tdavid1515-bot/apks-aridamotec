@@ -669,6 +669,13 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 
+  // Cambio en lote de estado de APKs (Habilitar / Mantenimiento)
+  if (postData && (postData.action === 'batchToggleApkStatus' || postData.act === 'batchToggleApkStatus')) {
+    const res = batchToggleApkStatus(postData.pwd, postData.items, postData.status);
+    return ContentService.createTextOutput(JSON.stringify(res))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   // Manejar Webhooks de GitHub (Releases, assets, push o ping)
   if (postData) {
     Logger.log('GitHub Webhook recibido en doPost. Acción: ' + (postData.action || 'evento'));
@@ -745,6 +752,10 @@ function doGet(e) {
       res = deduplicateSheetRows(e.parameter.pwd);
     } else if (act === 'updateDesc' || act === 'updateDescription') {
       res = updateApkDescription(e.parameter.pwd, e.parameter.fileId, e.parameter.desc || e.parameter.description, e.parameter.fileName);
+    } else if (act === 'toggleApkStatus') {
+      res = toggleApkStatus(e.parameter.pwd, e.parameter.fileId, e.parameter.status, e.parameter.fileName);
+    } else if (act === 'batchToggleApkStatus') {
+      res = batchToggleApkStatus(e.parameter.pwd, e.parameter.items, e.parameter.status);
     } else if (act === 'interval') {
       res = setSyncInterval(e.parameter.pwd, e.parameter.mins);
     } else if (act === 'describe') {
@@ -1042,6 +1053,7 @@ function overlaySheetMetadata(items) {
       const rowCode = String(data[i][3] || '').trim();
       const rowShort = String(data[i][4] || '').trim();
       const rowDirect = String(data[i][5] || '').trim();
+      const rowStatus = String(data[i][8] || '').trim().toLowerCase();
       const rowDesc = String(data[i][11] || '').trim();
       const rowCat = String(data[i][12] || '').trim();
       if (rowFile || rowId) {
@@ -1051,6 +1063,9 @@ function overlaySheetMetadata(items) {
         if (rowCode) meta.browsyCode = rowCode;
         if (rowShort) meta.browsyShortUrl = rowShort;
         if (rowDirect) meta.directDownloadUrl = rowDirect;
+        if (rowStatus === 'disabled' || rowStatus === 'maintenance' || rowStatus === 'paused') {
+          meta.status = 'disabled';
+        }
         if (rowFile) metaMap.set(rowFile, meta);
         if (rowId) metaMap.set(rowId, meta);
       }
@@ -1066,6 +1081,7 @@ function overlaySheetMetadata(items) {
         if (meta.browsyCode && !it.browsyCode) it.browsyCode = meta.browsyCode;
         if (meta.browsyShortUrl && !it.browsyShortUrl) it.browsyShortUrl = meta.browsyShortUrl;
         if (meta.directDownloadUrl && !it.directDownloadUrl) it.directDownloadUrl = meta.directDownloadUrl;
+        if (meta.status) it.status = meta.status;
       }
     });
 
@@ -2017,6 +2033,116 @@ function updateApkDescription(password, fileId, newDescription, fileName) {
   return { success: false, error: 'Aplicación no encontrada en la base de datos' };
 }
 
+function toggleApkStatus(password, fileId, newStatus, fileName) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+  const cleanStatus = (String(newStatus || '').trim().toLowerCase() === 'disabled') ? 'disabled' : 'active';
+  const res = batchToggleApkStatus(password, JSON.stringify([{ fileId: fileId || '', fileName: fileName || '' }]), cleanStatus);
+  return {
+    success: res.success,
+    status: cleanStatus,
+    error: res.error || null
+  };
+}
+
+function batchToggleApkStatus(password, itemsInput, newStatus) {
+  if (!verifyAuth(password)) {
+    return { success: false, error: 'Acceso no autorizado' };
+  }
+  let targetItems = [];
+  try {
+    targetItems = typeof itemsInput === 'string' ? JSON.parse(itemsInput) : (Array.isArray(itemsInput) ? itemsInput : []);
+  } catch (e) {
+    return { success: false, error: 'Formato inválido de lista de APKs' };
+  }
+  if (!Array.isArray(targetItems) || targetItems.length === 0) {
+    return { success: false, error: 'No se seleccionaron aplicaciones' };
+  }
+
+  const cleanStatus = (String(newStatus || '').trim().toLowerCase() === 'disabled') ? 'disabled' : 'active';
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+  const nowStr = Utilities.formatDate(new Date(), 'GMT-5', 'yyyy-MM-dd HH:mm:ss');
+
+  const rowById = new Map();
+  const rowByFile = new Map();
+  for (let i = 1; i < data.length; i++) {
+    const rId = String(data[i][0] || '').trim();
+    const rFile = String(data[i][2] || '').trim().toLowerCase();
+    if (rId) rowById.set(rId, i + 1);
+    if (rFile) rowByFile.set(rFile, i + 1);
+  }
+
+  let catalogFallback = null;
+  let updatedCount = 0;
+
+  targetItems.forEach(item => {
+    const tId = String(item.fileId || item.id || '').trim();
+    const tFile = String(item.fileName || '').trim().toLowerCase();
+    const rowNum = (tFile && rowByFile.get(tFile)) || (tId && rowById.get(tId)) || null;
+
+    if (rowNum) {
+      sheet.getRange(rowNum, 9).setValue(cleanStatus);
+      sheet.getRange(rowNum, 11).setValue(nowStr);
+      updatedCount++;
+    } else {
+      if (catalogFallback === null) {
+        catalogFallback = [];
+        try {
+          const url = 'https://raw.githubusercontent.com/' + CONFIG.GITHUB_OWNER + '/' + CONFIG.GITHUB_REPO + '/main/catalog.json?t=' + Date.now();
+          const resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+          if (resp.getResponseCode() === 200) {
+            const parsed = JSON.parse(resp.getContentText());
+            if (parsed && Array.isArray(parsed.catalog)) catalogFallback = parsed.catalog;
+          }
+        } catch (eCat) {}
+      }
+      const catItem = catalogFallback.find(x =>
+        (tId && (String(x.id) === tId || String(x.fileName).toLowerCase() === tId.toLowerCase())) ||
+        (tFile && String(x.fileName).toLowerCase() === tFile)
+      ) || SEED_APKS.find(x =>
+        (tId && (String(x.id) === tId || String(x.fileName).toLowerCase() === tId.toLowerCase())) ||
+        (tFile && String(x.fileName).toLowerCase() === tFile)
+      );
+      if (catItem || tFile || tId) {
+        const finalFile = (catItem && catItem.fileName) || item.fileName || tFile || tId;
+        const finalClean = (catItem && catItem.cleanName) || cleanApkName(finalFile);
+        sheet.appendRow([
+          String((catItem && catItem.id) || tId || Utilities.getUuid()),
+          String(finalClean),
+          String(finalFile),
+          String((catItem && catItem.browsyCode) || ''),
+          String((catItem && (catItem.browsyShortUrl || catItem.shortUrl)) || ''),
+          String((catItem && (catItem.directDownloadUrl || catItem.directUrl)) || ''),
+          (catItem && catItem.size) || 0,
+          (catItem && catItem.sizeFormatted) || '',
+          cleanStatus,
+          (catItem && catItem.createdAt) || nowStr,
+          nowStr,
+          (catItem && catItem.aiDescription) || '',
+          (catItem && catItem.category) || classifyCategory(finalClean, finalFile),
+          (catItem && catItem.author) || 'Oficial'
+        ]);
+        updatedCount++;
+      }
+    }
+  });
+
+  try {
+    const cache = CacheService.getScriptCache();
+    cache.remove('guest_catalog_cache_v4');
+    cache.remove('guest_catalog_cache_v3');
+    cache.remove('gh_repo_assets_v1');
+  } catch (eC) {}
+  return {
+    success: updatedCount > 0,
+    updatedCount: updatedCount,
+    status: cleanStatus,
+    error: updatedCount > 0 ? null : 'No se encontraron las aplicaciones especificadas'
+  };
+}
+
 /**
  * ============================================================================
  * CONFIGURACIÓN DE DISPARADORES DE AUTO-SINCRONIZACIÓN EN LA NUBE (24/7)
@@ -2426,6 +2552,24 @@ function sendRemoteCommand(password, mac, commandObj) {
   }
   const cleanMac = String(mac).trim().toUpperCase();
   const targetNormMac = normalizeMac(cleanMac);
+
+  // Bloquear órdenes remotas de instalación si la APK se encuentra deshabilitada (en mantenimiento)
+  const cmdsToCheck = Array.isArray(commandObj) ? commandObj : [commandObj];
+  const hasInstallCmd = cmdsToCheck.some(c => c && String(c.action || '').toLowerCase() === 'install');
+  if (hasInstallCmd) {
+    try {
+      const cat = getUnifiedCatalogList();
+      for (const c of cmdsToCheck) {
+        if (c && String(c.action || '').toLowerCase() === 'install' && c.fileName) {
+          const match = cat.find(x => String(x.fileName || '').toLowerCase() === String(c.fileName).trim().toLowerCase());
+          if (match && String(match.status || '').toLowerCase() === 'disabled') {
+            return { success: false, error: 'La aplicación "' + (match.cleanName || match.fileName) + '" está en mantenimiento y no puede instalarse remotamente.' };
+          }
+        }
+      }
+    } catch (eChk) {}
+  }
+
   const sheet = getOrCreateMacSheet();
 
   if (sheet.getLastRow() > 1) {
