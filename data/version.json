@@ -3,8 +3,8 @@
   "latestVersionCode": 33,
   "latestVersionName": "1.4.9",
   "downloadUrl": "https://aridamotec-cdn.aridamotec.workers.dev/apk/ARIDAMOTEC_TV_1.4.9.apk",
-  "changelog": "• Iconos vectoriales nativos para Cable LAN, Wi-Fi y Sin Red.\n• Soporte de estado En Mantenimiento (habilitar/deshabilitar APKs desde Web Admin).\n• Auto-reparación de Accesibilidad (WRITE_SECURE_SETTINGS / Root) y Onboarding adaptativo.\n• Asistencia automática EN/ES para Depuración por USB en Opciones de Desarrollador.",
+  "changelog": "• Mejoras visuales en la pantalla y tarjetas de aplicaciones.\n• Mayor rapidez y fluidez al navegar con tu control remoto.\n• Nuevas aplicaciones y contenidos disponibles en el catálogo.\n• Optimizaciones generales de estabilidad y funcionamiento.",
   "minSupportedVersionCode": 1,
   "mandatory": false,
-  "updatedAt": "2026-11-27T00:23:00Z"
+  "updatedAt": "2026-11-24T13:10:20Z"
 }
