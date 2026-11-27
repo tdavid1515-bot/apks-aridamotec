@@ -323,11 +323,11 @@
     .header-top {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 12px 24px;
+      padding: 7px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
     }
     .brand-group {
       display: flex;
@@ -335,9 +335,9 @@
       gap: 10px;
     }
     .brand-logo-img {
-      height: 38px;
-      width: 38px;
-      border-radius: 8px;
+      height: 30px;
+      width: 30px;
+      border-radius: 7px;
       display: block;
       filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4));
     }
@@ -375,14 +375,14 @@
       background: #0f172a;
       border: 1px solid var(--border-cyan);
       color: #e2e8f0;
-      border-radius: 10px;
-      padding: 7px 11px;
-      font-size: 12px;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s;
     }
     .btn-header:hover {
@@ -395,12 +395,12 @@
     .controls-nav {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 10px 24px 14px;
+      padding: 5px 24px 8px;
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
       justify-content: flex-start;
-      gap: 16px;
+      gap: 12px;
       position: relative;
     }
     .tabs-group {
@@ -427,8 +427,44 @@
     body.tab-devices .sort-row {
       display: none !important;
     }
-    body.tab-devices #adminCategoryChips {
+    body.tab-devices #adminCategoryChips,
+    body.tab-devices .banner-status,
+    body.tab-devices #batchCatalogToolbar {
       display: none !important;
+    }
+    .sticky-header-container .categories-bar {
+      padding: 4px 24px 7px;
+      gap: 6px;
+    }
+    .sticky-header-container .cat-chip {
+      padding: 4px 10px;
+      font-size: 11.5px;
+    }
+    .sticky-header-container .banner-status {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 5px 24px;
+      font-size: 11.5px;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(10, 15, 28, 0.75);
+    }
+    .sticky-header-container .batch-toolbar {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 6px 24px 7px;
+      border-radius: 0;
+      border: none;
+      background: transparent;
+      gap: 8px;
+    }
+    .sticky-header-container .btn-batch {
+      padding: 4px 10px;
+      font-size: 11.5px;
+      border-radius: 7px;
     }
     .search-input {
       width: 100%;
@@ -2175,6 +2211,9 @@
         align-items: flex-start !important;
         gap: 4px !important;
       }
+      .sticky-header-container {
+        position: static !important;
+      }
       .header-btns {
         flex-wrap: wrap !important;
         gap: 6px !important;
@@ -2360,33 +2399,34 @@
 
     <!-- Barra de Categorías Dinámicas Admin -->
     <div id="adminCategoryChips" class="categories-bar"></div>
+
+    <!-- Barra de Estado y Selección en Lote (Fijas junto al Header en Desktop) -->
+    <div class="banner-status">
+      <div class="admin-live-status">
+        <span class="admin-live-dot">●</span>
+        <span class="admin-live-text">Sincronizado con ARIDAMOTEC Cloud CDN (SSOT)</span>
+      </div>
+      <div class="banner-status-right">
+        <div id="statusInfo">Cargando catálogo...</div>
+      </div>
+    </div>
+
+    <div id="batchCatalogToolbar" class="batch-toolbar">
+      <div class="batch-toolbar-left">
+        <button type="button" class="btn-batch" onclick="selectAllVisibleApks()">☑️ Seleccionar visibles</button>
+        <button type="button" class="btn-batch" onclick="clearApkSelection()">✕ Limpiar (<span id="batchSelectedCount">0</span>)</button>
+      </div>
+      <div class="batch-toolbar-right">
+        <button type="button" class="btn-batch btn-batch-disable" onclick="executeBatchStatus('disabled')">🔒 Deshabilitar seleccionadas</button>
+        <button type="button" class="btn-batch btn-batch-enable" onclick="executeBatchStatus('active')">✅ Habilitar seleccionadas</button>
+      </div>
+    </div>
   </div>
 
   <!-- ================= CONTENIDO PRINCIPAL ================= -->
   <main>
     <!-- VISTA CATÁLOGO / PAPELERA -->
     <div id="catalogSection">
-      <div class="banner-status">
-        <div class="admin-live-status">
-          <span class="admin-live-dot">●</span>
-          <span class="admin-live-text">Sincronizado con ARIDAMOTEC Cloud CDN (SSOT)</span>
-        </div>
-        <div class="banner-status-right">
-          <div id="statusInfo">Cargando catálogo...</div>
-        </div>
-      </div>
-
-      <div id="batchCatalogToolbar" class="batch-toolbar">
-        <div class="batch-toolbar-left">
-          <button type="button" class="btn-batch" onclick="selectAllVisibleApks()">☑️ Seleccionar visibles</button>
-          <button type="button" class="btn-batch" onclick="clearApkSelection()">✕ Limpiar (<span id="batchSelectedCount">0</span>)</button>
-        </div>
-        <div class="batch-toolbar-right">
-          <button type="button" class="btn-batch btn-batch-disable" onclick="executeBatchStatus('disabled')">🔒 Deshabilitar seleccionadas</button>
-          <button type="button" class="btn-batch btn-batch-enable" onclick="executeBatchStatus('active')">✅ Habilitar seleccionadas</button>
-        </div>
-      </div>
-
       <div id="cardsGrid" class="cards-grid">
         <!-- Tarjetas renderizadas dinámicamente -->
       </div>
@@ -3925,6 +3965,23 @@
             return;
           }
         } catch (e) {}
+      }
+
+      if (actionName === 'batchToggleApkStatus') {
+        fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'batchToggleApkStatus',
+            pwd: savedPwd || '',
+            items: payloadParams.items,
+            status: payloadParams.status
+          })
+        })
+          .then(r => r.json())
+          .then(onDone)
+          .catch(() => onDone({ success: false, error: 'Error de red' }));
+        return;
       }
 
       const qs = new URLSearchParams({ action: actionName, pwd: savedPwd || '', ...payloadParams });
