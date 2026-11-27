@@ -3943,12 +3943,12 @@
       (lastRenderedFilteredApks || []).forEach(it => {
         if (it && it.fileName) selectedCatalogApks.add(String(it.fileName).toLowerCase());
       });
-      renderCatalogCards();
+      drawCards();
     }
 
     function clearApkSelection() {
       selectedCatalogApks.clear();
-      renderCatalogCards();
+      drawCards();
     }
 
     function callApkStatusApi(actionName, payloadParams, onDone) {
@@ -3999,10 +3999,10 @@
           const match = (apksData.active || []).find(x => String(x.fileName || '').toLowerCase() === String(fileName || '').toLowerCase());
           if (match) match.status = nextStatus;
           showToast(nextStatus === 'disabled' ? '🔒 APK marcada en mantenimiento (bloqueada en TV).' : '✅ APK habilitada nuevamente.');
-          renderCatalogCards();
+          drawCards();
         } else {
           showToast('❌ ' + (res && res.error ? res.error : 'No se pudo cambiar el estado'));
-          renderCatalogCards();
+          drawCards();
         }
       });
     }
@@ -4025,7 +4025,7 @@
           });
           selectedCatalogApks.clear();
           showToast((nextStatus === 'disabled' ? '🔒 ' : '✅ ') + 'Actualizadas ' + (res.updatedCount || items.length) + ' aplicaciones.');
-          renderCatalogCards();
+          drawCards();
         } else {
           showToast('❌ ' + (res && res.error ? res.error : 'Error en acción por lote'));
         }
