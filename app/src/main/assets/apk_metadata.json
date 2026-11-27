@@ -352,5 +352,19 @@
     "versionName": "7.34 tele",
     "versionCode": "186",
     "iconAsset": "icons/epictv_tele.png"
+  },
+  "Xuper.x1x.v4.99.3.apk": {
+    "cleanName": "Xuper x1x v4 99 3",
+    "packageName": "com.xutv.x1x",
+    "versionName": "4.99.3",
+    "versionCode": "49903",
+    "iconAsset": "icons/xuper_x1x_v4_99_3.png"
+  },
+  "XuperHydraTL-Flow.apk": {
+    "cleanName": "XuperHydraTL Flow",
+    "packageName": "com.netxxus.vip",
+    "versionName": "4.99.81",
+    "versionCode": "49981",
+    "iconAsset": "icons/xuperhydratl_flow.png"
   }
 }
